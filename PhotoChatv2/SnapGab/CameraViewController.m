@@ -12,6 +12,7 @@
 #import "UIImageView+WebCache.h"
 #import "SpeechBubbleView.h"
 #import "ResourceView.h"
+#import "PanelEditViewController.h"
 
 
 @interface CameraViewController ()
@@ -470,6 +471,11 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     [self presentViewController:imagePicker animated:YES completion:nil];
     newMedia = NO;
     }//end if
+}
+
+-(IBAction)editPanel:(id)sender{
+    PanelEditViewController *panelEditViewController = [[PanelEditViewController alloc] init];
+    [self presentViewController:panelEditViewController animated:YES completion:nil];
 }
 
 - (IBAction)closePressed:(id)sender {

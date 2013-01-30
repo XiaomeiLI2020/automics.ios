@@ -37,6 +37,7 @@
 - (IBAction)takeSnap:(id)sender;
 - (IBAction)showPhotos:(id)sender;
 - (IBAction)closePressed:(id)sender;
+-(IBAction)editPanel:(id)sender;
 
 
 
