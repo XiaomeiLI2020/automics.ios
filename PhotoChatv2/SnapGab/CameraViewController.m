@@ -415,6 +415,11 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
        rvc.delegate = self;
         
     }//end if
+    
+    if ([[segue identifier] isEqualToString:@"editPanelView"]){
+        PanelEditViewController* panelEditViewController = (PanelEditViewController *)[segue destinationViewController];
+        panelEditViewController.photo = self.imageView.image;
+    }
 }
 
 - (IBAction)takeSnap:(id)sender {

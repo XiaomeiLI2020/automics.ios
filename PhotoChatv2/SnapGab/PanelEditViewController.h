@@ -10,4 +10,7 @@
 
 @interface PanelEditViewController : UIViewController
 
+@property IBOutlet UIImageView* backgroundPhotoView;
+@property UIImage* photo;
+
 @end
