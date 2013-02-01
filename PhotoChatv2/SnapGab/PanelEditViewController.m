@@ -10,10 +10,13 @@
 #import "ImageScaleCatagory.h"
 
 @interface PanelEditViewController ()
-
+@property UIImageView* resourceImageView;
 @end
 
 @implementation PanelEditViewController
+
+#define PADDING_LEFT 5.0
+#define PADDING_TOP 5.0
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -27,8 +30,69 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [_backgroundPhotoView setImage:[_photo scaleToSize:CGSizeMake(320.0, 320.0)]];
-    //_backgroundPhotoView.image = [self squareImageWithImage:_photo scaledToSize:CGSizeMake(640.0, 640.0)];
+    //[_backgroundPhotoView setImage:[_photo scaleToSize:CGSizeMake(640.0, 640.0)]];
+    [_backgroundPhotoView setImage:[self squareImageWithImage:_photo scaledToSize:CGSizeMake(640.0, 640.0)]];
+    [self addResourceImageView];
+    
+}
+
+-(void)addResourceImageView
+{
+    UIImage* scaleHandleImage = [UIImage imageNamed:@"scaleHandle"];
+    UIImage* backgroundImage = [UIImage imageNamed:@"hat"];
+    
+    //main view
+    self.resourceImageView = [[UIImageView alloc] init];
+    CGSize resourceViewSize = [self calculateViewSizeWithBackgroundImage:backgroundImage scaleHandleImage:scaleHandleImage];
+    self.resourceImageView.frame = CGRectMake(0.0, 0.0, resourceViewSize.width, resourceViewSize.height);
+    
+    //background view.
+    UIImageView* backgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
+    CGRect frame = backgroundView.frame;
+    frame.origin = [self calculateBackgroundViewOriginWithImage:backgroundImage scaleHandleImage:scaleHandleImage];
+    backgroundView.frame = frame;
+    
+    //scaleoverlay view.
+    //top right handle.
+    UIImageView* scaleHandle1 = [[UIImageView alloc] initWithImage:scaleHandleImage];
+    frame = scaleHandle1.frame;
+    frame.origin.x = backgroundImage.size.width - scaleHandleImage.size.width/2;
+    frame.origin.y = 0.0;
+    scaleHandle1.frame = frame;
+    //bottom left handle
+    UIImageView* scaleHandle2 = [[UIImageView alloc] initWithImage:scaleHandleImage];
+    frame = scaleHandle2.frame;
+    frame.origin.x = 0.0;
+    frame.origin.y = backgroundImage.size.height - scaleHandleImage.size.height/2;
+    scaleHandle2.frame = frame;
+    //bottom right handle.
+    UIImageView* scaleHandle3 = [[UIImageView alloc] initWithImage:scaleHandleImage];
+    frame = scaleHandle3.frame;
+    frame.origin.x = backgroundImage.size.width - scaleHandleImage.size.width/2;
+    frame.origin.y = backgroundImage.size.height - scaleHandleImage.size.height/2;
+    scaleHandle3.frame = frame;
+    
+    //add sub views to resourceImage.
+    [self.resourceImageView addSubview:backgroundView];
+    //add resource view on top of photo.
+    [self.resourceImageView addSubview:scaleHandle1];
+    [self.resourceImageView addSubview:scaleHandle2];
+    [self.resourceImageView addSubview:scaleHandle3];
+    //add on top of background photo view.
+    [self.backgroundPhotoView addSubview:self.resourceImageView];
+}
+
+-(CGSize)calculateViewSizeWithBackgroundImage:(UIImage*)backgroundImage scaleHandleImage:(UIImage*)scaleHandle{
+    CGSize resourceViewSize = CGSizeMake(scaleHandle.size.width + backgroundImage.size.width, scaleHandle.size.height + backgroundImage.size.height);
+    return resourceViewSize;
+}
+
+
+
+-(CGPoint)calculateBackgroundViewOriginWithImage:(UIImage*)backgroundImage scaleHandleImage:(UIImage*)scaleHandle
+{
+    CGPoint origin = CGPointMake(scaleHandle.size.width/2, scaleHandle.size.height/2);
+    return origin;
 }
 
 - (void)didReceiveMemoryWarning
