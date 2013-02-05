@@ -56,6 +56,8 @@
 		D8AADC4B16821ECF00C83995 /* TextTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AADC4A16821ECF00C83995 /* TextTableCell.m */; };
 		D8CFE50E167784FC00225EA3 /* PanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CFE50D167784FC00225EA3 /* PanelViewController.m */; };
 		D8CFE51A1677945300225EA3 /* PhotoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CFE5191677945300225EA3 /* PhotoTableViewCell.m */; };
+		D8DDF9DA16BFEF61006F31E7 /* MainScrollSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DDF9D916BFEF61006F31E7 /* MainScrollSelector.m */; };
+		D8DDF9DD16BFEF6E006F31E7 /* PanelViewControllerII.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DDF9DC16BFEF6E006F31E7 /* PanelViewControllerII.m */; };
 		D8E0E7D2168345640003FE14 /* resource3.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E0E7D1168345640003FE14 /* resource3.png */; };
 		D8E0E7D5168346190003FE14 /* resource4.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E0E7D4168346190003FE14 /* resource4.png */; };
 		D8E0E7D71683469A0003FE14 /* resource5.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E0E7D61683469A0003FE14 /* resource5.png */; };
@@ -154,6 +156,10 @@
 		D8CFE50D167784FC00225EA3 /* PanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelViewController.m; sourceTree = "<group>"; };
 		D8CFE5181677945300225EA3 /* PhotoTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoTableViewCell.h; sourceTree = "<group>"; };
 		D8CFE5191677945300225EA3 /* PhotoTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoTableViewCell.m; sourceTree = "<group>"; };
+		D8DDF9D816BFEF61006F31E7 /* MainScrollSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScrollSelector.h; sourceTree = "<group>"; };
+		D8DDF9D916BFEF61006F31E7 /* MainScrollSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainScrollSelector.m; sourceTree = "<group>"; };
+		D8DDF9DB16BFEF6E006F31E7 /* PanelViewControllerII.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelViewControllerII.h; sourceTree = "<group>"; };
+		D8DDF9DC16BFEF6E006F31E7 /* PanelViewControllerII.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelViewControllerII.m; sourceTree = "<group>"; };
 		D8E0E7D1168345640003FE14 /* resource3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resource3.png; sourceTree = "<group>"; };
 		D8E0E7D4168346190003FE14 /* resource4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resource4.png; sourceTree = "<group>"; };
 		D8E0E7D61683469A0003FE14 /* resource5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resource5.png; sourceTree = "<group>"; };
@@ -226,6 +232,7 @@
 		1D8D508C165FADC700C9817C /* PhotoChat */ = {
 			isa = PBXGroup;
 			children = (
+				D8DDF9DE16BFEFA3006F31E7 /* MainScrollSelector */,
 				48CED3CE16B923FF00EF4CD3 /* Panel */,
 				D804FC5F1677578D00605338 /* SDWebImage */,
 				1D92BFDF16667D9200CB37B3 /* Media */,
@@ -317,6 +324,8 @@
 			children = (
 				D8CFE50C167784FC00225EA3 /* PanelViewController.h */,
 				D8CFE50D167784FC00225EA3 /* PanelViewController.m */,
+				D8DDF9DB16BFEF6E006F31E7 /* PanelViewControllerII.h */,
+				D8DDF9DC16BFEF6E006F31E7 /* PanelViewControllerII.m */,
 				48CED3C816B922A900EF4CD3 /* PanelEditViewController.h */,
 				48CED3C916B922A900EF4CD3 /* PanelEditViewController.m */,
 			);
@@ -348,6 +357,15 @@
 				D8A94EEF16B82F470075617B /* UIImageView+WebCache.m */,
 			);
 			name = SDWebImage;
+			sourceTree = "<group>";
+		};
+		D8DDF9DE16BFEFA3006F31E7 /* MainScrollSelector */ = {
+			isa = PBXGroup;
+			children = (
+				D8DDF9D816BFEF61006F31E7 /* MainScrollSelector.h */,
+				D8DDF9D916BFEF61006F31E7 /* MainScrollSelector.m */,
+			);
+			name = MainScrollSelector;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -469,6 +487,8 @@
 				D8A94EF016B82F470075617B /* UIButton+WebCache.m in Sources */,
 				D8A94EF116B82F470075617B /* UIImageView+WebCache.m in Sources */,
 				48CED3CB16B922A900EF4CD3 /* PanelEditViewController.m in Sources */,
+				D8DDF9DA16BFEF61006F31E7 /* MainScrollSelector.m in Sources */,
+				D8DDF9DD16BFEF6E006F31E7 /* PanelViewControllerII.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
