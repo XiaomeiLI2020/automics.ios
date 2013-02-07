@@ -54,6 +54,10 @@
 		D8A94EF016B82F470075617B /* UIButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A94EED16B82F470075617B /* UIButton+WebCache.m */; };
 		D8A94EF116B82F470075617B /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A94EEF16B82F470075617B /* UIImageView+WebCache.m */; };
 		D8AADC4B16821ECF00C83995 /* TextTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8AADC4A16821ECF00C83995 /* TextTableCell.m */; };
+		D8C73A9216C2D3C300C8D3E0 /* back-images.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C73A9116C2D3C300C8D3E0 /* back-images.png */; };
+		D8C73A9416C2D6E900C8D3E0 /* back-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C73A9316C2D6E900C8D3E0 /* back-menu.png */; };
+		D8C73A9616C2D7FC00C8D3E0 /* add-image.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C73A9516C2D7FB00C8D3E0 /* add-image.png */; };
+		D8C73A9916C2DAF900C8D3E0 /* PanelEditViewControllerII.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C73A9816C2DAF900C8D3E0 /* PanelEditViewControllerII.m */; };
 		D8CFE50E167784FC00225EA3 /* PanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CFE50D167784FC00225EA3 /* PanelViewController.m */; };
 		D8CFE51A1677945300225EA3 /* PhotoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8CFE5191677945300225EA3 /* PhotoTableViewCell.m */; };
 		D8DDF9DA16BFEF61006F31E7 /* MainScrollSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DDF9D916BFEF61006F31E7 /* MainScrollSelector.m */; };
@@ -151,6 +155,11 @@
 		D8A94EEF16B82F470075617B /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		D8AADC4916821ECF00C83995 /* TextTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextTableCell.h; sourceTree = "<group>"; };
 		D8AADC4A16821ECF00C83995 /* TextTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextTableCell.m; sourceTree = "<group>"; };
+		D8C73A9116C2D3C300C8D3E0 /* back-images.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "back-images.png"; path = "SnapGab/back-images.png"; sourceTree = "<group>"; };
+		D8C73A9316C2D6E900C8D3E0 /* back-menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-menu.png"; sourceTree = "<group>"; };
+		D8C73A9516C2D7FB00C8D3E0 /* add-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-image.png"; sourceTree = "<group>"; };
+		D8C73A9716C2DAF900C8D3E0 /* PanelEditViewControllerII.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelEditViewControllerII.h; sourceTree = "<group>"; };
+		D8C73A9816C2DAF900C8D3E0 /* PanelEditViewControllerII.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelEditViewControllerII.m; sourceTree = "<group>"; };
 		D8CFE5061677788700225EA3 /* ImageScaleCatagory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageScaleCatagory.h; sourceTree = "<group>"; };
 		D8CFE50C167784FC00225EA3 /* PanelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelViewController.h; sourceTree = "<group>"; };
 		D8CFE50D167784FC00225EA3 /* PanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelViewController.m; sourceTree = "<group>"; };
@@ -199,6 +208,7 @@
 		1D8D5077165FADC600C9817C = {
 			isa = PBXGroup;
 			children = (
+				D8C73A9116C2D3C300C8D3E0 /* back-images.png */,
 				D8585C68167A58490003B0BD /* placeholder-542x542.png */,
 				D804FC5D1677527E00605338 /* Icon@2x.png */,
 				D804FC5B1677519100605338 /* Icon.png */,
@@ -264,6 +274,8 @@
 				1D92BFDC16667B2900CB37B3 /* SpeechBubbleView.h */,
 				1D92BFDD16667B2900CB37B3 /* SpeechBubbleView.m */,
 				D82DCCEB167A192500FE331B /* Storyboard.storyboard */,
+				D8C73A9516C2D7FB00C8D3E0 /* add-image.png */,
+				D8C73A9316C2D6E900C8D3E0 /* back-menu.png */,
 				D8E20E1C168515F700584E54 /* resource10.png */,
 				D8E20E1D168515F700584E54 /* resource11.png */,
 				D8E20E1E168515F700584E54 /* resource12.png */,
@@ -328,6 +340,8 @@
 				D8DDF9DC16BFEF6E006F31E7 /* PanelViewControllerII.m */,
 				48CED3C816B922A900EF4CD3 /* PanelEditViewController.h */,
 				48CED3C916B922A900EF4CD3 /* PanelEditViewController.m */,
+				D8C73A9716C2DAF900C8D3E0 /* PanelEditViewControllerII.h */,
+				D8C73A9816C2DAF900C8D3E0 /* PanelEditViewControllerII.m */,
 			);
 			name = Panel;
 			sourceTree = "<group>";
@@ -451,6 +465,9 @@
 				D8E20E25168515F700584E54 /* resource13.png in Resources */,
 				D8E20E26168515F700584E54 /* resource14.png in Resources */,
 				D8E20E27168515F700584E54 /* resource15.png in Resources */,
+				D8C73A9216C2D3C300C8D3E0 /* back-images.png in Resources */,
+				D8C73A9416C2D6E900C8D3E0 /* back-menu.png in Resources */,
+				D8C73A9616C2D7FC00C8D3E0 /* add-image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,6 +506,7 @@
 				48CED3CB16B922A900EF4CD3 /* PanelEditViewController.m in Sources */,
 				D8DDF9DA16BFEF61006F31E7 /* MainScrollSelector.m in Sources */,
 				D8DDF9DD16BFEF6E006F31E7 /* PanelViewControllerII.m in Sources */,
+				D8C73A9916C2DAF900C8D3E0 /* PanelEditViewControllerII.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

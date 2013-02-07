@@ -21,6 +21,7 @@
 - (id)initWithFrame:(CGRect)frame andNumItems:(int)numItems;
 - (id)initWithFrame:(CGRect)frame andItemSize:(CGSize)itemSize andNumItems:(int)numItems;
 - (void)layoutItems;
+- (void)layoutAssets;
 - (void)scrollItemToVisible:(int)sender;
 
 @end

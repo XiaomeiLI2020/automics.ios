@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Umar Rashid. All rights reserved.
 //
 
+#import "PanelEditViewControllerII.h"
 #import "PanelViewControllerII.h"
 #import "CameraViewController.h"
 #import "UIImageView+WebCache.h"
@@ -25,6 +26,7 @@
 
 NSString* _groupname;
 int _numImages;
+int currentPage;
 
 const CGFloat panelScrollXOrigin= 0.0;
 const CGFloat panelScrollYOrigin= 40.0;
@@ -85,7 +87,7 @@ const CGFloat thumbnailHeight= 80.0;
             NSString* urlImageString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/thumbs/%d.jpg",_groupname, i];
             
 
-            //NSLog(@"urlImageString %@", urlImageString);
+            //NSLog(@"updateImages. urlImageString %@", urlImageString);
             //NSData* imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:urlImageString]];
             //UIImage* image = [[UIImage alloc] initWithData:imageData];
             //UIImageView *imageView = [UIImageView alloc];
@@ -135,6 +137,7 @@ const CGFloat thumbnailHeight= 80.0;
         [thumbnailScrollView layoutItems];
         //Scroll to the last added thumbnail in the serial layout within the scrollview
         [thumbnailScrollView scrollItemToVisible:(_numImages)];
+        currentPage = _numImages;
         
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureCaptured:)];
         //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
@@ -198,6 +201,20 @@ const CGFloat thumbnailHeight= 80.0;
 {
     [self updateNumImages];
     self.panelScrollView.delegate=self;
+    
+    /*
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
+                                   initWithImage:[UIImage imageNamed:@"submit.png"]
+                                   style:UIBarButtonItemStyleBordered
+                                   target:nil
+                                   action:nil];
+ 
+    
+    [[self navigationItem] setBackBarButtonItem:backButton];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+     */
+     
     //[super viewDidLoad];
 	// Do any additional setup after loading the view.
 }
@@ -375,6 +392,7 @@ BOOL _resourcesAdded2 = NO;
         [self addBubblesForPage:page];
         [self addResourcesForPage:page];
         
+        currentPage = page+1;
         
         // Scroll to the current page's thumbnail in thumbnail scrollview
         [thumbnailScrollView scrollItemToVisible:(page+1)];
@@ -409,6 +427,50 @@ BOOL _resourcesAdded2 = NO;
     [self updateNumImages];
 }
 
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    
+    if([[segue identifier] isEqualToString:@"editPanel"])
+    {
+        PanelEditViewControllerII *ebvc = (PanelEditViewControllerII *)[segue destinationViewController];
+        /*
+        PhotoTableViewCell *cell = (PhotoTableViewCell*)sender;
+        NSIndexPath *indexPath = [self.photoTableView indexPathForCell:cell];
+        */
+        NSString* urlString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/%d.jpg",_groupname, currentPage];
+        NSLog(@"segue. currentPage %i", currentPage);
+        NSLog(@"segue. urlString %@", urlString);
+        ebvc.url = [NSURL URLWithString:urlString];
+        
+        for (UIView *subview in self.view.subviews)
+        {
+            //Add Speech Bubbles
+            if([subview isMemberOfClass:[SpeechBubbleView class]])
+            {
+                SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
+                SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
+                new_sbv.userInteractionEnabled = YES;
+                new_sbv.alpha = 0;
+                [ebvc.view addSubview:new_sbv];
+            }
+            
+            //Add Resources
+            if([subview isMemberOfClass:[ResourceView class]])
+            {
+                ResourceView* sbv =(ResourceView*)subview;
+                
+                ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andStyle:sbv.styleId];
+                new_sbv.userInteractionEnabled = YES;
+                new_sbv.alpha = 0;
+                [ebvc.view addSubview:new_sbv];
+            }
+        }
+       
+        ebvc.startWithCamera = NO;
+    }
+
+
+}
 
 
 @end
