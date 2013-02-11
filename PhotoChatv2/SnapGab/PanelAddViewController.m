@@ -1,26 +1,25 @@
 //
-//  PanelEditViewControllerII.m
+//  PanelAddViewController.m
 //  PhotoChat
 //
-//  Created by Umar Rashid on 06/02/2013.
+//  Created by Umar Rashid on 11/02/2013.
 //  Copyright (c) 2013 Umar Rashid. All rights reserved.
 //
 
-#import "CameraViewController.h"
+#import "PanelAddViewController.h"
+//#import "CameraViewController.h"
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "PhotoPosterViewController.h"
 #import "UIImageView+WebCache.h"
 #import "SpeechBubbleView.h"
 #import "ResourceView.h"
 #import "PanelEditViewController.h"
-#import "PanelViewController.h"
 
-@interface PanelEditViewController ()
+@interface PanelAddViewController ()
 
 @end
 
-@implementation PanelEditViewController
-
+@implementation PanelAddViewController
 @synthesize imagePicker;
 @synthesize imageView;
 @synthesize url;
@@ -30,26 +29,30 @@
 @synthesize scrollView;
 @synthesize keyboardIsShown;
 @synthesize imageSize;
+
+
 @synthesize thumbnailScrollView;
 
-@synthesize _groupName;
-@synthesize currentPage;
+//@synthesize _groupName;
+//@synthesize currentPage;
 
-int numSpeechBubbles=9;
-int numResources=15;
+int numSpeechBubbles1=9;
+int numResources1=15;
 
 #define kTabBarHeight 2
 #define kKeyboardAnimationDuration 0.3
 
-CGFloat thumbnailScrollXOrigin1= 0.0;
-CGFloat thumbnailScrollYOrigin1= 410.0;
-CGFloat thumbnailScrollObjHeight1= 50.0;
-CGFloat thumbnailScrollObjWidth1= 320.0;
-CGFloat thumbnailWidth1= 50.0;
-CGFloat thumbnailHeight1= 50.0;
+CGFloat thumbnailScrollXOrigin2= 0.0;
+CGFloat thumbnailScrollYOrigin2= 410.0;
+CGFloat thumbnailScrollObjHeight2= 50.0;
+CGFloat thumbnailScrollObjWidth2= 320.0;
+CGFloat thumbnailWidth2= 50.0;
+CGFloat thumbnailHeight2= 50.0;
 
 
 
+#define kTabBarHeight 2
+#define kKeyboardAnimationDuration 0.3
 
 -(void)image:(UIImage *)image
 finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
@@ -100,7 +103,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                                         ResourceView* sbv =(ResourceView*)subview;
                                         sbv.alpha = 1;
                                     }
-                                }//end for
+                                }
                             }
                             failure:^(NSError *error) {
                                 UIAlertView *alert = [[UIAlertView alloc]
@@ -113,15 +116,15 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                             }];
     
     // Add thumbnails to the scrollview
-    CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin1, thumbnailScrollYOrigin1, thumbnailScrollObjWidth1, thumbnailScrollObjHeight1);
+    CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin2, thumbnailScrollYOrigin2, thumbnailScrollObjWidth2, thumbnailScrollObjHeight2);
     
-    CGSize thumbnailSize = CGSizeMake(thumbnailWidth1, thumbnailHeight1);
-    thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize  andNumItems:numSpeechBubbles];
+    CGSize thumbnailSize = CGSizeMake(thumbnailWidth2, thumbnailHeight2);
+    thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize  andNumItems:numSpeechBubbles1];
     thumbnailScrollView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:thumbnailScrollView];
     
     NSUInteger i;
-    for (i=0; i <numSpeechBubbles; i++)
+    for (i=0; i <numSpeechBubbles1; i++)
     {
         NSString* imageString = [NSString stringWithFormat: @"bubble-style%i.png",i];
         UIImage *image = [UIImage imageNamed:imageString];
@@ -135,8 +138,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         
         
         CGRect rect1 = styleButton.frame;
-        rect1.size.height = thumbnailHeight1;
-        rect1.size.width = thumbnailWidth1;
+        rect1.size.height = thumbnailHeight2;
+        rect1.size.width = thumbnailWidth2;
         styleButton.frame = rect1;
         styleButton.tag = i;	// tag our images for later use when we place them in serial fashion
         
@@ -146,7 +149,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     }
     
     
-    for (i=0; i<numResources; i++)
+    for (i=0; i<numResources1; i++)
     {
         NSString* imageString = [NSString stringWithFormat: @"resource%i.png",i];
         UIImage *image = [UIImage imageNamed:imageString];
@@ -157,8 +160,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         [styleButton setBackgroundImage:image forState:UIControlStateNormal];
         
         CGRect rect1 = styleButton.frame;
-        rect1.size.height = thumbnailHeight1;
-        rect1.size.width = thumbnailWidth1;
+        rect1.size.height = thumbnailHeight2;
+        rect1.size.width = thumbnailWidth2;
         styleButton.frame = rect1;
         styleButton.tag = i;	// tag our images for later use when we place them in serial fashion
         
@@ -175,6 +178,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
     singleTap.cancelsTouchesInView = NO;
     [thumbnailScrollView addGestureRecognizer:singleTap];
+
     
 }
 
@@ -198,14 +202,14 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
      
      */
     CGPoint touchPoint=[gesture locationInView:thumbnailScrollView];
-    CGFloat pos = (CGFloat)touchPoint.x / thumbnailWidth1;
+    CGFloat pos = (CGFloat)touchPoint.x / thumbnailWidth2;
     int styleId = round(ceilf(pos));
     NSLog(@"singleTap. styleId= %i", styleId);
     
-    if(styleId<=numSpeechBubbles)
+    if(styleId<=numSpeechBubbles1)
         [self addBubbleWithStyle:(styleId-1)];
     else
-        [self addResourceWithStyle:(styleId-numSpeechBubbles-1)];
+        [self addResourceWithStyle:(styleId-numSpeechBubbles1-1)];
 }
 
 
@@ -213,9 +217,72 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     [super viewDidAppear:animated];
     //if(self.startWithCamera) [self useCameraPressed];
-    self.thumbnailScrollView.delegate=self;
     if(self.startWithCamera) [self takeSnap:0];
     self.startWithCamera = NO;
+    
+    // Add thumbnails to the scrollview
+    CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin2, thumbnailScrollYOrigin2, thumbnailScrollObjWidth2, thumbnailScrollObjHeight2);
+    
+    CGSize thumbnailSize = CGSizeMake(thumbnailWidth2, thumbnailHeight2);
+    thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize  andNumItems:numSpeechBubbles1];
+    thumbnailScrollView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:thumbnailScrollView];
+    
+    NSUInteger i;
+    for (i=0; i <numSpeechBubbles1; i++)
+    {
+        NSString* imageString = [NSString stringWithFormat: @"bubble-style%i.png",i];
+        UIImage *image = [UIImage imageNamed:imageString];
+        
+        
+        //UIImageView *sbView = [[UIImageView alloc] initWithImage:image];
+        UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
+        [styleButton setBackgroundImage:image forState:UIControlStateNormal];
+        // [styleButton setTitle:@"sb" forState:UIControlStateNormal];
+        // [styleButton setTitle:@" " forState:UIControlStateHighlighted];
+        
+        
+        CGRect rect1 = styleButton.frame;
+        rect1.size.height = thumbnailHeight2;
+        rect1.size.width = thumbnailWidth2;
+        styleButton.frame = rect1;
+        styleButton.tag = i;	// tag our images for later use when we place them in serial fashion
+        
+        // add images to the thumbnail scrollview
+        [thumbnailScrollView addSubview:styleButton];
+        //initWithImage:[UIImage imageNamed:@"bubble1.png"]];
+    }
+    
+    
+    for (i=0; i<numResources1; i++)
+    {
+        NSString* imageString = [NSString stringWithFormat: @"resource%i.png",i];
+        UIImage *image = [UIImage imageNamed:imageString];
+        
+        
+        //UIImageView *sbView = [[UIImageView alloc] initWithImage:image];
+        UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
+        [styleButton setBackgroundImage:image forState:UIControlStateNormal];
+        
+        CGRect rect1 = styleButton.frame;
+        rect1.size.height = thumbnailHeight2;
+        rect1.size.width = thumbnailWidth2;
+        styleButton.frame = rect1;
+        styleButton.tag = i;	// tag our images for later use when we place them in serial fashion
+        
+        // add images to the thumbnail scrollview
+        [thumbnailScrollView addSubview:styleButton];
+        //initWithImage:[UIImage imageNamed:@"bubble1.png"]];
+    }
+    
+    
+    [thumbnailScrollView layoutAssets];
+    //[thumbnailScrollView layoutItems];
+    
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureCaptured:)];
+    //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
+    singleTap.cancelsTouchesInView = NO;
+    [thumbnailScrollView addGestureRecognizer:singleTap];
 }
 
 
@@ -249,7 +316,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
     keyboardIsShown = NO;
     
-    imageSize = CGSizeMake(320, 320);
+    //imageSize = CGSizeMake(320, 320);
     
 }
 
@@ -480,10 +547,12 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+
+
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     
     
-    if([[segue identifier] isEqualToString:@"panelPosterView"]){
+    if([[segue identifier] isEqualToString:@"postNewPanel"]){
         PhotoPosterViewController *ppvc = (PhotoPosterViewController *)[segue destinationViewController];
         ppvc.image = self.imageView.image;
         
@@ -514,60 +583,17 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         }//end for
     } //end if
     
-    if([[segue identifier] isEqualToString:@"panelView"])
-    {
-
-        //PanelViewController *pevc = (PanelViewController *)[segue destinationViewController];
-        //pevc.wasEdited = true;
-        //pevc._groupName = _groupName;
-        
-     
-        //NSString* urlString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/%d.jpg",_groupname, currentPage];
-        //NSLog(@"segue. currentPage %i", currentPage);
-        //NSLog(@"segue. urlString %@", urlString);
-        //ebvc.url = [NSURL URLWithString:urlString];
-       /*
-        for (UIView *subview in self.view.subviews)
-        {
-            //Add Speech Bubbles
-            if([subview isMemberOfClass:[SpeechBubbleView class]])
-            {
-                SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
-                SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
-                new_sbv.userInteractionEnabled = YES;
-                new_sbv.alpha = 0;
-                [ebvc.view addSubview:new_sbv];
-            }
-            
-            //Add Resources
-            if([subview isMemberOfClass:[ResourceView class]])
-            {
-                ResourceView* sbv =(ResourceView*)subview;
-                
-                ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andStyle:sbv.styleId];
-                new_sbv.userInteractionEnabled = YES;
-                new_sbv.alpha = 0;
-                [ebvc.view addSubview:new_sbv];
-            }
-        }
-        
-        ebvc.startWithCamera = NO;
-         */
-    }
-
     
-    /*
-     if([[segue identifier] isEqualToString:@"startSelectBubbleStyleView"]){
-     SelectBubbleStyleViewController *sbsvc = (SelectBubbleStyleViewController *)[segue destinationViewController];
-     sbsvc.delegate = self;
-     }//end if
-     
-     if([[segue identifier] isEqualToString:@"startResourceView"]){
-     ResourceViewController *rvc = (ResourceViewController *)[segue destinationViewController];
-     rvc.delegate = self;
-     
-     }//end if
-     */
+    if([[segue identifier] isEqualToString:@"startSelectBubbleStyleView"]){
+        SelectBubbleStyleViewController *sbsvc = (SelectBubbleStyleViewController *)[segue destinationViewController];
+        sbsvc.delegate = self;
+    }//end if
+    
+    if([[segue identifier] isEqualToString:@"startResourceView"]){
+        ResourceViewController *rvc = (ResourceViewController *)[segue destinationViewController];
+        rvc.delegate = self;
+        
+    }//end if
 }
 
 - (IBAction)takeSnap:(id)sender {
@@ -626,5 +652,55 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     }//end if
 }
 
+-(IBAction)editPanel:(id)sender{
+    PanelEditViewController *panelEditViewController = [[PanelEditViewController alloc] init];
+    [self presentViewController:panelEditViewController animated:YES completion:nil];
+}
+
+- (IBAction)closePressed:(id)sender {
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (UIImage *)squareImageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
+    double ratio;
+    double delta;
+    CGPoint offset;
+    
+    //make a new square size, that is the resized imaged width
+    CGSize sz = CGSizeMake(newSize.width, newSize.width);
+    
+    //figure out if the picture is landscape or portrait, then
+    //calculate scale factor and offset
+    if (image.size.width > image.size.height) {
+        ratio = newSize.width / image.size.width;
+        delta = (ratio*image.size.width - ratio*image.size.height);
+        offset = CGPointMake(delta/2, 0);
+    } else {
+        ratio = newSize.width / image.size.height;
+        delta = (ratio*image.size.height - ratio*image.size.width);
+        offset = CGPointMake(0, delta/2);
+    }
+    
+    //make the final clipping rect based on the calculated values
+    CGRect clipRect = CGRectMake(-offset.x, -offset.y,
+                                 (ratio * image.size.width) + delta,
+                                 (ratio * image.size.height) + delta);
+    
+    
+    //start a new context, with scale factor 0.0 so retina displays get
+    //high quality image
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+        UIGraphicsBeginImageContextWithOptions(sz, YES, 0.0);
+    } else {
+        UIGraphicsBeginImageContext(sz);
+    }
+    UIRectClip(clipRect);
+    [image drawInRect:clipRect];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
 
 @end

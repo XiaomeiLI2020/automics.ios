@@ -8,6 +8,8 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
 	<key>CFBundleIcons</key>
 	<dict>
 		<key>CFBundlePrimaryIcon</key>
@@ -37,8 +39,8 @@
 	<string>1.0</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
+	<key>NSHumanReadableCopyright</key>
+	<string></string>
 	<key>NSSupportsSuddenTermination</key>
 	<false/>
 	<key>UIMainStoryboardFile</key>
@@ -46,9 +48,7 @@
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
+	<array/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

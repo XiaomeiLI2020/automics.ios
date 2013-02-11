@@ -2,12 +2,12 @@
 //  PanelViewController.m
 //  PhotoChat
 //
-//  Created by Umar Rashid on 11/12/2012.
-//  Copyright (c) 2012 Umar Rashid. All rights reserved.
+//  Created by Umar Rashid on 01/02/2013.
+//  Copyright (c) 2013 Umar Rashid. All rights reserved.
 //
 
+#import "PanelEditViewController.h"
 #import "PanelViewController.h"
-#import "PhotoTableViewCell.h"
 #import "CameraViewController.h"
 #import "UIImageView+WebCache.h"
 #import "SpeechBubbleView.h"
@@ -19,22 +19,40 @@
 
 @implementation PanelViewController
 
-//@synthesize photoTableView;
-@synthesize photoTableView;
+@synthesize panelScrollView;
+//@synthesize panelImage;
+@synthesize thumbnailScrollView;
+//@synthesize thumbnailImage;
+@synthesize wasEdited;
+@synthesize addImage;
 
-NSString* _groupname;
+@synthesize _groupName;
+@synthesize currentPage;
+@synthesize imagePicker;
+@synthesize newMedia;
+
 int _numImages;
 
-- (IBAction)closePressed:(id)sender {
-    //[self dismissViewControllerAnimated:YES completion:nil];
-}
+const CGFloat panelScrollXOrigin= 0.0;
+const CGFloat panelScrollYOrigin= 40.0;
+const CGFloat panelScrollObjHeight= 360.0;
+const CGFloat panelScrollObjWidth= 320.0;
+const CGFloat panelWidth= 320.0;
+const CGFloat panelHeight= 320.0;
+
+const CGFloat thumbnailScrollXOrigin= 0.0;
+const CGFloat thumbnailScrollYOrigin= 410.0;
+const CGFloat thumbnailScrollObjHeight= 80.0;
+const CGFloat thumbnailScrollObjWidth= 320.0;
+const CGFloat thumbnailWidth= 80.0;
+const CGFloat thumbnailHeight= 80.0;
 
 - (void)updateNumImages
 {
-
+    
     //NSURLRequestReloadIgnoringLocalCacheData does not seem to work for 3G
     NSString* urlString = [NSString stringWithFormat:
-                           @"http://www.automics.net/automics/userfiles/%@/last.txt?%d",_groupname,arc4random()];
+                           @"http://www.automics.net/automics/userfiles/%@/last.txt?%d",_groupName,arc4random()];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
@@ -48,24 +66,182 @@ int _numImages;
     NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
     
     if(!requestError) _numImages = [[[NSString alloc] initWithData:response encoding:NSASCIIStringEncoding] intValue];
-    /*
-    NSLog(@"updateNumeImages. _numImages is %i", _numImages);
-    NSLog(@"updateNumbers. self.photoTableView numberOfSections is %i", [self.photoTableView numberOfSections]);
-    NSLog(@"upDateNumbers. self.photoTableView numberOfRowsInSection:0 is %i", [self.photoTableView numberOfRowsInSection:0]);
-    */
+    
+    //NSLog(@"updateImages. urlString is %@", urlString);
+    //NSLog(@"updateImages. _numImages is %i", _numImages);
+    
     if(_numImages>0) {
-        [self.photoTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewScrollPositionBottom];
-        NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:(_numImages - 1) inSection:0];
-        if(//[self.photoTableView numberOfSections] >0) //&&//
-           [self.photoTableView numberOfRowsInSection:0]>0 )
+        
+        // Add panels to the scrollview
+        CGRect panelFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
+        CGSize panelSize = CGSizeMake(panelWidth, panelHeight);
+        panelScrollView = [[MainScrollSelector alloc] initWithFrame:panelFrame andItemSize:panelSize andNumItems:_numImages];
+        [self.view addSubview:panelScrollView];
+        
+        // Add thumbnails to the scrollview
+        CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin, thumbnailScrollYOrigin, thumbnailScrollObjWidth, thumbnailScrollObjHeight);
+        CGSize thumbnailSize = CGSizeMake(thumbnailWidth, thumbnailHeight);
+        thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize  andNumItems:_numImages];
+        [self.view addSubview:thumbnailScrollView];
+        
+        // load all the images from our bundle and add them to the scroll views
+        NSUInteger i;
+        for (i=1; i <=_numImages; i++)
         {
-            [self.photoTableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
             
-        }
+            NSString* urlImageString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/thumbs/%d.jpg",_groupName, i];
+            
+            
+            //NSLog(@"updateImages. urlImageString %@", urlImageString);
+            //NSData* imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:urlImageString]];
+            //UIImage* image = [[UIImage alloc] initWithData:imageData];
+            //UIImageView *imageView = [UIImageView alloc];
+            //[imageView setImage:image];
+            UIImage *image = [UIImage imageNamed:urlImageString];
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+            [imageView setImageWithURL:[NSURL URLWithString:urlImageString]
+                      placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
+            
+            
+            
+            // setup each frame to a default height and width, it will be properly placed when we call "updateScrollList"
+            CGRect rect = imageView.frame;
+            rect.size.height = panelScrollObjHeight;
+            rect.size.width = panelScrollObjWidth;
+            imageView.frame = rect;
+            imageView.tag = i;	// tag our images for later use when we place them in serial fashion
+            
+            // add images to the panel scrollview
+            [panelScrollView addSubview:imageView];
+            
+            // UIImageView *thumbnailView = [UIImageView alloc];
+            //[thumbnailView setImage:image];
+            UIImageView *thumbnailView = [[UIImageView alloc] initWithImage:image];
+            [thumbnailView setImageWithURL:[NSURL URLWithString:urlImageString]
+                          placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
+            
+            CGRect rect1 = thumbnailView.frame;
+            rect1.size.height = thumbnailScrollObjHeight;
+            //rect1.size.width = thumbnailScrollObjWidth;
+            rect1.size.width = thumbnailWidth;
+            thumbnailView.frame = rect1;
+            thumbnailView.tag = i;	// tag our images for later use when we place them in serial fashion
+            
+            // add images to the thumbnail scrollview
+            [thumbnailScrollView addSubview:thumbnailView];
+            
+        }//end for
+        
+        // place the panels in serial layout within the scrollview
+        [panelScrollView layoutItems];
+        //if(!wasEdited)
+            currentPage = _numImages;
+        //else
+          //  wasEdited = false;
+        //Scroll to the last added panel in the serial layout within the scrollview
+        [panelScrollView scrollItemToVisible:(currentPage)];
+        
+        
+        // place the thumbnail in serial layout within the scrollview
+        [thumbnailScrollView layoutItems];
+        //Scroll to the last added thumbnail in the serial layout within the scrollview
+        [thumbnailScrollView scrollItemToVisible:(currentPage)];
 
+        
+        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureCaptured:)];
+        //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
+        singleTap.cancelsTouchesInView = NO;
+        [thumbnailScrollView addGestureRecognizer:singleTap];
+        
     }//end if(_numImages>0)
-
+    
 }//end updateNumImages
+
+- (void)singleTapGestureCaptured:(UITapGestureRecognizer *)gesture
+{
+    CGPoint touchPoint=[gesture locationInView:thumbnailScrollView];
+    CGFloat pos = (CGFloat)touchPoint.x / thumbnailWidth;
+    int page = round(ceilf(pos));
+    //NSLog(@"singleTap. page= %i", page);
+    
+    
+    [self removeAllBubbles];
+    [self removeAllResources];
+    
+    // Scroll to the most rcently added panel in panel scrollview
+    CGRect panelFrame = panelScrollView.frame;
+    panelFrame.origin.x = panelScrollObjWidth * (page-1);
+    //NSLog(@"panelframe.origin.x = %f", panelFrame.origin.x);
+    panelFrame.origin.y = 0;
+    [panelScrollView scrollRectToVisible:panelFrame animated:YES];
+    
+    
+    
+    //Add bubbles and resources to a panel after scrolling
+    [self addBubblesForPage:page-1];
+    [self addResourcesForPage:page-1];
+}
+
+
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if(self) {
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        _groupName = [prefs objectForKey:@"groupname"];
+        //_groupname = @"d1";
+        //NSLog(@"groupname is %@", _groupname);
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(newImageNotification)
+                                                     name:@"newImageNotification"
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(newImageNotification)
+                                                     name:UIApplicationDidBecomeActiveNotification
+                                                   object:nil];
+        
+    }
+    return self;
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    /*
+    //[super viewDidLoad];
+	// Do any additional setup after loading the view.
+    if(wasEdited)
+    {
+        [self updateNumImages];
+        self.panelScrollView.delegate=self;
+    
+        //Add bubbles and resources to a panel after scrolling
+        [self addBubblesForPage:currentPage-1];
+        [self addResourcesForPage:currentPage-1];
+    }
+     */
+}
+
+
+- (void)viewDidLoad
+{
+    //[super viewDidLoad];
+	// Do any additional setup after loading the view.
+    //wasEdited = false;
+    
+    NSLog(@"viewDidLoad.");
+    
+    [self updateNumImages];
+    self.panelScrollView.delegate=self;
+    NSLog(@"currentPage.%i", currentPage);
+    
+    //Add bubbles and resources to a panel after scrolling
+    [self addBubblesForPage:currentPage-1];
+    [self addResourcesForPage:currentPage-1];
+}
+
+
 
 BOOL _bubblesAdded = NO;
 -(void)removeAllBubbles
@@ -80,17 +256,19 @@ BOOL _bubblesAdded = NO;
     _bubblesAdded = NO;
 }
 
--(void)addBubblesForRow:(int)row
+-(void)addBubblesForPage:(int)page
 {
     
     if(_bubblesAdded) return;
     
     _bubblesAdded = YES;
     
-    NSString* urlBubbleString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/%d.bub",_groupname,row + 1];
+    NSString* urlBubbleString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/%d.bub",_groupName,
+                                 page+1];
+    //NSLog(@"urlBubbleString %@", urlBubbleString);
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlBubbleString]
                                                            cachePolicy:NSURLRequestReturnCacheDataElseLoad
-                                                       timeoutInterval:10];
+                                                       timeoutInterval:50];
     
     [request setHTTPMethod: @"GET"];
     
@@ -106,7 +284,7 @@ BOOL _bubblesAdded = NO;
         
         for(NSDictionary* bubble in jsonObject)
         {
-         
+            
             NSString* category = [bubble objectForKey:@"c"];
             if([category isEqualToString:@"bubble"])
             {
@@ -134,7 +312,6 @@ BOOL _bubblesAdded = NO;
 }
 
 
-
 BOOL _resourcesAdded = NO;
 -(void)removeAllResources
 {
@@ -148,14 +325,15 @@ BOOL _resourcesAdded = NO;
     _resourcesAdded = NO;
 }
 
--(void)addResourcesForRow:(int)row
+-(void)addResourcesForPage:(int)page
 {
     
     if(_resourcesAdded) return;
     
     _resourcesAdded = YES;
     
-    NSString* urlResourceString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/%d.bub",_groupname,row + 1];
+    NSString* urlResourceString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/%d.bub",_groupName, page+1];
+    //NSLog(@"urlResourceString %@", urlResourceString);
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlResourceString]
                                                            cachePolicy:NSURLRequestReturnCacheDataElseLoad
                                                        timeoutInterval:10];
@@ -179,18 +357,18 @@ BOOL _resourcesAdded = NO;
             if([category isEqualToString:@"resource"])
             {
                 /*
-                CGRect xywh = CGRectMake([[resource objectForKey:@"x"] floatValue],
-                                         [[resource objectForKey:@"y"] floatValue],0,0);
-               */
+                 CGRect xywh = CGRectMake([[resource objectForKey:@"x"] floatValue],
+                 [[resource objectForKey:@"y"] floatValue],0,0);
+                 */
                 CGRect xywh = CGRectMake([[resource objectForKey:@"x"] floatValue],
                                          [[resource objectForKey:@"y"] floatValue],
                                          [[resource objectForKey:@"w"] floatValue],
                                          [[resource objectForKey:@"h"] floatValue]);
                 // [[bubble objectForKey:@"w"] floatValue],
                 // [[bubble objectForKey:@"h"] floatValue]);
-                 
-               
- 
+                
+                
+                
                 int styleId = [[resource objectForKey:@"s"] intValue];
                 
                 ResourceView* sbv = [[ResourceView alloc] initWithFrame:xywh andStyle:styleId];
@@ -214,41 +392,56 @@ BOOL _resourcesAdded = NO;
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
+    //NSLog(@"scrollViewWillBeginDragging");
+    //Remove bubbles and resources from the panel when the scrolling starts
     [self removeAllBubbles];
     [self removeAllResources];
 }
 
--(void)alignRowInPhotoTableView
+-(void)alignPageInPanelScrollView
 {
     //NSLog(@"alignRowInPhotoTableView. _numImages is %i", _numImages);
-    if(_numImages>0) {
-        //Constrain vertical row position and add bubbles and resources
-        CGFloat pos = (CGFloat)self.photoTableView.contentOffset.y / 440.0f;
-        int row = round(pos);
-        if( row == _numImages) row--;
-        NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:row inSection:0];
-
-        if(//[self.photoTableView numberOfSections]>0 &&
-           [self.photoTableView numberOfRowsInSection:0]>0 )
-        {
-          [self.photoTableView scrollToRowAtIndexPath:selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];  
-        }
-        //[self.photoTableView scrollToRowAtIndexPath:selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        //if(_numImages!=row) [self addBubblesForRow:row]; //Don't load images for placeholder (hack1)
-        [self addBubblesForRow:row];
-        [self addResourcesForRow:row];
-    }
+    if(_numImages>0)
+    {
+        //Constrain horizontal page position and add bubbles and resources
+        CGFloat pos = (CGFloat)self.panelScrollView.contentOffset.x / panelWidth;
+        int page = round(ceilf(pos));
+        //if( row == _numImages) row--;
+        //NSLog(@"alignPage. page= %i", page);
+        
+        //if(_numImages!=page) [self addBubblesForRow:page]; //Don't load images for placeholder (hack1)
+        
+        //Add bubbles and resources to a panel after scrolling
+        [self addBubblesForPage:page];
+        [self addResourcesForPage:page];
+        
+        currentPage = page+1;
+        
+        // Scroll to the current page's thumbnail in thumbnail scrollview
+        [thumbnailScrollView scrollItemToVisible:(page+1)];
+        /*
+         CGRect thumbnailFrame = thumbnailScrollView.frame;
+         thumbnailFrame.origin.x = thumbnailScrollObjWidth1 * (page-1);
+         //NSLog(@"thumbframe.origin.x = %f", thumbnailFrame.origin.x);
+         thumbnailFrame.origin.y = 0;
+         [thumbnailScrollView scrollRectToVisible:thumbnailFrame animated:YES];
+         */
+    }//end if _numImages>0
 }
+
 
 -(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    [self alignRowInPhotoTableView];
+    //NSLog(@"scrollViewDidEndScrollingAnimation");
+    //[self alignPageInPanelScrollView];
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [self alignRowInPhotoTableView];
+    //NSLog(@"scrollViewDidEndDecelerating");
+    [self alignPageInPanelScrollView];
 }
+
 
 -(void)newImageNotification
 {
@@ -257,91 +450,19 @@ BOOL _resourcesAdded = NO;
     [self updateNumImages];
 }
 
-
--(id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if(self) {
-        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        _groupname = [prefs objectForKey:@"groupname"];
-        //_groupname = @"d1";
-        //NSLog(@"groupname is %@", _groupname);
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(newImageNotification)
-                                                     name:@"newImageNotification"
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(newImageNotification)
-                                                     name:UIApplicationDidBecomeActiveNotification
-                                                   object:nil];
-        
-    }
-    return self;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self removeAllBubbles];
-    [self removeAllResources];
-    [self updateNumImages];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    if(_numImages>0) {
-        
-        /*
-        NSLog(@"viewdidappear. _numImages is %i", _numImages);
-        NSLog(@"viewDidAppear. self.photoTableView numberOfSections is %i", [self.photoTableView numberOfSections]);
-        NSLog(@"viewDidAppear. self.photoTableView numberOfRowsInSection:0 is %i", [self.photoTableView numberOfRowsInSection:0]);
-        */
-         
-        NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:(_numImages - 1) inSection:0];
-        if([self.photoTableView numberOfSections] >0 && [self.photoTableView numberOfRowsInSection:0]>0 )
-        {
-        [self.photoTableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        }
-        [self addBubblesForRow:_numImages - 1];
-        [self addResourcesForRow:_numImages - 1];
-    }
-}
-
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
-
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     
+    
+    if([[segue identifier] isEqualToString:@"editPanel"])
+    {
+        PanelEditViewController *pevc = (PanelEditViewController *)[segue destinationViewController];
 
-    if([[segue identifier] isEqualToString:@"startEditView"]){
-        CameraViewController *ebvc = (CameraViewController *)[segue destinationViewController];
-        PhotoTableViewCell *cell = (PhotoTableViewCell*)sender;
-        NSIndexPath *indexPath = [self.photoTableView indexPathForCell:cell];
-        NSString* urlString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/%d.jpg",_groupname,indexPath.row + 1];
-        ebvc.url = [NSURL URLWithString:urlString];
+        NSString* urlString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/%d.jpg",_groupName, currentPage];
+        //NSLog(@"segue. currentPage %i", currentPage);
+        //NSLog(@"segue. urlString %@", urlString);
+        pevc.currentPage = currentPage;
+        pevc._groupName = _groupName;
+        pevc.url = [NSURL URLWithString:urlString];
         
         for (UIView *subview in self.view.subviews)
         {
@@ -352,142 +473,31 @@ BOOL _resourcesAdded = NO;
                 SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
                 new_sbv.userInteractionEnabled = YES;
                 new_sbv.alpha = 0;
-                [ebvc.view addSubview:new_sbv];
+                [pevc.view addSubview:new_sbv];
             }
             
             //Add Resources
             if([subview isMemberOfClass:[ResourceView class]])
             {
                 ResourceView* sbv =(ResourceView*)subview;
-
+                
                 ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andStyle:sbv.styleId];
                 new_sbv.userInteractionEnabled = YES;
                 new_sbv.alpha = 0;
-                [ebvc.view addSubview:new_sbv];
+                [pevc.view addSubview:new_sbv];
             }
-        }
+        }//end for
         
-        ebvc.startWithCamera = NO;
-    }
-    /*
-    if([[segue identifier] isEqualToString:@"startEditViewAndPressSnap"]){
-        EditBubblesViewController *ebvc = (EditBubblesViewController *)[segue destinationViewController];
-        ebvc.startWithCamera = YES;
-        
-        ebvc.url = [[NSBundle mainBundle] URLForResource: @"placeholder-542x542" withExtension:@"png"];
-    }
-    */
-}
-
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    return _numImages+1; //Add extra image so table view lines up (hack1)
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *MyIdentifier = @"PhotoCell";
+        wasEdited= true;
+    }//end if
     
-    if(indexPath.row == _numImages) //Add extra image so table view lines up (hack1)
-    {
-        PhotoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MyIdentifier];
-        
-        if (cell == nil)
-        {
-            cell = [[PhotoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
-        }
-        
-        //cell.photoImageView.image = [UIImage imageNamed:@"placeholder-542x542.png"];
-        
-        [cell.photoImageView setImageWithURL:[[NSBundle mainBundle] URLForResource: @"placeholder-542x542" withExtension:@"png"]
-                            placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
-        
-        cell.userInteractionEnabled = NO;
-        return cell;
-    }
-   
-    PhotoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MyIdentifier];
     
-    if (cell == nil)
-    {
-        cell = [[PhotoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
-    }
-    
-    NSString* urlImageString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/thumbs/%d.jpg",_groupname,indexPath.row + 1];
-    
-    [cell.photoImageView setImageWithURL:[NSURL URLWithString:urlImageString]
-                        placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
-    cell.userInteractionEnabled = YES;
-    
-    return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return indexPath.row==_numImages?20:440;
 }
 
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+- (IBAction)cameraOrRoll:(id)sender {
 }
 
 
 @end
+

@@ -54,8 +54,22 @@
         [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
         [self addGestureRecognizer:tap];
         
+        /*
+        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]
+                                                          initWithTarget:self action:@selector(handleLongPress:)];
+        longPressGesture.minimumPressDuration = 0.30; //seconds
+        [self addGestureRecognizer:longPressGesture];
+        */
     }
     return self;
+}
+
+- (void)handleLongPress:(id)gestureRecognizer
+{
+    
+    UIView *piece = [(UITapGestureRecognizer*)gestureRecognizer view];
+    [piece removeFromSuperview];
+    
 }
 
 UIButton* _invisibleButton;

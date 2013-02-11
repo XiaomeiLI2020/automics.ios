@@ -7,6 +7,12 @@
 //
 
 #import "MainScrollSelector.h"
+#import "SpeechBubbleView.h"
+#import "ResourceView.h"
+
+@interface MainScrollSelector ()
+
+@end
 
 @implementation MainScrollSelector
 
@@ -86,6 +92,30 @@
     //[self setContentOffset:CGPointMake(1, 0) animated:YES];
 }
 
-
+- (void)layoutAssets
+{
+    
+	UIImageView *view = nil;
+	NSArray *subviews = [self subviews];
+    
+	// reposition all image subviews in a horizontal serial fashion
+	CGFloat curXLoc = 0;
+	for (view in subviews)
+	{
+		if ([view isKindOfClass:[UIButton class]])
+		{
+			CGRect frame = view.frame;
+			frame.origin = CGPointMake(curXLoc, 0);
+			view.frame = frame;
+			
+			curXLoc += (self.itemWidth);
+		}
+	}
+	
+	// set the content size so it can be scrollable
+	//[self setContentSize:CGSizeMake((self.numItems * self.scrollObjWidth), [self bounds].size.height)];
+    [self setContentSize:CGSizeMake((self.numItems * self.scrollObjWidth), self.frame.size.height)];
+    //[self setContentOffset:CGPointMake(1, 0) animated:YES];
+}
 
 @end
