@@ -7,15 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MainScrollSelector.h"
 
-@interface PanelViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface PanelViewController : UIViewController <UIScrollViewDelegate>
 
-//@property IBOutlet UITableView *photoTableView;
+@property MainScrollSelector *panelScrollView;
+@property MainScrollSelector *thumbnailScrollView;
 
-@property IBOutlet UITableView *photoTableView;
-- (IBAction)closePressed:(id)sender;
+@property BOOL wasEdited;
+@property NSString* _groupName;
+@property int currentPage;
+@property BOOL addImage;
 
+@property (strong, nonatomic) UIImagePickerController *imagePicker;
+@property BOOL startWithCamera;
+@property BOOL newMedia;
 
-- (void)updateNumImages;
+- (IBAction)cameraOrRoll:(id)sender;
+
 
 @end

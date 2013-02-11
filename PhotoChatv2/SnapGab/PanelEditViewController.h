@@ -7,7 +7,35 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MainScrollSelector.h"
+
+#import <MobileCoreServices/MobileCoreServices.h>
+#import "SelectBubbleStyleViewController.h"
+#import "ResourceViewController.h"
 
 @interface PanelEditViewController : UIViewController
+<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, SelectBubbleStyleDelegateProtocol, ResourceDelegateProtocol>
+
+{
+    BOOL newMedia;
+    int subviewId;
+    CGRect originalFrame;
+}
+
+@property MainScrollSelector *thumbnailScrollView;
+
+@property (strong, nonatomic) UIImagePickerController *imagePicker;
+//@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+
+@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+
+@property NSURL* url;
+@property BOOL startWithCamera;
+@property CGSize imageSize;
+
+@property UIScrollView* scrollView;
+@property BOOL keyboardIsShown;
+@property int currentPage;
+@property NSString* _groupName;
 
 @end

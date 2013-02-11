@@ -67,9 +67,9 @@
         for(NSDictionary* resource in jsonObject)
         {
             
-            NSString* hashid = [resource objectForKey:@"hashid"];
-            NSString* groupName = [resource objectForKey:@"name"];
-            self.groupLabel.text = groupName;
+            //NSString* hashid = [resource objectForKey:@"hashid"];
+            NSString* groupName1 = [resource objectForKey:@"name"];
+            self.groupLabel.text = groupName1;
             //NSLog(@"hashid= %@", hashid);
             //NSLog(@"groupName= %@", groupName);
         }//end for
@@ -128,11 +128,11 @@
         for(NSDictionary* resource in jsonObject)
         {
             
-            NSString* id = [resource objectForKey:@"id"];
-            NSString* themeName = [resource objectForKey:@"name"];
+            //NSString* id = [resource objectForKey:@"id"];
+            NSString* themeName1 = [resource objectForKey:@"name"];
             //NSLog(@"id= %@", id);
             //NSLog(@"themeName= %@", themeName);
-            self.themeLabel.text = themeName;
+            self.themeLabel.text = themeName1;
         }//end for
         
     }//end if

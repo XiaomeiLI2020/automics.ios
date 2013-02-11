@@ -10,6 +10,10 @@
 #import "SpeechBubbleView.h"
 #import "ResourceView.h"
 
+@interface MainScrollSelector ()
+
+@end
+
 @implementation MainScrollSelector
 
 @synthesize numItems;
