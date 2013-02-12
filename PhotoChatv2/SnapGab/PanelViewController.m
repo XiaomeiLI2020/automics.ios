@@ -32,6 +32,8 @@
 @synthesize newMedia;
 
 int _numImages;
+BOOL _bubblesAdded;
+BOOL _resourcesAdded;
 
 const CGFloat panelScrollXOrigin= 0.0;
 const CGFloat panelScrollYOrigin= 40.0;
@@ -140,7 +142,7 @@ const CGFloat thumbnailHeight= 80.0;
           //  wasEdited = false;
         //Scroll to the last added panel in the serial layout within the scrollview
         [panelScrollView scrollItemToVisible:(currentPage)];
-        
+
         
         // place the thumbnail in serial layout within the scrollview
         [thumbnailScrollView layoutItems];
@@ -209,8 +211,14 @@ const CGFloat thumbnailHeight= 80.0;
 - (void)viewWillAppear:(BOOL)animated
 {
     /*
-    //[super viewDidLoad];
-	// Do any additional setup after loading the view.
+    [super viewDidLoad];
+    NSLog(@"viewWillAppear.currentPage.%i", currentPage);
+    self.panelScrollView.delegate=self;
+    [self addBubblesForPage:currentPage-1];
+    [self addResourcesForPage:currentPage-1];
+    */
+     // Do any additional setup after loading the view.
+    /*
     if(wasEdited)
     {
         [self updateNumImages];
@@ -226,24 +234,25 @@ const CGFloat thumbnailHeight= 80.0;
 
 - (void)viewDidLoad
 {
-    //[super viewDidLoad];
+    [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    //wasEdited = false;
-    
-    //NSLog(@"viewDidLoad.");
+
+    //NSLog(@"viewDidLoad.currentPage.%i", currentPage);
+    //NSLog(@"viewDidLoad._bubblesAdded.%d", _bubblesAdded);
     
     [self updateNumImages];
     self.panelScrollView.delegate=self;
-    //NSLog(@"currentPage.%i", currentPage);
-    
+
+    _bubblesAdded = NO;
+    _resourcesAdded = NO;
+
     //Add bubbles and resources to a panel after scrolling
-    [self addBubblesForPage:currentPage-1];
-    [self addResourcesForPage:currentPage-1];
+   [self addBubblesForPage:currentPage-1];
+   [self addResourcesForPage:currentPage-1];
 }
 
 
 
-BOOL _bubblesAdded = NO;
 -(void)removeAllBubbles
 {
     for (UIView *subview in self.view.subviews)
@@ -258,7 +267,7 @@ BOOL _bubblesAdded = NO;
 
 -(void)addBubblesForPage:(int)page
 {
-    
+    //NSLog(@"addBubblesForPage._bubblesAdded.%d", _bubblesAdded);
     if(_bubblesAdded) return;
     
     _bubblesAdded = YES;
@@ -312,7 +321,7 @@ BOOL _bubblesAdded = NO;
 }
 
 
-BOOL _resourcesAdded = NO;
+
 -(void)removeAllResources
 {
     for (UIView *subview in self.view.subviews)
@@ -433,7 +442,7 @@ BOOL _resourcesAdded = NO;
 -(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
     //NSLog(@"scrollViewDidEndScrollingAnimation");
-    //[self alignPageInPanelScrollView];
+    [self alignPageInPanelScrollView];
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -445,6 +454,7 @@ BOOL _resourcesAdded = NO;
 
 -(void)newImageNotification
 {
+    //NSLog(@"newImageNotification.");
     [self removeAllBubbles];
     [self removeAllResources];
     [self updateNumImages];

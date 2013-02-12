@@ -80,6 +80,7 @@
 		D8F30B1216CA6C08001CF4B5 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F30B1116CA6C08001CF4B5 /* camera.png */; };
 		D8F30B1416CA6E05001CF4B5 /* gallery.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F30B1316CA6E05001CF4B5 /* gallery.png */; };
 		D8F30B1616CA73B7001CF4B5 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F30B1516CA73B7001CF4B5 /* logo.png */; };
+		D8F30B1D16CAC81D001CF4B5 /* ComicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F30B1C16CAC81D001CF4B5 /* ComicViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -191,6 +192,8 @@
 		D8F30B1316CA6E05001CF4B5 /* gallery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gallery.png; path = SnapGab/gallery.png; sourceTree = "<group>"; };
 		D8F30B1516CA73B7001CF4B5 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = SnapGab/logo.png; sourceTree = "<group>"; };
 		D8F30B1916CA7E8F001CF4B5 /* PhotoChat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PhotoChat.entitlements; sourceTree = SOURCE_ROOT; };
+		D8F30B1B16CAC81D001CF4B5 /* ComicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComicViewController.h; sourceTree = "<group>"; };
+		D8F30B1C16CAC81D001CF4B5 /* ComicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComicViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +227,7 @@
 				D8C73A9316C2D6E900C8D3E0 /* back-menu.png */,
 				D8F30B1316CA6E05001CF4B5 /* gallery.png */,
 				D88FF66A16C5597D00C0A2A8 /* panel-edit.png */,
+				D8F30B1916CA7E8F001CF4B5 /* PhotoChat.entitlements */,
 				1D8D508C165FADC700C9817C /* PhotoChat */,
 				1D8D5085165FADC700C9817C /* Frameworks */,
 				1D8D5083165FADC700C9817C /* Products */,
@@ -254,7 +258,7 @@
 		1D8D508C165FADC700C9817C /* PhotoChat */ = {
 			isa = PBXGroup;
 			children = (
-				D8F30B1916CA7E8F001CF4B5 /* PhotoChat.entitlements */,
+				D8F30B1A16CA8487001CF4B5 /* Comic */,
 				D88FF66D16C9080400C0A2A8 /* Resource */,
 				D88FF66C16C907A200C0A2A8 /* Annotation */,
 				D8DDF9DE16BFEFA3006F31E7 /* MainScrollSelector */,
@@ -405,6 +409,15 @@
 			name = MainScrollSelector;
 			sourceTree = "<group>";
 		};
+		D8F30B1A16CA8487001CF4B5 /* Comic */ = {
+			isa = PBXGroup;
+			children = (
+				D8F30B1B16CAC81D001CF4B5 /* ComicViewController.h */,
+				D8F30B1C16CAC81D001CF4B5 /* ComicViewController.m */,
+			);
+			name = Comic;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -533,6 +546,7 @@
 				D8DDF9DA16BFEF61006F31E7 /* MainScrollSelector.m in Sources */,
 				D8F30B0D16C94726001CF4B5 /* PanelAddViewController.m in Sources */,
 				D8F30B1016C949E5001CF4B5 /* TextTableCell.m in Sources */,
+				D8F30B1D16CAC81D001CF4B5 /* ComicViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
