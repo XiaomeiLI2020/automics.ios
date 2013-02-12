@@ -77,6 +77,8 @@
 		D8E20E27168515F700584E54 /* resource15.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E20E21168515F700584E54 /* resource15.png */; };
 		D8F30B0D16C94726001CF4B5 /* PanelAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F30B0C16C94726001CF4B5 /* PanelAddViewController.m */; };
 		D8F30B1016C949E5001CF4B5 /* TextTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F30B0F16C949E5001CF4B5 /* TextTableCell.m */; };
+		D8F30B1216CA6C08001CF4B5 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F30B1116CA6C08001CF4B5 /* camera.png */; };
+		D8F30B1416CA6E05001CF4B5 /* gallery.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F30B1316CA6E05001CF4B5 /* gallery.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -184,6 +186,8 @@
 		D8F30B0C16C94726001CF4B5 /* PanelAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelAddViewController.m; sourceTree = "<group>"; };
 		D8F30B0E16C949E5001CF4B5 /* TextTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextTableCell.h; sourceTree = "<group>"; };
 		D8F30B0F16C949E5001CF4B5 /* TextTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextTableCell.m; sourceTree = "<group>"; };
+		D8F30B1116CA6C08001CF4B5 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera.png; path = SnapGab/camera.png; sourceTree = "<group>"; };
+		D8F30B1316CA6E05001CF4B5 /* gallery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gallery.png; path = SnapGab/gallery.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,7 +216,9 @@
 				D804FC5B1677519100605338 /* Icon.png */,
 				D88FF66816C556F000C0A2A8 /* post-panel.png */,
 				D8C73A9516C2D7FB00C8D3E0 /* add-image.png */,
+				D8F30B1116CA6C08001CF4B5 /* camera.png */,
 				D8C73A9316C2D6E900C8D3E0 /* back-menu.png */,
+				D8F30B1316CA6E05001CF4B5 /* gallery.png */,
 				D88FF66A16C5597D00C0A2A8 /* panel-edit.png */,
 				1D8D508C165FADC700C9817C /* PhotoChat */,
 				1D8D5085165FADC700C9817C /* Frameworks */,
@@ -482,6 +488,8 @@
 				D8C73A9616C2D7FC00C8D3E0 /* add-image.png in Resources */,
 				D88FF66916C556F000C0A2A8 /* post-panel.png in Resources */,
 				D88FF66B16C5597D00C0A2A8 /* panel-edit.png in Resources */,
+				D8F30B1216CA6C08001CF4B5 /* camera.png in Resources */,
+				D8F30B1416CA6E05001CF4B5 /* gallery.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
