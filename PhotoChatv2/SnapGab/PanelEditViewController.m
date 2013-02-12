@@ -200,7 +200,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     CGPoint touchPoint=[gesture locationInView:thumbnailScrollView];
     CGFloat pos = (CGFloat)touchPoint.x / thumbnailWidth1;
     int styleId = round(ceilf(pos));
-    NSLog(@"singleTap. styleId= %i", styleId);
+    //NSLog(@"singleTap. styleId= %i", styleId);
     
     if(styleId<=numSpeechBubbles)
         [self addBubbleWithStyle:(styleId-1)];
