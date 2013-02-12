@@ -230,11 +230,11 @@ const CGFloat thumbnailHeight= 80.0;
 	// Do any additional setup after loading the view.
     //wasEdited = false;
     
-    NSLog(@"viewDidLoad.");
+    //NSLog(@"viewDidLoad.");
     
     [self updateNumImages];
     self.panelScrollView.delegate=self;
-    NSLog(@"currentPage.%i", currentPage);
+    //NSLog(@"currentPage.%i", currentPage);
     
     //Add bubbles and resources to a panel after scrolling
     [self addBubblesForPage:currentPage-1];
