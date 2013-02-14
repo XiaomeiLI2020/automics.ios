@@ -36,6 +36,10 @@
 		1D92BFF416667F1500CB37B3 /* SelectBubbleStyleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D92BFF316667F1500CB37B3 /* SelectBubbleStyleViewController.m */; };
 		1DA205B1166504BD003FF0B2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA205B0166504BD003FF0B2 /* MobileCoreServices.framework */; };
 		48CED3CB16B922A900EF4CD3 /* PanelEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CED3C916B922A900EF4CD3 /* PanelEditViewController.m */; };
+		48D0EA7F16CD4B7200FE11E2 /* ResourceImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D0EA7E16CD4B7100FE11E2 /* ResourceImageView.m */; };
+		48D0EA8316CD4BBE00FE11E2 /* close_gold.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D0EA8116CD4BBE00FE11E2 /* close_gold.png */; };
+		48D0EA8416CD4BBE00FE11E2 /* rotate.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D0EA8216CD4BBE00FE11E2 /* rotate.png */; };
+		48D0EA8616CD4C3A00FE11E2 /* scale.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D0EA8516CD4C3A00FE11E2 /* scale.png */; };
 		D804FC5C1677519100605338 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D804FC5B1677519100605338 /* Icon.png */; };
 		D804FC5E1677527E00605338 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D804FC5D1677527E00605338 /* Icon@2x.png */; };
 		D80A103816963EFB0021C82E /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A103716963EFB0021C82E /* Base64.m */; };
@@ -124,6 +128,11 @@
 		1DA205B0166504BD003FF0B2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		48CED3C816B922A900EF4CD3 /* PanelEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelEditViewController.h; sourceTree = "<group>"; };
 		48CED3C916B922A900EF4CD3 /* PanelEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelEditViewController.m; sourceTree = "<group>"; };
+		48D0EA7D16CD4B7100FE11E2 /* ResourceImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceImageView.h; sourceTree = "<group>"; };
+		48D0EA7E16CD4B7100FE11E2 /* ResourceImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceImageView.m; sourceTree = "<group>"; };
+		48D0EA8116CD4BBE00FE11E2 /* close_gold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_gold.png; sourceTree = "<group>"; };
+		48D0EA8216CD4BBE00FE11E2 /* rotate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rotate.png; sourceTree = "<group>"; };
+		48D0EA8516CD4C3A00FE11E2 /* scale.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scale.png; sourceTree = "<group>"; };
 		D804FC5B1677519100605338 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		D804FC5D1677527E00605338 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		D80A103616963EFB0021C82E /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
@@ -213,6 +222,7 @@
 		1D8D5077165FADC600C9817C = {
 			isa = PBXGroup;
 			children = (
+				48D0EA8016CD4B8600FE11E2 /* images */,
 				D8C73A9116C2D3C300C8D3E0 /* back-images.png */,
 				D8585C68167A58490003B0BD /* placeholder-542x542.png */,
 				D8F30B1516CA73B7001CF4B5 /* logo.png */,
@@ -331,6 +341,8 @@
 		48CED3CE16B923FF00EF4CD3 /* Panel */ = {
 			isa = PBXGroup;
 			children = (
+				48D0EA7D16CD4B7100FE11E2 /* ResourceImageView.h */,
+				48D0EA7E16CD4B7100FE11E2 /* ResourceImageView.m */,
 				D8F30B0B16C94726001CF4B5 /* PanelAddViewController.h */,
 				D8F30B0C16C94726001CF4B5 /* PanelAddViewController.m */,
 				48CED3C816B922A900EF4CD3 /* PanelEditViewController.h */,
@@ -343,6 +355,16 @@
 				1D8D50B2165FC9DE00C9817C /* CameraViewController.m */,
 			);
 			name = Panel;
+			sourceTree = "<group>";
+		};
+		48D0EA8016CD4B8600FE11E2 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				48D0EA8516CD4C3A00FE11E2 /* scale.png */,
+				48D0EA8116CD4BBE00FE11E2 /* close_gold.png */,
+				48D0EA8216CD4BBE00FE11E2 /* rotate.png */,
+			);
+			name = images;
 			sourceTree = "<group>";
 		};
 		D804FC5F1677578D00605338 /* SDWebImage */ = {
@@ -496,6 +518,9 @@
 				D8F30B1216CA6C08001CF4B5 /* camera.png in Resources */,
 				D8F30B1416CA6E05001CF4B5 /* gallery.png in Resources */,
 				D8F30B1616CA73B7001CF4B5 /* logo.png in Resources */,
+				48D0EA8316CD4BBE00FE11E2 /* close_gold.png in Resources */,
+				48D0EA8416CD4BBE00FE11E2 /* rotate.png in Resources */,
+				48D0EA8616CD4C3A00FE11E2 /* scale.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -533,6 +558,7 @@
 				D8DDF9DA16BFEF61006F31E7 /* MainScrollSelector.m in Sources */,
 				D8F30B0D16C94726001CF4B5 /* PanelAddViewController.m in Sources */,
 				D8F30B1016C949E5001CF4B5 /* TextTableCell.m in Sources */,
+				48D0EA7F16CD4B7200FE11E2 /* ResourceImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -567,8 +593,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -583,8 +609,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "90A8735E-9CA8-46A7-A527-E69F05FCACE4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "90A8735E-9CA8-46A7-A527-E69F05FCACE4";
+				PROVISIONING_PROFILE = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -598,8 +624,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Umar Rashid";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -607,8 +633,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "30A60B3F-3F4E-440C-A72D-1957843A2638";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "90A8735E-9CA8-46A7-A527-E69F05FCACE4";
+				PROVISIONING_PROFILE = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F47E1E62-539A-484C-A86E-1A1D4E597F62";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -617,15 +643,15 @@
 		1D8D50A1165FADC700C9817C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SnapGab/PhotoChat-Prefix.pch";
 				GENERATE_PROFILING_CODE = YES;
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				PRODUCT_NAME = PhotoChat;
-				PROVISIONING_PROFILE = "90A8735E-9CA8-46A7-A527-E69F05FCACE4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "90A8735E-9CA8-46A7-A527-E69F05FCACE4";
+				PROVISIONING_PROFILE = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
 				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = app;
 			};
@@ -634,15 +660,15 @@
 		1D8D50A2165FADC700C9817C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Umar Rashid";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Umar Rashid";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SnapGab/PhotoChat-Prefix.pch";
 				GENERATE_PROFILING_CODE = YES;
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				PRODUCT_NAME = PhotoChat;
-				PROVISIONING_PROFILE = "30A60B3F-3F4E-440C-A72D-1957843A2638";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "30A60B3F-3F4E-440C-A72D-1957843A2638";
+				PROVISIONING_PROFILE = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
