@@ -37,6 +37,7 @@
 		1DA205B1166504BD003FF0B2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA205B0166504BD003FF0B2 /* MobileCoreServices.framework */; };
 		48CAFD2E16CE789600D8EB4C /* DataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CAFD2D16CE789600D8EB4C /* DataLoader.m */; };
 		48CAFD3216CE943900D8EB4C /* APIConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CAFD3116CE943800D8EB4C /* APIConstant.m */; };
+		48CAFD4016CEA7E600D8EB4C /* APIWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CAFD3F16CEA7E600D8EB4C /* APIWrapper.m */; };
 		48CED3CB16B922A900EF4CD3 /* PanelEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CED3C916B922A900EF4CD3 /* PanelEditViewController.m */; };
 		48D0EA7F16CD4B7200FE11E2 /* ResourceImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D0EA7E16CD4B7100FE11E2 /* ResourceImageView.m */; };
 		48D0EA8316CD4BBE00FE11E2 /* close_gold.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D0EA8116CD4BBE00FE11E2 /* close_gold.png */; };
@@ -140,6 +141,8 @@
 		48CAFD2D16CE789600D8EB4C /* DataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataLoader.m; path = SnapGab/DataLoader.m; sourceTree = "<group>"; };
 		48CAFD3016CE943800D8EB4C /* APIConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APIConstant.h; path = SnapGab/APIConstant.h; sourceTree = "<group>"; };
 		48CAFD3116CE943800D8EB4C /* APIConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APIConstant.m; path = SnapGab/APIConstant.m; sourceTree = "<group>"; };
+		48CAFD3E16CEA7E600D8EB4C /* APIWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APIWrapper.h; path = SnapGab/APIWrapper.h; sourceTree = "<group>"; };
+		48CAFD3F16CEA7E600D8EB4C /* APIWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APIWrapper.m; path = SnapGab/APIWrapper.m; sourceTree = "<group>"; };
 		48CED3C816B922A900EF4CD3 /* PanelEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelEditViewController.h; sourceTree = "<group>"; };
 		48CED3C916B922A900EF4CD3 /* PanelEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelEditViewController.m; sourceTree = "<group>"; };
 		48D0EA7D16CD4B7100FE11E2 /* ResourceImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceImageView.h; sourceTree = "<group>"; };
@@ -360,6 +363,8 @@
 		48CAFD2316CE761700D8EB4C /* API */ = {
 			isa = PBXGroup;
 			children = (
+				48CAFD3E16CEA7E600D8EB4C /* APIWrapper.h */,
+				48CAFD3F16CEA7E600D8EB4C /* APIWrapper.m */,
 				48CAFD2C16CE789600D8EB4C /* DataLoader.h */,
 				48CAFD2D16CE789600D8EB4C /* DataLoader.m */,
 				48CAFD3016CE943800D8EB4C /* APIConstant.h */,
@@ -631,6 +636,7 @@
 				48D0EA7F16CD4B7200FE11E2 /* ResourceImageView.m in Sources */,
 				48CAFD2E16CE789600D8EB4C /* DataLoader.m in Sources */,
 				48CAFD3216CE943900D8EB4C /* APIConstant.m in Sources */,
+				48CAFD4016CEA7E600D8EB4C /* APIWrapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
