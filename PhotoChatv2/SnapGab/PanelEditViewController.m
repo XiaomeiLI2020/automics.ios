@@ -14,6 +14,7 @@
 #import "ResourceView.h"
 #import "PanelEditViewController.h"
 #import "PanelViewController.h"
+#import "ResourceImageView.h"
 
 @interface PanelEditViewController ()
 
@@ -236,8 +237,9 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 - (void)addResourceWithStyle:(int)styleId
 {
     
-    ResourceView *rv = [[ResourceView alloc] initWithFrame:CGRectMake(100, 100, 200, 200) andStyle:styleId];
-    [self.view addSubview:rv];
+    //ResourceView *rv = [[ResourceView alloc] initWithFrame:CGRectMake(100, 100, 200, 200) andStyle:styleId];
+    ResourceImageView *resoureImageView = [[ResourceImageView alloc] initWithFrame:CGRectMake(100,100,200,200) image:[UIImage imageNamed:[NSString stringWithFormat:@"resource%d.png",styleId]]];
+    [self.view addSubview:resoureImageView];
     
 }
 

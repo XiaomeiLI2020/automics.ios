@@ -1,8 +1,8 @@
 //
-//  resourceImage.h
+//  ResourceImageView.h
 //  scaleView
 //
-//  Created by horizon on 11/02/2013.
+//  Created by Shakir Ali on 11/02/2013.
 //  Copyright (c) 2013 horizon. All rights reserved.
 //
 
