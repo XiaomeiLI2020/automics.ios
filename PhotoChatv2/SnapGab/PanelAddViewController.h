@@ -22,7 +22,6 @@
 }
 
 
-- (UIImage *)squareImageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
 
 @property (strong, nonatomic) UIImagePickerController *imagePicker;
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
@@ -39,7 +38,6 @@
 
 - (IBAction)takeSnap:(id)sender;
 - (IBAction)showPhotos:(id)sender;
-- (IBAction)closePressed:(id)sender;
--(IBAction)editPanel:(id)sender;
+
 
 @end

@@ -81,6 +81,12 @@
 		D8F30B1416CA6E05001CF4B5 /* gallery.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F30B1316CA6E05001CF4B5 /* gallery.png */; };
 		D8F30B1616CA73B7001CF4B5 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F30B1516CA73B7001CF4B5 /* logo.png */; };
 		D8F30B1D16CAC81D001CF4B5 /* ComicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F30B1C16CAC81D001CF4B5 /* ComicViewController.m */; };
+		D8F30B2016CBAC24001CF4B5 /* ComicAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F30B1F16CBAC24001CF4B5 /* ComicAddViewController.m */; };
+		D8F30B2316CBD480001CF4B5 /* ComicPosterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F30B2216CBD480001CF4B5 /* ComicPosterViewController.m */; };
+		D8F30B2616CBF063001CF4B5 /* ComicEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F30B2516CBF063001CF4B5 /* ComicEditViewController.m */; };
+		D8F30B2816CE7C0E001CF4B5 /* back-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F30B2716CE7C0D001CF4B5 /* back-icon.png */; };
+		D8F30B2A16CEAB68001CF4B5 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F30B2916CEAB68001CF4B5 /* delete.png */; };
+		D8F30B2D16CF8F53001CF4B5 /* ComicDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F30B2C16CF8F53001CF4B5 /* ComicDetailsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -194,6 +200,16 @@
 		D8F30B1916CA7E8F001CF4B5 /* PhotoChat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PhotoChat.entitlements; sourceTree = SOURCE_ROOT; };
 		D8F30B1B16CAC81D001CF4B5 /* ComicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComicViewController.h; sourceTree = "<group>"; };
 		D8F30B1C16CAC81D001CF4B5 /* ComicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComicViewController.m; sourceTree = "<group>"; };
+		D8F30B1E16CBAC23001CF4B5 /* ComicAddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComicAddViewController.h; sourceTree = "<group>"; };
+		D8F30B1F16CBAC24001CF4B5 /* ComicAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComicAddViewController.m; sourceTree = "<group>"; };
+		D8F30B2116CBD47F001CF4B5 /* ComicPosterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComicPosterViewController.h; sourceTree = "<group>"; };
+		D8F30B2216CBD480001CF4B5 /* ComicPosterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComicPosterViewController.m; sourceTree = "<group>"; };
+		D8F30B2416CBF063001CF4B5 /* ComicEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComicEditViewController.h; sourceTree = "<group>"; };
+		D8F30B2516CBF063001CF4B5 /* ComicEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComicEditViewController.m; sourceTree = "<group>"; };
+		D8F30B2716CE7C0D001CF4B5 /* back-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-icon.png"; sourceTree = "<group>"; };
+		D8F30B2916CEAB68001CF4B5 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
+		D8F30B2B16CF8F53001CF4B5 /* ComicDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComicDetailsViewController.h; sourceTree = "<group>"; };
+		D8F30B2C16CF8F53001CF4B5 /* ComicDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComicDetailsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -277,6 +293,8 @@
 				D8E0E7DB16835DA80003FE14 /* NSData+Base64.h */,
 				D8E0E7DC16835DA80003FE14 /* NSData+Base64.m */,
 				D82DCCEB167A192500FE331B /* Storyboard.storyboard */,
+				D8F30B2916CEAB68001CF4B5 /* delete.png */,
+				D8F30B2716CE7C0D001CF4B5 /* back-icon.png */,
 				D8F30B0E16C949E5001CF4B5 /* TextTableCell.h */,
 				D8F30B0F16C949E5001CF4B5 /* TextTableCell.m */,
 				1D8D50A8165FAE9700C9817C /* WelcomeViewController.h */,
@@ -412,6 +430,14 @@
 		D8F30B1A16CA8487001CF4B5 /* Comic */ = {
 			isa = PBXGroup;
 			children = (
+				D8F30B1E16CBAC23001CF4B5 /* ComicAddViewController.h */,
+				D8F30B1F16CBAC24001CF4B5 /* ComicAddViewController.m */,
+				D8F30B2B16CF8F53001CF4B5 /* ComicDetailsViewController.h */,
+				D8F30B2C16CF8F53001CF4B5 /* ComicDetailsViewController.m */,
+				D8F30B2416CBF063001CF4B5 /* ComicEditViewController.h */,
+				D8F30B2516CBF063001CF4B5 /* ComicEditViewController.m */,
+				D8F30B2116CBD47F001CF4B5 /* ComicPosterViewController.h */,
+				D8F30B2216CBD480001CF4B5 /* ComicPosterViewController.m */,
 				D8F30B1B16CAC81D001CF4B5 /* ComicViewController.h */,
 				D8F30B1C16CAC81D001CF4B5 /* ComicViewController.m */,
 			);
@@ -509,6 +535,8 @@
 				D8F30B1216CA6C08001CF4B5 /* camera.png in Resources */,
 				D8F30B1416CA6E05001CF4B5 /* gallery.png in Resources */,
 				D8F30B1616CA73B7001CF4B5 /* logo.png in Resources */,
+				D8F30B2816CE7C0E001CF4B5 /* back-icon.png in Resources */,
+				D8F30B2A16CEAB68001CF4B5 /* delete.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -547,6 +575,10 @@
 				D8F30B0D16C94726001CF4B5 /* PanelAddViewController.m in Sources */,
 				D8F30B1016C949E5001CF4B5 /* TextTableCell.m in Sources */,
 				D8F30B1D16CAC81D001CF4B5 /* ComicViewController.m in Sources */,
+				D8F30B2016CBAC24001CF4B5 /* ComicAddViewController.m in Sources */,
+				D8F30B2316CBD480001CF4B5 /* ComicPosterViewController.m in Sources */,
+				D8F30B2616CBF063001CF4B5 /* ComicEditViewController.m in Sources */,
+				D8F30B2D16CF8F53001CF4B5 /* ComicDetailsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

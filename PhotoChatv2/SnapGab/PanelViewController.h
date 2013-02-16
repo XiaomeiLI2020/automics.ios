@@ -14,7 +14,7 @@
 @property MainScrollSelector *panelScrollView;
 @property MainScrollSelector *thumbnailScrollView;
 
-@property BOOL wasEdited;
+
 @property NSString* _groupName;
 @property int currentPage;
 @property BOOL addImage;

@@ -246,9 +246,9 @@ finishedSavingWithError:(NSError *)error
     
 
     //Uploading on Automics II server
-   /*
+   
     NSString *imageString = [imageData base64EncodedString];
-    //NSData *d = [NSData dataFromBase64String:imageString];
+    NSData *d = [NSData dataFromBase64String:imageString];
     
 
     NSString* myURLString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/photo?name=%@&description=%@&blob=%@", @"name",@"description", imageString];
@@ -256,6 +256,7 @@ finishedSavingWithError:(NSError *)error
 
     
     NSError *writeErrorNew;
+    
     
     NSArray *objects = [NSArray arrayWithObjects:@"kittens photo", @"tiny.jpg", imageString, nil];
     NSArray *keys = [NSArray arrayWithObjects:@"description",@"name", @"blob", nil];
@@ -282,21 +283,21 @@ finishedSavingWithError:(NSError *)error
 
 
     // initiate connection request with the server
-    self.connection = [[NSURLConnection alloc] initWithRequest:requestNew delegate:self];
-    */
+  //  self.connection = [[NSURLConnection alloc] initWithRequest:requestNew delegate:self];
+
 
     //uploading comics
-    /*
+ 
     myURLString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/comic/1/panel"];
     
-    //NSDictionary *placementsDict = [NSDictionary dictionaryWithObject:placementsArray forKey:@"placements"];
-    //NSDictionary *annotationsDict = [NSDictionary dictionaryWithObject:annotationsArray forKey:@"annotations"];
+    NSDictionary *placementsDict = [NSDictionary dictionaryWithObject:placementsArray forKey:@"placements"];
+    NSDictionary *annotationsDict = [NSDictionary dictionaryWithObject:annotationsArray forKey:@"annotations"];
     
-    objects = [NSArray arrayWithObjects:@"1", @"/images/photos/photo_13/thumb_tiny20130114-5074-151hvz1.jpg", placementsArray, annotationsArray, nil];
-    keys = [NSArray arrayWithObjects:@"page_order", @"image_url",@"placements", @"annotations", nil];
+    objects = [NSArray arrayWithObjects:@"description", @"name", imageString, placementsArray, annotationsArray, nil];
+    keys = [NSArray arrayWithObjects:@"description", @"name", @"blob",@"placements", @"annotations", nil];
     
-    objects = [NSArray arrayWithObjects:@"1",placementsArray, annotationsArray, nil];
-    keys = [NSArray arrayWithObjects:@"page_order", @"placements", @"annotations", nil];
+    //objects = [NSArray arrayWithObjects:@"1",placementsArray, annotationsArray, nil];
+    //keys = [NSArray arrayWithObjects:@"page_order", @"placements", @"annotations", nil];
     
     questionDict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     jsonDict = [NSDictionary dictionaryWithObject:questionDict forKey:@"data"];
@@ -320,9 +321,9 @@ finishedSavingWithError:(NSError *)error
     
     
     // initiate connection request with the server
-    self.connection = [[NSURLConnection alloc] initWithRequest:requestNew delegate:self];
+    //self.connection = [[NSURLConnection alloc] initWithRequest:requestNew delegate:self];
 
-*/
+
     if (!self.connection) {
         UIAlertView *alert = [[UIAlertView alloc]
                               initWithTitle: @"Upload Failure"
@@ -343,7 +344,8 @@ finishedSavingWithError:(NSError *)error
         NSData *responseData = [NSURLConnection sendSynchronousRequest:requestNew returningResponse:&response error:&err];
         NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
         NSLog(@"responseData: %@", responseString);
-       */ 
+         */
+        
     }
 
     self.progressView.progress = 0.0f;

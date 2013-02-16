@@ -180,23 +180,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 - (void)singleTapGestureCaptured:(UITapGestureRecognizer *)gesture
 {
-    /*
-     UIView *piece = [(UITapGestureRecognizer*)gesture view];
-     NSArray *subviews = [piece subviews];
-     UIView* view;
-     
-     // reposition all image subviews in a horizontal serial fashion
-     CGFloat curXLoc = 0;
-     for (view in subviews)
-     {
-     if ([view isFirstResponder] && [view isKindOfClass:[UIButton class]])
-     {
-     NSLog(@"singleTap. piece.tag= %i", piece.tag);
-     NSLog(@"singleTap. piece.alpha= %f", piece.alpha);
-     }
-     }
-     
-     */
+
     CGPoint touchPoint=[gesture locationInView:thumbnailScrollView];
     CGFloat pos = (CGFloat)touchPoint.x / thumbnailWidth1;
     int styleId = round(ceilf(pos));
@@ -506,7 +490,6 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                 //NSLog(@"before posting: sbv.frame.origin (%f,%f)",sbv.frame.origin.x, sbv.frame.origin.y);
                 //NSLog(@"before posting: sbv.frame.size (%f,%f)",sbv.frame.size.width, sbv.frame.size.height);
                 
-                
                 ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andStyle:sbv.styleId];
                 new_sbv.userInteractionEnabled = NO;
                 [ppvc.view addSubview:new_sbv];
@@ -517,57 +500,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     if([[segue identifier] isEqualToString:@"panelView"])
     {
 
-        //PanelViewController *pevc = (PanelViewController *)[segue destinationViewController];
-        //pevc.wasEdited = true;
-        //pevc._groupName = _groupName;
-        
-     
-        //NSString* urlString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/%d.jpg",_groupname, currentPage];
-        //NSLog(@"segue. currentPage %i", currentPage);
-        //NSLog(@"segue. urlString %@", urlString);
-        //ebvc.url = [NSURL URLWithString:urlString];
-       /*
-        for (UIView *subview in self.view.subviews)
-        {
-            //Add Speech Bubbles
-            if([subview isMemberOfClass:[SpeechBubbleView class]])
-            {
-                SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
-                SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
-                new_sbv.userInteractionEnabled = YES;
-                new_sbv.alpha = 0;
-                [ebvc.view addSubview:new_sbv];
-            }
-            
-            //Add Resources
-            if([subview isMemberOfClass:[ResourceView class]])
-            {
-                ResourceView* sbv =(ResourceView*)subview;
-                
-                ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andStyle:sbv.styleId];
-                new_sbv.userInteractionEnabled = YES;
-                new_sbv.alpha = 0;
-                [ebvc.view addSubview:new_sbv];
-            }
-        }
-        
-        ebvc.startWithCamera = NO;
-         */
     }
 
-    
-    /*
-     if([[segue identifier] isEqualToString:@"startSelectBubbleStyleView"]){
-     SelectBubbleStyleViewController *sbsvc = (SelectBubbleStyleViewController *)[segue destinationViewController];
-     sbsvc.delegate = self;
-     }//end if
-     
-     if([[segue identifier] isEqualToString:@"startResourceView"]){
-     ResourceViewController *rvc = (ResourceViewController *)[segue destinationViewController];
-     rvc.delegate = self;
-     
-     }//end if
-     */
 }
 
 - (IBAction)takeSnap:(id)sender {
