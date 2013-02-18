@@ -717,7 +717,7 @@
         <image name="panel-edit.png" width="81" height="48"/>
         <image name="post-panel.png" width="91" height="74"/>
     </resources>
-<<<<<<< HEAD
+
     <classes>
         <class className="ComicAddViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicAddViewController.h"/>
@@ -804,8 +804,7 @@
             </relationships>
         </class>
     </classes>
-=======
->>>>>>> master
+
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

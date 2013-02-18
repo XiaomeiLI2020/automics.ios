@@ -23,16 +23,9 @@
 
 
 @synthesize panelScrollView;
-//@synthesize panelImage;
 @synthesize thumbnailScrollView;
-//@synthesize thumbnailImage;
-
-@synthesize addImage;
-
-
 @synthesize currentPage;
-@synthesize imagePicker;
-@synthesize newMedia;
+
 
 int _numImages;
 BOOL _bubblesAdded;

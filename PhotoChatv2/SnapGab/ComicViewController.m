@@ -50,7 +50,7 @@ CGFloat xPos = 10.0;
 
 - (void)updateNumComics
 {
-        NSLog(@"updateNumComics");
+
     //NSURLRequestReloadIgnoringLocalCacheData does not seem to work for 3G
     NSString* urlString = [NSString stringWithFormat:
                            @"http://www.automics.net/automics/userfiles/%@/lastcomic.txt?%d",_groupName,arc4random()];
@@ -103,7 +103,7 @@ CGFloat xPos = 10.0;
 
 - (void)viewDidLoad
 {
-    NSLog(@"viewWDidLoad.");
+
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 

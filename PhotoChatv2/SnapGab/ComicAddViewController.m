@@ -288,7 +288,8 @@ const CGFloat thumbnailHeight3= 80.0;
         int page = round(ceilf(pos));
         //NSLog(@"alignPage. page= %i", page);
         
-        currentPage = page+1;
+        currentPage = page;
+        //currentPage = page+1;
         if(page==0)
             itemPosition = 0;
         else
@@ -529,9 +530,9 @@ const CGFloat thumbnailHeight3= 80.0;
         
         //NSLog(@" currentPage=%i",  currentPage);
         int itemReplaced;
-        int itemRemoved= currentPage-1;
-        if(currentPage==0)
-            itemRemoved = currentPage;
+        int itemRemoved= currentPage;
+        //if(currentPage==0)
+        //    itemRemoved = currentPage;
         int panelId = [[panelList objectAtIndex:itemRemoved] integerValue];
         //NSLog(@"alignPage. panelId= %i", panelId);
         

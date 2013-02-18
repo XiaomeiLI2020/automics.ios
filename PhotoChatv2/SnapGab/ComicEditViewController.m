@@ -164,8 +164,7 @@ const CGFloat thumbnailHeight4= 80.0;
 -(void)addPanelToComic:(int)page
 {
     // Download the panel image corresponding to the clicked thumbnail
-    NSString* urlImageString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/thumbs/%d.jpg",_groupName,
-                                page];
+    NSString* urlImageString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/thumbs/%d.jpg",_groupName, page];
     UIImage *image = [UIImage imageNamed:urlImageString];
     
     //Add image to the imageview
@@ -217,7 +216,7 @@ const CGFloat thumbnailHeight4= 80.0;
     CGPoint touchPoint=[gesture locationInView:thumbnailScrollView];
     CGFloat pos = (CGFloat)touchPoint.x / thumbnailWidth4;
     int page = round(ceilf(pos));
-    //NSLog(@"singleTap. page= %i", page);
+    NSLog(@"singleTap. page= %i", page);
     
     //Remove bubbles and resources from the current view
     [self removeAllBubbles];
@@ -500,7 +499,8 @@ const CGFloat thumbnailHeight4= 80.0;
 -(void)alignPageInPanelScrollView
 {
     //NSLog(@"alignRowInPhotoTableView. _numImages is %i", _numImages);
-    if(_numImages>0)
+
+    if([panelList count]>0)
     {
         //Constrain horizontal page position and add bubbles and resources
         CGFloat pos = (CGFloat)self.panelScrollView.contentOffset.x / panelWidth4;
@@ -513,10 +513,9 @@ const CGFloat thumbnailHeight4= 80.0;
         [self addBubblesForPage:panelId-1];
         [self addResourcesForPage:panelId-1];
         
-        //currentPage = page+1;
+        currentPage = page;
         
-        // Scroll to the current page's thumbnail in thumbnail scrollview
-        //[thumbnailScrollView scrollItemToVisible:(page+1)];
+        NSLog(@"alignPage.currentPage=%i", currentPage);
     }//end if _numImages>0
 }
 
@@ -581,10 +580,13 @@ const CGFloat thumbnailHeight4= 80.0;
     if([panelList count] >0)
     {
         //Get the identifier of current image in the comic
+        NSLog(@"current page=%i", currentPage);
         int itemReplaced;
-        int itemRemoved= currentPage-1;
-        if(currentPage==0)
-            itemRemoved = currentPage;
+        //int itemRemoved= currentPage-1;
+        int itemRemoved = currentPage;
+        //if(currentPage==0)
+           // itemRemoved = currentPage;
+
         int panelId = [[panelList objectAtIndex:itemRemoved] integerValue];
         
         //Iterate the images in the scrollview to find the current image
