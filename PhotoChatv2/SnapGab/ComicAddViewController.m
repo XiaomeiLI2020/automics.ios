@@ -29,7 +29,7 @@
 int _numImages;
 BOOL _bubblesAdded;
 BOOL _resourcesAdded;
-BOOL _panelsAdded;
+
 
 UILabel *clickLabel;
 NSMutableArray *panelList;
@@ -74,7 +74,7 @@ const CGFloat thumbnailHeight3= 80.0;
     if(_numImages>0) {
         
         //Show lable if no image has been added to the comic
-        if(!_panelsAdded)
+        if([panelList count]==0)
             [self addLabel];
         
         // Add comic scrollview
@@ -149,9 +149,6 @@ const CGFloat thumbnailHeight3= 80.0;
         
     }//end for
     
-    
-    //currentPage = _numImages;
-    
     // place the thumbnail in serial layout within the scrollview
     [thumbnailScrollView layoutItems];
     //Scroll to the last added thumbnail in the serial layout within the scrollview
@@ -172,19 +169,13 @@ const CGFloat thumbnailHeight3= 80.0;
     [self removeAllResources];
     
     //remove clickLabel
-    if(!_panelsAdded)
+    if([panelList count]==0)
     {
         [clickLabel removeFromSuperview];
-        _panelsAdded = YES;
     }
     //Add a panel to the comic
     [self addPanelToComic:page];
 
-    //Update current panel shown in the comic
-    // Determine the position of clicked thumbnail
-
-
-    
 }
 
 -(void)addPanelToComic:(int)page
@@ -209,8 +200,6 @@ const CGFloat thumbnailHeight3= 80.0;
     // add image to the panel scrollview
     [comicScrollView addSubview:imageView];
     
-    
-    //NSLog(@"initial panel counter is%i", panelCounter);
     if([panelList count]==0)
     {
         [clickLabel removeFromSuperview];
@@ -220,15 +209,8 @@ const CGFloat thumbnailHeight3= 80.0;
     //Add panel to the panelList
     [panelList addObject:[NSNumber numberWithInteger:page]];
     
-    //Add number of panels in the comic
-    //panelCounter++;
-    
     //Update the panel index being highlighted in the comic
     currentPage = [panelList count];
-    
-    //NSLog(@"final panel counter is%i", panelCounter);
-    
-
     
     //Update the number of items in comic scrollview
     comicScrollView.numItems = [panelList count];
@@ -282,7 +264,6 @@ const CGFloat thumbnailHeight3= 80.0;
     panelCounter=0;
     _bubblesAdded = NO;
     _resourcesAdded = NO;
-    _panelsAdded = NO;
     
     [self updateNumImages];
     self.comicScrollView.delegate=self;
@@ -290,7 +271,7 @@ const CGFloat thumbnailHeight3= 80.0;
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    NSLog(@"scrollViewWillBeginDragging");
+    //NSLog(@"scrollViewWillBeginDragging");
     //Remove bubbles and resources from the panel when the scrolling starts
     [self removeAllBubbles];
     [self removeAllResources];
@@ -298,15 +279,14 @@ const CGFloat thumbnailHeight3= 80.0;
 
 -(void)alignPageInPanelScrollView
 {
-    //NSLog(@"alignRowInPhotoTableView. panelCounter is %i", panelCounter);
-    NSLog(@"alignRowInPhotoTableView. currentPage was %i", currentPage);
+    //NSLog(@"alignRowInPhotoTableView. currentPage was %i", currentPage);
     int itemPosition;
     if([panelList count]>0)
     {
         //Constrain horizontal page position and add bubbles and resources
         CGFloat pos = (CGFloat)self.comicScrollView.contentOffset.x / comicWidth;
         int page = round(ceilf(pos));
-        NSLog(@"alignPage. page= %i", page);
+        //NSLog(@"alignPage. page= %i", page);
         
         currentPage = page+1;
         if(page==0)
@@ -321,7 +301,7 @@ const CGFloat thumbnailHeight3= 80.0;
         [self addBubblesForPage:panelId-1];
         [self addResourcesForPage:panelId-1];
         
-        NSLog(@"alignRowInPhotoTableView. currentPage changed to %i", currentPage);
+        //NSLog(@"alignRowInPhotoTableView. currentPage changed to %i", currentPage);
     }//end if _numImages>0
 }
 
@@ -517,8 +497,8 @@ const CGFloat thumbnailHeight3= 80.0;
     if([panelList count] >0)
     {
     
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Remove Image"
-                                                      message:@"Remove image from the comic."
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Delete Image"
+                                                      message:@"Delete image from the comic."
                                                      delegate:self
                                             cancelButtonTitle:@"Delete"
                                             otherButtonTitles:@"Cancel", nil];
@@ -531,12 +511,12 @@ const CGFloat thumbnailHeight3= 80.0;
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
     if([title isEqualToString:@"Delete"])
     {
-        NSLog(@"Button 1 was selected.");
+        //NSLog(@"Button 1 was selected.");
         [self deletePanelConfirmed];
     }
     if([title isEqualToString:@"Cancel"])
     {
-        NSLog(@"Button 2 was selected.");
+        //NSLog(@"Button 2 was selected.");
         return;
     }
 }
@@ -547,22 +527,21 @@ const CGFloat thumbnailHeight3= 80.0;
     {
         
         
-        NSLog(@" currentPage=%i",  currentPage);
+        //NSLog(@" currentPage=%i",  currentPage);
         int itemReplaced;
         int itemRemoved= currentPage-1;
         if(currentPage==0)
             itemRemoved = currentPage;
         int panelId = [[panelList objectAtIndex:itemRemoved] integerValue];
-        NSLog(@"alignPage. panelId= %i", panelId);
+        //NSLog(@"alignPage. panelId= %i", panelId);
         
         for (UIView *subview in comicScrollView.subviews)
         {
             
             if([subview isKindOfClass:[UIImageView class]] && panelId==subview.tag)
             {
-                NSLog(@"comicScrollView.numItems before deletion %i", comicScrollView.numItems);
-                NSLog(@"[panelList count] before %i", [panelList count]);
-                //NSLog(@" panelCounter=%i",  panelCounter);
+                //NSLog(@"comicScrollView.numItems before deletion %i", comicScrollView.numItems);
+                //NSLog(@"[panelList count] before %i", [panelList count]);
                 
                 [subview removeFromSuperview];
                 [self removeAllBubbles];
@@ -572,15 +551,14 @@ const CGFloat thumbnailHeight3= 80.0;
                 if(currentPage>1)
                     currentPage--;
                 
-                NSLog(@"[panelList count] after %i", [panelList count]);
+                //NSLog(@"[panelList count] after %i", [panelList count]);
                 if([panelList count]==0)
                 {
                     [comicScrollView removeFromSuperview];
                     [self removeAllBubbles];
                     [self removeAllResources];
                     [self.view addSubview:clickLabel];
-                    //panelCounter = 0;
-                    _panelsAdded = NO;
+
                 }
                 else
                 {
@@ -594,7 +572,7 @@ const CGFloat thumbnailHeight3= 80.0;
                         itemReplaced = itemRemoved;
                     }
                     
-                    NSLog(@"itemReplaced %i", itemReplaced);
+                    //NSLog(@"itemReplaced %i", itemReplaced);
                     comicScrollView.numItems = [panelList count];
                     [comicScrollView layoutItems];
                     [comicScrollView scrollItemToVisible:(itemReplaced+1)];

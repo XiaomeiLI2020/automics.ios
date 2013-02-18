@@ -9,22 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "MainScrollSelector.h"
 
-@interface ComicViewController : UIViewController<UIScrollViewDelegate>
+@interface ComicViewController : UIViewController
+<UITableViewDataSource, UITableViewDelegate>
 
-@property MainScrollSelector *panelScrollView;
-@property MainScrollSelector *thumbnailScrollView;
 
-@property BOOL wasEdited;
+
 @property NSString* _groupName;
-@property int currentPage;
-@property BOOL addImage;
+//@property UITableView* comicTable;
 
-@property UITableView* comicTable;
-@property UIScrollView* comicList;
 
-@property (strong, nonatomic) UIImagePickerController *imagePicker;
-@property BOOL startWithCamera;
-@property BOOL newMedia;
-
+@property (strong, nonatomic) IBOutlet UITableView *comicTableView;
 
 @end

@@ -23,11 +23,8 @@
 
 
 @synthesize panelScrollView;
-//@synthesize panelImage;
 @synthesize thumbnailScrollView;
-//@synthesize thumbnailImage;
 
-@synthesize addImage;
 
 @synthesize panelArray;
 @synthesize currentPage;
@@ -36,6 +33,7 @@ int _numImages;
 BOOL _bubblesAdded;
 BOOL _resourcesAdded;
 int panelId;
+
 NSMutableArray *panelList;
 UILabel *clickLabel;
 
@@ -80,14 +78,6 @@ const CGFloat thumbnailHeight4= 80.0;
     //NSLog(@"updateImages. _numImages is %i", _numImages);
     
     if(_numImages>0) {
-        
-        // Add panels to the scrollview
-        /*
-        CGRect panelFrame = CGRectMake(panelScrollXOrigin4, panelScrollYOrigin4, panelScrollObjWidth4, panelScrollObjHeight4);
-        CGSize panelSize = CGSizeMake(panelWidth4, panelHeight4);
-        panelScrollView = [[MainScrollSelector alloc] initWithFrame:panelFrame andItemSize:panelSize andNumItems:_numImages];
-        [self.view addSubview:panelScrollView];
-        */
         
         //Show lable if no image has been added to the comic
         if([panelList count]==0)
@@ -193,8 +183,6 @@ const CGFloat thumbnailHeight4= 80.0;
     // add image to the panel scrollview
     [panelScrollView addSubview:imageView];
     
-    
-    //NSLog(@"initial panel counter is%i", panelCounter);
     if([panelList count]==0)
     {
         [clickLabel removeFromSuperview];
@@ -204,15 +192,8 @@ const CGFloat thumbnailHeight4= 80.0;
     //Add panel to the panelList
     [panelList addObject:[NSNumber numberWithInteger:page]];
     
-    //Add number of panels in the comic
-    //panelCounter++;
-    
     //Update the panel index being highlighted in the comic
     currentPage = [panelList count];
-    
-    //NSLog(@"final panel counter is%i", panelCounter);
-    
-    
     
     //Update the number of items in comic scrollview
     panelScrollView.numItems = [panelList count];
@@ -226,7 +207,6 @@ const CGFloat thumbnailHeight4= 80.0;
     //Add bubbles and resources to the new panel's view
     [self addBubblesForPage:page-1];
     [self addResourcesForPage:page-1];
-    
     
 }
 
@@ -597,45 +577,43 @@ const CGFloat thumbnailHeight4= 80.0;
 
 -(void)deletePanelConfirmed
 {
+    //Check if a panel is added to the comic
     if([panelList count] >0)
     {
-        
-        
-        NSLog(@" currentPage=%i",  currentPage);
+        //Get the identifier of current image in the comic
         int itemReplaced;
         int itemRemoved= currentPage-1;
         if(currentPage==0)
             itemRemoved = currentPage;
         int panelId = [[panelList objectAtIndex:itemRemoved] integerValue];
-        NSLog(@"alignPage. panelId= %i", panelId);
         
+        //Iterate the images in the scrollview to find the current image
         for (UIView *subview in panelScrollView.subviews)
         {
             
             if([subview isKindOfClass:[UIImageView class]] && panelId==subview.tag)
             {
-                NSLog(@"comicScrollView.numItems before deletion %i", panelScrollView.numItems);
-                NSLog(@"[panelList count] before %i", [panelList count]);
-                //NSLog(@" panelCounter=%i",  panelCounter);
-                
+                //Remove image from the comic
                 [subview removeFromSuperview];
                 [self removeAllBubbles];
                 [self removeAllResources];
+                
+                //Remove the image identifier from the panelList
                 [panelList removeObjectAtIndex:itemRemoved];
                 
                 if(currentPage>1)
                     currentPage--;
                 
-                NSLog(@"[panelList count] after %i", [panelList count]);
+                //If all images deleted from the comic, add clickLabel
                 if([panelList count]==0)
                 {
                     [panelScrollView removeFromSuperview];
                     [self removeAllBubbles];
                     [self removeAllResources];
                     [self.view addSubview:clickLabel];
-                    //panelCounter = 0;
-                    //_panelsAdded = NO;
+
                 }
+                //Otherwise highlight the next image in the comic
                 else
                 {
                     if(itemRemoved==[panelList count])
@@ -648,7 +626,7 @@ const CGFloat thumbnailHeight4= 80.0;
                         itemReplaced = itemRemoved;
                     }
                     
-                    NSLog(@"itemReplaced %i", itemReplaced);
+
                     panelScrollView.numItems = [panelList count];
                     [panelScrollView layoutItems];
                     [panelScrollView scrollItemToVisible:(itemReplaced+1)];
@@ -656,6 +634,8 @@ const CGFloat thumbnailHeight4= 80.0;
                     [self addBubblesForPage:panelId-1];
                     [self addResourcesForPage:panelId-1];
                 } //end else
+                
+                //break the loop
                 break;
             }//end if panelCounter>0
             
@@ -664,14 +644,14 @@ const CGFloat thumbnailHeight4= 80.0;
     }//end if
     
     
-}
+}//end deletePanelConfirmed
 
 - (IBAction)deletePanel:(id)sender {
     if([panelList count] >0)
     {
         
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Remove Image"
-                                                          message:@"Remove image from the comic."
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Delete Image"
+                                                          message:@"Delete image from the comic."
                                                          delegate:self
                                                 cancelButtonTitle:@"Delete"
                                                 otherButtonTitles:@"Cancel", nil];
@@ -684,12 +664,10 @@ const CGFloat thumbnailHeight4= 80.0;
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
     if([title isEqualToString:@"Delete"])
     {
-        NSLog(@"Button 1 was selected.");
         [self deletePanelConfirmed];
     }
     if([title isEqualToString:@"Cancel"])
     {
-        NSLog(@"Button 2 was selected.");
         return;
     }
 }

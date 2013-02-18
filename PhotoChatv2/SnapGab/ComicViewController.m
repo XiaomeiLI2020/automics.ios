@@ -9,6 +9,7 @@
 #import "ComicViewController.h"
 #import "ComicEditViewController.h"
 #import "ComicDetailsViewController.h"
+#import "ComicTableCell.h"
 
 @interface ComicViewController ()
 
@@ -16,25 +17,15 @@
 
 @implementation ComicViewController
 
-@synthesize panelScrollView;
-//@synthesize panelImage;
-@synthesize thumbnailScrollView;
-//@synthesize thumbnailImage;
-@synthesize wasEdited;
-@synthesize addImage;
-
 @synthesize _groupName;
-@synthesize currentPage;
-@synthesize imagePicker;
-@synthesize newMedia;
-@synthesize comicTable;
-@synthesize comicList;
-
+@synthesize comicTableView;
 UILabel *clickLabel;
+
 
 int _numComics;
 int currentComic;
 CGFloat yPos = 50.0;
+CGFloat xPos = 10.0;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -43,8 +34,7 @@ CGFloat yPos = 50.0;
     if(self) {
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         _groupName = [prefs objectForKey:@"groupname"];
-        //_groupname = @"d1";
-        //NSLog(@"groupname is %@", _groupname);
+
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(newImageNotification)
                                                      name:@"newImageNotification"
@@ -60,7 +50,7 @@ CGFloat yPos = 50.0;
 
 - (void)updateNumComics
 {
-    
+        NSLog(@"updateNumComics");
     //NSURLRequestReloadIgnoringLocalCacheData does not seem to work for 3G
     NSString* urlString = [NSString stringWithFormat:
                            @"http://www.automics.net/automics/userfiles/%@/lastcomic.txt?%d",_groupName,arc4random()];
@@ -83,47 +73,22 @@ CGFloat yPos = 50.0;
     //NSLog(@"updateImages. _numComics is %i", _numComics);
     
     yPos= 40.0;
-    CGFloat xPos = 10.0;
+
     int page = 0;
-    if(_numComics>0) {
-
-            //comicTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 45, 320, 360)];
-            comicList = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 30, 320, 460)];
+    //NSLog(@"_numComics%i", _numComics);
+    
+    if(_numComics>0)
+    {
         
-            NSUInteger i;
-            for (i=1; i <=_numComics; i++)
-            {
-                
-                //NSString* urlComicString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/comics/%d.bub",_groupName, i];
-                
-                NSString* buttonTitle = [NSString stringWithFormat:@"Comic%d", i];
-                
-                UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-                [button setTitle:buttonTitle forState:UIControlStateNormal];
-                button.frame = CGRectMake((page*320)+xPos, yPos, 70.0, 30.0);
-                button.tag = i;
-                [button addTarget:self action:@selector(viewComicDetails:) forControlEvents:UIControlEventTouchDown];
-                
-                [comicList addSubview:button];
-                if(yPos<=380)
-                    yPos+=50.0;
-                else
-                {
-                    yPos = 40.0;
-                    page++;
-                }
-            }//end for
+        [self.comicTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewScrollPositionBottom];
+            NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:(_numComics - 1) inSection:0];
         
-            comicList.pagingEnabled = YES;
-            //CGFloat pos = (CGFloat)_numComics/8;
-            //int page = round(ceilf(pos));
-            
-            [comicList setContentSize:CGSizeMake((page+1)*320, 420)];
-
-            [self.view addSubview:comicList];
-
-        
-          }//end if(_numComics>0)
+        if(([self.comicTableView numberOfSections] >0) &&
+           [self.comicTableView numberOfRowsInSection:0]>0 )
+        {
+            [self.comicTableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        }
+                  }//end if(_numComics>0)
     else
     {
         clickLabel = [ [UILabel alloc ] initWithFrame:CGRectMake(0, 50, 320, 320)];
@@ -132,17 +97,31 @@ CGFloat yPos = 50.0;
         //clickLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(36.0)];
         [self.view addSubview:clickLabel];
         clickLabel.text = [NSString stringWithFormat: @"Click + to add a comic."];
+
     }
 }//end updateNumImages
 
-
 - (void)viewDidLoad
 {
+    NSLog(@"viewWDidLoad.");
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+
     
     [self updateNumComics];
-    //self.panelScrollView.delegate=self;
+    if(_numComics>0) {
+        NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:(_numComics - 1) inSection:0];
+        
+        if(//[self.comicTableView numberOfSections] >0 &&
+           [self.comicTableView numberOfRowsInSection:0]>0 )
+        {
+            [self.comicTableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+        
+    }
+
+    comicTableView.dataSource = self;
+    comicTableView.delegate = self;
 
 }
 
@@ -150,11 +129,53 @@ CGFloat yPos = 50.0;
 {
     UIButton *clicked = (UIButton *) sender;
     currentComic = clicked.tag;
-    //NSLog(@"button.tag=%d",clicked.tag);//Here you know which button has pressed
     [self performSegueWithIdentifier: @"comicDetails" sender:self];
-
-
 }
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    // If You have only one(1) section, return 1, otherwise you must handle sections
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    return _numComics;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+    static NSString *CellIdentifier = @"ComicCell";
+    
+    ComicTableCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[ComicTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        [[cell contentView] setBackgroundColor:[UIColor blueColor]];
+        [[cell backgroundView] setBackgroundColor:[UIColor blueColor]];
+    }
+    
+    NSString* buttonTitle = [NSString stringWithFormat:@"Comic%d", indexPath.row+1];
+    
+    cell.comicButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [cell.comicButton setTitle:buttonTitle forState:UIControlStateNormal];
+    cell.comicButton.frame = CGRectMake(10.0, 10.0, 70.0, 20.0);
+    cell.comicButton.tag = indexPath.row+1;
+    [cell.comicButton addTarget:self action:@selector(viewComicDetails:) forControlEvents:UIControlEventTouchDown];
+    //[cell.contentView addSubview:cell.comicButton];
+    [cell addSubview:cell.comicButton];
+       
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 50.0;
+    //return indexPath.row==_numComics?20:440;
+}
+
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     
@@ -171,5 +192,11 @@ CGFloat yPos = 50.0;
     }
 }
 
+/*
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+ */
 
 @end

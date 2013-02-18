@@ -458,7 +458,7 @@ const CGFloat thumbnailHeight5= 80.0;
 
 -(void)alignPageInPanelScrollView
 {
-    //NSLog(@"alignRowInPhotoTableView. _numImages is %i", _numImages);
+
     if(_numImages>0)
     {
         //Constrain horizontal page position and add bubbles and resources
@@ -471,11 +471,7 @@ const CGFloat thumbnailHeight5= 80.0;
         //Add bubbles and resources to a panel after scrolling
         [self addBubblesForPage:panelId-1];
         [self addResourcesForPage:panelId-1];
-        
-        //currentPage = page+1;
-        
-        // Scroll to the current page's thumbnail in thumbnail scrollview
-        //[thumbnailScrollView scrollItemToVisible:(page+1)];
+
     }//end if _numImages>0
 }
 
