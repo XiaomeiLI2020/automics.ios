@@ -39,6 +39,9 @@
 		48CAFD3216CE943900D8EB4C /* APIConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CAFD3116CE943800D8EB4C /* APIConstant.m */; };
 		48CAFD4016CEA7E600D8EB4C /* APIWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CAFD3F16CEA7E600D8EB4C /* APIWrapper.m */; };
 		48CED3CB16B922A900EF4CD3 /* PanelEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CED3C916B922A900EF4CD3 /* PanelEditViewController.m */; };
+		48D0806B16D4EB0A00346465 /* Panel.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D0806A16D4EB0A00346465 /* Panel.m */; };
+		48D0807016D4EC6800346465 /* ImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D0806D16D4EC6800346465 /* ImageDownloader.m */; };
+		48D0807116D4EC6800346465 /* PanelLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D0806F16D4EC6800346465 /* PanelLoader.m */; };
 		48D0EA7F16CD4B7200FE11E2 /* ResourceImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D0EA7E16CD4B7100FE11E2 /* ResourceImageView.m */; };
 		48D0EA8316CD4BBE00FE11E2 /* close_gold.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D0EA8116CD4BBE00FE11E2 /* close_gold.png */; };
 		48D0EA8416CD4BBE00FE11E2 /* rotate.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D0EA8216CD4BBE00FE11E2 /* rotate.png */; };
@@ -145,6 +148,12 @@
 		48CAFD3F16CEA7E600D8EB4C /* APIWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APIWrapper.m; path = SnapGab/APIWrapper.m; sourceTree = "<group>"; };
 		48CED3C816B922A900EF4CD3 /* PanelEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelEditViewController.h; sourceTree = "<group>"; };
 		48CED3C916B922A900EF4CD3 /* PanelEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelEditViewController.m; sourceTree = "<group>"; };
+		48D0806916D4EB0A00346465 /* Panel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Panel.h; path = SnapGab/Panel.h; sourceTree = "<group>"; };
+		48D0806A16D4EB0A00346465 /* Panel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Panel.m; path = SnapGab/Panel.m; sourceTree = "<group>"; };
+		48D0806C16D4EC6800346465 /* ImageDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageDownloader.h; path = SnapGab/ImageDownloader.h; sourceTree = "<group>"; };
+		48D0806D16D4EC6800346465 /* ImageDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageDownloader.m; path = SnapGab/ImageDownloader.m; sourceTree = "<group>"; };
+		48D0806E16D4EC6800346465 /* PanelLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PanelLoader.h; path = SnapGab/PanelLoader.h; sourceTree = "<group>"; };
+		48D0806F16D4EC6800346465 /* PanelLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PanelLoader.m; path = SnapGab/PanelLoader.m; sourceTree = "<group>"; };
 		48D0EA7D16CD4B7100FE11E2 /* ResourceImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceImageView.h; sourceTree = "<group>"; };
 		48D0EA7E16CD4B7100FE11E2 /* ResourceImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceImageView.m; sourceTree = "<group>"; };
 		48D0EA8116CD4BBE00FE11E2 /* close_gold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_gold.png; sourceTree = "<group>"; };
@@ -253,6 +262,7 @@
 		1D8D5077165FADC600C9817C = {
 			isa = PBXGroup;
 			children = (
+				48D0806816D4EA6D00346465 /* Model */,
 				48CAFD2316CE761700D8EB4C /* API */,
 				48D0EA8016CD4B8600FE11E2 /* images */,
 				D8F30B1916CA7E8F001CF4B5 /* PhotoChat.entitlements */,
@@ -363,6 +373,10 @@
 		48CAFD2316CE761700D8EB4C /* API */ = {
 			isa = PBXGroup;
 			children = (
+				48D0806C16D4EC6800346465 /* ImageDownloader.h */,
+				48D0806D16D4EC6800346465 /* ImageDownloader.m */,
+				48D0806E16D4EC6800346465 /* PanelLoader.h */,
+				48D0806F16D4EC6800346465 /* PanelLoader.m */,
 				48CAFD3E16CEA7E600D8EB4C /* APIWrapper.h */,
 				48CAFD3F16CEA7E600D8EB4C /* APIWrapper.m */,
 				48CAFD2C16CE789600D8EB4C /* DataLoader.h */,
@@ -390,6 +404,15 @@
 				1D8D50B2165FC9DE00C9817C /* CameraViewController.m */,
 			);
 			name = Panel;
+			sourceTree = "<group>";
+		};
+		48D0806816D4EA6D00346465 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				48D0806916D4EB0A00346465 /* Panel.h */,
+				48D0806A16D4EB0A00346465 /* Panel.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		48D0EA8016CD4B8600FE11E2 /* images */ = {
@@ -637,6 +660,9 @@
 				48CAFD2E16CE789600D8EB4C /* DataLoader.m in Sources */,
 				48CAFD3216CE943900D8EB4C /* APIConstant.m in Sources */,
 				48CAFD4016CEA7E600D8EB4C /* APIWrapper.m in Sources */,
+				48D0806B16D4EB0A00346465 /* Panel.m in Sources */,
+				48D0807016D4EC6800346465 /* ImageDownloader.m in Sources */,
+				48D0807116D4EC6800346465 /* PanelLoader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

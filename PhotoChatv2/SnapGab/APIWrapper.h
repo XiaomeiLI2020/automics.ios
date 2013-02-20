@@ -7,17 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DataLoader.h"
 
-@protocol PanelLoaderDelegate;
+@interface APIWrapper : NSObject
 
-@interface APIWrapper : DataLoader
-@property (weak) id<PanelLoaderDelegate> delegate;
--(void)submitRequestGetPanelsForGroup:(int)groupId;
-@end
++(NSString*)getURLForGetPanels;
++(NSString*)getAbsoluteURLUsingPanelImageRelativePath:(NSString*)imageURL;
 
-@protocol PanelLoaderDelegate<NSObject>
-@optional
--(void)PanelLoader:(APIWrapper*)loader didFailWithError:(NSError*)error;
--(void)PanelLoader:(APIWrapper *)loader didLoadPanels:(NSArray*)panels;
 @end

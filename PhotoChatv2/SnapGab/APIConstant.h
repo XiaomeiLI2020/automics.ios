@@ -7,4 +7,5 @@
 //
 
 extern NSString* const kBaseURL;
+extern NSString* const kAPIURL;
 extern NSString* const kPanelURL;
