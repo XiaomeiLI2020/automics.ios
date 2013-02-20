@@ -262,15 +262,10 @@
 		1D8D5077165FADC600C9817C = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				48D0806816D4EA6D00346465 /* Model */,
 				48CAFD2316CE761700D8EB4C /* API */,
 				48D0EA8016CD4B8600FE11E2 /* images */,
 				D8F30B1916CA7E8F001CF4B5 /* PhotoChat.entitlements */,
-=======
-				48CAFD2316CE761700D8EB4C /* API */,
-				48D0EA8016CD4B8600FE11E2 /* images */,
->>>>>>> ed4ac6615f6658e07c9c99dfac6f4e977c357a88
 				1D8D508C165FADC700C9817C /* PhotoChat */,
 				1D8D5085165FADC700C9817C /* Frameworks */,
 				1D8D5083165FADC700C9817C /* Products */,
@@ -378,13 +373,10 @@
 		48CAFD2316CE761700D8EB4C /* API */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				48D0806C16D4EC6800346465 /* ImageDownloader.h */,
 				48D0806D16D4EC6800346465 /* ImageDownloader.m */,
 				48D0806E16D4EC6800346465 /* PanelLoader.h */,
 				48D0806F16D4EC6800346465 /* PanelLoader.m */,
-=======
->>>>>>> ed4ac6615f6658e07c9c99dfac6f4e977c357a88
 				48CAFD3E16CEA7E600D8EB4C /* APIWrapper.h */,
 				48CAFD3F16CEA7E600D8EB4C /* APIWrapper.m */,
 				48CAFD2C16CE789600D8EB4C /* DataLoader.h */,
@@ -426,11 +418,8 @@
 		48D0EA8016CD4B8600FE11E2 /* images */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				D8F30B2916CEAB68001CF4B5 /* delete.png */,
 				D8F30B2716CE7C0D001CF4B5 /* back-icon.png */,
-=======
->>>>>>> ed4ac6615f6658e07c9c99dfac6f4e977c357a88
 				D8C73A9116C2D3C300C8D3E0 /* back-images.png */,
 				D8585C68167A58490003B0BD /* placeholder-542x542.png */,
 				D8F30B1516CA73B7001CF4B5 /* logo.png */,
@@ -671,12 +660,9 @@
 				48CAFD2E16CE789600D8EB4C /* DataLoader.m in Sources */,
 				48CAFD3216CE943900D8EB4C /* APIConstant.m in Sources */,
 				48CAFD4016CEA7E600D8EB4C /* APIWrapper.m in Sources */,
-<<<<<<< HEAD
 				48D0806B16D4EB0A00346465 /* Panel.m in Sources */,
 				48D0807016D4EC6800346465 /* ImageDownloader.m in Sources */,
 				48D0807116D4EC6800346465 /* PanelLoader.m in Sources */,
-=======
->>>>>>> ed4ac6615f6658e07c9c99dfac6f4e977c357a88
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

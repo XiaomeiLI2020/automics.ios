@@ -12,3 +12,5 @@
 
 +(NSString*)getURLForGetPanels;
 +(NSString*)getAbsoluteURLUsingPanelImageRelativePath:(NSString*)imageURL;
+
+@end

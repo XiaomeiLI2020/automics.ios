@@ -15,6 +15,7 @@
 -(void)submitRequestGetPanelsForGroup:(int)groupId;
 @end
 
+
 @protocol PanelLoaderDelegate<NSObject>
 @optional
 -(void)PanelLoader:(PanelLoader*)loader didFailWithError:(NSError*)error;
