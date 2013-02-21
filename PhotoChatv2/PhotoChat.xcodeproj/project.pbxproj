@@ -46,6 +46,12 @@
 		48D0EA8316CD4BBE00FE11E2 /* close_gold.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D0EA8116CD4BBE00FE11E2 /* close_gold.png */; };
 		48D0EA8416CD4BBE00FE11E2 /* rotate.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D0EA8216CD4BBE00FE11E2 /* rotate.png */; };
 		48D0EA8616CD4C3A00FE11E2 /* scale.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D0EA8516CD4C3A00FE11E2 /* scale.png */; };
+		48F6275616D640620034A5A7 /* AnnotationJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F6274F16D640610034A5A7 /* AnnotationJSONHandler.m */; };
+		48F6275716D640620034A5A7 /* DataValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F6275116D640610034A5A7 /* DataValidator.m */; };
+		48F6275816D640620034A5A7 /* PanelJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F6275316D640620034A5A7 /* PanelJSONHandler.m */; };
+		48F6275916D640620034A5A7 /* PlacementJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F6275516D640620034A5A7 /* PlacementJSONHandler.m */; };
+		48F6275F16D6408F0034A5A7 /* Annotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F6275C16D6408F0034A5A7 /* Annotation.m */; };
+		48F6276016D6408F0034A5A7 /* Placement.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F6275E16D6408F0034A5A7 /* Placement.m */; };
 		D804FC5C1677519100605338 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D804FC5B1677519100605338 /* Icon.png */; };
 		D804FC5E1677527E00605338 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D804FC5D1677527E00605338 /* Icon@2x.png */; };
 		D80A103816963EFB0021C82E /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = D80A103716963EFB0021C82E /* Base64.m */; };
@@ -159,6 +165,18 @@
 		48D0EA8116CD4BBE00FE11E2 /* close_gold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_gold.png; sourceTree = "<group>"; };
 		48D0EA8216CD4BBE00FE11E2 /* rotate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rotate.png; sourceTree = "<group>"; };
 		48D0EA8516CD4C3A00FE11E2 /* scale.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scale.png; sourceTree = "<group>"; };
+		48F6274E16D640610034A5A7 /* AnnotationJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnotationJSONHandler.h; sourceTree = "<group>"; };
+		48F6274F16D640610034A5A7 /* AnnotationJSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnotationJSONHandler.m; sourceTree = "<group>"; };
+		48F6275016D640610034A5A7 /* DataValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataValidator.h; sourceTree = "<group>"; };
+		48F6275116D640610034A5A7 /* DataValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataValidator.m; sourceTree = "<group>"; };
+		48F6275216D640620034A5A7 /* PanelJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelJSONHandler.h; sourceTree = "<group>"; };
+		48F6275316D640620034A5A7 /* PanelJSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelJSONHandler.m; sourceTree = "<group>"; };
+		48F6275416D640620034A5A7 /* PlacementJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlacementJSONHandler.h; sourceTree = "<group>"; };
+		48F6275516D640620034A5A7 /* PlacementJSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlacementJSONHandler.m; sourceTree = "<group>"; };
+		48F6275B16D6408F0034A5A7 /* Annotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Annotation.h; sourceTree = "<group>"; };
+		48F6275C16D6408F0034A5A7 /* Annotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Annotation.m; sourceTree = "<group>"; };
+		48F6275D16D6408F0034A5A7 /* Placement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Placement.h; sourceTree = "<group>"; };
+		48F6275E16D6408F0034A5A7 /* Placement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Placement.m; sourceTree = "<group>"; };
 		D804FC5B1677519100605338 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		D804FC5D1677527E00605338 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		D80A103616963EFB0021C82E /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
@@ -373,6 +391,14 @@
 		48CAFD2316CE761700D8EB4C /* API */ = {
 			isa = PBXGroup;
 			children = (
+				48F6274E16D640610034A5A7 /* AnnotationJSONHandler.h */,
+				48F6274F16D640610034A5A7 /* AnnotationJSONHandler.m */,
+				48F6275016D640610034A5A7 /* DataValidator.h */,
+				48F6275116D640610034A5A7 /* DataValidator.m */,
+				48F6275216D640620034A5A7 /* PanelJSONHandler.h */,
+				48F6275316D640620034A5A7 /* PanelJSONHandler.m */,
+				48F6275416D640620034A5A7 /* PlacementJSONHandler.h */,
+				48F6275516D640620034A5A7 /* PlacementJSONHandler.m */,
 				48D0806C16D4EC6800346465 /* ImageDownloader.h */,
 				48D0806D16D4EC6800346465 /* ImageDownloader.m */,
 				48D0806E16D4EC6800346465 /* PanelLoader.h */,
@@ -409,6 +435,10 @@
 		48D0806816D4EA6D00346465 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				48F6275B16D6408F0034A5A7 /* Annotation.h */,
+				48F6275C16D6408F0034A5A7 /* Annotation.m */,
+				48F6275D16D6408F0034A5A7 /* Placement.h */,
+				48F6275E16D6408F0034A5A7 /* Placement.m */,
 				48D0806916D4EB0A00346465 /* Panel.h */,
 				48D0806A16D4EB0A00346465 /* Panel.m */,
 			);
@@ -663,6 +693,12 @@
 				48D0806B16D4EB0A00346465 /* Panel.m in Sources */,
 				48D0807016D4EC6800346465 /* ImageDownloader.m in Sources */,
 				48D0807116D4EC6800346465 /* PanelLoader.m in Sources */,
+				48F6275616D640620034A5A7 /* AnnotationJSONHandler.m in Sources */,
+				48F6275716D640620034A5A7 /* DataValidator.m in Sources */,
+				48F6275816D640620034A5A7 /* PanelJSONHandler.m in Sources */,
+				48F6275916D640620034A5A7 /* PlacementJSONHandler.m in Sources */,
+				48F6275F16D6408F0034A5A7 /* Annotation.m in Sources */,
+				48F6276016D6408F0034A5A7 /* Placement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

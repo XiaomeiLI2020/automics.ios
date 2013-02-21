@@ -11,6 +11,7 @@
 @interface APIWrapper : NSObject
 
 +(NSString*)getURLForGetPanels;
++(NSString*)getURLForGetPanelWithId:(int)panelId;
 +(NSString*)getAbsoluteURLUsingPanelImageRelativePath:(NSString*)imageURL;
 
 @end

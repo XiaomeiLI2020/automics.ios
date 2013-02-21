@@ -15,6 +15,11 @@
     return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL,kAPIURL,kPanelURL];
 }
 
++(NSString*)getURLForGetPanelWithId:(int)panelId{
+    NSString* inputId = [NSString stringWithFormat:@"%d", panelId];
+    return [NSString stringWithFormat:@"%@/%@/%@/%@", kBaseURL,kAPIURL,kPanelURL,inputId];
+}
+
 +(NSString*)getAbsoluteURLUsingPanelImageRelativePath:(NSString*)imageURL{
     return [NSString stringWithFormat:@"%@%@", kBaseURL, imageURL];
 }

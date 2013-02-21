@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Placement.h"
 
 @interface Panel : NSObject
-@property NSInteger panelID;
+@property NSInteger panelId;
 @property NSString* imageURL;
+@property NSArray* placements;
+@property NSArray* annotations;
 @end

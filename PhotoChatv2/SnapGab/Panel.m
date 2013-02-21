@@ -7,8 +7,9 @@
 //
 
 #import "Panel.h"
+#import "DataValidator.h"
 
 @implementation Panel
-@synthesize panelID;
+@synthesize panelId;
 @synthesize imageURL;
 @end

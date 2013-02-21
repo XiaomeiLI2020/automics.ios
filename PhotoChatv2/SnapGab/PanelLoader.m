@@ -2,23 +2,42 @@
 //  PanelLoader.m
 //  PhotoChat
 //
-//  Created by horizon on 20/02/2013.
+//  Created by Shakir Ali on 20/02/2013.
 //  Copyright (c) 2013 horizon. All rights reserved.
 //
 
 #import "PanelLoader.h"
 
 #import "APIConstant.h"
-#import "Panel.h"
+#import "PanelJSONHandler.h"
 #import "APIWrapper.h"
+
+@interface PanelLoader ()
+@property int panelRequestType;
+@end
 
 @implementation PanelLoader
 
+int const kGetGroupPanels = 0;
+int const kGetPanel = 1;
+
 @synthesize delegate;
+@synthesize panelRequestType;
 
 -(void)submitRequestGetPanelsForGroup:(int)groupId{
-    [self initConnectionRequest];
+    panelRequestType = kGetGroupPanels;
     NSURLRequest* urlRequest = [self preparePanelRequestForGroup:groupId];
+    [self submitPanelRequest:urlRequest];
+}
+
+-(void)submitRequestGetPanelWithId:(int)panelId{
+    panelRequestType = kGetPanel;
+    NSURLRequest* urlRequest = [self preparePanelRequestForGetPanelWithId:panelId];
+    [self submitPanelRequest:urlRequest];
+}
+
+-(void)submitPanelRequest:(NSURLRequest*)urlRequest{
+    [self initConnectionRequest];
     [self submitURLRequest:urlRequest];
 }
 
@@ -28,40 +47,49 @@
     return [NSURLRequest requestWithURL:url];
 }
 
+-(NSURLRequest*)preparePanelRequestForGetPanelWithId:(int)panelId{
+    NSString* panelURL = [APIWrapper getURLForGetPanelWithId:panelId];
+    NSURL* url = [NSURL URLWithString:panelURL];
+    return [NSURLRequest requestWithURL:url];
+}
+
 #pragma mark NSURLConnectionDelegate functions.
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
     [super connectionDidFinishLoading:connection];
     if (self.downloadedData.length > 0){
-        NSError* error;
-        NSArray* jsonArray = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
-        if (jsonArray != nil){
-            NSArray* panels = [self convertJSONArrayIntoPanels:jsonArray];
-            if([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanels:)])
-                [self.delegate PanelLoader:self didLoadPanels:panels];
-        }else{
-            [self reportErrorToDelegate:error];
+        switch (panelRequestType){
+            case kGetGroupPanels:
+                [self handleGetPanelsForGroupResponse];
+                break;
+            case kGetPanel:
+                [self handleGetPanelWithIdResponse];
+                break;
         }
-    }else{
-        
     }
 }
 
--(NSArray*)convertJSONArrayIntoPanels:(NSArray*)jsonArray{
-    NSMutableArray *panels = [[NSMutableArray alloc] initWithCapacity:jsonArray.count];
-    for (NSDictionary *obj in jsonArray){
-        Panel *panel = [[Panel alloc] init];
-        panel.panelID = [(NSString*)[obj valueForKey:@"id"] integerValue];
-        //dict string object uses NSNull value in json deserilization.
-        NSString* url = [obj objectForKey:@"image_url"];
-        if ([url isEqual:[NSNull null]]){
-            url = nil;
-        }else{
-            url = [APIWrapper getAbsoluteURLUsingPanelImageRelativePath:url];
-        }
-        panel.imageURL = url;
-        [panels addObject:panel];
+-(void)handleGetPanelsForGroupResponse{
+    NSError* error;
+    NSArray* jsonArray = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+    if (jsonArray != nil){
+        NSArray* panels = [PanelJSONHandler convertPanelsJSONArrayIntoPanels:jsonArray];
+        if([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanels:)])
+            [self.delegate PanelLoader:self didLoadPanels:panels];
+    }else{
+        [self reportErrorToDelegate:error];
     }
-    return panels;
+}
+
+-(void)handleGetPanelWithIdResponse{
+    NSError* error;
+    NSDictionary* paneldict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+    if (paneldict != nil){
+        Panel *panel = [PanelJSONHandler convertPanelJSONDictIntoPanel:paneldict];
+        if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:)])
+            [self.delegate PanelLoader:self didLoadPanel:panel];
+    }else{
+        [self reportErrorToDelegate:error];
+    }
 }
 
 -(void)reportErrorToDelegate:(NSError*)error{
