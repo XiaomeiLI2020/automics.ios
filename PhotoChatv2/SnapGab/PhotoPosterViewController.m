@@ -23,6 +23,7 @@
 @synthesize progressView;
 @synthesize connection;
 @synthesize image;
+@synthesize imageURL;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -242,7 +243,7 @@ finishedSavingWithError:(NSError *)error
     // set URL
     [request setURL:requestURL];
     
-    self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    //self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     
 
     //Uploading on Automics II server
@@ -251,15 +252,13 @@ finishedSavingWithError:(NSError *)error
     NSData *d = [NSData dataFromBase64String:imageString];
     
 
-    NSString* myURLString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/photo?name=%@&description=%@&blob=%@", @"name",@"description", imageString];
-    //NSString*   myURLString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/photo"];
-
+    NSString*   myURLString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/photo"];
     
     NSError *writeErrorNew;
     
     
-    NSArray *objects = [NSArray arrayWithObjects:@"kittens photo", @"tiny.jpg", imageString, nil];
-    NSArray *keys = [NSArray arrayWithObjects:@"description",@"name", @"blob", nil];
+    NSArray *objects = [NSArray arrayWithObjects:@"description", @"type.png", @"320", @"320", imageString, nil];
+    NSArray *keys = [NSArray arrayWithObjects:@"description",@"name", @"width", @"height", @"blob", nil];
     NSDictionary *questionDict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     NSDictionary *jsonDict = [NSDictionary dictionaryWithObject:questionDict forKey:@"data"];
     //Create JSON object
@@ -283,18 +282,108 @@ finishedSavingWithError:(NSError *)error
 
 
     // initiate connection request with the server
-  //  self.connection = [[NSURLConnection alloc] initWithRequest:requestNew delegate:self];
+    self.connection = [[NSURLConnection alloc] initWithRequest:requestNew delegate:self];
+
+    
+    if (!self.connection) {
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle: @"Upload Failure"
+                              message: @"No Internet"
+                              delegate: nil
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    else
+    {
+
+        NSURLResponse *responseURL;
+        NSError *err;
+        NSData *responseData = [NSURLConnection sendSynchronousRequest:requestNew returningResponse:&responseURL error:&err];
+        if(responseData)
+        {
+
+            //NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+            //NSLog(@"responseData: %@", responseString);
+            
+            NSError *parseError = nil;
+            
+            id jsonObject = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&parseError];
+            
+            imageURL = [jsonObject objectForKey:@"id"];
+            NSLog(@"imageURL=%@", imageURL);
 
 
-    //uploading comics
+            //uploading panel
+            myURLString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/panel"];
+            //NSString* image_url = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk%@", imageURL];
+            
+            //NSDictionary *placementsDict = [NSDictionary dictionaryWithObject:placementsArray forKey:@"placements"];
+            //NSDictionary *annotationsDict = [NSDictionary dictionaryWithObject:annotationsArray forKey:@"annotations"];
+            
+            
+            objects = [NSArray arrayWithObjects:imageURL, placementsArray, annotationsArray, nil];
+            keys = [NSArray arrayWithObjects:@"id", @"placements", @"annotations", nil];
+            
+            questionDict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+            jsonDict = [NSDictionary dictionaryWithObject:questionDict forKey:@"data"];
+            
+            //Create JSON object
+            jsonRequestData = [NSJSONSerialization dataWithJSONObject:jsonDict options:NSJSONWritingPrettyPrinted error:&writeErrorNew];
+            
+            requestURLNew = [NSURL URLWithString:myURLString];
+            requestNew = [[NSMutableURLRequest alloc] init];
+            [requestNew setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
+            //[requestNew setCachePolicy:NSURLRequestUseProtocolCachePolicy];
+            [requestNew setHTTPShouldHandleCookies:NO];
+            [requestNew setTimeoutInterval:60];
+            [requestNew setHTTPMethod:@"POST"];
+            [requestNew setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+            [requestNew setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+            [requestNew setURL:requestURLNew];
+            
+            // setting the body of the post to the reqeust
+            [requestNew setHTTPBody:jsonRequestData];
  
-    myURLString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/comic/1/panel"];
+            
+            // initiate connection request with the server
+            self.connection = [[NSURLConnection alloc] initWithRequest:requestNew delegate:self];
+            
+            if(self.connection)
+            {
+                NSString *requestString = [[NSString alloc] initWithData:jsonRequestData encoding:NSUTF8StringEncoding];
+                NSLog(@"requestData: %@", requestString);
+                NSURLResponse *response;
+                NSError *err;
+                NSData *responseData = [NSURLConnection sendSynchronousRequest:requestNew returningResponse:&response error:&err];
+                NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+                NSLog(@"responseData: %@", responseString);
+            }
+            
+            
+        }//end if response
+        //NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+        //NSLog(@"responseData: %@", responseString);
+        
+    }//end else
+
+    self.progressView.progress = 0.0f;
+    self.progressView.alpha = 1.0f;
+
+    //uploading panel
+
+    /*
+    myURLString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/panel"];
     
     NSDictionary *placementsDict = [NSDictionary dictionaryWithObject:placementsArray forKey:@"placements"];
     NSDictionary *annotationsDict = [NSDictionary dictionaryWithObject:annotationsArray forKey:@"annotations"];
     
     objects = [NSArray arrayWithObjects:@"description", @"name", imageString, placementsArray, annotationsArray, nil];
     keys = [NSArray arrayWithObjects:@"description", @"name", @"blob",@"placements", @"annotations", nil];
+    
+    objects = [NSArray arrayWithObjects:placementsArray, annotationsArray, nil];
+    keys = [NSArray arrayWithObjects:@"placements", @"annotations", nil];
     
     //objects = [NSArray arrayWithObjects:@"1",placementsArray, annotationsArray, nil];
     //keys = [NSArray arrayWithObjects:@"page_order", @"placements", @"annotations", nil];
@@ -323,7 +412,9 @@ finishedSavingWithError:(NSError *)error
     // initiate connection request with the server
     //self.connection = [[NSURLConnection alloc] initWithRequest:requestNew delegate:self];
 
-
+     */
+    
+    /*
     if (!self.connection) {
         UIAlertView *alert = [[UIAlertView alloc]
                               initWithTitle: @"Upload Failure"
@@ -336,7 +427,7 @@ finishedSavingWithError:(NSError *)error
     }
     else
     {
-        /*
+     
         NSString *requestString = [[NSString alloc] initWithData:jsonRequestData encoding:NSUTF8StringEncoding];
         NSLog(@"requestData: %@", requestString);
         NSURLResponse *response;
@@ -344,13 +435,14 @@ finishedSavingWithError:(NSError *)error
         NSData *responseData = [NSURLConnection sendSynchronousRequest:requestNew returningResponse:&response error:&err];
         NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
         NSLog(@"responseData: %@", responseString);
-         */
+        
         
     }
 
     self.progressView.progress = 0.0f;
     self.progressView.alpha = 1.0f;
-}
+     */
+}//end startUpload
 
 - (void)connection:(NSURLConnection*)connection didSendBodyData:(NSInteger)bytesWritten
  totalBytesWritten:(NSInteger)totalBytesWritten

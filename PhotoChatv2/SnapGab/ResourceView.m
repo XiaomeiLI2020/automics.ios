@@ -20,6 +20,7 @@
 
 @implementation ResourceView
 
+@synthesize type;
 @synthesize styleId = _styleId;
 @synthesize imageView = _imageView;
 float lastScale = 1.0;
@@ -31,6 +32,8 @@ CGFloat _scale = 1.0;
 CGFloat _previousScale = 1.0;
 float MAX_SCALE = 1.05;
 float MIN_SCALE = 0.90;
+BOOL alertShown;
+
 
 - (id)initWithFrame:(CGRect)frame andStyle:(int)styleId
 {
@@ -44,6 +47,55 @@ float MIN_SCALE = 0.90;
         
         
         _styleId = styleId;
+        alertShown = NO;
+        
+        /*
+         
+         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
+         [self addGestureRecognizer:tap];
+         
+         */
+        
+        UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scalePiece:)];
+        [self addGestureRecognizer:pinchGesture];
+        
+        /*
+         UIRotationGestureRecognizer *rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotate:)];
+         [self addGestureRecognizer:rotateGesture];
+         */
+        
+        UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
+        [panRecognizer setMinimumNumberOfTouches:1];
+        [panRecognizer setMaximumNumberOfTouches:1];
+        [self addGestureRecognizer:panRecognizer];
+        
+        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]
+                                                          initWithTarget:self action:@selector(handleLongPress:)];
+        longPressGesture.minimumPressDuration = 0.30; //seconds
+        [self addGestureRecognizer:longPressGesture];
+        
+    }//end if self
+    return self;
+}
+
+- (id)initWithFrame:(CGRect)frame andURL:(NSString*)urlImageString
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code
+        
+        //UIImage *image = [UIImage imageNamed:urlImageString];
+        
+        NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlImageString]];
+        UIImage *image = [UIImage imageWithData:imageURL];
+        
+        _imageView = [[UIImageView alloc] initWithImage:image];
+        _imageView.userInteractionEnabled = NO;
+        [self addSubview:_imageView];
+        
+        alertShown = NO;
+        
+        //_styleId = styleId;
  /*
 
        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
@@ -73,7 +125,80 @@ float MIN_SCALE = 0.90;
     return self;
 }
 
+- (id)initWithFrame:(CGRect)frame andURL:(NSString*)urlImageString andType:(NSString*)type
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code
 
+        NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlImageString]];
+        UIImage *image = [UIImage imageWithData:imageURL];
+        
+        _imageView = [[UIImageView alloc] initWithImage:image];
+        _imageView.userInteractionEnabled = NO;
+        [self addSubview:_imageView];
+        
+        alertShown = NO;
+        
+        //Scaling and moving enabled for decorators only
+        if([type isEqual:@"d"])
+        {
+        
+            UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scalePiece:)];
+            [self addGestureRecognizer:pinchGesture];
+        
+        
+            UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
+            [panRecognizer setMinimumNumberOfTouches:1];
+            [panRecognizer setMaximumNumberOfTouches:1];
+            [self addGestureRecognizer:panRecognizer];
+        }
+        
+        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]
+                                                          initWithTarget:self action:@selector(handleLongPress:)];
+        longPressGesture.minimumPressDuration = 0.30; //seconds
+        [self addGestureRecognizer:longPressGesture];
+        
+    }//end if self
+    return self;
+}
+
+
+
+- (void)handleLongPress:(id)gestureRecognizer
+{
+    //NSLog(@"speechbubbleview. handlelongPress. alertShown=%d", alertShown);
+    if(!alertShown)
+    {
+        alertShown = YES;
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Delete Resource"
+                                                          message:@"Delete resource from the image."
+                                                         delegate:self
+                                                cancelButtonTitle:@"Delete"
+                                                otherButtonTitles:@"Cancel", nil];
+        [message show];
+        
+    }
+    
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"Delete"])
+    {
+        [self removeFromSuperview];
+        alertShown = NO;
+    }
+    if([title isEqualToString:@"Cancel"])
+    {
+        alertShown = NO;
+        return;
+    }
+}
+
+/*
 - (void)handleLongPress:(id)gestureRecognizer
 {
     
@@ -81,6 +206,8 @@ float MIN_SCALE = 0.90;
     [piece removeFromSuperview];
 
 }
+
+ */
 
 - (void)handleRotate:(UIRotationGestureRecognizer *)recognizer {
     

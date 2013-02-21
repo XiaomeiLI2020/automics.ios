@@ -26,19 +26,15 @@
 @synthesize url;
 @synthesize startWithCamera;
 
-
-@synthesize scrollView;
 @synthesize keyboardIsShown;
-@synthesize imageSize;
-
-
 @synthesize thumbnailScrollView;
 
-//@synthesize _groupName;
-//@synthesize currentPage;
 
+NSMutableArray *resourceList;
 int numSpeechBubbles1=9;
 int numResources1=15;
+
+CGRect thumbFrame;
 
 #define kTabBarHeight 2
 #define kKeyboardAnimationDuration 0.3
@@ -117,7 +113,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                             }];
     
     // Add thumbnails to the scrollview
-    CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin2, thumbnailScrollYOrigin2, thumbnailScrollObjWidth2, thumbnailScrollObjHeight2);
+    thumbFrame = CGRectMake(thumbnailScrollXOrigin2, thumbnailScrollYOrigin2, thumbnailScrollObjWidth2, thumbnailScrollObjHeight2);
     
     CGSize thumbnailSize = CGSizeMake(thumbnailWidth2, thumbnailHeight2);
     thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize  andNumItems:numSpeechBubbles1];
@@ -149,7 +145,9 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         //initWithImage:[UIImage imageNamed:@"bubble1.png"]];
     }
     
-    
+    [self loadResources];
+    //load resources
+    /*
     for (i=0; i<numResources1; i++)
     {
         NSString* imageString = [NSString stringWithFormat: @"resource%i.png",i];
@@ -171,7 +169,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         //initWithImage:[UIImage imageNamed:@"bubble1.png"]];
     }
     
-    
+    */
     [thumbnailScrollView layoutAssets];
     //[thumbnailScrollView layoutItems];
     
@@ -183,6 +181,71 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
 }
 
+
+- (void)loadResources
+{
+    CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin2, thumbnailScrollYOrigin2, thumbnailScrollObjWidth2, thumbnailScrollObjHeight2);
+    
+
+    NSString* urlResourceString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/theme/1/resource"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlResourceString]
+                                                           cachePolicy:NSURLRequestReturnCacheDataElseLoad
+                                                       timeoutInterval:10];
+    
+    [request setHTTPMethod: @"GET"];
+    
+    NSError *requestError;
+    NSURLResponse *urlResponse = nil;
+    
+    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
+    if(response)
+    {
+        NSError *parseError = nil;
+        id jsonObject = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingAllowFragments error:&parseError];
+        for(NSDictionary* resource in jsonObject)
+        {
+            
+            //NSString* name = [resource objectForKey:@"name"];
+            //NSString* type = [resource objectForKey:@"typ"];
+            int resourceId = [[resource objectForKey:@"id"] intValue];
+            //NSString* image_url = [resource objectForKey:@"image_url"];
+            NSString* thumb_url = [resource objectForKey:@"thumb_url"];
+            
+            NSString* urlImageString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk%@",thumb_url];
+            UIImage *image = [UIImage imageNamed:urlImageString];
+            
+            NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlImageString]];
+            image = [UIImage imageWithData:imageURL];
+
+            UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
+            [styleButton setImage:image forState:UIControlStateNormal];
+            
+            CGRect rect1 = styleButton.frame;
+            rect1.size.height = thumbnailHeight2;
+            rect1.size.width = thumbnailWidth2;
+            styleButton.frame = rect1;
+            styleButton.tag = resourceId;	// tag our images for later use when we place them in serial fashion
+            
+            [styleButton addTarget:self action:@selector(addResourceWithId:) forControlEvents:UIControlEventTouchDown];
+            // add images to the thumbnail scrollview
+            [thumbnailScrollView addSubview:styleButton];
+            
+            //NSLog(@"urlImageString= %@", urlImageString);
+            //NSLog(@"id= %i", resourceId);
+            //NSLog(@"image_url= %@", image_url);
+            
+            [resourceList addObject:resource];
+            //if(resourceId==13)
+            //    break;
+        }//end for
+        
+    }//end if
+    
+
+}
+
+
+
 - (void)singleTapGestureCaptured:(UITapGestureRecognizer *)gesture
 {
 
@@ -193,8 +256,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
     if(styleId<=numSpeechBubbles1)
         [self addBubbleWithStyle:(styleId-1)];
-    else
-        [self addResourceWithStyle:(styleId-numSpeechBubbles1-1)];
+    //else
+       // [self addResourceWithStyle:(styleId-numSpeechBubbles1-1)];
 }
 
 
@@ -219,12 +282,9 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         NSString* imageString = [NSString stringWithFormat: @"bubble-style%i.png",i];
         UIImage *image = [UIImage imageNamed:imageString];
         
-        
-        //UIImageView *sbView = [[UIImageView alloc] initWithImage:image];
         UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
         [styleButton setBackgroundImage:image forState:UIControlStateNormal];
-        // [styleButton setTitle:@"sb" forState:UIControlStateNormal];
-        // [styleButton setTitle:@" " forState:UIControlStateHighlighted];
+        [styleButton setImage:image forState:UIControlStateNormal];
         
         
         CGRect rect1 = styleButton.frame;
@@ -238,7 +298,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         //initWithImage:[UIImage imageNamed:@"bubble1.png"]];
     }
     
-    
+    [self loadResources];
+    /*
     for (i=0; i<numResources1; i++)
     {
         NSString* imageString = [NSString stringWithFormat: @"resource%i.png",i];
@@ -259,7 +320,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         [thumbnailScrollView addSubview:styleButton];
         //initWithImage:[UIImage imageNamed:@"bubble1.png"]];
     }
-    
+    */
     
     [thumbnailScrollView layoutAssets];
     //[thumbnailScrollView layoutItems];
@@ -293,16 +354,48 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
 }
 
+
+- (void)addResourceWithId:(id)sender
+{
+    UIButton *clicked = (UIButton *) sender;
+    int resourceId = clicked.tag;
+    
+    if([resourceList count]>0)
+    {
+        NSDictionary* resource = [resourceList objectAtIndex:(resourceId-1)];
+        NSString* image_url = [resource objectForKey:@"image_url"];
+        NSString* type = [resource objectForKey:@"typ"];
+        
+        NSString* urlImageString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk%@",image_url];
+        //NSLog(@"urlImageString=%@",urlImageString);
+        CGRect resourceFrame;
+        if([type isEqual:@"d"])
+        {
+            resourceFrame = CGRectMake(100, 100, 200, 200);
+        }
+        if([type isEqual:@"f"])
+        {
+            resourceFrame = CGRectMake(0, 40, 320, 320);
+        }
+        
+        ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:urlImageString andType:type];
+        [self.view addSubview:rv];
+    }
+
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    resourceList = [[NSMutableArray alloc] init];
     
     [self registerForKeyboardNotifications];
     
     keyboardIsShown = NO;
     
     //imageSize = CGSizeMake(320, 320);
-    
 }
 
 - (void)viewDidUnload
@@ -380,14 +473,6 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                     {
                         //Save the original frame of subview
                         originalFrame = [subview frame];
-                        /*
-                         NSLog(@"self.scrollView.frame.origin.y is %f", self.scrollView.frame.origin.y);
-                         NSLog(@"subview.frame.origin.y is %f", subview.frame.origin.y);
-                         NSLog(@"subview.frame.size.height is %f", subview.frame.size.height);
-                         NSLog(@"subsubview.frame.origin.y is %f", subsubview.frame.origin.y);
-                         NSLog(@"subsubview.frame.size.height is %f", subsubview.frame.size.height);
-                         NSLog(@"keyboardSize.height is %f", keyboardSize.height);
-                         */
                         
                         //If the keyboard is obscuring the SpeechBubble, move speech bubble upwars
                         if(subview.frame.origin.y + subsubview.frame.size.height > keyboardSize.height)
@@ -625,6 +710,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         newMedia = NO;
     }//end if
 }
+
 
 
 @end

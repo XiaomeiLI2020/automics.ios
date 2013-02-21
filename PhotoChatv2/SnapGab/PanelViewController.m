@@ -19,16 +19,10 @@
 @implementation PanelViewController
 
 @synthesize panelScrollView;
-//@synthesize panelImage;
 @synthesize thumbnailScrollView;
-//@synthesize thumbnailImage;
-
-@synthesize addImage;
 
 @synthesize _groupName;
 @synthesize currentPage;
-@synthesize imagePicker;
-@synthesize newMedia;
 
 int _numImages;
 BOOL _bubblesAdded;
@@ -174,8 +168,6 @@ const CGFloat thumbnailHeight= 80.0;
     //NSLog(@"panelframe.origin.x = %f", panelFrame.origin.x);
     panelFrame.origin.y = 0;
     [panelScrollView scrollRectToVisible:panelFrame animated:YES];
-    
-    
     
     //Add bubbles and resources to the new panel's view after scrolling
     [self addBubblesForPage:page-1];
@@ -348,11 +340,7 @@ const CGFloat thumbnailHeight= 80.0;
                                          [[resource objectForKey:@"y"] floatValue],
                                          [[resource objectForKey:@"w"] floatValue],
                                          [[resource objectForKey:@"h"] floatValue]);
-                // [[bubble objectForKey:@"w"] floatValue],
-                // [[bubble objectForKey:@"h"] floatValue]);
-                
-                
-                
+
                 int styleId = [[resource objectForKey:@"s"] intValue];
                 
                 ResourceView* sbv = [[ResourceView alloc] initWithFrame:xywh andStyle:styleId];

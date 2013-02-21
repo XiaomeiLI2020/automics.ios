@@ -25,14 +25,14 @@
 @synthesize imagePicker;
 @synthesize imageView;
 @synthesize url;
-@synthesize startWithCamera;
 
 
-@synthesize scrollView;
+
 @synthesize keyboardIsShown;
 @synthesize imageSize;
 @synthesize thumbnailScrollView;
 
+@synthesize resourceList;
 @synthesize _groupName;
 @synthesize currentPage;
 
@@ -146,7 +146,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         //initWithImage:[UIImage imageNamed:@"bubble1.png"]];
     }
     
-    
+    /*
     for (i=0; i<numResources; i++)
     {
         NSString* imageString = [NSString stringWithFormat: @"resource%i.png",i];
@@ -167,8 +167,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         [thumbnailScrollView addSubview:styleButton];
         //initWithImage:[UIImage imageNamed:@"bubble1.png"]];
     }
-    
-    
+    */
+    [self loadResources];
     [thumbnailScrollView layoutAssets];
     //[thumbnailScrollView layoutItems];
     
@@ -189,8 +189,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
     if(styleId<=numSpeechBubbles)
         [self addBubbleWithStyle:(styleId-1)];
-    else
-        [self addResourceWithStyle:(styleId-numSpeechBubbles-1)];
+    //else
+    //    [self addResourceWithStyle:(styleId-numSpeechBubbles-1)];
 }
 
 
@@ -211,6 +211,68 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     //self.imageView.image = [self squareImageWithImage:image scaledToSize:imageSize];
 }
 
+- (void)loadResources
+{
+    CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin1, thumbnailScrollYOrigin1, thumbnailScrollObjWidth1, thumbnailScrollObjHeight1);
+    
+    
+    NSString* urlResourceString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/theme/1/resource"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlResourceString]
+                                                           cachePolicy:NSURLRequestReturnCacheDataElseLoad
+                                                       timeoutInterval:10];
+    
+    [request setHTTPMethod: @"GET"];
+    
+    NSError *requestError;
+    NSURLResponse *urlResponse = nil;
+    
+    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
+    if(response)
+    {
+        NSError *parseError = nil;
+        id jsonObject = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingAllowFragments error:&parseError];
+        for(NSDictionary* resource in jsonObject)
+        {
+            
+            //NSString* name = [resource objectForKey:@"name"];
+            //NSString* type = [resource objectForKey:@"typ"];
+            int resourceId = [[resource objectForKey:@"id"] intValue];
+            //NSString* image_url = [resource objectForKey:@"image_url"];
+            NSString* thumb_url = [resource objectForKey:@"thumb_url"];
+            
+            NSString* urlImageString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk%@",thumb_url];
+            UIImage *image = [UIImage imageNamed:urlImageString];
+            
+            NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlImageString]];
+            image = [UIImage imageWithData:imageURL];
+            
+            UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
+            [styleButton setImage:image forState:UIControlStateNormal];
+            
+            CGRect rect1 = styleButton.frame;
+            rect1.size.height = thumbnailHeight1;
+            rect1.size.width = thumbnailWidth1;
+            styleButton.frame = rect1;
+            styleButton.tag = resourceId;	// tag our images for later use when we place them in serial fashion
+            
+            [styleButton addTarget:self action:@selector(addResourceWithId:) forControlEvents:UIControlEventTouchDown];
+            // add images to the thumbnail scrollview
+            [thumbnailScrollView addSubview:styleButton];
+            
+            //NSLog(@"urlImageString= %@", urlImageString);
+            //NSLog(@"id= %i", resourceId);
+            //NSLog(@"image_url= %@", image_url);
+            
+            [resourceList addObject:resource];
+            //if(resourceId==13)
+            //    break;
+        }//end for
+        
+    }//end if
+    
+    
+}
+
 
 - (void)addBubbleWithStyle:(int)styleId
 {
@@ -227,9 +289,42 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
 }
 
+- (void)addResourceWithId:(id)sender
+{
+    UIButton *clicked = (UIButton *) sender;
+    int resourceId = clicked.tag;
+    
+    if([resourceList count]>0)
+    {
+        NSDictionary* resource = [resourceList objectAtIndex:(resourceId-1)];
+        NSString* image_url = [resource objectForKey:@"image_url"];
+        NSString* type = [resource objectForKey:@"typ"];
+        
+        NSString* urlImageString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk%@",image_url];
+        //NSLog(@"urlImageString=%@",urlImageString);
+        CGRect resourceFrame;
+        if([type isEqual:@"d"])
+        {
+            resourceFrame = CGRectMake(100, 100, 200, 200);
+        }
+        if([type isEqual:@"f"])
+        {
+            resourceFrame = CGRectMake(0, 40, 320, 320);
+        }
+        
+        ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:urlImageString andType:type];
+        [self.view addSubview:rv];
+    }
+    
+    
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    resourceList = [[NSMutableArray alloc] init];
     
     [self registerForKeyboardNotifications];
     

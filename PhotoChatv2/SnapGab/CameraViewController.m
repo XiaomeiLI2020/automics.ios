@@ -139,7 +139,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
     keyboardIsShown = NO;
     
-    imageSize = CGSizeMake(640, 640);
+    imageSize = CGSizeMake(320, 320);
     
 }
 

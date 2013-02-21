@@ -23,6 +23,8 @@
 @synthesize textView=_textView;
 @synthesize styleId=_styleId;
 
+BOOL alertShown;
+
 - (id)initWithFrame:(CGRect)frame andText:(NSString *)text andStyle:(int)styleId
 {
     self = [super initWithFrame:frame];
@@ -50,27 +52,55 @@
         _textView.userInteractionEnabled = NO;
         [self addSubview:_textView];
         
+        alertShown = NO;
+        
         UITapGestureRecognizer *tap =
         [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
         [self addGestureRecognizer:tap];
         
-        /*
+
         UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]
                                                           initWithTarget:self action:@selector(handleLongPress:)];
         longPressGesture.minimumPressDuration = 0.30; //seconds
         [self addGestureRecognizer:longPressGesture];
-        */
+       
     }
     return self;
 }
 
 - (void)handleLongPress:(id)gestureRecognizer
 {
-    
-    UIView *piece = [(UITapGestureRecognizer*)gestureRecognizer view];
-    [piece removeFromSuperview];
+    //NSLog(@"speechbubbleview. handlelongPress. alertShown=%d", alertShown);
+    if(!alertShown)
+    {
+        alertShown = YES;
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Delete Annotation"
+                                                          message:@"Delete annotation from the image."
+                                                         delegate:self
+                                                cancelButtonTitle:@"Delete"
+                                                otherButtonTitles:@"Cancel", nil];
+        [message show];
+
+    }
     
 }
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"Delete"])
+    {
+            [self removeFromSuperview];
+            alertShown = NO;
+    }
+    if([title isEqualToString:@"Cancel"])
+    {
+        alertShown = NO;
+        return;
+    }
+}
+
 
 UIButton* _invisibleButton;
 - (void)pressedInvisibleButton:(id)button

@@ -44,8 +44,11 @@
 	// Do any additional setup after loading the view.
     [self getGroups];
     [self getOrganisations];
+   // [self getResources];
 
 }
+
+
 
 - (void)getGroups
 {

@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "BubbleTextView.h"
 
-@interface SpeechBubbleView : UIView <UITextViewDelegate>
+@interface SpeechBubbleView : UIView <UITextViewDelegate, UIAlertViewDelegate>
 
 @property BubbleTextView* textView;
 @property int styleId;
+
 
 - (id)initWithFrame:(CGRect)frame andText:(NSString *)text andStyle:(int)styleId;
 

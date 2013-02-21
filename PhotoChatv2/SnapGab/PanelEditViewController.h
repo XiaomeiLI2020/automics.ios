@@ -37,5 +37,6 @@
 @property BOOL keyboardIsShown;
 @property int currentPage;
 @property NSString* _groupName;
+@property NSMutableArray* resourceList;
 
 @end

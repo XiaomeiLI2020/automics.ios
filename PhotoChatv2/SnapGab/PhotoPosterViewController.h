@@ -14,6 +14,7 @@
 
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) UIImage *image;
+@property NSString* imageURL;
 
 - (IBAction)cancelPressed:(id)sender;
 

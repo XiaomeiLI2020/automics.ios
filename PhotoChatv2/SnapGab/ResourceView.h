@@ -8,13 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ResourceView : UIView 
+@interface ResourceView : UIView <UIAlertViewDelegate>
 
+@property NSString* type;
 @property int styleId;
 @property UIImageView* imageView;
 
 
 - (id)initWithFrame:(CGRect)frame andStyle:(int)styleId;
+- (id)initWithFrame:(CGRect)frame andURL:(NSString*)imageURL;
+- (id)initWithFrame:(CGRect)frame andURL:(NSString*)imageURL andType:(NSString*)type;
 
 @end
 
