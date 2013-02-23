@@ -15,6 +15,7 @@
 #import "PanelEditViewController.h"
 #import "PanelViewController.h"
 #import "ResourceImageView.h"
+#import "GUIConstant.h"
 
 @interface PanelEditViewController ()
 
@@ -26,8 +27,6 @@
 @synthesize imageView;
 @synthesize url;
 
-
-
 @synthesize keyboardIsShown;
 @synthesize imageSize;
 @synthesize thumbnailScrollView;
@@ -36,21 +35,11 @@
 @synthesize _groupName;
 @synthesize currentPage;
 
-int numSpeechBubbles=9;
-int numResources=15;
+
+int numResources;
 
 #define kTabBarHeight 2
 #define kKeyboardAnimationDuration 0.3
-
-CGFloat thumbnailScrollXOrigin1= 0.0;
-CGFloat thumbnailScrollYOrigin1= 410.0;
-CGFloat thumbnailScrollObjHeight1= 50.0;
-CGFloat thumbnailScrollObjWidth1= 320.0;
-CGFloat thumbnailWidth1= 50.0;
-CGFloat thumbnailHeight1= 50.0;
-
-
-
 
 -(void)image:(UIImage *)image
 finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
@@ -114,12 +103,33 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                             }];
     
     // Add thumbnails to the scrollview
-    CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin1, thumbnailScrollYOrigin1, thumbnailScrollObjWidth1, thumbnailScrollObjHeight1);
+    //CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin, thumbnailScrollYOrigin, thumbnailScrollObjWidth, thumbnailScrollObjHeight);
+    CGRect thumbFrame = CGRectMake(assetScrollXOrigin, assetScrollYOrigin, assetScrollObjWidth, assetScrollObjHeight);
     
-    CGSize thumbnailSize = CGSizeMake(thumbnailWidth1, thumbnailHeight1);
+    CGSize thumbnailSize = CGSizeMake(assetWidth, assetHeight);
     thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize  andNumItems:numSpeechBubbles];
     thumbnailScrollView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:thumbnailScrollView];
+    
+
+    [self loadSpeechBubbles];
+    
+    [self loadResources];
+    [thumbnailScrollView layoutAssets];
+    //[thumbnailScrollView layoutItems];
+    
+
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureCaptured:)];
+    //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
+    singleTap.cancelsTouchesInView = NO;
+    [thumbnailScrollView addGestureRecognizer:singleTap];
+    
+}
+
+
+- (void)loadSpeechBubbles
+{
+    CGRect thumbFrame = CGRectMake(assetScrollXOrigin, assetScrollYOrigin, assetScrollObjWidth, assetScrollObjHeight);
     
     NSUInteger i;
     for (i=0; i <numSpeechBubbles; i++)
@@ -131,67 +141,34 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         //UIImageView *sbView = [[UIImageView alloc] initWithImage:image];
         UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
         [styleButton setBackgroundImage:image forState:UIControlStateNormal];
-        // [styleButton setTitle:@"sb" forState:UIControlStateNormal];
-        // [styleButton setTitle:@" " forState:UIControlStateHighlighted];
-        
         
         CGRect rect1 = styleButton.frame;
-        rect1.size.height = thumbnailHeight1;
-        rect1.size.width = thumbnailWidth1;
+        rect1.size.height = assetHeight;
+        rect1.size.width = assetWidth;
         styleButton.frame = rect1;
         styleButton.tag = i;	// tag our images for later use when we place them in serial fashion
+        
+        [styleButton addTarget:self action:@selector(addBubbleWithId:) forControlEvents:UIControlEventTouchDown];
         
         // add images to the thumbnail scrollview
         [thumbnailScrollView addSubview:styleButton];
         //initWithImage:[UIImage imageNamed:@"bubble1.png"]];
     }
-    
-    /*
-    for (i=0; i<numResources; i++)
-    {
-        NSString* imageString = [NSString stringWithFormat: @"resource%i.png",i];
-        UIImage *image = [UIImage imageNamed:imageString];
-        
-        
-        //UIImageView *sbView = [[UIImageView alloc] initWithImage:image];
-        UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
-        [styleButton setBackgroundImage:image forState:UIControlStateNormal];
-        
-        CGRect rect1 = styleButton.frame;
-        rect1.size.height = thumbnailHeight1;
-        rect1.size.width = thumbnailWidth1;
-        styleButton.frame = rect1;
-        styleButton.tag = i;	// tag our images for later use when we place them in serial fashion
-        
-        // add images to the thumbnail scrollview
-        [thumbnailScrollView addSubview:styleButton];
-        //initWithImage:[UIImage imageNamed:@"bubble1.png"]];
-    }
-    */
-    [self loadResources];
-    [thumbnailScrollView layoutAssets];
-    //[thumbnailScrollView layoutItems];
-    
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureCaptured:)];
-    //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
-    singleTap.cancelsTouchesInView = NO;
-    [thumbnailScrollView addGestureRecognizer:singleTap];
-    
 }
 
 - (void)singleTapGestureCaptured:(UITapGestureRecognizer *)gesture
 {
-
+/*
     CGPoint touchPoint=[gesture locationInView:thumbnailScrollView];
-    CGFloat pos = (CGFloat)touchPoint.x / thumbnailWidth1;
+    CGFloat pos = (CGFloat)touchPoint.x / assetWidth;
     int styleId = round(ceilf(pos));
     //NSLog(@"singleTap. styleId= %i", styleId);
     
     if(styleId<=numSpeechBubbles)
         [self addBubbleWithStyle:(styleId-1)];
-    //else
-    //    [self addResourceWithStyle:(styleId-numSpeechBubbles-1)];
-}
+ */
+    
+ }
 
 
 - (void)viewDidAppear:(BOOL)animated
@@ -199,13 +176,13 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     [super viewDidAppear:animated];
     //if(self.startWithCamera) [self useCameraPressed];
     self.thumbnailScrollView.delegate=self;
-    if(self.startWithCamera) [self takeSnap:0];
-    self.startWithCamera = NO;
+
 }
 
 
 - (void)loadImage:(UIImage*) image
 {
+    self.imageView.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
     self.imageView.image = image;
     
     //self.imageView.image = [self squareImageWithImage:image scaledToSize:imageSize];
@@ -213,7 +190,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 - (void)loadResources
 {
-    CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin1, thumbnailScrollYOrigin1, thumbnailScrollObjWidth1, thumbnailScrollObjHeight1);
+    CGRect thumbFrame = CGRectMake(assetScrollXOrigin, assetScrollYOrigin, assetScrollObjWidth, assetScrollObjHeight);
     
     
     NSString* urlResourceString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/theme/1/resource"];
@@ -250,8 +227,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             [styleButton setImage:image forState:UIControlStateNormal];
             
             CGRect rect1 = styleButton.frame;
-            rect1.size.height = thumbnailHeight1;
-            rect1.size.width = thumbnailWidth1;
+            rect1.size.height = assetHeight;
+            rect1.size.width = assetWidth;
             styleButton.frame = rect1;
             styleButton.tag = resourceId;	// tag our images for later use when we place them in serial fashion
             
@@ -270,9 +247,16 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         
     }//end if
     
-    
 }
 
+- (void)addBubbleWithId:(id)sender
+{
+    UIButton *clicked = (UIButton *) sender;
+    int styleId = clicked.tag;
+    
+    SpeechBubbleView *sbv = [[SpeechBubbleView alloc] initWithFrame:CGRectMake(100, 100, 0, 0) andText:@"  TAP TO EDIT\nDRAG TO MOVE" andStyle:styleId];
+    [self.view addSubview:sbv];
+}
 
 - (void)addBubbleWithStyle:(int)styleId
 {
@@ -305,11 +289,11 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         CGRect resourceFrame;
         if([type isEqual:@"d"])
         {
-            resourceFrame = CGRectMake(100, 100, 200, 200);
+            resourceFrame = CGRectMake(100, 100, decoratorWidth, decoratorHeight);
         }
         if([type isEqual:@"f"])
         {
-            resourceFrame = CGRectMake(0, 40, 320, 320);
+            resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
         }
         
         ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:urlImageString andType:type];
@@ -330,7 +314,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
     keyboardIsShown = NO;
     
-    imageSize = CGSizeMake(320, 320);
+    imageSize = CGSizeMake(panelWidth, panelHeight);
     
 }
 
@@ -409,14 +393,6 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                     {
                         //Save the original frame of subview
                         originalFrame = [subview frame];
-                        /*
-                         NSLog(@"self.scrollView.frame.origin.y is %f", self.scrollView.frame.origin.y);
-                         NSLog(@"subview.frame.origin.y is %f", subview.frame.origin.y);
-                         NSLog(@"subview.frame.size.height is %f", subview.frame.size.height);
-                         NSLog(@"subsubview.frame.origin.y is %f", subsubview.frame.origin.y);
-                         NSLog(@"subsubview.frame.size.height is %f", subsubview.frame.size.height);
-                         NSLog(@"keyboardSize.height is %f", keyboardSize.height);
-                         */
                         
                         //If the keyboard is obscuring the SpeechBubble, move speech bubble upwars
                         if(subview.frame.origin.y + subsubview.frame.size.height > keyboardSize.height)
@@ -511,42 +487,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     } //end for
 } //end removeAllResources
 
-// Responding to after the user accepts a newly-captured picture
--(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
-    
-    
-    // NSString *mediaType = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-    
-    //Handle a picture capture
-    if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
-        
-        UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-        
-        [self loadImage:image];
-        [self removeAllBubbles];
-        [self removeAllResources];
-        
-        imageView.image = image;
-        
-        //If newMedia, then save the new image to camera roll
-        if (newMedia)
-            UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:finishedSavingWithError:contextInfo:), nil);
-    }
-    else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie])
-    {
-		// Code here to support video if enabled
-	}
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 
-
--(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 
 
 - (void)didReceiveMemoryWarning
@@ -601,61 +542,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 }
 
-- (IBAction)takeSnap:(id)sender {
-    
-    //Check if device's camera is available to use
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-    {
-        
-        //Instantiate ImagePickerController
-        imagePicker = [[UIImagePickerController alloc] init];
-        
-        //Configure the ImagePickerController for media capture
-        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        
-        //Set mediaTypes to images
-        imagePicker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeImage, nil];
-        imagePicker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
-        //imagePicker.toolbarHidden = YES;
-        
-        
-        //Assign delegate object to ImagePickerController's delegate property
-        imagePicker.delegate = self;
-        
-        imagePicker.allowsEditing = NO;
-        [self presentViewController:imagePicker animated:YES completion:nil];
-        
-        newMedia = YES;
-        
-    }//end if
-}
 
-//Show photos from camera roll
-- (IBAction)showPhotos:(id)sender {
-    
-    if ([UIImagePickerController isSourceTypeAvailable:
-         UIImagePickerControllerSourceTypeSavedPhotosAlbum])
-    {
-        
-        //Instantiate ImagePickerController
-        imagePicker = [[UIImagePickerController alloc] init];
-        
-        //Configure the ImagePickerController to show photo library
-        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        
-        
-        imagePicker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeImage, nil];
-        
-        //imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum ];
-        
-        //Assign delegate object to ImagePickerController's delegate property
-        imagePicker.delegate = self;
-        
-        imagePicker.allowsEditing = NO;
-        [self presentViewController:imagePicker animated:YES completion:nil];
-        newMedia = NO;
-    }//end if
-}
 
 
 @end

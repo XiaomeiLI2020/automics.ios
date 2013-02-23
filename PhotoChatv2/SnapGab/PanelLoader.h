@@ -15,6 +15,7 @@
 
 extern int const kGetGroupPanels;
 extern int const kGetPanel;
+extern int numPanels;
 
 @property (weak) id<PanelLoaderDelegate> delegate;
 -(void)submitRequestGetPanelsForGroup:(int)groupId;

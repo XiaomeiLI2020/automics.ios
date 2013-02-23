@@ -11,6 +11,10 @@
 #import "UIImageView+WebCache.h"
 #import "SpeechBubbleView.h"
 #import "ResourceView.h"
+#import "PanelLoader.h"
+#import "ResourceImageView.h"
+#import "ImageDownloader.h"
+#import "GUIConstant.h"
 
 @interface PanelViewController ()
 
@@ -28,126 +32,40 @@ int _numImages;
 BOOL _bubblesAdded;
 BOOL _resourcesAdded;
 
-const CGFloat panelScrollXOrigin= 0.0;
-const CGFloat panelScrollYOrigin= 40.0;
-const CGFloat panelScrollObjHeight= 360.0;
-const CGFloat panelScrollObjWidth= 320.0;
-const CGFloat panelWidth= 320.0;
-const CGFloat panelHeight= 320.0;
 
-const CGFloat thumbnailScrollXOrigin= 0.0;
-const CGFloat thumbnailScrollYOrigin= 410.0;
-const CGFloat thumbnailScrollObjHeight= 80.0;
-const CGFloat thumbnailScrollObjWidth= 320.0;
-const CGFloat thumbnailWidth= 80.0;
-const CGFloat thumbnailHeight= 80.0;
+PanelLoader *panelsLoader;
+PanelLoader *panelLoader;
+NSString* urlImageString;
+int panelId;
 
 - (void)updateNumImages
 {
-    
-    //NSURLRequestReloadIgnoringLocalCacheData does not seem to work for 3G
-    NSString* urlString = [NSString stringWithFormat:
-                           @"http://www.automics.net/automics/userfiles/%@/last.txt?%d",_groupName,arc4random()];
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]
-                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                                       timeoutInterval:10];
-    
-    [request setHTTPMethod: @"GET"];
-    
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
-    
-    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
-    
-    if(!requestError) _numImages = [[[NSString alloc] initWithData:response encoding:NSASCIIStringEncoding] intValue];
-    
-    //NSLog(@"updateImages. urlString is %@", urlString);
-    //NSLog(@"updateImages. _numImages is %i", _numImages);
-    
-    if(_numImages>0) {
-        
-        // Add panels to the scrollview
-        CGRect panelFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
-        CGSize panelSize = CGSizeMake(panelWidth, panelHeight);
-        panelScrollView = [[MainScrollSelector alloc] initWithFrame:panelFrame andItemSize:panelSize andNumItems:_numImages];
-        [self.view addSubview:panelScrollView];
-        
-        // Add thumbnails to the scrollview
-        CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin, thumbnailScrollYOrigin, thumbnailScrollObjWidth, thumbnailScrollObjHeight);
-        CGSize thumbnailSize = CGSizeMake(thumbnailWidth, thumbnailHeight);
-        thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize  andNumItems:_numImages];
-        [self.view addSubview:thumbnailScrollView];
-        
-        // load all the images from our bundle and add them to the scroll views
-        NSUInteger i;
-        for (i=1; i <=_numImages; i++)
-        {
-            
-            NSString* urlImageString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/thumbs/%d.jpg",_groupName, i];
-            
-            //NSLog(@"updateImages. urlImageString %@", urlImageString);
-            //NSData* imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:urlImageString]];
-            //UIImage* image = [[UIImage alloc] initWithData:imageData];
-            //UIImageView *imageView = [UIImageView alloc];
-            //[imageView setImage:image];
-            UIImage *image = [UIImage imageNamed:urlImageString];
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-            [imageView setImageWithURL:[NSURL URLWithString:urlImageString]
-                      placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
-            
-            
-            
-            // setup each frame to a default height and width, it will be properly placed when we call "updateScrollList"
-            CGRect rect = imageView.frame;
-            rect.size.height = panelScrollObjHeight;
-            rect.size.width = panelScrollObjWidth;
-            imageView.frame = rect;
-            imageView.tag = i;	// tag our images for later use when we place them in serial fashion
-            
-            // add images to the panel scrollview
-            [panelScrollView addSubview:imageView];
-            
-            // UIImageView *thumbnailView = [UIImageView alloc];
-            //[thumbnailView setImage:image];
-            UIImageView *thumbnailView = [[UIImageView alloc] initWithImage:image];
-            [thumbnailView setImageWithURL:[NSURL URLWithString:urlImageString]
-                          placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
-            
-            CGRect rect1 = thumbnailView.frame;
-            rect1.size.height = thumbnailScrollObjHeight;
-            //rect1.size.width = thumbnailScrollObjWidth;
-            rect1.size.width = thumbnailWidth;
-            thumbnailView.frame = rect1;
-            thumbnailView.tag = i;	// tag our images for later use when we place them in serial fashion
-            
-            // add images to the thumbnail scrollview
-            [thumbnailScrollView addSubview:thumbnailView];
-            
-        }//end for
-        
+
+    //NSLog(@"updateNumImages.numPanels=%i", numPanels);
+    if(numPanels>0)
+    {
         // place the panels in serial layout within the scrollview
         [panelScrollView layoutItems];
-
-        currentPage = _numImages;
-
+        
+        currentPage = numPanels;
+        
         //Scroll to the last added panel in the serial layout within the scrollview
         [panelScrollView scrollItemToVisible:(currentPage)];
-
         
+
         // place the thumbnail in serial layout within the scrollview
         [thumbnailScrollView layoutItems];
         //Scroll to the last added thumbnail in the serial layout within the scrollview
         [thumbnailScrollView scrollItemToVisible:(currentPage)];
-
+        
         
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureCaptured:)];
         //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
         singleTap.cancelsTouchesInView = NO;
         [thumbnailScrollView addGestureRecognizer:singleTap];
-        
-    }//end if(_numImages>0)
-    
+           
+    }//end if(numPanels>0)
+       
 }//end updateNumImages
 
 - (void)singleTapGestureCaptured:(UITapGestureRecognizer *)gesture
@@ -175,7 +93,6 @@ const CGFloat thumbnailHeight= 80.0;
 }
 
 
-
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
@@ -197,27 +114,32 @@ const CGFloat thumbnailHeight= 80.0;
     return self;
 }
 
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    //NSLog(@"viewDidLoad");
 
-    //NSLog(@"viewDidLoad.currentPage.%i", currentPage);
-    //NSLog(@"viewDidLoad._bubblesAdded.%d", _bubblesAdded);
+    panelsLoader = [[PanelLoader alloc] init];
+    panelsLoader.delegate = self;
+    [panelsLoader submitRequestGetPanelsForGroup:1];
     
-    [self updateNumImages];
-    self.panelScrollView.delegate=self;
-
-    _bubblesAdded = NO;
-    _resourcesAdded = NO;
-
-    //Add bubbles and resources to a panel after scrolling
-   [self addBubblesForPage:currentPage-1];
-   [self addResourcesForPage:currentPage-1];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    //NSLog(@"viewDidAppear");
+    [self updateNumImages];
+    
+    //self.panelScrollView.delegate=self;
+    
+    _bubblesAdded = NO;
+    _resourcesAdded = NO;
+    
+    //Add bubbles and resources to a panel after scrolling
+    [self addBubblesForPage:currentPage-1];
+    [self addResourcesForPage:currentPage-1];
+}
 
 
 -(void)removeAllBubbles
@@ -372,8 +294,8 @@ const CGFloat thumbnailHeight= 80.0;
 
 -(void)alignPageInPanelScrollView
 {
-    //NSLog(@"alignRowInPhotoTableView. _numImages is %i", _numImages);
-    if(_numImages>0)
+    //NSLog(@"alignRowInPhotoTableView.numPanels=%i", numPanels);
+    if(numPanels>0)
     {
         //Constrain horizontal page position and add bubbles and resources
         CGFloat pos = (CGFloat)self.panelScrollView.contentOffset.x / panelWidth;
@@ -418,14 +340,22 @@ const CGFloat thumbnailHeight= 80.0;
     
     if([[segue identifier] isEqualToString:@"editPanel"])
     {
-        PanelEditViewController *pevc = (PanelEditViewController *)[segue destinationViewController];
 
-        NSString* urlString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/%d.jpg",_groupName, currentPage];
-        //NSLog(@"segue. currentPage %i", currentPage);
-        //NSLog(@"segue. urlString %@", urlString);
+        
+        NSLog(@"currentPage=%i", currentPage);
+        if(currentPage==0)
+        {
+            currentPage=1;
+        }
+        Panel *panel = [self.panels objectAtIndex:(currentPage-1)];
+        NSLog(@"panel.panelId=%i", panel.panelId);
+        NSLog(@"panel.imageURL=%@", panel.imageURL);
+        
+
+        PanelEditViewController *pevc = (PanelEditViewController *)[segue destinationViewController];
         pevc.currentPage = currentPage;
         pevc._groupName = _groupName;
-        pevc.url = [NSURL URLWithString:urlString];
+        pevc.url = [NSURL URLWithString:panel.imageURL];
         
         for (UIView *subview in self.view.subviews)
         {
@@ -450,13 +380,118 @@ const CGFloat thumbnailHeight= 80.0;
                 [pevc.view addSubview:new_sbv];
             }
         }//end for
+         
+         
     }//end if
+}
+
+-(void)initiateScrollViews
+{
+    // Add panels scrollview
+    CGRect panelFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
+    CGSize panelSize = CGSizeMake(panelWidth, panelHeight);
+    panelScrollView = [[MainScrollSelector alloc] initWithFrame:panelFrame andItemSize:panelSize andNumItems:numPanels];
+    panelScrollView.delegate=self;
+    [self.view addSubview:panelScrollView];
     
-    
+    // Add thumbnails scrollview
+    CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin, thumbnailScrollYOrigin, thumbnailScrollObjWidth, thumbnailScrollObjHeight);
+    CGSize thumbnailSize = CGSizeMake(thumbnailWidth, thumbnailHeight);
+    thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize andNumItems:numPanels];
+    [self.view addSubview:thumbnailScrollView];
 }
 
 
-- (IBAction)cameraOrRoll:(id)sender {
+-(void)addImageToScrollViews:(UIImage*)image
+{
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    [imageView setImageWithURL:[NSURL URLWithString:urlImageString]
+              placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
+    
+    CGRect rect = imageView.frame;
+    rect.size.height = panelScrollObjHeight;
+    rect.size.width = panelScrollObjWidth;
+    imageView.frame = rect;
+    imageView.tag = panelId;	// tag our images for later use when we place them in serial fashion
+    
+    // add images to the panel scrollview
+    [panelScrollView addSubview:imageView];
+    
+    
+
+    UIImageView *thumbnailView = [[UIImageView alloc] initWithImage:image];
+    [thumbnailView setImageWithURL:[NSURL URLWithString:urlImageString]
+                  placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
+    
+    CGRect rect1 = thumbnailView.frame;
+    rect1.size.height = thumbnailScrollObjHeight;
+    rect1.size.width = thumbnailWidth;
+    thumbnailView.frame = rect1;
+    thumbnailView.tag = panelId;	// tag our images for later use when we place them in serial fashion
+    
+    // add images to the thumbnail scrollview
+    [thumbnailScrollView addSubview:thumbnailView];
+}
+
+#pragma mark PanelLoader functions.
+-(void)PanelLoader:(PanelLoader*)loader didFailWithError:(NSError*)error{
+    
+}
+
+-(void)PanelLoader:(PanelLoader *)loader didLoadPanels:(NSArray*)panels{
+    
+    //NSLog(@"didLoadPanels.numPanels=%i", numPanels);
+    self.panels = panels;
+    numPanels = [panels count];
+    
+    [self initiateScrollViews];
+
+    
+    for (Panel *panel in panels)
+    {
+        if (panel.imageURL != nil)
+        {
+            urlImageString = panel.imageURL;
+            panelId = panel.panelId;
+            //NSLog(@"panel.imageURL=%@",panel.imageURL);
+            //NSLog(@"urlImageString=%@",urlImageString);
+            ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:panel.imageURL];
+            imageDownloader.delegate = self;
+            if (imageDownloader.image != nil)
+            {
+                NSLog(@"Image is not null");
+            }
+        }//end if
+        
+        if (panel.annotations != nil)
+        {
+            NSLog(@"panel.annotations.count =%i",[panel.annotations count]);
+
+        }//end if
+
+    }//end for
+}
+
+-(void)PanelLoader:(PanelLoader *)loader didLoadPanel:(Panel *)panel{
+    NSLog(@"Panel downloaded");
+}
+
+-(void)imageDownloader:(ImageDownloader*)imageDownloader didLoadImage:(UIImage*)image{
+    if (image){
+        //NSLog(@"Image downloaded successfully.");
+        //NSLog(@"urlImageString=%@",urlImageString);
+        
+
+        [self addImageToScrollViews:image];
+        
+        //ResourceImageView* resourceImage = [[ResourceImageView alloc] initWithFrame:CGRectMake(0.0,40,320,320) image:image];
+        //[panelScrollView addSubview:resourceImage];
+        //[self.view addSubview:resourceImage];
+    }
+}
+
+-(void)imageDownloader:(ImageDownloader *)imageDownloader didFailWithError:(NSError*)error{
+    NSLog(@"Error in image downloaded.");
 }
 
 

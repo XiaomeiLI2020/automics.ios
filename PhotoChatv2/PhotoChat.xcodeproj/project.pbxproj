@@ -58,6 +58,7 @@
 		D8585C69167A58490003B0BD /* placeholder-542x542.png in Resources */ = {isa = PBXBuildFile; fileRef = D8585C68167A58490003B0BD /* placeholder-542x542.png */; };
 		D88FF66916C556F000C0A2A8 /* post-panel.png in Resources */ = {isa = PBXBuildFile; fileRef = D88FF66816C556F000C0A2A8 /* post-panel.png */; };
 		D88FF66B16C5597D00C0A2A8 /* panel-edit.png in Resources */ = {isa = PBXBuildFile; fileRef = D88FF66A16C5597D00C0A2A8 /* panel-edit.png */; };
+		D8932C7C16D7ED7B007D97A9 /* GUIConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = D8932C7B16D7ED7B007D97A9 /* GUIConstant.m */; };
 		D8A098A4167F3A9600762DB0 /* ResourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A098A3167F3A9600762DB0 /* ResourceViewController.m */; };
 		D8A098A8167F497100762DB0 /* ResourceView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A098A7167F497100762DB0 /* ResourceView.m */; };
 		D8A098AB167F4B5600762DB0 /* resource1.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A098A9167F4B5500762DB0 /* resource1.png */; };
@@ -184,6 +185,8 @@
 		D8585C68167A58490003B0BD /* placeholder-542x542.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "placeholder-542x542.png"; path = "SnapGab/placeholder-542x542.png"; sourceTree = "<group>"; };
 		D88FF66816C556F000C0A2A8 /* post-panel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "post-panel.png"; path = "SnapGab/post-panel.png"; sourceTree = "<group>"; };
 		D88FF66A16C5597D00C0A2A8 /* panel-edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "panel-edit.png"; path = "SnapGab/panel-edit.png"; sourceTree = "<group>"; };
+		D8932C7A16D7ED7B007D97A9 /* GUIConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GUIConstant.h; path = ../GUIConstant.h; sourceTree = "<group>"; };
+		D8932C7B16D7ED7B007D97A9 /* GUIConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GUIConstant.m; path = ../GUIConstant.m; sourceTree = "<group>"; };
 		D8A098A2167F3A9600762DB0 /* ResourceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceViewController.h; sourceTree = "<group>"; };
 		D8A098A3167F3A9600762DB0 /* ResourceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceViewController.m; sourceTree = "<group>"; };
 		D8A098A6167F497100762DB0 /* ResourceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceView.h; sourceTree = "<group>"; };
@@ -314,6 +317,8 @@
 		1D8D508C165FADC700C9817C /* PhotoChat */ = {
 			isa = PBXGroup;
 			children = (
+				D8932C7A16D7ED7B007D97A9 /* GUIConstant.h */,
+				D8932C7B16D7ED7B007D97A9 /* GUIConstant.m */,
 				D8F30B1A16CA8487001CF4B5 /* Comic */,
 				D88FF66D16C9080400C0A2A8 /* Resource */,
 				D88FF66C16C907A200C0A2A8 /* Annotation */,
@@ -699,6 +704,7 @@
 				48F6277D16D6440A0034A5A7 /* DataValidator.m in Sources */,
 				48F6277E16D6440A0034A5A7 /* PanelJSONHandler.m in Sources */,
 				48F6277F16D6440A0034A5A7 /* PlacementJSONHandler.m in Sources */,
+				D8932C7C16D7ED7B007D97A9 /* GUIConstant.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

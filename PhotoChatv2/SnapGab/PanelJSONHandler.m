@@ -18,12 +18,18 @@
     Panel *panel = [[Panel alloc] init];
     //id.
     panel.panelId = [(NSString*)[panelJSON valueForKey:@"id"] integerValue];
+    
+    //url dict string object uses NSNull value in json deserilization.
+    panel.imageId = [(NSString*)[panelJSON valueForKey:@"photo_id"] integerValue];
+
+    
     //url dict string object uses NSNull value in json deserilization.
     NSString* url = [panelJSON objectForKey:@"image_url"];
     url = [DataValidator checkKeyValueForNull:url];
     if (url != nil)
         url = [APIWrapper getAbsoluteURLUsingPanelImageRelativePath:url];
     panel.imageURL = url;
+    
     //placements
     if ([panelJSON valueForKey:@"placements"] != nil){
         NSArray* placementArray = [panelJSON valueForKey:@"placements"];
@@ -51,5 +57,26 @@
     }
     return panels;
 }
+
+
++(NSInteger)countPanels:(id)panelsJSON{
+    
+    NSString* urlString = [APIWrapper getURLForGetPanels];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]
+                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                       timeoutInterval:10];
+    
+    [request setHTTPMethod: @"GET"];
+    
+    NSError *requestError;
+    NSURLResponse *urlResponse = nil;
+    
+    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
+    
+    id jsonObject = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingAllowFragments error:&requestError];
+    
+    NSLog(@"COUNT=%d",[jsonObject count]);
+}
+
 
 @end

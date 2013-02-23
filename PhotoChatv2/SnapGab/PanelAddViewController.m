@@ -14,6 +14,7 @@
 #import "SpeechBubbleView.h"
 #import "ResourceView.h"
 #import "PanelEditViewController.h"
+#import "GUIConstant.h"
 
 @interface PanelAddViewController ()
 
@@ -31,7 +32,7 @@
 
 
 NSMutableArray *resourceList;
-int numSpeechBubbles1=9;
+
 int numResources1=15;
 
 CGRect thumbFrame;
@@ -39,12 +40,7 @@ CGRect thumbFrame;
 #define kTabBarHeight 2
 #define kKeyboardAnimationDuration 0.3
 
-CGFloat thumbnailScrollXOrigin2= 0.0;
-CGFloat thumbnailScrollYOrigin2= 410.0;
-CGFloat thumbnailScrollObjHeight2= 50.0;
-CGFloat thumbnailScrollObjWidth2= 320.0;
-CGFloat thumbnailWidth2= 50.0;
-CGFloat thumbnailHeight2= 50.0;
+
 
 
 
@@ -113,15 +109,15 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                             }];
     
     // Add thumbnails to the scrollview
-    thumbFrame = CGRectMake(thumbnailScrollXOrigin2, thumbnailScrollYOrigin2, thumbnailScrollObjWidth2, thumbnailScrollObjHeight2);
+    thumbFrame = CGRectMake(assetScrollXOrigin, assetScrollYOrigin, assetScrollObjWidth, assetScrollObjHeight);
     
-    CGSize thumbnailSize = CGSizeMake(thumbnailWidth2, thumbnailHeight2);
-    thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize  andNumItems:numSpeechBubbles1];
+    CGSize thumbnailSize = CGSizeMake(assetScrollObjWidth, assetScrollObjHeight);
+    thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize  andNumItems:numSpeechBubbles];
     thumbnailScrollView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:thumbnailScrollView];
     
     NSUInteger i;
-    for (i=0; i <numSpeechBubbles1; i++)
+    for (i=0; i <numSpeechBubbles; i++)
     {
         NSString* imageString = [NSString stringWithFormat: @"bubble-style%i.png",i];
         UIImage *image = [UIImage imageNamed:imageString];
@@ -135,8 +131,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         
         
         CGRect rect1 = styleButton.frame;
-        rect1.size.height = thumbnailHeight2;
-        rect1.size.width = thumbnailWidth2;
+        rect1.size.height = assetHeight;
+        rect1.size.width = assetWidth;
         styleButton.frame = rect1;
         styleButton.tag = i;	// tag our images for later use when we place them in serial fashion
         
@@ -147,29 +143,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
     [self loadResources];
     //load resources
-    /*
-    for (i=0; i<numResources1; i++)
-    {
-        NSString* imageString = [NSString stringWithFormat: @"resource%i.png",i];
-        UIImage *image = [UIImage imageNamed:imageString];
-        
-        
-        //UIImageView *sbView = [[UIImageView alloc] initWithImage:image];
-        UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
-        [styleButton setBackgroundImage:image forState:UIControlStateNormal];
-        
-        CGRect rect1 = styleButton.frame;
-        rect1.size.height = thumbnailHeight2;
-        rect1.size.width = thumbnailWidth2;
-        styleButton.frame = rect1;
-        styleButton.tag = i;	// tag our images for later use when we place them in serial fashion
-        
-        // add images to the thumbnail scrollview
-        [thumbnailScrollView addSubview:styleButton];
-        //initWithImage:[UIImage imageNamed:@"bubble1.png"]];
-    }
-    
-    */
+
     [thumbnailScrollView layoutAssets];
     //[thumbnailScrollView layoutItems];
     
@@ -184,7 +158,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 - (void)loadResources
 {
-    CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin2, thumbnailScrollYOrigin2, thumbnailScrollObjWidth2, thumbnailScrollObjHeight2);
+    CGRect thumbFrame = CGRectMake(assetScrollXOrigin, assetScrollYOrigin, assetWidth, assetHeight);
     
 
     NSString* urlResourceString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/theme/1/resource"];
@@ -221,8 +195,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             [styleButton setImage:image forState:UIControlStateNormal];
             
             CGRect rect1 = styleButton.frame;
-            rect1.size.height = thumbnailHeight2;
-            rect1.size.width = thumbnailWidth2;
+            rect1.size.height = assetHeight;
+            rect1.size.width = assetWidth;
             styleButton.frame = rect1;
             styleButton.tag = resourceId;	// tag our images for later use when we place them in serial fashion
             
@@ -250,11 +224,11 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
 
     CGPoint touchPoint=[gesture locationInView:thumbnailScrollView];
-    CGFloat pos = (CGFloat)touchPoint.x / thumbnailWidth2;
+    CGFloat pos = (CGFloat)touchPoint.x / assetWidth;
     int styleId = round(ceilf(pos));
     NSLog(@"singleTap. styleId= %i", styleId);
     
-    if(styleId<=numSpeechBubbles1)
+    if(styleId<=numSpeechBubbles)
         [self addBubbleWithStyle:(styleId-1)];
     //else
        // [self addResourceWithStyle:(styleId-numSpeechBubbles1-1)];
@@ -269,15 +243,15 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     self.startWithCamera = NO;
     
     // Add thumbnails to the scrollview
-    CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin2, thumbnailScrollYOrigin2, thumbnailScrollObjWidth2, thumbnailScrollObjHeight2);
+    CGRect thumbFrame = CGRectMake(assetScrollXOrigin, assetScrollYOrigin, assetWidth, assetHeight);
     
-    CGSize thumbnailSize = CGSizeMake(thumbnailWidth2, thumbnailHeight2);
-    thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize  andNumItems:numSpeechBubbles1];
+    CGSize thumbnailSize = CGSizeMake(assetWidth, assetHeight);
+    thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize  andNumItems:numSpeechBubbles];
     thumbnailScrollView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:thumbnailScrollView];
     
     NSUInteger i;
-    for (i=0; i <numSpeechBubbles1; i++)
+    for (i=0; i <numSpeechBubbles; i++)
     {
         NSString* imageString = [NSString stringWithFormat: @"bubble-style%i.png",i];
         UIImage *image = [UIImage imageNamed:imageString];
@@ -288,8 +262,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         
         
         CGRect rect1 = styleButton.frame;
-        rect1.size.height = thumbnailHeight2;
-        rect1.size.width = thumbnailWidth2;
+        rect1.size.height = assetHeight;
+        rect1.size.width = assetWidth;
         styleButton.frame = rect1;
         styleButton.tag = i;	// tag our images for later use when we place them in serial fashion
         
@@ -299,28 +273,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     }
     
     [self loadResources];
-    /*
-    for (i=0; i<numResources1; i++)
-    {
-        NSString* imageString = [NSString stringWithFormat: @"resource%i.png",i];
-        UIImage *image = [UIImage imageNamed:imageString];
-        
-        
-        //UIImageView *sbView = [[UIImageView alloc] initWithImage:image];
-        UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
-        [styleButton setBackgroundImage:image forState:UIControlStateNormal];
-        
-        CGRect rect1 = styleButton.frame;
-        rect1.size.height = thumbnailHeight2;
-        rect1.size.width = thumbnailWidth2;
-        styleButton.frame = rect1;
-        styleButton.tag = i;	// tag our images for later use when we place them in serial fashion
-        
-        // add images to the thumbnail scrollview
-        [thumbnailScrollView addSubview:styleButton];
-        //initWithImage:[UIImage imageNamed:@"bubble1.png"]];
-    }
-    */
+
     
     [thumbnailScrollView layoutAssets];
     //[thumbnailScrollView layoutItems];
@@ -371,11 +324,11 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         CGRect resourceFrame;
         if([type isEqual:@"d"])
         {
-            resourceFrame = CGRectMake(100, 100, 200, 200);
+            resourceFrame = CGRectMake(100, 100, decoratorWidth, decoratorHeight);
         }
         if([type isEqual:@"f"])
         {
-            resourceFrame = CGRectMake(0, 40, 320, 320);
+            resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
         }
         
         ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:urlImageString andType:type];

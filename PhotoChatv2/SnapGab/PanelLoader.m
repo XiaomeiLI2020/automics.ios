@@ -18,11 +18,15 @@
 
 @implementation PanelLoader
 
+
 int const kGetGroupPanels = 0;
 int const kGetPanel = 1;
+int numPanels;
+
 
 @synthesize delegate;
 @synthesize panelRequestType;
+
 
 -(void)submitRequestGetPanelsForGroup:(int)groupId{
     panelRequestType = kGetGroupPanels;
@@ -39,6 +43,8 @@ int const kGetPanel = 1;
 -(void)submitPanelRequest:(NSURLRequest*)urlRequest{
     [self initConnectionRequest];
     [self submitURLRequest:urlRequest];
+    
+
 }
 
 -(NSURLRequest*)preparePanelRequestForGroup:(int)groupId{
@@ -56,6 +62,7 @@ int const kGetPanel = 1;
 #pragma mark NSURLConnectionDelegate functions.
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
     [super connectionDidFinishLoading:connection];
+    
     if (self.downloadedData.length > 0){
         switch (panelRequestType){
             case kGetGroupPanels:
@@ -64,6 +71,7 @@ int const kGetPanel = 1;
             case kGetPanel:
                 [self handleGetPanelWithIdResponse];
                 break;
+
         }
     }
 }
@@ -72,6 +80,10 @@ int const kGetPanel = 1;
     NSError* error;
     NSArray* jsonArray = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (jsonArray != nil){
+        
+        //Update numPanels
+        numPanels = [jsonArray count];
+        
         NSArray* panels = [PanelJSONHandler convertPanelsJSONArrayIntoPanels:jsonArray];
         if([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanels:)])
             [self.delegate PanelLoader:self didLoadPanels:panels];

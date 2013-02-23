@@ -17,13 +17,7 @@
 
 @property NSString* _groupName;
 @property int currentPage;
-@property BOOL addImage;
-
-@property (strong, nonatomic) UIImagePickerController *imagePicker;
-@property BOOL startWithCamera;
-@property BOOL newMedia;
-
-- (IBAction)cameraOrRoll:(id)sender;
+@property NSArray* panels;
 
 
 @end

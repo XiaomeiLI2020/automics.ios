@@ -25,6 +25,8 @@
 @synthesize image;
 @synthesize imageURL;
 
+BOOL panelUploaded;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -38,6 +40,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.imageView.frame = CGRectMake(0.0, 40.0, 320.0, 320);
     self.imageView.image = self.image;
 }
 
@@ -75,6 +78,8 @@ finishedSavingWithError:(NSError *)error
 
 - (void)startUpload
 {
+    panelUploaded = NO;
+    
     if (self.connection) {
         UIAlertView *alert = [[UIAlertView alloc]
                               initWithTitle: @"Already Sending"
@@ -284,6 +289,8 @@ finishedSavingWithError:(NSError *)error
     // initiate connection request with the server
     self.connection = [[NSURLConnection alloc] initWithRequest:requestNew delegate:self];
 
+    self.progressView.progress = 0.0f;
+    self.progressView.alpha = 1.0f;
     
     if (!self.connection) {
         UIAlertView *alert = [[UIAlertView alloc]
@@ -324,7 +331,7 @@ finishedSavingWithError:(NSError *)error
             
             
             objects = [NSArray arrayWithObjects:imageURL, placementsArray, annotationsArray, nil];
-            keys = [NSArray arrayWithObjects:@"id", @"placements", @"annotations", nil];
+            keys = [NSArray arrayWithObjects:@"photo_id", @"placements", @"annotations", nil];
             
             questionDict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
             jsonDict = [NSDictionary dictionaryWithObject:questionDict forKey:@"data"];
@@ -353,12 +360,13 @@ finishedSavingWithError:(NSError *)error
             if(self.connection)
             {
                 NSString *requestString = [[NSString alloc] initWithData:jsonRequestData encoding:NSUTF8StringEncoding];
-                NSLog(@"requestData: %@", requestString);
+                //NSLog(@"requestData: %@", requestString);
                 NSURLResponse *response;
                 NSError *err;
                 NSData *responseData = [NSURLConnection sendSynchronousRequest:requestNew returningResponse:&response error:&err];
                 NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-                NSLog(@"responseData: %@", responseString);
+                //NSLog(@"responseData: %@", responseString);
+                panelUploaded = YES;
             }
             
             
@@ -368,80 +376,10 @@ finishedSavingWithError:(NSError *)error
         
     }//end else
 
-    self.progressView.progress = 0.0f;
-    self.progressView.alpha = 1.0f;
+    //self.progressView.progress = 0.0f;
+    //self.progressView.alpha = 1.0f;
 
-    //uploading panel
 
-    /*
-    myURLString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/panel"];
-    
-    NSDictionary *placementsDict = [NSDictionary dictionaryWithObject:placementsArray forKey:@"placements"];
-    NSDictionary *annotationsDict = [NSDictionary dictionaryWithObject:annotationsArray forKey:@"annotations"];
-    
-    objects = [NSArray arrayWithObjects:@"description", @"name", imageString, placementsArray, annotationsArray, nil];
-    keys = [NSArray arrayWithObjects:@"description", @"name", @"blob",@"placements", @"annotations", nil];
-    
-    objects = [NSArray arrayWithObjects:placementsArray, annotationsArray, nil];
-    keys = [NSArray arrayWithObjects:@"placements", @"annotations", nil];
-    
-    //objects = [NSArray arrayWithObjects:@"1",placementsArray, annotationsArray, nil];
-    //keys = [NSArray arrayWithObjects:@"page_order", @"placements", @"annotations", nil];
-    
-    questionDict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
-    jsonDict = [NSDictionary dictionaryWithObject:questionDict forKey:@"data"];
-    
-    //Create JSON object
-    jsonRequestData = [NSJSONSerialization dataWithJSONObject:jsonDict options:NSJSONWritingPrettyPrinted error:&writeErrorNew];
-    
-    requestURLNew = [NSURL URLWithString:myURLString];
-    requestNew = [[NSMutableURLRequest alloc] init];
-    [requestNew setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
-    //[requestNew setCachePolicy:NSURLRequestUseProtocolCachePolicy];
-    [requestNew setHTTPShouldHandleCookies:NO];
-    [requestNew setTimeoutInterval:60];
-    [requestNew setHTTPMethod:@"POST"];
-    [requestNew setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [requestNew setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [requestNew setURL:requestURLNew];
-    
-    // setting the body of the post to the reqeust
-    [requestNew setHTTPBody:jsonRequestData];
-    
-    
-    // initiate connection request with the server
-    //self.connection = [[NSURLConnection alloc] initWithRequest:requestNew delegate:self];
-
-     */
-    
-    /*
-    if (!self.connection) {
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Upload Failure"
-                              message: @"No Internet"
-                              delegate: nil
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-        [alert show];
-        return;
-    }
-    else
-    {
-     
-        NSString *requestString = [[NSString alloc] initWithData:jsonRequestData encoding:NSUTF8StringEncoding];
-        NSLog(@"requestData: %@", requestString);
-        NSURLResponse *response;
-        NSError *err;
-        NSData *responseData = [NSURLConnection sendSynchronousRequest:requestNew returningResponse:&response error:&err];
-        NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-        NSLog(@"responseData: %@", responseString);
-        
-        
-    }
-
-    self.progressView.progress = 0.0f;
-    self.progressView.alpha = 1.0f;
-     */
 }//end startUpload
 
 - (void)connection:(NSURLConnection*)connection didSendBodyData:(NSInteger)bytesWritten
@@ -454,16 +392,18 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
  
+    if(panelUploaded)
+    {
+        //panelUploaded=NO;
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Upload Successful"
                           message: nil
                           delegate: nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    //NSLog(@"photo uploaded");
     [alert show];
     [self dismissViewControllerAnimated:YES completion:nil];
-
+    }
 }
 
 - (void)connection:(NSURLConnection *) didFailWithError:(NSError *)error

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="11G56" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="yR9-Y8-Uir">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C2034" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="yR9-Y8-Uir">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
         <!--LoginViewController-->
@@ -449,22 +449,6 @@
                                     <segue destination="Y5y-GU-y3Z" kind="modal" modalTransitionStyle="crossDissolve" id="mP9-wY-8qV"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Rpn-WK-Ni6">
-                                <rect key="frame" x="263" y="0.0" width="54" height="37"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="add-image.png">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="cameraOrRoll:" destination="xKX-9l-Tt1" eventType="touchUpInside" id="hC6-3Q-Mlp"/>
-                                    <segue destination="sz3-Ry-XZA" kind="modal" identifier="addPanel" modalTransitionStyle="crossDissolve" id="HgO-pg-iGv"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Uby-hF-3kl">
                                 <rect key="frame" x="140" y="4" width="54" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -478,6 +462,21 @@
                                 </state>
                                 <connections>
                                     <segue destination="Kqi-7j-Tke" kind="modal" identifier="editPanel" modalTransitionStyle="crossDissolve" id="cbF-ky-Fhx"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="HYk-RT-LGP">
+                                <rect key="frame" x="265" y="0.0" width="50" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" image="add-image.png">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="sz3-Ry-XZA" kind="modal" identifier="addPanelView" modalTransitionStyle="crossDissolve" id="joj-gg-4ob"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -622,7 +621,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dbC-ZG-0e6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="370" y="-708"/>
+            <point key="canvasLocation" x="292" y="-1268"/>
         </scene>
         <!--PhotoPosterViewController-->
         <scene sceneID="XEW-r9-aVc">
@@ -717,17 +716,100 @@
         <image name="panel-edit.png" width="81" height="48"/>
         <image name="post-panel.png" width="91" height="74"/>
     </resources>
+    <classes>
+        <class className="ComicAddViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicAddViewController.h"/>
+        </class>
+        <class className="ComicDetailsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicDetailsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="editPressed" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="ComicEditViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicEditViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="deletePanel:"/>
+            </relationships>
+        </class>
+        <class className="ComicPosterViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicPosterViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancelPressed:"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="progressView" candidateClass="UIProgressView"/>
+            </relationships>
+        </class>
+        <class className="ComicTableCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicTableCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="comicButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="ComicViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="comicTableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="LoginViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="loginPressed:"/>
+                <relationship kind="outlet" name="email" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="password" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="PanelAddViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PanelAddViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="showPhotos:"/>
+                <relationship kind="action" name="takeSnap:"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+            </relationships>
+        </class>
+        <class className="PanelEditViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PanelEditViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+            </relationships>
+        </class>
+        <class className="PanelViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PanelViewController.h"/>
+        </class>
+        <class className="PhotoPosterViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PhotoPosterViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancelPressed:"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="progressView" candidateClass="UIProgressView"/>
+            </relationships>
+        </class>
+        <class className="WelcomeViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WelcomeViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="logoutPressed:"/>
+                <relationship kind="action" name="makeGroup:"/>
+                <relationship kind="outlet" name="groupLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="groupTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="organisationLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="organisationTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="themeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="themeTableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="woI-Op-NZA"/>
+        <segue reference="lbd-Gx-frY"/>
+        <segue reference="mP9-wY-8qV"/>
         <segue reference="OdU-FZ-iAQ"/>
         <segue reference="lLZ-Tg-1fy"/>
-        <segue reference="7K2-Cr-pvV"/>
         <segue reference="kZ1-sQ-Xvc"/>
-        <segue reference="9PL-ZN-yjP"/>
-        <segue reference="P1E-0g-8Qy"/>
     </inferredMetricsTieBreakers>
 </document>

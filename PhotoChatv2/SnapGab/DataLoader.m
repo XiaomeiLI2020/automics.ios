@@ -21,6 +21,7 @@
 }
 
 -(void)submitURLRequest:(NSURLRequest*)urlRequest{
+
     NSURLConnection *urlConnection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:NO];
     [urlConnection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     [urlConnection start];
@@ -33,7 +34,7 @@
 
 #pragma mark NSURLConnection functions.
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
-    self.downloadedData = [NSMutableData data];
+       self.downloadedData = [NSMutableData data];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data{
