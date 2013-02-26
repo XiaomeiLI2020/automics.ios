@@ -20,7 +20,7 @@
     panel.panelId = [(NSString*)[panelJSON valueForKey:@"id"] integerValue];
     
     //url dict string object uses NSNull value in json deserilization.
-    panel.imageId = [(NSString*)[panelJSON valueForKey:@"photo_id"] integerValue];
+    panel.photoId = [(NSString*)[panelJSON valueForKey:@"photo_id"] integerValue];
 
     
     //url dict string object uses NSNull value in json deserilization.
@@ -58,25 +58,25 @@
     return panels;
 }
 
-
-+(NSInteger)countPanels:(id)panelsJSON{
++(NSDictionary*)convertPanelIntoPanelJSON:(Panel *)panel{
+    NSMutableDictionary* paneldict = [[NSMutableDictionary alloc] init];
+    if (panel.panelId > 0)
+        [paneldict setValue:[[NSNumber alloc] initWithInt:panel.panelId] forKey:@"id"];
+    if (panel.photoId > 0)
+        [paneldict setValue:[[NSNumber alloc] initWithInt:panel.photoId] forKey:@"photo_id"];
+    if (panel.imageURL != nil)
+        [paneldict setValue:panel.imageURL forKey:@"image_url"];
+    if (panel.placements != nil){
+        NSMutableArray* placements = [[NSMutableArray alloc] init];
+        for (Placement *placement in panel.placements){
+            NSDictionary *placementdict = [PlacementJSONHandler convertPlacementIntoPlacementJSON:placement];
+            [placements addObject:placementdict];
+        }
+        if (placements.count > 0)
+            [panel setValue:placements forKey:@"placements"];
+    }
     
-    NSString* urlString = [APIWrapper getURLForGetPanels];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]
-                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                                       timeoutInterval:10];
     
-    [request setHTTPMethod: @"GET"];
-    
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
-    
-    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
-    
-    id jsonObject = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingAllowFragments error:&requestError];
-    
-    NSLog(@"COUNT=%d",[jsonObject count]);
 }
-
 
 @end

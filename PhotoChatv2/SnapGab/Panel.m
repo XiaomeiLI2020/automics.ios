@@ -11,7 +11,7 @@
 
 @implementation Panel
 @synthesize panelId;
-@synthesize imageId;
+@synthesize photoId;
 @synthesize imageURL;
 @synthesize placements;
 @synthesize annotations;

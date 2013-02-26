@@ -15,11 +15,12 @@
 
 extern int const kGetGroupPanels;
 extern int const kGetPanel;
-extern int numPanels;
+extern int const kPostPanel;
 
 @property (weak) id<PanelLoaderDelegate> delegate;
 -(void)submitRequestGetPanelsForGroup:(int)groupId;
 -(void)submitRequestGetPanelWithId:(int)panelId;
+-(void)submitRequestPostPanel:(Panel*)panel;
 
 @end
 
@@ -29,4 +30,5 @@ extern int numPanels;
 -(void)PanelLoader:(PanelLoader*)loader didFailWithError:(NSError*)error;
 -(void)PanelLoader:(PanelLoader *)loader didLoadPanels:(NSArray*)panels;
 -(void)PanelLoader:(PanelLoader *)loader didLoadPanel:(Panel*)panel;
+-(void)PanelLoader:(PanelLoader *)loader didSavePanel:(NSString*)response;
 @end

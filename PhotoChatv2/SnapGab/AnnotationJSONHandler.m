@@ -61,5 +61,9 @@
     return annotations;
 }
 
++(NSDictionary*)convertAnnotationIntoAnnotationJSON:(Annotation*)annotation{
+    
+}
+
 
 @end

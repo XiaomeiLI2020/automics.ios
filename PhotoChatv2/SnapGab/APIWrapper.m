@@ -20,6 +20,10 @@
     return [NSString stringWithFormat:@"%@/%@/%@/%@", kBaseURL,kAPIURL,kPanelURL,inputId];
 }
 
++(NSString*)getURLForPostPanel{
+    return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL,kAPIURL,kPanelURL];
+}
+
 +(NSString*)getAbsoluteURLUsingPanelImageRelativePath:(NSString*)imageURL{
     return [NSString stringWithFormat:@"%@%@", kBaseURL, imageURL];
 }

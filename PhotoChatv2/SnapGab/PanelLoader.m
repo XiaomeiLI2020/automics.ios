@@ -12,17 +12,16 @@
 #import "PanelJSONHandler.h"
 #import "APIWrapper.h"
 
+
 @interface PanelLoader ()
 @property int panelRequestType;
 @end
 
 @implementation PanelLoader
 
-
 int const kGetGroupPanels = 0;
 int const kGetPanel = 1;
-int numPanels;
-
+int const kPostPanel = 2;
 
 @synthesize delegate;
 @synthesize panelRequestType;
@@ -40,11 +39,15 @@ int numPanels;
     [self submitPanelRequest:urlRequest];
 }
 
+-(void)submitRequestPostPanel:(Panel*)panel{
+    panelRequestType = kPostPanel;
+    NSURLRequest* urlRequest = [self preparePanelRequestForPostPanel:panel];
+    [self submitPanelRequest:urlRequest];
+}
+
 -(void)submitPanelRequest:(NSURLRequest*)urlRequest{
     [self initConnectionRequest];
     [self submitURLRequest:urlRequest];
-    
-
 }
 
 -(NSURLRequest*)preparePanelRequestForGroup:(int)groupId{
@@ -56,6 +59,18 @@ int numPanels;
 -(NSURLRequest*)preparePanelRequestForGetPanelWithId:(int)panelId{
     NSString* panelURL = [APIWrapper getURLForGetPanelWithId:panelId];
     NSURL* url = [NSURL URLWithString:panelURL];
+    return [NSURLRequest requestWithURL:url];
+}
+
+-(NSURLRequest*)preparePanelRequestForPostPanel:(Panel*)panel{
+    NSString *panelURL = [APIWrapper getURLForPostPanel];
+    NSURL* url = [NSURL URLWithString:panelURL];
+    NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
+    [urlRequest setHTTPMethod:@"POST"];
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    NSError *error;
+    NSData* data = [NSJSONSerialization dataWithJSONObject:panel options:NSJSONWritingPrettyPrinted error:&error];
+    [urlRequest setHTTPBody:data];
     return [NSURLRequest requestWithURL:url];
 }
 
@@ -71,6 +86,9 @@ int numPanels;
             case kGetPanel:
                 [self handleGetPanelWithIdResponse];
                 break;
+            case kPostPanel:
+                [self handlePostPanel];
+                break;
 
         }
     }
@@ -80,10 +98,6 @@ int numPanels;
     NSError* error;
     NSArray* jsonArray = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (jsonArray != nil){
-        
-        //Update numPanels
-        numPanels = [jsonArray count];
-        
         NSArray* panels = [PanelJSONHandler convertPanelsJSONArrayIntoPanels:jsonArray];
         if([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanels:)])
             [self.delegate PanelLoader:self didLoadPanels:panels];
@@ -101,6 +115,14 @@ int numPanels;
             [self.delegate PanelLoader:self didLoadPanel:panel];
     }else{
         [self reportErrorToDelegate:error];
+    }
+}
+
+-(void)handlePostPanel{
+    NSString *responseText = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
+    if (responseText != nil){
+        if ([self.delegate respondsToSelector:@selector(PanelLoader:didSavePanel:)])
+            [self.delegate PanelLoader:self didSavePanel:responseText];
     }
 }
 

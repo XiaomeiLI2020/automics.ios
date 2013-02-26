@@ -50,4 +50,14 @@
     return placements;
 }
 
++(NSDictionary*)convertPlacementIntoPlacementJSON:(Placement*)placement{
+    NSMutableDictionary* placementdict = [[NSMutableDictionary alloc] init];
+    if (placement.resourceId > 0)
+        [placementdict setValue:[[NSNumber alloc] initWithInt:placement.resourceId] forKey:@"resource_id"];
+    [placementdict setValue:[[NSNumber alloc] initWithFloat:placement.scale] forKey:@"scale"];
+    [placementdict setValue:[[NSNumber alloc] initWithFloat:placement.xOffset] forKey:@"xoff"];
+    [placementdict setValue:[[NSNumber alloc] initWithFloat:placement.yOffset] forKey:@"yoff"];
+    return placementdict;
+}
+
 @end

@@ -13,6 +13,6 @@
 
 +(Panel*)convertPanelJSONDictIntoPanel:(NSDictionary*)panelJSON;
 +(NSArray*)convertPanelsJSONArrayIntoPanels:(NSArray*)panelsJSON;
-+(NSInteger)countPanels:(id)panelsJSON;
++(NSDictionary*)convertPanelIntoPanelJSON:(Panel*)panel;
 
 @end

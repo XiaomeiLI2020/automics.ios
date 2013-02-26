@@ -11,7 +11,7 @@
 
 @interface Panel : NSObject
 @property NSInteger panelId;
-@property NSInteger imageId;
+@property NSInteger photoId;
 @property NSString* imageURL;
 @property NSArray* placements;
 @property NSArray* annotations;

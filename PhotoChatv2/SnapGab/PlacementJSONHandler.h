@@ -13,5 +13,6 @@
 
 +(Placement*)getPlacementFromPlacementJSON:(NSDictionary*)placementJSON;
 +(NSArray*)getPlacementsFromPlacementsJSON:(NSArray*)placementsJSON;
++(NSDictionary*)convertPlacementIntoPlacementJSON:(Placement*)placement;
 
 @end
