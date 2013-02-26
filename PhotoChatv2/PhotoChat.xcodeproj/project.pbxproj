@@ -35,6 +35,9 @@
 		1D92BFF116667E2A00CB37B3 /* bubble-style8.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D92BFE816667E2A00CB37B3 /* bubble-style8.png */; };
 		1D92BFF416667F1500CB37B3 /* SelectBubbleStyleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D92BFF316667F1500CB37B3 /* SelectBubbleStyleViewController.m */; };
 		1DA205B1166504BD003FF0B2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA205B0166504BD003FF0B2 /* MobileCoreServices.framework */; };
+		48B2FD5A16DCC6BF00EF9439 /* Comic.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B2FD5916DCC6BF00EF9439 /* Comic.m */; };
+		48B2FD6016DCC6FD00EF9439 /* ComicJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B2FD5D16DCC6FD00EF9439 /* ComicJSONHandler.m */; };
+		48B2FD6116DCC6FD00EF9439 /* ComicLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B2FD5F16DCC6FD00EF9439 /* ComicLoader.m */; };
 		48CAFD2E16CE789600D8EB4C /* DataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CAFD2D16CE789600D8EB4C /* DataLoader.m */; };
 		48CAFD3216CE943900D8EB4C /* APIConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CAFD3116CE943800D8EB4C /* APIConstant.m */; };
 		48CAFD4016CEA7E600D8EB4C /* APIWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CAFD3F16CEA7E600D8EB4C /* APIWrapper.m */; };
@@ -146,6 +149,12 @@
 		1D92BFF216667F1500CB37B3 /* SelectBubbleStyleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectBubbleStyleViewController.h; sourceTree = "<group>"; };
 		1D92BFF316667F1500CB37B3 /* SelectBubbleStyleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectBubbleStyleViewController.m; sourceTree = "<group>"; };
 		1DA205B0166504BD003FF0B2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		48B2FD5816DCC6BF00EF9439 /* Comic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Comic.h; path = SnapGab/Comic.h; sourceTree = "<group>"; };
+		48B2FD5916DCC6BF00EF9439 /* Comic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Comic.m; path = SnapGab/Comic.m; sourceTree = "<group>"; };
+		48B2FD5C16DCC6FD00EF9439 /* ComicJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ComicJSONHandler.h; path = SnapGab/ComicJSONHandler.h; sourceTree = "<group>"; };
+		48B2FD5D16DCC6FD00EF9439 /* ComicJSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ComicJSONHandler.m; path = SnapGab/ComicJSONHandler.m; sourceTree = "<group>"; };
+		48B2FD5E16DCC6FD00EF9439 /* ComicLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ComicLoader.h; path = SnapGab/ComicLoader.h; sourceTree = "<group>"; };
+		48B2FD5F16DCC6FD00EF9439 /* ComicLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ComicLoader.m; path = SnapGab/ComicLoader.m; sourceTree = "<group>"; };
 		48CAFD2C16CE789600D8EB4C /* DataLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataLoader.h; path = SnapGab/DataLoader.h; sourceTree = "<group>"; };
 		48CAFD2D16CE789600D8EB4C /* DataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataLoader.m; path = SnapGab/DataLoader.m; sourceTree = "<group>"; };
 		48CAFD3016CE943800D8EB4C /* APIConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APIConstant.h; path = SnapGab/APIConstant.h; sourceTree = "<group>"; };
@@ -391,6 +400,10 @@
 		48CAFD2316CE761700D8EB4C /* API */ = {
 			isa = PBXGroup;
 			children = (
+				48B2FD5C16DCC6FD00EF9439 /* ComicJSONHandler.h */,
+				48B2FD5D16DCC6FD00EF9439 /* ComicJSONHandler.m */,
+				48B2FD5E16DCC6FD00EF9439 /* ComicLoader.h */,
+				48B2FD5F16DCC6FD00EF9439 /* ComicLoader.m */,
 				48F6277416D6440A0034A5A7 /* AnnotationJSONHandler.h */,
 				48F6277516D6440A0034A5A7 /* AnnotationJSONHandler.m */,
 				48F6277616D6440A0034A5A7 /* DataValidator.h */,
@@ -435,6 +448,8 @@
 		48D0806816D4EA6D00346465 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				48B2FD5816DCC6BF00EF9439 /* Comic.h */,
+				48B2FD5916DCC6BF00EF9439 /* Comic.m */,
 				48F6276E16D643E60034A5A7 /* Annotation.h */,
 				48F6276F16D643E60034A5A7 /* Annotation.m */,
 				48F6277016D643E60034A5A7 /* Placement.h */,
@@ -699,6 +714,9 @@
 				48F6277D16D6440A0034A5A7 /* DataValidator.m in Sources */,
 				48F6277E16D6440A0034A5A7 /* PanelJSONHandler.m in Sources */,
 				48F6277F16D6440A0034A5A7 /* PlacementJSONHandler.m in Sources */,
+				48B2FD5A16DCC6BF00EF9439 /* Comic.m in Sources */,
+				48B2FD6016DCC6FD00EF9439 /* ComicJSONHandler.m in Sources */,
+				48B2FD6116DCC6FD00EF9439 /* ComicLoader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -775,7 +793,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F47E1E62-539A-484C-A86E-1A1D4E597F62";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -784,15 +802,15 @@
 		1D8D50A1165FADC700C9817C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SnapGab/PhotoChat-Prefix.pch";
 				GENERATE_PROFILING_CODE = YES;
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				PRODUCT_NAME = PhotoChat;
-				PROVISIONING_PROFILE = "90A8735E-9CA8-46A7-A527-E69F05FCACE4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "90A8735E-9CA8-46A7-A527-E69F05FCACE4";
+				PROVISIONING_PROFILE = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
 				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = app;
 			};
@@ -801,15 +819,15 @@
 		1D8D50A2165FADC700C9817C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Umar Rashid";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Umar Rashid";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SnapGab/PhotoChat-Prefix.pch";
 				GENERATE_PROFILING_CODE = YES;
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				PRODUCT_NAME = PhotoChat;
-				PROVISIONING_PROFILE = "30A60B3F-3F4E-440C-A72D-1957843A2638";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "30A60B3F-3F4E-440C-A72D-1957843A2638";
+				PROVISIONING_PROFILE = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
