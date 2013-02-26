@@ -11,3 +11,4 @@
 NSString* const kBaseURL = @"http://automicsapi.wp.horizon.ac.uk";
 NSString* const kAPIURL = @"v1";
 NSString* const kPanelURL = @"panel";
+NSString* const kComicURL = @"comic";

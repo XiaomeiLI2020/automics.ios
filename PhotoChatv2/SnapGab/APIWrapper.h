@@ -13,5 +13,7 @@
 +(NSString*)getURLForGetPanels;
 +(NSString*)getURLForGetPanelWithId:(int)panelId;
 +(NSString*)getAbsoluteURLUsingPanelImageRelativePath:(NSString*)imageURL;
++(NSString*)getURLForGetComics;
++(NSString*)getURLForGetComicWithId:(int)comicId;
 
 @end

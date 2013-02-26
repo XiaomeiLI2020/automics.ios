@@ -24,5 +24,13 @@
     return [NSString stringWithFormat:@"%@%@", kBaseURL, imageURL];
 }
 
++(NSString*)getURLForGetComics{
+    return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL, kAPIURL, kComicURL];
+}
+
++(NSString*)getURLForGetComicWithId:(int)comicId{
+    NSString* inputId = [NSString stringWithFormat:@"%d", comicId];
+    return [NSString stringWithFormat:@"%@/%@/%@/%@", kBaseURL,kAPIURL,kComicURL,inputId];
+}
 
 @end
