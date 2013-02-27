@@ -49,7 +49,7 @@
     return panel;
 }
 
-+(NSArray*)convertPanelsJSONArrayIntoPanels:(NSArray*)panelsJSON{
++(NSArray*)convertPanelsJSONIntoPanels:(NSArray*)panelsJSON{
     NSMutableArray *panels = [[NSMutableArray alloc] initWithCapacity:panelsJSON.count];
     for (NSDictionary *obj in panelsJSON){
         Panel *panel = [PanelJSONHandler convertPanelJSONDictIntoPanel:obj];
@@ -67,16 +67,16 @@
     if (panel.imageURL != nil)
         [paneldict setValue:panel.imageURL forKey:@"image_url"];
     if (panel.placements != nil){
-        NSMutableArray* placements = [[NSMutableArray alloc] init];
-        for (Placement *placement in panel.placements){
-            NSDictionary *placementdict = [PlacementJSONHandler convertPlacementIntoPlacementJSON:placement];
-            [placements addObject:placementdict];
-        }
-        if (placements.count > 0)
-            [panel setValue:placements forKey:@"placements"];
+        NSArray* placementsJSON = [PlacementJSONHandler convertPlacementsIntoPlacementsJSON:panel.placements];
+        if (placementsJSON.count > 0)
+            [panel setValue:placementsJSON forKey:@"placements"];
     }
-    
-    
+    if (panel.annotations != nil){
+        NSArray* annotationsJSON = [AnnotationJSONHandler convertAnnotationsIntoAnnotationsJSON:panel.annotations];
+        if (annotationsJSON.count > 0)
+            [panel setValue:annotationsJSON forKey:@"annotations"];
+    }
+    return paneldict;
 }
 
 @end

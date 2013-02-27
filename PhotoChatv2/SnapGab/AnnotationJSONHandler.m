@@ -61,8 +61,30 @@
     return annotations;
 }
 
++(NSArray*)convertAnnotationsIntoAnnotationsJSON:(NSArray*)annotations{
+    NSMutableArray* annotationsJSON = [[NSMutableArray alloc] initWithCapacity:annotations.count];
+    for (Annotation *annotation in annotations){
+        NSDictionary *annotationdict = [self convertAnnotationIntoAnnotationJSON:annotation];
+        [annotationsJSON addObject:annotationdict];
+    }
+    return annotationsJSON;
+}
+
 +(NSDictionary*)convertAnnotationIntoAnnotationJSON:(Annotation*)annotation{
-    
+    NSMutableDictionary *annotationdict;
+    if (annotation != nil){
+        annotationdict = [[NSMutableDictionary alloc] init];
+        [annotationdict setValue:[[NSNumber alloc] initWithInt:annotation.bubbleStyle] forKey:@"bubble_style"];
+        if (annotation.formattingOptions != nil)
+            [annotationdict setValue:annotation.formattingOptions forKey:@"foptions"];
+        if (annotation.annotationId > 0)
+            [annotationdict setValue:[[NSNumber alloc] initWithInt:annotation.annotationId] forKey:@"id"];
+        if (annotation.text != nil)
+            [annotationdict setValue:annotation.text forKey:@"text"];
+        [annotationdict setValue:[[NSNumber alloc] initWithFloat:annotation.xOffset] forKey:@"xoff"];
+        [annotationdict setValue:[[NSNumber alloc] initWithFloat:annotation.yOffset] forKey:@"yoff"];
+    }
+    return annotationdict;
 }
 
 

@@ -60,4 +60,13 @@
     return placementdict;
 }
 
++(NSArray*)convertPlacementsIntoPlacementsJSON:(NSArray*)placements{
+    NSMutableArray* placementsJSON = [[NSMutableArray alloc] init];
+    for (Placement *placement in placements){
+        NSDictionary *placementdict = [PlacementJSONHandler convertPlacementIntoPlacementJSON:placement];
+        [placementsJSON addObject:placementdict];
+    }
+    return placementsJSON;
+}
+
 @end

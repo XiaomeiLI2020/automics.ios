@@ -14,4 +14,5 @@
 +(Annotation*)getAnnotationFromAnnotationJSON:(NSDictionary*)annotationJSON;
 +(NSArray*)getAnnotationsFromAnnotationsJSON:(NSArray*)annotationsJSON;
 +(NSDictionary*)convertAnnotationIntoAnnotationJSON:(Annotation*)annotation;
++(NSArray*)convertAnnotationsIntoAnnotationsJSON:(NSArray*)annotations;
 @end

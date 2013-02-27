@@ -12,7 +12,7 @@
 @interface PanelJSONHandler : NSObject
 
 +(Panel*)convertPanelJSONDictIntoPanel:(NSDictionary*)panelJSON;
-+(NSArray*)convertPanelsJSONArrayIntoPanels:(NSArray*)panelsJSON;
++(NSArray*)convertPanelsJSONIntoPanels:(NSArray*)panelsJSON;
 +(NSDictionary*)convertPanelIntoPanelJSON:(Panel*)panel;
 
 @end

@@ -69,7 +69,8 @@ int const kPostPanel = 2;
     [urlRequest setHTTPMethod:@"POST"];
     [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     NSError *error;
-    NSData* data = [NSJSONSerialization dataWithJSONObject:panel options:NSJSONWritingPrettyPrinted error:&error];
+    NSDictionary* paneldict = [PanelJSONHandler convertPanelIntoPanelJSON:panel];
+    NSData* data = [NSJSONSerialization dataWithJSONObject:paneldict options:NSJSONWritingPrettyPrinted error:&error];
     [urlRequest setHTTPBody:data];
     return [NSURLRequest requestWithURL:url];
 }
@@ -98,7 +99,7 @@ int const kPostPanel = 2;
     NSError* error;
     NSArray* jsonArray = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (jsonArray != nil){
-        NSArray* panels = [PanelJSONHandler convertPanelsJSONArrayIntoPanels:jsonArray];
+        NSArray* panels = [PanelJSONHandler convertPanelsJSONIntoPanels:jsonArray];
         if([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanels:)])
             [self.delegate PanelLoader:self didLoadPanels:panels];
     }else{
