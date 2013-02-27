@@ -91,6 +91,11 @@ BOOL alertShown;
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
     if([title isEqualToString:@"Delete"])
     {
+
+            [_textView resignFirstResponder];
+            _textView.userInteractionEnabled = NO;
+            [_invisibleButton removeFromSuperview];
+            _invisibleButton=nil;
             [self removeFromSuperview];
             alertShown = NO;
     }
@@ -105,11 +110,16 @@ BOOL alertShown;
 UIButton* _invisibleButton;
 - (void)pressedInvisibleButton:(id)button
 {
+    //NSLog(@"textview=%@",);
+    //if(_textView!=nil)
+    {
+    
     [_textView resignFirstResponder];
     _textView.userInteractionEnabled = NO;
     [_invisibleButton removeFromSuperview];
     _invisibleButton=nil;
     if([_textView.text isEqualToString:@""]) [self removeFromSuperview];
+    }
 }
 
 - (void)tapped:(id)sender

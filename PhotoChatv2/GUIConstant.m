@@ -30,6 +30,10 @@ const CGFloat assetScrollObjWidth= 320.0;
 const CGFloat assetWidth= 50.0;
 const CGFloat assetHeight= 50.0;
 
+
+const CGFloat speechBubbleWidth = 200.0;
+const CGFloat speechBubbleHeight = 200.0;
+
 const CGFloat decoratorWidth = 200.0;
 const CGFloat decoratorHeight = 200.0;
 

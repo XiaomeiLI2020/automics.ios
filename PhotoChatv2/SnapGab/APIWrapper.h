@@ -11,7 +11,13 @@
 @interface APIWrapper : NSObject
 
 +(NSString*)getURLForGetPanels;
++(NSString*)getURLForGetPhotos;
++(NSString*)getURLForGetAnnotations;
++(NSString*)getURLForGetResourcesWithTheme:(int)themeId;
++(NSString*)getURLForGetResourceWithId:(int)resourceId;
++(NSString*)getURLForGetPlacements;
 +(NSString*)getURLForGetPanelWithId:(int)panelId;
++(NSString*)getURLForGetAnnotationWithId:(int)annotationId;
 +(NSString*)getAbsoluteURLUsingPanelImageRelativePath:(NSString*)imageURL;
 
 @end

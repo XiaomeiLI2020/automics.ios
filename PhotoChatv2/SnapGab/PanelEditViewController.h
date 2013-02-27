@@ -33,7 +33,7 @@
 @property BOOL startWithCamera;
 @property CGSize imageSize;
 
-@property UIScrollView* scrollView;
+
 @property BOOL keyboardIsShown;
 @property int currentPage;
 @property NSString* _groupName;

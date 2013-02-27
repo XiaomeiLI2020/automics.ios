@@ -12,9 +12,11 @@
 #import "SpeechBubbleView.h"
 #import "ResourceView.h"
 #import "PanelLoader.h"
+#import "ResourceLoader.h"
 #import "ResourceImageView.h"
 #import "ImageDownloader.h"
 #import "GUIConstant.h"
+#import "Annotation.h"
 
 @interface PanelViewController ()
 
@@ -27,16 +29,22 @@
 
 @synthesize _groupName;
 @synthesize currentPage;
+@synthesize currentPanel;
+@synthesize currentPanelId;
 
-int _numImages;
+
+
 BOOL _bubblesAdded;
 BOOL _resourcesAdded;
 
 
 PanelLoader *panelsLoader;
 PanelLoader *panelLoader;
+ResourceLoader *resourceLoader;
+
 NSString* urlImageString;
 int panelId;
+int panelCounter;
 
 - (void)updateNumImages
 {
@@ -49,6 +57,10 @@ int panelId;
         
         currentPage = numPanels;
         
+        //currentPanel = [[Panel alloc] init];
+        currentPanel = [self.panels objectAtIndex:([self.panels count]-1)];
+        if(currentPanel!=nil)
+            NSLog(@"updateNumImages.currentPanel.panelId=%i", currentPanel.panelId);
         //Scroll to the last added panel in the serial layout within the scrollview
         [panelScrollView scrollItemToVisible:(currentPage)];
         
@@ -70,11 +82,16 @@ int panelId;
 
 - (void)singleTapGestureCaptured:(UITapGestureRecognizer *)gesture
 {
+    
+    
     // Determine the position of clicked thumbnail
     CGPoint touchPoint=[gesture locationInView:thumbnailScrollView];
     CGFloat pos = (CGFloat)touchPoint.x / thumbnailWidth;
+    //CGFloat pos = (CGFloat)self.thumbnailScrollView.contentOffset.x / thumbnailWidth;
     int page = round(ceilf(pos));
-    //NSLog(@"singleTap. page= %i", page);
+    NSLog(@"singleTap. touchPoint.x = %f", (CGFloat)touchPoint.x);
+    NSLog(@"singleTap. page= %i", page);
+    NSLog(@"singleTap. numPanels= %i", numPanels);
     
     //Remove bubbles and resources from the current view
     [self removeAllBubbles];
@@ -82,14 +99,22 @@ int panelId;
     
     // Scroll to the most rcently added panel in panel scrollview
     CGRect panelFrame = panelScrollView.frame;
-    panelFrame.origin.x = panelScrollObjWidth * (page-1);
+    panelFrame.origin.x = panelScrollObjWidth * (page - 1);
     //NSLog(@"panelframe.origin.x = %f", panelFrame.origin.x);
     panelFrame.origin.y = 0;
     [panelScrollView scrollRectToVisible:panelFrame animated:YES];
     
     //Add bubbles and resources to the new panel's view after scrolling
-    [self addBubblesForPage:page-1];
-    [self addResourcesForPage:page-1];
+    //if(page>=2)
+    {
+        currentPanel = [self.panels objectAtIndex:(page-1)];
+    }
+    //else
+      //  currentPanel = [self.panels objectAtIndex:0];
+    NSLog(@"singleTap. currentPanel.panelId= %i", currentPanel.panelId);
+    
+    [panelsLoader submitRequestGetPanelWithId:currentPanel.panelId];
+
 }
 
 
@@ -120,10 +145,25 @@ int panelId;
 	// Do any additional setup after loading the view.
     //NSLog(@"viewDidLoad");
 
+    panelCounter = 0;
     panelsLoader = [[PanelLoader alloc] init];
     panelsLoader.delegate = self;
     [panelsLoader submitRequestGetPanelsForGroup:1];
     
+    /*
+    if(numPanels==0)
+    {
+        _editButton.hidden = YES;
+    }
+    else
+    {
+        
+    }
+     */
+    
+    resourceLoader = [[ResourceLoader alloc] init];
+    resourceLoader.delegate = self;
+  
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -131,14 +171,10 @@ int panelId;
     //NSLog(@"viewDidAppear");
     [self updateNumImages];
     
-    //self.panelScrollView.delegate=self;
-    
     _bubblesAdded = NO;
     _resourcesAdded = NO;
-    
-    //Add bubbles and resources to a panel after scrolling
-    [self addBubblesForPage:currentPage-1];
-    [self addResourcesForPage:currentPage-1];
+
+    [panelsLoader submitRequestGetPanelWithId:currentPanel.panelId];
 }
 
 
@@ -154,62 +190,6 @@ int panelId;
     _bubblesAdded = NO;
 }
 
--(void)addBubblesForPage:(int)page
-{
-    //NSLog(@"addBubblesForPage._bubblesAdded.%d", _bubblesAdded);
-    if(_bubblesAdded) return;
-    
-    _bubblesAdded = YES;
-    
-    NSString* urlBubbleString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/%d.bub",_groupName,
-                                 page+1];
-    //NSLog(@"urlBubbleString %@", urlBubbleString);
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlBubbleString]
-                                                           cachePolicy:NSURLRequestReturnCacheDataElseLoad
-                                                       timeoutInterval:50];
-    
-    [request setHTTPMethod: @"GET"];
-    
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
-    
-    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
-    
-    if(response)
-    {
-        NSError *parseError = nil;
-        id jsonObject = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingAllowFragments error:&parseError];
-        
-        for(NSDictionary* bubble in jsonObject)
-        {
-            
-            NSString* category = [bubble objectForKey:@"c"];
-            if([category isEqualToString:@"bubble"])
-            {
-                CGRect xywh = CGRectMake([[bubble objectForKey:@"x"] floatValue],
-                                         [[bubble objectForKey:@"y"] floatValue],0,0);
-                // [[bubble objectForKey:@"w"] floatValue],
-                // [[bubble objectForKey:@"h"] floatValue]);
-                NSString* text = [bubble objectForKey:@"t"];
-                int styleId = [[bubble objectForKey:@"s"] intValue];
-                
-                SpeechBubbleView* sbv = [[SpeechBubbleView alloc] initWithFrame:xywh andText:text andStyle:styleId];
-                sbv.userInteractionEnabled = NO;
-                sbv.alpha = 0.0f;
-                [self.view addSubview:sbv];
-                [UIView transitionWithView:self.view
-                                  duration:0.25
-                                   options:UIViewAnimationOptionLayoutSubviews
-                                animations:^ { sbv.alpha = 1.0f; }
-                                completion:nil];
-            }//end if category
-            
-        }//end for
-    }//end if response
-    
-}
-
-
 
 -(void)removeAllResources
 {
@@ -222,67 +202,6 @@ int panelId;
     }
     _resourcesAdded = NO;
 }
-
--(void)addResourcesForPage:(int)page
-{
-    
-    if(_resourcesAdded) return;
-    
-    _resourcesAdded = YES;
-    
-    NSString* urlResourceString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/%d.bub",_groupName, page+1];
-    //NSLog(@"urlResourceString %@", urlResourceString);
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlResourceString]
-                                                           cachePolicy:NSURLRequestReturnCacheDataElseLoad
-                                                       timeoutInterval:10];
-    
-    [request setHTTPMethod: @"GET"];
-    
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
-    
-    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
-    
-    if(response)
-    {
-        NSError *parseError = nil;
-        id jsonObject = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingAllowFragments error:&parseError];
-        
-        for(NSDictionary* resource in jsonObject)
-        {
-            
-            NSString* category = [resource objectForKey:@"c"];
-            if([category isEqualToString:@"resource"])
-            {
-                /*
-                 CGRect xywh = CGRectMake([[resource objectForKey:@"x"] floatValue],
-                 [[resource objectForKey:@"y"] floatValue],0,0);
-                 */
-                CGRect xywh = CGRectMake([[resource objectForKey:@"x"] floatValue],
-                                         [[resource objectForKey:@"y"] floatValue],
-                                         [[resource objectForKey:@"w"] floatValue],
-                                         [[resource objectForKey:@"h"] floatValue]);
-
-                int styleId = [[resource objectForKey:@"s"] intValue];
-                
-                ResourceView* sbv = [[ResourceView alloc] initWithFrame:xywh andStyle:styleId];
-                //NSLog(@"sbv.frame.origin = (%f, %f)", sbv.frame.origin.x, sbv.frame.origin.y);
-                //NSLog(@"sbv.frame.size = (%f, %f)", sbv.frame.size.width, sbv.frame.size.height);
-                sbv.userInteractionEnabled = NO;
-                sbv.alpha = 0.0f;
-                [self.view addSubview:sbv];
-                [UIView transitionWithView:self.view
-                                  duration:0.25
-                                   options:UIViewAnimationOptionLayoutSubviews
-                                animations:^ { sbv.alpha = 1.0f; }
-                                completion:nil];
-            }//end if category
-        }//end for
-    }//end if
-    
-}
-
-
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
@@ -297,19 +216,29 @@ int panelId;
     //NSLog(@"alignRowInPhotoTableView.numPanels=%i", numPanels);
     if(numPanels>0)
     {
+        NSLog(@"alignPage. numPanels= %i", numPanels);
         //Constrain horizontal page position and add bubbles and resources
         CGFloat pos = (CGFloat)self.panelScrollView.contentOffset.x / panelWidth;
         int page = round(ceilf(pos));
-        //NSLog(@"alignPage. page= %i", page);
-
+        NSLog(@"alignPage. page= %i", page);
+        
         //Add bubbles and resources to a panel after scrolling
-        [self addBubblesForPage:page];
-        [self addResourcesForPage:page];
-        
-        currentPage = page+1;
-        
-        // Scroll to the current page's thumbnail in thumbnail scrollview
-        [thumbnailScrollView scrollItemToVisible:(page+1)];
+        if(page>=0)
+        {
+            currentPanel = [self.panels objectAtIndex:(page)];
+            if(currentPanel!=nil)
+            {
+                NSLog(@"alignPage.currentPanel.panelId= %i", currentPanel.panelId);
+                [panelsLoader submitRequestGetPanelWithId:currentPanel.panelId];
+            }
+
+            
+            currentPage = page+1;
+            
+            // Scroll to the current page's thumbnail in thumbnail scrollview
+            [thumbnailScrollView scrollItemToVisible:(page+1)];
+        }
+
     }//end if _numImages>0
 }
 
@@ -332,6 +261,7 @@ int panelId;
     //NSLog(@"newImageNotification.");
     [self removeAllBubbles];
     [self removeAllResources];
+    [panelsLoader submitRequestGetPanelsForGroup:1];
     [self updateNumImages];
 }
 
@@ -340,53 +270,56 @@ int panelId;
     
     if([[segue identifier] isEqualToString:@"editPanel"])
     {
-
-        
-        NSLog(@"currentPage=%i", currentPage);
-        if(currentPage==0)
+        if(numPanels>0)
         {
-            currentPage=1;
-        }
-        Panel *panel = [self.panels objectAtIndex:(currentPage-1)];
-        NSLog(@"panel.panelId=%i", panel.panelId);
-        NSLog(@"panel.imageURL=%@", panel.imageURL);
-        
-
-        PanelEditViewController *pevc = (PanelEditViewController *)[segue destinationViewController];
-        pevc.currentPage = currentPage;
-        pevc._groupName = _groupName;
-        pevc.url = [NSURL URLWithString:panel.imageURL];
-        
-        for (UIView *subview in self.view.subviews)
-        {
-            //Add Speech Bubbles
-            if([subview isMemberOfClass:[SpeechBubbleView class]])
+            //NSLog(@"editPanel.currentPage=%i", currentPage);
+            if(currentPage==0)
             {
-                SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
-                SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
-                new_sbv.userInteractionEnabled = YES;
-                new_sbv.alpha = 0;
-                [pevc.view addSubview:new_sbv];
+                currentPage=1;
             }
             
-            //Add Resources
-            if([subview isMemberOfClass:[ResourceView class]])
+            Panel *panel = [self.panels objectAtIndex:(currentPage-1)];
+            //NSLog(@"editPanel.panel.panelId=%i", panel.panelId);
+            //NSLog(@"panel.imageURL=%@", panel.imageURL);
+            
+            
+            PanelEditViewController *pevc = (PanelEditViewController *)[segue destinationViewController];
+            pevc.currentPage = currentPage;
+            pevc._groupName = _groupName;
+            pevc.url = [NSURL URLWithString:panel.imageURL];
+            
+            for (UIView *subview in self.view.subviews)
             {
-                ResourceView* sbv =(ResourceView*)subview;
+                //Add Speech Bubbles
+                if([subview isMemberOfClass:[SpeechBubbleView class]])
+                {
+                    SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
+                    SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
+                    new_sbv.userInteractionEnabled = YES;
+                    new_sbv.alpha = 0;
+                    [pevc.view addSubview:new_sbv];
+                }
                 
-                ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andStyle:sbv.styleId];
-                new_sbv.userInteractionEnabled = YES;
-                new_sbv.alpha = 0;
-                [pevc.view addSubview:new_sbv];
-            }
-        }//end for
-         
-         
+                //Add Resources
+                if([subview isMemberOfClass:[ResourceView class]])
+                {
+                    ResourceView* sbv =(ResourceView*)subview;
+                    
+                    //ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andStyle:sbv.styleId];
+                    ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andURL:sbv.urlImageString andType:sbv.type];
+                    new_sbv.userInteractionEnabled = YES;
+                    new_sbv.alpha = 0;
+                    [pevc.view addSubview:new_sbv];
+                }
+            }//end for
+            
+        }//end if numPanels>0
     }//end if
 }
 
 -(void)initiateScrollViews
 {
+    //NSLog(@"initiateScrollView.numPanels=%i", numPanels);
     // Add panels scrollview
     CGRect panelFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
     CGSize panelSize = CGSizeMake(panelWidth, panelHeight);
@@ -404,6 +337,7 @@ int panelId;
 
 -(void)addImageToScrollViews:(UIImage*)image
 {
+    NSLog(@"image added to scrollviews=%i", panelId);
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     [imageView setImageWithURL:[NSURL URLWithString:urlImageString]
               placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
@@ -449,12 +383,13 @@ int panelId;
     
     for (Panel *panel in panels)
     {
-        if (panel.imageURL != nil)
+        if (panel.imageId > 0)
         {
             urlImageString = panel.imageURL;
-            panelId = panel.panelId;
-            //NSLog(@"panel.imageURL=%@",panel.imageURL);
+            //panelId = panel.panelId;
+            //NSLog(@"panel.panelId=%i",panel.panelId);
             //NSLog(@"urlImageString=%@",urlImageString);
+            
             ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:panel.imageURL];
             imageDownloader.delegate = self;
             if (imageDownloader.image != nil)
@@ -463,28 +398,126 @@ int panelId;
             }
         }//end if
         
-        if (panel.annotations != nil)
-        {
-            NSLog(@"panel.annotations.count =%i",[panel.annotations count]);
-
-        }//end if
-
     }//end for
 }
 
 -(void)PanelLoader:(PanelLoader *)loader didLoadPanel:(Panel *)panel{
-    NSLog(@"Panel downloaded");
+    //NSLog(@"Panel downloaded");
+    
+    if (panel != nil)
+    {
+        panelId = panel.panelId;
+        if(panel.annotations!=nil)
+        {
+            for(Annotation* annotation in panel.annotations)
+            {
+                //NSLog(@"annotation=%@", annotation.text);
+                CGRect xywh = CGRectMake(annotation.xOffset,
+                                         annotation.yOffset,0,0);
+                
+                NSString* text = annotation.text;
+                int styleId = annotation.bubbleStyle;
+                
+                SpeechBubbleView* sbv = [[SpeechBubbleView alloc] initWithFrame:xywh andText:text andStyle:styleId];
+                sbv.userInteractionEnabled = NO;
+                sbv.alpha = 0.0f;
+                [self.view addSubview:sbv];
+                [UIView transitionWithView:self.view
+                                  duration:0.25
+                                   options:UIViewAnimationOptionLayoutSubviews
+                                animations:^ { sbv.alpha = 1.0f; }
+                                completion:nil];
+
+            }
+        }
+        
+        if(panel.placements!=nil)
+        {
+            for(Placement* placement in panel.placements)
+            {
+                CGRect xywh = CGRectMake(placement.xOffset,
+                                         placement.yOffset,200,200);
+                
+                [resourceLoader submitRequestGetResourceWithId:placement.resourceId];
+
+
+            }//end for
+        }//end if
+        
+
+        ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:panel.imageURL];
+        imageDownloader.delegate = self;
+        if (imageDownloader.image != nil)
+        {
+            NSLog(@"Image is not null");
+        }
+
+
+    }//end if panel!=nil
 }
 
+#pragma mark ResourceLoader functions.
+-(void)ResourceLoader:(ResourceLoader*)loader didFailWithError:(NSError*)error{
+    NSLog(@"resource failed to load.");
+    
+}
+
+-(void)ResourceLoader:(ResourceLoader *)loader didLoadResources:(NSArray*)resources{
+    NSLog(@"resources loaded.");
+}
+
+-(void)ResourceLoader:(ResourceLoader *)loader didLoadResource:(Resource*)resource
+{
+    //NSLog(@"Resource downloaded");
+    
+    if (resource != nil)
+    {
+        
+        //NSString* image_url = [resource objectForKey:@"image_url"];
+        NSString* type = resource.type;
+        
+        NSString* urlImageString = resource.imageURL;
+        //NSLog(@"urlImageString=%@",urlImageString);
+        CGRect resourceFrame;
+        if([type isEqual:@"d"])
+        {
+            resourceFrame = CGRectMake(100, 100, decoratorWidth, decoratorHeight);
+        }
+        if([type isEqual:@"f"])
+        {
+            resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
+        }
+        
+        //ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:urlImageString andType:type];
+        ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:resource.imageURL andType:resource.type andId:resource.resourceId];
+        
+        rv.userInteractionEnabled = NO;
+        [self.view addSubview:rv];
+        
+    }//end if
+}
+
+#pragma mark ImageLoader functions.
 -(void)imageDownloader:(ImageDownloader*)imageDownloader didLoadImage:(UIImage*)image{
     if (image){
         //NSLog(@"Image downloaded successfully.");
-        //NSLog(@"urlImageString=%@",urlImageString);
-        
+        //NSLog(@"numPanels=%i", [self.panels count]);
+        //NSLog(@"panelCounter=%i", panelCounter);
+        if(panelCounter<numPanels)
+        {
+            Panel* panel = [self.panels objectAtIndex:panelCounter];
+            //NSLog(@"currentPanel=self.panels[%i]=%i",panelCounter, panel.panelId);
+            panelId = panel.panelId;
+            
+            //Add image to scrollviews if it has not been already added to the scrollview.
+            //if(panelCounter<numPanels)
+            {
+                [self addImageToScrollViews:image];
+                panelCounter++;
+            }
 
-        [self addImageToScrollViews:image];
-        
-        //ResourceImageView* resourceImage = [[ResourceImageView alloc] initWithFrame:CGRectMake(0.0,40,320,320) image:image];
+        }
+         //ResourceImageView* resourceImage = [[ResourceImageView alloc] initWithFrame:CGRectMake(0.0,40,320,320) image:image];
         //[panelScrollView addSubview:resourceImage];
         //[self.view addSubview:resourceImage];
     }

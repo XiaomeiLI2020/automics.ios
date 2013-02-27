@@ -20,6 +20,8 @@
 
 @implementation ResourceView
 
+@synthesize resourceId;
+@synthesize urlImageString;
 @synthesize type;
 @synthesize styleId = _styleId;
 @synthesize imageView = _imageView;
@@ -130,7 +132,10 @@ BOOL alertShown;
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-
+        
+        self.urlImageString = urlImageString;
+        self.type = type;
+        
         NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlImageString]];
         UIImage *image = [UIImage imageWithData:imageURL];
         
@@ -148,6 +153,50 @@ BOOL alertShown;
             [self addGestureRecognizer:pinchGesture];
         
         
+            UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
+            [panRecognizer setMinimumNumberOfTouches:1];
+            [panRecognizer setMaximumNumberOfTouches:1];
+            [self addGestureRecognizer:panRecognizer];
+        }
+        
+        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]
+                                                          initWithTarget:self action:@selector(handleLongPress:)];
+        longPressGesture.minimumPressDuration = 0.30; //seconds
+        [self addGestureRecognizer:longPressGesture];
+        
+    }//end if self
+    return self;
+}
+
+
+- (id)initWithFrame:(CGRect)frame andURL:(NSString*)urlImageString andType:(NSString*)type andId:(int)resourceId
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code
+        
+        
+        self.urlImageString = urlImageString;
+        self.type = type;
+        self.resourceId = resourceId;
+        
+        NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlImageString]];
+        UIImage *image = [UIImage imageWithData:imageURL];
+        
+        _imageView = [[UIImageView alloc] initWithImage:image];
+        _imageView.userInteractionEnabled = NO;
+        [self addSubview:_imageView];
+        
+        alertShown = NO;
+        
+        //Scaling and moving enabled for decorators only
+        if([type isEqual:@"d"])
+        {
+            
+            UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scalePiece:)];
+            [self addGestureRecognizer:pinchGesture];
+            
+            
             UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
             [panRecognizer setMinimumNumberOfTouches:1];
             [panRecognizer setMaximumNumberOfTouches:1];

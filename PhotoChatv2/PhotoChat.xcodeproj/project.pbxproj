@@ -45,7 +45,6 @@
 		48D0EA7F16CD4B7200FE11E2 /* ResourceImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D0EA7E16CD4B7100FE11E2 /* ResourceImageView.m */; };
 		48F6277216D643E60034A5A7 /* Annotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F6276F16D643E60034A5A7 /* Annotation.m */; };
 		48F6277316D643E60034A5A7 /* Placement.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F6277116D643E60034A5A7 /* Placement.m */; };
-		48F6277C16D6440A0034A5A7 /* AnnotationJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F6277516D6440A0034A5A7 /* AnnotationJSONHandler.m */; };
 		48F6277D16D6440A0034A5A7 /* DataValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F6277716D6440A0034A5A7 /* DataValidator.m */; };
 		48F6277E16D6440A0034A5A7 /* PanelJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F6277916D6440A0034A5A7 /* PanelJSONHandler.m */; };
 		48F6277F16D6440A0034A5A7 /* PlacementJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F6277B16D6440A0034A5A7 /* PlacementJSONHandler.m */; };
@@ -59,6 +58,10 @@
 		D88FF66916C556F000C0A2A8 /* post-panel.png in Resources */ = {isa = PBXBuildFile; fileRef = D88FF66816C556F000C0A2A8 /* post-panel.png */; };
 		D88FF66B16C5597D00C0A2A8 /* panel-edit.png in Resources */ = {isa = PBXBuildFile; fileRef = D88FF66A16C5597D00C0A2A8 /* panel-edit.png */; };
 		D8932C7C16D7ED7B007D97A9 /* GUIConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = D8932C7B16D7ED7B007D97A9 /* GUIConstant.m */; };
+		D894B8C816DCEEE400C31585 /* ResourceLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D894B8C716DCEEE300C31585 /* ResourceLoader.m */; };
+		D894B8CB16DCEFC700C31585 /* Resource.m in Sources */ = {isa = PBXBuildFile; fileRef = D894B8CA16DCEFC700C31585 /* Resource.m */; };
+		D894B8CE16DCF5EB00C31585 /* ResourceJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D894B8CD16DCF5EB00C31585 /* ResourceJSONHandler.m */; };
+		D894B8D116DCFCED00C31585 /* AnnotationJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D894B8D016DCFCED00C31585 /* AnnotationJSONHandler.m */; };
 		D8A098A4167F3A9600762DB0 /* ResourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A098A3167F3A9600762DB0 /* ResourceViewController.m */; };
 		D8A098A8167F497100762DB0 /* ResourceView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A098A7167F497100762DB0 /* ResourceView.m */; };
 		D8A098AB167F4B5600762DB0 /* resource1.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A098A9167F4B5500762DB0 /* resource1.png */; };
@@ -167,8 +170,6 @@
 		48F6276F16D643E60034A5A7 /* Annotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Annotation.m; path = SnapGab/Annotation.m; sourceTree = "<group>"; };
 		48F6277016D643E60034A5A7 /* Placement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Placement.h; path = SnapGab/Placement.h; sourceTree = "<group>"; };
 		48F6277116D643E60034A5A7 /* Placement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Placement.m; path = SnapGab/Placement.m; sourceTree = "<group>"; };
-		48F6277416D6440A0034A5A7 /* AnnotationJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnnotationJSONHandler.h; path = SnapGab/AnnotationJSONHandler.h; sourceTree = "<group>"; };
-		48F6277516D6440A0034A5A7 /* AnnotationJSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AnnotationJSONHandler.m; path = SnapGab/AnnotationJSONHandler.m; sourceTree = "<group>"; };
 		48F6277616D6440A0034A5A7 /* DataValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataValidator.h; path = SnapGab/DataValidator.h; sourceTree = "<group>"; };
 		48F6277716D6440A0034A5A7 /* DataValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataValidator.m; path = SnapGab/DataValidator.m; sourceTree = "<group>"; };
 		48F6277816D6440A0034A5A7 /* PanelJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PanelJSONHandler.h; path = SnapGab/PanelJSONHandler.h; sourceTree = "<group>"; };
@@ -187,6 +188,14 @@
 		D88FF66A16C5597D00C0A2A8 /* panel-edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "panel-edit.png"; path = "SnapGab/panel-edit.png"; sourceTree = "<group>"; };
 		D8932C7A16D7ED7B007D97A9 /* GUIConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GUIConstant.h; path = ../GUIConstant.h; sourceTree = "<group>"; };
 		D8932C7B16D7ED7B007D97A9 /* GUIConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GUIConstant.m; path = ../GUIConstant.m; sourceTree = "<group>"; };
+		D894B8C616DCEEE300C31585 /* ResourceLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceLoader.h; sourceTree = "<group>"; };
+		D894B8C716DCEEE300C31585 /* ResourceLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceLoader.m; sourceTree = "<group>"; };
+		D894B8C916DCEFC700C31585 /* Resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resource.h; sourceTree = "<group>"; };
+		D894B8CA16DCEFC700C31585 /* Resource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Resource.m; sourceTree = "<group>"; };
+		D894B8CC16DCF5EA00C31585 /* ResourceJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceJSONHandler.h; sourceTree = "<group>"; };
+		D894B8CD16DCF5EB00C31585 /* ResourceJSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceJSONHandler.m; sourceTree = "<group>"; };
+		D894B8CF16DCFCED00C31585 /* AnnotationJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnotationJSONHandler.h; sourceTree = "<group>"; };
+		D894B8D016DCFCED00C31585 /* AnnotationJSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnotationJSONHandler.m; sourceTree = "<group>"; };
 		D8A098A2167F3A9600762DB0 /* ResourceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceViewController.h; sourceTree = "<group>"; };
 		D8A098A3167F3A9600762DB0 /* ResourceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceViewController.m; sourceTree = "<group>"; };
 		D8A098A6167F497100762DB0 /* ResourceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceView.h; sourceTree = "<group>"; };
@@ -396,8 +405,8 @@
 		48CAFD2316CE761700D8EB4C /* API */ = {
 			isa = PBXGroup;
 			children = (
-				48F6277416D6440A0034A5A7 /* AnnotationJSONHandler.h */,
-				48F6277516D6440A0034A5A7 /* AnnotationJSONHandler.m */,
+				D894B8CF16DCFCED00C31585 /* AnnotationJSONHandler.h */,
+				D894B8D016DCFCED00C31585 /* AnnotationJSONHandler.m */,
 				48F6277616D6440A0034A5A7 /* DataValidator.h */,
 				48F6277716D6440A0034A5A7 /* DataValidator.m */,
 				48F6277816D6440A0034A5A7 /* PanelJSONHandler.h */,
@@ -408,6 +417,10 @@
 				48D0806D16D4EC6800346465 /* ImageDownloader.m */,
 				48D0806E16D4EC6800346465 /* PanelLoader.h */,
 				48D0806F16D4EC6800346465 /* PanelLoader.m */,
+				D894B8C616DCEEE300C31585 /* ResourceLoader.h */,
+				D894B8C716DCEEE300C31585 /* ResourceLoader.m */,
+				D894B8CC16DCF5EA00C31585 /* ResourceJSONHandler.h */,
+				D894B8CD16DCF5EB00C31585 /* ResourceJSONHandler.m */,
 				48CAFD3E16CEA7E600D8EB4C /* APIWrapper.h */,
 				48CAFD3F16CEA7E600D8EB4C /* APIWrapper.m */,
 				48CAFD2C16CE789600D8EB4C /* DataLoader.h */,
@@ -446,6 +459,8 @@
 				48F6277116D643E60034A5A7 /* Placement.m */,
 				48D0806916D4EB0A00346465 /* Panel.h */,
 				48D0806A16D4EB0A00346465 /* Panel.m */,
+				D894B8C916DCEFC700C31585 /* Resource.h */,
+				D894B8CA16DCEFC700C31585 /* Resource.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -700,11 +715,14 @@
 				48D0807116D4EC6800346465 /* PanelLoader.m in Sources */,
 				48F6277216D643E60034A5A7 /* Annotation.m in Sources */,
 				48F6277316D643E60034A5A7 /* Placement.m in Sources */,
-				48F6277C16D6440A0034A5A7 /* AnnotationJSONHandler.m in Sources */,
 				48F6277D16D6440A0034A5A7 /* DataValidator.m in Sources */,
 				48F6277E16D6440A0034A5A7 /* PanelJSONHandler.m in Sources */,
 				48F6277F16D6440A0034A5A7 /* PlacementJSONHandler.m in Sources */,
 				D8932C7C16D7ED7B007D97A9 /* GUIConstant.m in Sources */,
+				D894B8C816DCEEE400C31585 /* ResourceLoader.m in Sources */,
+				D894B8CB16DCEFC700C31585 /* Resource.m in Sources */,
+				D894B8CE16DCF5EB00C31585 /* ResourceJSONHandler.m in Sources */,
+				D894B8D116DCFCED00C31585 /* AnnotationJSONHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -24,12 +24,13 @@
 
     
     //url dict string object uses NSNull value in json deserilization.
-    NSString* url = [panelJSON objectForKey:@"image_url"];
+    NSString* url = [panelJSON objectForKey:@"photo_url"];
     url = [DataValidator checkKeyValueForNull:url];
     if (url != nil)
         url = [APIWrapper getAbsoluteURLUsingPanelImageRelativePath:url];
     panel.imageURL = url;
     
+
     //placements
     if ([panelJSON valueForKey:@"placements"] != nil){
         NSArray* placementArray = [panelJSON valueForKey:@"placements"];
@@ -38,6 +39,7 @@
             panel.placements = placements;
         }
     }
+    
     //annotations
     if ([panelJSON valueForKey:@"annotations"] != nil){
         NSArray* annotationArray = [panelJSON valueForKey:@"annotations"];
@@ -46,6 +48,7 @@
             panel.annotations = annotations;
         }
     }
+
     return panel;
 }
 

@@ -101,39 +101,7 @@ finishedSavingWithError:(NSError *)error
         [alert show];
         return;
     }
-    
-    NSString* boundary = @"0cfOXe12Fj";
-    
-    //uploading on Automics I server
-    NSURL* requestURL = [NSURL URLWithString:@"http://www.automics.net/automics/upload.php"];
 
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    //NSString* groupname = @"d1";
-    NSString* groupname = [prefs objectForKey:@"groupname"];
-    NSDictionary* _params = [NSDictionary dictionaryWithObject:groupname forKey:@"group_name"];
-    
-    // create request
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
-    [request setHTTPShouldHandleCookies:NO];
-    [request setTimeoutInterval:30];
-    [request setHTTPMethod:@"POST"];
-    
-
-    // set Content-Type in HTTP header
-    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
-    [request setValue:contentType forHTTPHeaderField: @"Content-Type"];
-    
-    // post body
-    NSMutableData *body = [NSMutableData data];
-    
-    // add params (all params are strings)
-    for (NSString *param in _params) {
-        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", param] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"%@\r\n", [_params objectForKey:param]] dataUsingEncoding:NSUTF8StringEncoding]];
-    }
-    
     // add image data
     UIImage* scaledImage;
   
@@ -142,20 +110,14 @@ finishedSavingWithError:(NSError *)error
     else
         scaledImage = [imageView.image scaleProportionalToSize:CGSizeMake(640, 960)];
 
-    NSData *imageData = UIImageJPEGRepresentation(scaledImage, 1.0);
-    if (imageData) {
-        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[@"Content-Disposition: form-data; name=\"image_file\"; filename=\"image.jpg\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:imageData];
-        [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-    }
     
-    //Make json
-    NSMutableArray* panelArray = [[NSMutableArray alloc] init];
+    NSData *imageData = UIImageJPEGRepresentation(scaledImage, 1.0);
+    NSString *imageString = [imageData base64EncodedString];
+    //NSData *d = [NSData dataFromBase64String:imageString];
     
     NSMutableArray* placementsArray = [[NSMutableArray alloc] init];
     NSMutableArray* annotationsArray = [[NSMutableArray alloc] init];
+    
     
     for (UIView *subview in self.view.subviews)
     {
@@ -163,21 +125,7 @@ finishedSavingWithError:(NSError *)error
         if([subview isMemberOfClass:[SpeechBubbleView class]])
         {
             SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
-            NSDictionary* bubble =
-            [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
-              @"bubble",
-              [NSNumber numberWithFloat:sbv.frame.origin.x],
-              [NSNumber numberWithFloat:sbv.frame.origin.y],
-              [NSNumber numberWithFloat:sbv.frame.size.width],
-              [NSNumber numberWithFloat:sbv.frame.size.height],
-              sbv.textView.text,
-              [NSNumber numberWithInt:sbv.styleId],
-              nil]
-                                        forKeys:
-             [NSArray arrayWithObjects:@"c",@"x",@"y",@"w",@"h",@"t",@"s", nil]];
-            [panelArray addObject:bubble];
-            
-            
+
             NSDictionary* annotation =
             [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
                                                  
@@ -201,65 +149,23 @@ finishedSavingWithError:(NSError *)error
             ResourceView* sbv =(ResourceView*)subview;
 
             NSDictionary* resource = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
-                                    @"resource",
-                                    [NSNumber numberWithFloat:sbv.frame.origin.x],
-                                    [NSNumber numberWithFloat:sbv.frame.origin.y],
-                                    [NSNumber numberWithFloat:sbv.frame.size.width],
-                                    [NSNumber numberWithFloat:sbv.frame.size.height],
-                                    [NSNumber numberWithInt:sbv.styleId],
-                                    nil]
-                                                                             forKeys:
-            [NSArray arrayWithObjects:@"c",@"x",@"y",@"w",@"h", @"s", nil]];
-            [panelArray addObject:resource];
-            
-            resource = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
+                                                            [NSNumber numberWithInt:sbv.resourceId],
                                                             [NSNumber numberWithFloat:sbv.frame.origin.x],
                                                             [NSNumber numberWithFloat:sbv.frame.origin.y],
-                                                            @"1.0",
-                                                            @"null",
+                                                            [NSNumber numberWithFloat:1.0],
+                                                            [NSNumber numberWithInt:1],
                                                             nil]
                                                    forKeys:
-                        [NSArray arrayWithObjects:@"xoff",@"yoff",@"scale",@"z_index", nil]];
+                        [NSArray arrayWithObjects:@"resource_id",@"xoff",@"yoff",@"scale",@"z_index", nil]];
             [placementsArray addObject:resource];
         }//end add resource data
        
     }//end for
     
-    NSError *writeError = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:panelArray options:NSJSONWritingPrettyPrinted error:&writeError];
-    
-    if (jsonData) {
-        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[@"Content-Disposition: form-data; name=\"bubble_file\"; filename=\"bubble.bub\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        //[body appendData:[@"Content-Disposition: form-data; name=\"panel_file\"; filename=\"panel.bub\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[@"Content-Type: text/html\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:jsonData];
-        [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-    }
-    
-    [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    // setting the body of the post to the reqeust
-    [request setHTTPBody:body];
-    
-    // set the content-length
-    NSString *postLength = [NSString stringWithFormat:@"%d", [body length]];
-    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    // set URL
-    [request setURL:requestURL];
-    
-    //self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    
 
-    //Uploading on Automics II server
-   
-    NSString *imageString = [imageData base64EncodedString];
-    NSData *d = [NSData dataFromBase64String:imageString];
-    
 
-    NSString*   myURLString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/photo"];
-    
-    NSError *writeErrorNew;
+    NSString*   myURLString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/photo"];    
+    NSError *writeErrorNew = nil;
     
     
     NSArray *objects = [NSArray arrayWithObjects:@"description", @"type.png", @"320", @"320", imageString, nil];
@@ -268,9 +174,7 @@ finishedSavingWithError:(NSError *)error
     NSDictionary *jsonDict = [NSDictionary dictionaryWithObject:questionDict forKey:@"data"];
     //Create JSON object
     NSData *jsonRequestData = [NSJSONSerialization dataWithJSONObject:jsonDict options:NSJSONWritingPrettyPrinted error:&writeErrorNew];
-    
 
-    
     NSURL *requestURLNew = [NSURL URLWithString:myURLString];
     NSMutableURLRequest *requestNew = [[NSMutableURLRequest alloc] init];
     [requestNew setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
@@ -289,8 +193,8 @@ finishedSavingWithError:(NSError *)error
     // initiate connection request with the server
     self.connection = [[NSURLConnection alloc] initWithRequest:requestNew delegate:self];
 
-    self.progressView.progress = 0.0f;
-    self.progressView.alpha = 1.0f;
+    //self.progressView.progress = 0.0f;
+    //self.progressView.alpha = 1.0f;
     
     if (!self.connection) {
         UIAlertView *alert = [[UIAlertView alloc]
@@ -304,6 +208,7 @@ finishedSavingWithError:(NSError *)error
     }
     else
     {
+        self.connection = nil;
 
         NSURLResponse *responseURL;
         NSError *err;
@@ -318,19 +223,14 @@ finishedSavingWithError:(NSError *)error
             
             id jsonObject = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:&parseError];
             
-            imageURL = [jsonObject objectForKey:@"id"];
-            NSLog(@"imageURL=%@", imageURL);
+            NSString* imageId = [jsonObject objectForKey:@"id"];
+            NSLog(@"imageId=%@", imageId);
 
 
             //uploading panel
             myURLString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/panel"];
-            //NSString* image_url = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk%@", imageURL];
-            
-            //NSDictionary *placementsDict = [NSDictionary dictionaryWithObject:placementsArray forKey:@"placements"];
-            //NSDictionary *annotationsDict = [NSDictionary dictionaryWithObject:annotationsArray forKey:@"annotations"];
-            
-            
-            objects = [NSArray arrayWithObjects:imageURL, placementsArray, annotationsArray, nil];
+                        
+            objects = [NSArray arrayWithObjects:imageId, placementsArray, annotationsArray, nil];
             keys = [NSArray arrayWithObjects:@"photo_id", @"placements", @"annotations", nil];
             
             questionDict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
@@ -359,13 +259,15 @@ finishedSavingWithError:(NSError *)error
             
             if(self.connection)
             {
+                /*
                 NSString *requestString = [[NSString alloc] initWithData:jsonRequestData encoding:NSUTF8StringEncoding];
-                //NSLog(@"requestData: %@", requestString);
+                NSLog(@"requestData: %@", requestString);
                 NSURLResponse *response;
                 NSError *err;
                 NSData *responseData = [NSURLConnection sendSynchronousRequest:requestNew returningResponse:&response error:&err];
                 NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-                //NSLog(@"responseData: %@", responseString);
+                NSLog(@"responseData: %@", responseString);
+                 */
                 panelUploaded = YES;
             }
             
@@ -392,17 +294,18 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
  
+    NSLog(@"connectionDidFinishLoading. panelUploaded=%d", panelUploaded);
     if(panelUploaded)
     {
-        //panelUploaded=NO;
-    UIAlertView *alert = [[UIAlertView alloc]
+        panelUploaded=NO;
+        UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Upload Successful"
                           message: nil
                           delegate: nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-    [alert show];
-    [self dismissViewControllerAnimated:YES completion:nil];
+        [alert show];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
