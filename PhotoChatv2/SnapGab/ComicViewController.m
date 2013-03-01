@@ -10,6 +10,8 @@
 #import "ComicEditViewController.h"
 #import "ComicDetailsViewController.h"
 #import "ComicTableCell.h"
+#import "Comic.h"
+#import "ComicLoader.h"
 
 @interface ComicViewController ()
 
@@ -22,10 +24,13 @@
 UILabel *clickLabel;
 
 
-int _numComics;
+int numComics;
 int currentComic;
+int comicCounter;
 CGFloat yPos = 50.0;
 CGFloat xPos = 10.0;
+ComicLoader* comicLoader;
+NSMutableArray* comicList;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -50,38 +55,17 @@ CGFloat xPos = 10.0;
 
 - (void)updateNumComics
 {
-
-    //NSURLRequestReloadIgnoringLocalCacheData does not seem to work for 3G
-    NSString* urlString = [NSString stringWithFormat:
-                           @"http://www.automics.net/automics/userfiles/%@/lastcomic.txt?%d",_groupName,arc4random()];
-    
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]
-                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                                       timeoutInterval:10];
-    
-    [request setHTTPMethod: @"GET"];
-    
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
-    
-    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
-    
-    if(!requestError) _numComics = [[[NSString alloc] initWithData:response encoding:NSASCIIStringEncoding] intValue];
-    
-    //NSLog(@"updateImages. urlString is %@", urlString);
-    //NSLog(@"updateImages. _numComics is %i", _numComics);
     
     yPos= 40.0;
 
     int page = 0;
-    //NSLog(@"_numComics%i", _numComics);
+    //NSLog(@"updateComics.numComics=%i", numComics);
     
-    if(_numComics>0)
+    if(numComics>0)
     {
         
         [self.comicTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewScrollPositionBottom];
-            NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:(_numComics - 1) inSection:0];
+            NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:(numComics - 1) inSection:0];
         
         if(([self.comicTableView numberOfSections] >0) &&
            [self.comicTableView numberOfRowsInSection:0]>0 )
@@ -107,10 +91,20 @@ CGFloat xPos = 10.0;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
+    numComics = 0;
+    comicCounter = 0;
     
+    comicList = [[NSMutableArray alloc] init];
+    comicLoader = [[ComicLoader alloc] init];
+    comicLoader.delegate = self;
+    [comicLoader submitRequestGetComicsForGroup:1];
+    
+    
+    /*
     [self updateNumComics];
-    if(_numComics>0) {
-        NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:(_numComics - 1) inSection:0];
+    
+    if(numComics>0) {
+        NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:(numComics - 1) inSection:0];
         
         if(//[self.comicTableView numberOfSections] >0 &&
            [self.comicTableView numberOfRowsInSection:0]>0 )
@@ -119,10 +113,33 @@ CGFloat xPos = 10.0;
         }
         
     }
+    
+    comicTableView.dataSource = self;
+    comicTableView.delegate = self;
+     */
+}
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    //NSLog(@"viewDidAppear");
+    [self updateNumComics];
+    
+    if(numComics>0) {
+        NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:(numComics - 1) inSection:0];
+        
+        if(//[self.comicTableView numberOfSections] >0 &&
+           [self.comicTableView numberOfRowsInSection:0]>0 )
+        {
+            [self.comicTableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+        
+    }
+    
     comicTableView.dataSource = self;
     comicTableView.delegate = self;
 
+    
+//    [comicLoader submitRequestGetComicsForGroup:1];
 }
 
 - (void)viewComicDetails:(id)sender
@@ -142,7 +159,7 @@ CGFloat xPos = 10.0;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return _numComics;
+    return numComics;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -198,5 +215,25 @@ CGFloat xPos = 10.0;
     
 }
  */
+
+#pragma ComicLoader methods.
+
+-(void)ComicLoader:(ComicLoader*)loader didFailWithError:(NSError*)error{
+    
+}
+
+-(void)ComicLoader:(ComicLoader*)loader didLoadComics:(NSArray*)comics{
+    
+    comicList = comics;
+    numComics = [comics count];
+    //NSLog(@"didLoadComics.numComics=%i", numComics);
+    
+}
+
+-(void)ComicLoader:(ComicLoader*)loader didLoadComic:(Comic*)comic
+{
+    
+}
+
 
 @end

@@ -268,6 +268,8 @@ CGRect originalFrame;
         if(groupname.length==0) groupname=@"umartest"; //return;
         //    NSString* password = passwordTextField.text;
         
+        int groupId = 1;
+        
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         
         token = [prefs objectForKey:@"token"];

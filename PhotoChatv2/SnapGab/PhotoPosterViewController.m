@@ -259,9 +259,10 @@ finishedSavingWithError:(NSError *)error
             
             if(self.connection)
             {
-                /*
+                
                 NSString *requestString = [[NSString alloc] initWithData:jsonRequestData encoding:NSUTF8StringEncoding];
                 NSLog(@"requestData: %@", requestString);
+                /*
                 NSURLResponse *response;
                 NSError *err;
                 NSData *responseData = [NSURLConnection sendSynchronousRequest:requestNew returningResponse:&response error:&err];
