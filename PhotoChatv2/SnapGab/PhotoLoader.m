@@ -44,9 +44,7 @@ int const kPostPhoto = 1;
     photodict = [PhotoJSONHandler wrapJSONDictWithDataTag:photodict];
     NSError *error;
     NSData* data = [NSJSONSerialization dataWithJSONObject:photodict options:NSJSONWritingPrettyPrinted error:&error];
-    NSString *tempString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"string to post %@", tempString);
-    [urlRequest setHTTPBody:data];
+   [urlRequest setHTTPBody:data];
 }
 
 -(void)submitPhotoRequest:(NSURLRequest*)urlRequest{
@@ -58,10 +56,11 @@ int const kPostPhoto = 1;
     NSError* error;
     NSDictionary* photodict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (photodict != nil){
-        /*Photo *photo = [PhotoJSONHandler convertPhotoJSONDictIntoPhoto:photodict];
-        if ([self.delegate respondsToSelector:@selector(PhotoLoader:didSavePhoto:)])
-            [self.delegate PhotoLoader:self didSavePhoto:photo];
-         */
+        Photo *photo = [PhotoJSONHandler convertPhotoJSONIntoPhoto:photodict];
+        if ([self.delegate respondsToSelector:@selector(PhotoLoader:didUploadPhoto:)])
+            [self.delegate PhotoLoader:self didUploadPhoto:photo];
+    }else{
+        [self reportErrorToDelegate:error];
     }
 }
 

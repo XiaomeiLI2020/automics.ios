@@ -11,4 +11,5 @@
 
 @interface PhotoJSONHandler : JSONHandler
 +(NSDictionary*)convertPhotoIntoPhotoJSON:(Photo*)photo;
++(Photo*)convertPhotoJSONIntoPhoto:(NSDictionary*)photodict;
 @end
