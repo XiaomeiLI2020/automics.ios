@@ -68,32 +68,18 @@ int const kPostPanel = 2;
     NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
     [urlRequest setHTTPMethod:@"POST"];
     [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    NSError *error;
+    [self setPanelPostData:panel InURLRequest:urlRequest];
+    return urlRequest;
+}
+
+-(void)setPanelPostData:(Panel*)panel InURLRequest:(NSMutableURLRequest*)urlRequest{
     NSDictionary* paneldict = [PanelJSONHandler convertPanelIntoPanelJSON:panel];
+    paneldict = [PanelJSONHandler wrapJSONDictWithDataTag:paneldict];
+    NSError *error;
     NSData* data = [NSJSONSerialization dataWithJSONObject:paneldict options:NSJSONWritingPrettyPrinted error:&error];
     [urlRequest setHTTPBody:data];
-    return [NSURLRequest requestWithURL:url];
 }
 
-#pragma mark NSURLConnectionDelegate functions.
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection{
-    [super connectionDidFinishLoading:connection];
-    
-    if (self.downloadedData.length > 0){
-        switch (panelRequestType){
-            case kGetGroupPanels:
-                [self handleGetPanelsForGroupResponse];
-                break;
-            case kGetPanel:
-                [self handleGetPanelWithIdResponse];
-                break;
-            case kPostPanel:
-                [self handlePostPanel];
-                break;
-
-        }
-    }
-}
 
 -(void)handleGetPanelsForGroupResponse{
     NSError* error;
@@ -120,10 +106,12 @@ int const kPostPanel = 2;
 }
 
 -(void)handlePostPanel{
-    NSString *responseText = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
-    if (responseText != nil){
+    NSError* error;
+    NSDictionary* paneldict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+    if (paneldict != nil){
+        Panel *panel = [PanelJSONHandler convertPanelJSONDictIntoPanel:paneldict];
         if ([self.delegate respondsToSelector:@selector(PanelLoader:didSavePanel:)])
-            [self.delegate PanelLoader:self didSavePanel:responseText];
+            [self.delegate PanelLoader:self didSavePanel:panel];
     }
 }
 
@@ -139,15 +127,39 @@ int const kPostPanel = 2;
     [self reportErrorToDelegate:error];
 }
 
+-(void)cancelPanelLoad{
+    [self cancelRequest];
+}
+
+#pragma mark NSURLConnectionDataDelegate methods
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection{
+    [super connectionDidFinishLoading:connection];
+    if (self.downloadedData.length > 0){
+        switch (panelRequestType){
+            case kGetGroupPanels:
+                [self handleGetPanelsForGroupResponse];
+                break;
+            case kGetPanel:
+                [self handleGetPanelWithIdResponse];
+                break;
+            case kPostPanel:
+                [self handlePostPanel];
+                break;
+                
+        }
+    }
+}
+
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{
     [super connection:connection didFailWithError:error];
     [self reportErrorToDelegate:error];
 }
 
--(void)cancelPanelLoad{
-    [self cancelRequest];
+-(void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite{
+    if ([self.delegate respondsToSelector:@selector(connection:didSendBodyData:totalBytesWritten:totalBytesExpectedToWrite:)])
+        [self.delegate connection:connection didSendBodyData:bytesWritten totalBytesWritten:totalBytesWritten totalBytesExpectedToWrite:totalBytesExpectedToWrite];
 }
-
 
 @end
 

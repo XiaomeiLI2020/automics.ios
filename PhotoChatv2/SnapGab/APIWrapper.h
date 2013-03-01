@@ -16,5 +16,6 @@
 +(NSString*)getAbsoluteURLUsingPanelImageRelativePath:(NSString*)imageURL;
 +(NSString*)getURLForGetComics;
 +(NSString*)getURLForGetComicWithId:(int)comicId;
++(NSString*)getURLForPostPhoto;
 
 @end

@@ -15,7 +15,7 @@
     Annotation *annotation = [[Annotation alloc] init];
     
     if ([annotationJSON valueForKey:@"bubble_style"] != nil){
-        NSString* bubbleStyle = [DataValidator checkKeyValueForNull:[annotationJSON valueForKey:@"bubble_style"]];
+        NSNumber* bubbleStyle = [DataValidator checkKeyValueForNull:[annotationJSON valueForKey:@"bubble_style"]];
         if (bubbleStyle != nil)
             annotation.bubbleStyle = [bubbleStyle integerValue];
     }
@@ -27,7 +27,7 @@
     }
     
     if ([annotationJSON valueForKey:@"id"] != nil){
-        NSString* annotationId = [DataValidator checkKeyValueForNull:[annotationJSON valueForKey:@"id"]];
+        NSNumber* annotationId = [DataValidator checkKeyValueForNull:[annotationJSON valueForKey:@"id"]];
         if (annotationId != nil)
             annotation.annotationId = [annotationId integerValue];
     }
@@ -39,13 +39,13 @@
     }
     
     if ([annotationJSON valueForKey:@"xoff"] != nil){
-        NSString* xOffset = [DataValidator checkKeyValueForNull:[annotationJSON valueForKey:@"xoff"]];
+        NSNumber* xOffset = [DataValidator checkKeyValueForNull:[annotationJSON valueForKey:@"xoff"]];
         if (xOffset != nil)
             annotation.xOffset = [xOffset floatValue];
     }
     
     if ([annotationJSON valueForKey:@"yoff"] != nil){
-        NSString* yOffset = [DataValidator checkKeyValueForNull:[annotationJSON valueForKey:@"yoff"]];
+        NSNumber* yOffset = [DataValidator checkKeyValueForNull:[annotationJSON valueForKey:@"yoff"]];
         if (yOffset != nil)
             annotation.yOffset = [yOffset floatValue];
     }

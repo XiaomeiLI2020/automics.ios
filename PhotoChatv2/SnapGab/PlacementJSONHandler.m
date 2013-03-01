@@ -16,27 +16,33 @@
     Placement *placement = [[Placement alloc] init];
     
     if ([placementJSON valueForKey:@"resource_id"] != nil){
-        NSString* resourceId = [DataValidator checkKeyValueForNull:[placementJSON valueForKey:@"resource_id"]];
+        NSNumber* resourceId = [DataValidator checkKeyValueForNull:[placementJSON valueForKey:@"resource_id"]];
         if (resourceId != nil)
-            placement.resourceId = [resourceId integerValue];
+            placement.resourceId = [resourceId intValue];
     }
     
     if ([placementJSON valueForKey:@"scale"] != nil){
-        NSString* scale = [DataValidator checkKeyValueForNull:[placementJSON valueForKey:@"scale"]];
+        NSNumber* scale = [DataValidator checkKeyValueForNull:[placementJSON valueForKey:@"scale"]];
         if (scale != nil)
             placement.scale = [scale floatValue];
     }
     
     if ([placementJSON valueForKey:@"xoff"] != nil){
-        NSString* xOffset = [DataValidator checkKeyValueForNull:[placementJSON valueForKey:@"xoff"]];
+        NSNumber* xOffset = [DataValidator checkKeyValueForNull:[placementJSON valueForKey:@"xoff"]];
         if (xOffset != nil)
             placement.xOffset = [xOffset floatValue];
     }
     
     if ([placementJSON valueForKey:@"yoff"] != nil){
-        NSString* yOffset = [DataValidator checkKeyValueForNull:[placementJSON valueForKey:@"yoff"]];
+        NSNumber* yOffset = [DataValidator checkKeyValueForNull:[placementJSON valueForKey:@"yoff"]];
         if (yOffset != nil)
             placement.yOffset = [yOffset floatValue];
+    }
+    
+    if ([placementJSON valueForKey:@"z_index"] != nil){
+        NSNumber* zIndex = [DataValidator checkKeyValueForNull:[placementJSON valueForKey:@"z_index"]];
+        if (zIndex != nil)
+            placement.zIndex = [zIndex intValue];
     }
     return placement;
 }
@@ -57,6 +63,7 @@
     [placementdict setValue:[[NSNumber alloc] initWithFloat:placement.scale] forKey:@"scale"];
     [placementdict setValue:[[NSNumber alloc] initWithFloat:placement.xOffset] forKey:@"xoff"];
     [placementdict setValue:[[NSNumber alloc] initWithFloat:placement.yOffset] forKey:@"yoff"];
+    [placementdict setValue:[[NSNumber alloc] initWithInt:placement.zIndex] forKey:@"z_index"];
     return placementdict;
 }
 

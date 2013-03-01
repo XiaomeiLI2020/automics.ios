@@ -18,5 +18,4 @@
 -(void)initConnectionRequest;
 -(void)submitURLRequest:(NSURLRequest*)urlRequest;
 -(void)cancelRequest;
-
 @end

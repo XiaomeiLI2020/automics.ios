@@ -24,6 +24,10 @@
     return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL,kAPIURL,kPanelURL];
 }
 
++(NSString*)getURLForPostPhoto{
+    return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL,kAPIURL,kPhotoURL];
+}
+
 +(NSString*)getAbsoluteURLUsingPanelImageRelativePath:(NSString*)imageURL{
     return [NSString stringWithFormat:@"%@%@", kBaseURL, imageURL];
 }

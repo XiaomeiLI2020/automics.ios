@@ -10,8 +10,8 @@
 
 @implementation DataValidator
 
-+(NSString*)checkKeyValueForNull:(NSString*)value{
-    NSString* checkedValue;
++(id)checkKeyValueForNull:(id)value{
+    id checkedValue;
     if ([value isEqual:[NSNull null]]){
         checkedValue = nil;
     }else{

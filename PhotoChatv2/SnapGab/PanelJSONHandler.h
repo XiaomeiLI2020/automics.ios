@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "Panel.h"
+#import "JSONHandler.h"
 
-@interface PanelJSONHandler : NSObject
+@interface PanelJSONHandler : JSONHandler
 
 +(Panel*)convertPanelJSONDictIntoPanel:(NSDictionary*)panelJSON;
 +(NSArray*)convertPanelsJSONIntoPanels:(NSArray*)panelsJSON;

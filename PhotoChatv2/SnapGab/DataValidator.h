@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface DataValidator : NSObject
-+(NSString*)checkKeyValueForNull:(NSString*)value;
++(id)checkKeyValueForNull:(id)value;
 @end

@@ -13,10 +13,6 @@
 
 @interface PanelLoader : DataLoader
 
-extern int const kGetGroupPanels;
-extern int const kGetPanel;
-extern int const kPostPanel;
-
 @property (weak) id<PanelLoaderDelegate> delegate;
 -(void)submitRequestGetPanelsForGroup:(int)groupId;
 -(void)submitRequestGetPanelWithId:(int)panelId;
@@ -25,10 +21,10 @@ extern int const kPostPanel;
 @end
 
 
-@protocol PanelLoaderDelegate<NSObject>
+@protocol PanelLoaderDelegate<NSURLConnectionDataDelegate>
 @optional
 -(void)PanelLoader:(PanelLoader*)loader didFailWithError:(NSError*)error;
 -(void)PanelLoader:(PanelLoader *)loader didLoadPanels:(NSArray*)panels;
 -(void)PanelLoader:(PanelLoader *)loader didLoadPanel:(Panel*)panel;
--(void)PanelLoader:(PanelLoader *)loader didSavePanel:(NSString*)response;
+-(void)PanelLoader:(PanelLoader *)loader didSavePanel:(Panel*)panel;
 @end
