@@ -426,6 +426,7 @@
 		48CAFD2316CE761700D8EB4C /* API */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				48D933CE16E0C3A700B8C68D /* AnnotationJSONHandler.h */,
 				48D933CF16E0C3A700B8C68D /* AnnotationJSONHandler.m */,
 				48D933C416E0B6D600B8C68D /* PhotoJSONHandler.h */,
@@ -434,10 +435,22 @@
 				48D933C716E0B6D600B8C68D /* PhotoLoader.m */,
 				48053FC016DE875C0046BE60 /* JSONHandler.h */,
 				48053FC116DE875C0046BE60 /* JSONHandler.m */,
+=======
+
+				D894B8CF16DCFCED00C31585 /* AnnotationJSONHandler.h */,
+				D894B8D016DCFCED00C31585 /* AnnotationJSONHandler.m */,
+
+>>>>>>> comicapi
 				48B2FD5C16DCC6FD00EF9439 /* ComicJSONHandler.h */,
 				48B2FD5D16DCC6FD00EF9439 /* ComicJSONHandler.m */,
 				48B2FD5E16DCC6FD00EF9439 /* ComicLoader.h */,
 				48B2FD5F16DCC6FD00EF9439 /* ComicLoader.m */,
+<<<<<<< HEAD
+=======
+				48F6277416D6440A0034A5A7 /* AnnotationJSONHandler.h */,
+				48F6277516D6440A0034A5A7 /* AnnotationJSONHandler.m */,
+
+>>>>>>> comicapi
 				48F6277616D6440A0034A5A7 /* DataValidator.h */,
 				48F6277716D6440A0034A5A7 /* DataValidator.m */,
 				48F6277816D6440A0034A5A7 /* PanelJSONHandler.h */,
@@ -754,6 +767,7 @@
 				48F6277E16D6440A0034A5A7 /* PanelJSONHandler.m in Sources */,
 				48F6277F16D6440A0034A5A7 /* PlacementJSONHandler.m in Sources */,
 				D8932C7C16D7ED7B007D97A9 /* GUIConstant.m in Sources */,
+<<<<<<< HEAD
 				D894B8C816DCEEE400C31585 /* ResourceLoader.m in Sources */,
 				D894B8CB16DCEFC700C31585 /* Resource.m in Sources */,
 				D894B8CE16DCF5EB00C31585 /* ResourceJSONHandler.m in Sources */,
@@ -765,6 +779,18 @@
 				48D933C816E0B6D600B8C68D /* PhotoJSONHandler.m in Sources */,
 				48D933C916E0B6D600B8C68D /* PhotoLoader.m in Sources */,
 				48D933D016E0C3A700B8C68D /* AnnotationJSONHandler.m in Sources */,
+=======
+
+				D894B8C816DCEEE400C31585 /* ResourceLoader.m in Sources */,
+				D894B8CB16DCEFC700C31585 /* Resource.m in Sources */,
+				D894B8CE16DCF5EB00C31585 /* ResourceJSONHandler.m in Sources */,
+				D894B8D116DCFCED00C31585 /* AnnotationJSONHandler.m in Sources */,
+
+				48B2FD5A16DCC6BF00EF9439 /* Comic.m in Sources */,
+				48B2FD6016DCC6FD00EF9439 /* ComicJSONHandler.m in Sources */,
+				48B2FD6116DCC6FD00EF9439 /* ComicLoader.m in Sources */,
+
+>>>>>>> comicapi
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

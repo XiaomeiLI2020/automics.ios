@@ -20,6 +20,7 @@ extern int numResources;
 @property (weak) id<ResourceLoaderDelegate> delegate;
 -(void)submitRequestGetResourcesForTheme:(int)themeId;
 -(void)submitRequestGetResourceWithId:(int)resourceId;
+-(void)submitRequestGetResourceWithResourceId:(int)resourceId;
 
 @end
 

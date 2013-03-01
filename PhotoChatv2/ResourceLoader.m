@@ -36,11 +36,18 @@ int numPanels;
     [self submitResourceRequest:urlRequest];
 }
 
-
 -(void)submitRequestGetResourceWithId:(int)resourceId{
     //NSLog(@"submitRequestGetResourceWithId");
     resourceRequestType = kGetResource;
-    NSURLRequest* urlRequest = [self prepareResourceRequestForGetResourceWithId:resourceId];
+    NSURLRequest* urlRequest = [self prepareResourceRequestForGetResourceWithResourceId:resourceId];
+    [self submitResourceRequest:urlRequest];
+}
+
+
+-(void)submitRequestGetResourceWithResourceId:(int)resourceId{
+    //NSLog(@"submitRequestGetResourceWithId");
+    resourceRequestType = kGetResource;
+    NSURLRequest* urlRequest = [self prepareResourceRequestForGetResourceWithResourceId:resourceId];
     [self submitResourceRequest:urlRequest];
 }
 
@@ -61,9 +68,16 @@ int numPanels;
     return [NSURLRequest requestWithURL:url];
 }
 
-
+/*
 -(NSURLRequest*)prepareResourceRequestForGetResourceWithId:(int)resourceId{
     NSString* resourceURL = [APIWrapper getURLForGetResourceWithId:resourceId];
+    NSURL* url = [NSURL URLWithString:resourceURL];
+    return [NSURLRequest requestWithURL:url];
+}
+*/
+
+-(NSURLRequest*)prepareResourceRequestForGetResourceWithResourceId:(int)resourceId{
+    NSString* resourceURL = [APIWrapper getURLForGetResourceWithResourceId:resourceId];
     NSURL* url = [NSURL URLWithString:resourceURL];
     return [NSURLRequest requestWithURL:url];
 }

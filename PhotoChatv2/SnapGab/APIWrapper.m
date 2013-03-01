@@ -37,7 +37,7 @@
     return [NSString stringWithFormat:@"%@/%@/%@/%@/%@", kBaseURL,kAPIURL,kThemeURL,inputId, kResourceURL];
 }
 
-+(NSString*)getURLForGetResourceWithId:(int)resourceId{
++(NSString*)getURLForGetResourceWithResourceId:(int)resourceId{
     NSString* inputId = [NSString stringWithFormat:@"%d", resourceId];
     return [NSString stringWithFormat:@"%@/%@/%@/%@", kBaseURL,kAPIURL,kResourceURL,inputId];
 }

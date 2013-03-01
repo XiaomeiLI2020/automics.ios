@@ -44,8 +44,22 @@ PanelLoader *panelLoader;
 ResourceLoader *resourceLoader;
 
 NSString* urlImageString;
+
 int panelId;
 int panelCounter;
+int numPanels;
+
+int numPlacements;
+int placementCounter;
+
+
+Panel* currentPanel;
+Placement* currentPlacement;
+
+NSArray *panelList;
+NSArray *resourceList;
+NSArray *placementList;
+
 
 - (void)updateNumImages
 {
@@ -76,13 +90,54 @@ int panelCounter;
         //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
         singleTap.cancelsTouchesInView = NO;
         [thumbnailScrollView addGestureRecognizer:singleTap];
-           
+          
     }//end if(numPanels>0)
        
 }//end updateNumImages
 
+- (void)updateScrollViews
+{
+    
+    //NSLog(@"updateNumImages.numPanels=%i", numPanels);
+    if(numPanels>0)
+    {
+        panelScrollView.numItems = numPanels;
+        thumbnailScrollView.numItems = numPanels;
+        
+        // place the panels in serial layout within the scrollview
+        [panelScrollView layoutItems];
+        
+        currentPage = numPanels-1;
+        
+        //currentPanel = [[Panel alloc] init];
+        currentPanel = [self.panels objectAtIndex:([self.panels count]-1)];
+        if(currentPanel!=nil)
+            NSLog(@"updateScrollViews.currentPanel.panelId=%i", currentPanel.panelId);
+        //Scroll to the last added panel in the serial layout within the scrollview
+        [panelScrollView scrollItemToVisible:(currentPage-1)];
+        
+        
+        // place the thumbnail in serial layout within the scrollview
+        [thumbnailScrollView layoutItems];
+        //Scroll to the last added thumbnail in the serial layout within the scrollview
+        [thumbnailScrollView scrollItemToVisible:(currentPage-1)];
+        
+        
+        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureCaptured:)];
+        //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
+        singleTap.cancelsTouchesInView = NO;
+        [thumbnailScrollView addGestureRecognizer:singleTap];
+        
+    }//end if(numPanels>0)
+    
+}//end updateScrollViews
+
+
 - (void)singleTapGestureCaptured:(UITapGestureRecognizer *)gesture
 {
+    
+    //UIButton *clicked = (UIButton *) sender;
+    //int styleId = clicked.tag;
     
     
     // Determine the position of clicked thumbnail
@@ -135,9 +190,32 @@ int panelCounter;
                                                  selector:@selector(newImageNotification)
                                                      name:UIApplicationDidBecomeActiveNotification
                                                    object:nil];
-        
+        [self initiateDataSet];
     }
     return self;
+}
+
+-(void) initiateDataSet
+{
+    NSLog(@"initiateDataset");
+    numPanels = 0;
+    panelCounter = 0;
+    
+    numPlacements = 0;
+    placementCounter = 0;
+    
+    panelList = [[NSArray alloc] init];
+    resourceList = [[NSArray alloc] init];
+    placementList = [[NSArray alloc] init];
+    
+    panelsLoader = [[PanelLoader alloc] init];
+    panelsLoader.delegate = self;
+    
+    resourceLoader = [[ResourceLoader alloc] init];
+    resourceLoader.delegate = self;
+    
+    _bubblesAdded = NO;
+    _resourcesAdded = NO;
 }
 
 - (void)viewDidLoad
@@ -145,10 +223,9 @@ int panelCounter;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     //NSLog(@"viewDidLoad");
+    
+    [self initiateScrollViews];
 
-    panelCounter = 0;
-    panelsLoader = [[PanelLoader alloc] init];
-    panelsLoader.delegate = self;
     [panelsLoader submitRequestGetPanelsForGroup:1];
     
     /*
@@ -161,20 +238,15 @@ int panelCounter;
         
     }
      */
-    
-    resourceLoader = [[ResourceLoader alloc] init];
-    resourceLoader.delegate = self;
   
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     //NSLog(@"viewDidAppear");
-    [self updateNumImages];
+    //[self updateNumImages];
+    [self updateScrollViews];
     
-    _bubblesAdded = NO;
-    _resourcesAdded = NO;
-
     [panelsLoader submitRequestGetPanelWithId:currentPanel.panelId];
 }
 
@@ -263,7 +335,8 @@ int panelCounter;
     [self removeAllBubbles];
     [self removeAllResources];
     [panelsLoader submitRequestGetPanelsForGroup:1];
-    [self updateNumImages];
+    //[self updateNumImages];
+    [self updateScrollViews];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -324,21 +397,23 @@ int panelCounter;
     // Add panels scrollview
     CGRect panelFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
     CGSize panelSize = CGSizeMake(panelWidth, panelHeight);
-    panelScrollView = [[MainScrollSelector alloc] initWithFrame:panelFrame andItemSize:panelSize andNumItems:numPanels];
+    //panelScrollView = [[MainScrollSelector alloc] initWithFrame:panelFrame andItemSize:panelSize andNumItems:numPanels];
+    panelScrollView = [[MainScrollSelector alloc] initWithFrame:panelFrame andItemSize:panelSize];
     panelScrollView.delegate=self;
     [self.view addSubview:panelScrollView];
     
     // Add thumbnails scrollview
     CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin, thumbnailScrollYOrigin, thumbnailScrollObjWidth, thumbnailScrollObjHeight);
     CGSize thumbnailSize = CGSizeMake(thumbnailWidth, thumbnailHeight);
-    thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize andNumItems:numPanels];
+    //thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize andNumItems:numPanels];
+    thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize];
     [self.view addSubview:thumbnailScrollView];
 }
 
 
 -(void)addImageToScrollViews:(UIImage*)image
 {
-    NSLog(@"image added to scrollviews=%i", panelId);
+    NSLog(@"image added to scrollviews=%i, and panelCounter=%i", panelId, panelCounter);
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     [imageView setImageWithURL:[NSURL URLWithString:urlImageString]
               placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
@@ -347,7 +422,9 @@ int panelCounter;
     rect.size.height = panelScrollObjHeight;
     rect.size.width = panelScrollObjWidth;
     imageView.frame = rect;
-    imageView.tag = panelId;	// tag our images for later use when we place them in serial fashion
+    //imageView.tag = panelId;	// tag our images for later use when we place them in serial fashion
+    
+    imageView.tag = panelCounter;	// tag our images for later use when we place them in serial fashion
     
     // add images to the panel scrollview
     [panelScrollView addSubview:imageView];
@@ -362,10 +439,13 @@ int panelCounter;
     rect1.size.height = thumbnailScrollObjHeight;
     rect1.size.width = thumbnailWidth;
     thumbnailView.frame = rect1;
-    thumbnailView.tag = panelId;	// tag our images for later use when we place them in serial fashion
+    thumbnailView.tag = panelCounter;	// tag our images for later use when we place them in serial fashion
+    
     
     // add images to the thumbnail scrollview
     [thumbnailScrollView addSubview:thumbnailView];
+    
+    //panelCounter++;
 }
 
 #pragma mark PanelLoader functions.
@@ -439,7 +519,7 @@ int panelCounter;
                 CGRect xywh = CGRectMake(placement.xOffset,
                                          placement.yOffset,200,200);
                 
-                [resourceLoader submitRequestGetResourceWithId:placement.resourceId];
+                [resourceLoader submitRequestGetResourceWithResourceId:placement.resourceId];
 
 
             }//end for
@@ -511,11 +591,8 @@ int panelCounter;
             panelId = panel.panelId;
             
             //Add image to scrollviews if it has not been already added to the scrollview.
-            //if(panelCounter<numPanels)
-            {
                 [self addImageToScrollViews:image];
                 panelCounter++;
-            }
 
         }
          //ResourceImageView* resourceImage = [[ResourceImageView alloc] initWithFrame:CGRectMake(0.0,40,320,320) image:image];

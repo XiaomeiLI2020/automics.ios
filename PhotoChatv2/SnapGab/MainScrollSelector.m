@@ -26,6 +26,35 @@
 
 //Init ScrollView with the scrollview's frame size, item size, and no. of items
 - (id)initWithFrame:(CGRect)frame andItemSize:(CGSize)itemSize
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        
+        self.scrollFrame = frame;
+        self.scrollObjWidth = frame.size.width;
+        self.scrollObjHeight = frame.size.height;
+        
+        self.itemWidth = itemSize.width;
+        self.itemWidth = itemSize.height;
+        
+        self.numItems = 1;
+        
+        // setup the scrollview for items
+        [self setCanCancelContentTouches:NO];
+        self.indicatorStyle = UIScrollViewIndicatorStyleWhite;
+        self.clipsToBounds = YES;		// default is NO, we want to restrict drawing within our scrollview
+        self.scrollEnabled = YES;
+        
+        // pagingEnabled property default is NO, if set the scroller will stop or snap at each photo
+        // if you want free-flowing scroll, don't set this property.
+        self.pagingEnabled = YES;
+    }
+    return self;
+}
+
+
+//Init ScrollView with the scrollview's frame size, item size, and no. of items
+- (id)initWithFrame:(CGRect)frame andItemSize:(CGSize)itemSize
         andNumItems:(int)numOfItems
 {
     self = [super initWithFrame:frame];
@@ -88,7 +117,8 @@
 	
 	// set the content size so it can be scrollable
 	//[self setContentSize:CGSizeMake((self.numItems * self.scrollObjWidth), [self bounds].size.height)];
-    [self setContentSize:CGSizeMake((self.numItems * self.scrollObjWidth), self.frame.size.height)];
+    //[self setContentSize:CGSizeMake((self.numItems * self.scrollObjWidth), self.frame.size.height)];
+    [self setContentSize:CGSizeMake((self.numItems * self.itemWidth), self.frame.size.height)];
     //[self setContentOffset:CGPointMake(1, 0) animated:YES];
 }
 
