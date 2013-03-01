@@ -13,3 +13,7 @@ NSString* const kAPIURL = @"v1";
 NSString* const kPanelURL = @"panel";
 NSString* const kComicURL = @"comic";
 NSString* const kPhotoURL = @"photo";
+NSString* const kAnnotationURL = @"annotation";
+NSString* const kResourceURL = @"resource";
+NSString* const kThemeURL = @"theme";
+NSString* const kPlacementURL = @"placement";

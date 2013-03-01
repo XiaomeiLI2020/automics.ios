@@ -28,6 +28,10 @@ extern const CGFloat assetScrollObjWidth;
 extern const CGFloat assetWidth;
 extern const CGFloat assetHeight;
 
+
+extern const CGFloat speechBubbleWidth;
+extern const CGFloat speechBubbleHeight;
+
 extern const CGFloat decoratorWidth;
 extern const CGFloat decoratorHeight;
 
@@ -35,3 +39,4 @@ extern const CGFloat frameWidth;
 extern const CGFloat frameHeight;
 
 extern const int numSpeechBubbles;
+//extern const int numSResources;

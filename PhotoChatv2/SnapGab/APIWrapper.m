@@ -32,6 +32,26 @@
     return [NSString stringWithFormat:@"%@%@", kBaseURL, imageURL];
 }
 
++(NSString*)getURLForGetResourcesWithTheme:(int)themeId{
+    NSString* inputId = [NSString stringWithFormat:@"%d", themeId];
+    return [NSString stringWithFormat:@"%@/%@/%@/%@/%@", kBaseURL,kAPIURL,kThemeURL,inputId, kResourceURL];
+}
+
++(NSString*)getURLForGetResourceWithId:(int)resourceId{
+    NSString* inputId = [NSString stringWithFormat:@"%d", resourceId];
+    return [NSString stringWithFormat:@"%@/%@/%@/%@", kBaseURL,kAPIURL,kResourceURL,inputId];
+}
+
+
++(NSString*)getURLForGetAnnotations{
+    return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL,kAPIURL,kAnnotationURL];
+}
+
++(NSString*)getURLForGetAnnotationWithId:(int)annotationId{
+    NSString* inputId = [NSString stringWithFormat:@"%d", annotationId];
+    return [NSString stringWithFormat:@"%@/%@/%@/%@", kBaseURL,kAPIURL,kAnnotationURL,inputId];
+}
+
 +(NSString*)getURLForGetComics{
     return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL, kAPIURL, kComicURL];
 }

@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "MainScrollSelector.h"
+#import "Panel.h"
 #import "PanelLoader.h"
+#import "ResourceLoader.h"
 
-@interface PanelViewController : UIViewController <UIScrollViewDelegate, PanelLoaderDelegate>
+@interface PanelViewController : UIViewController<UIScrollViewDelegate,PanelLoaderDelegate, ResourceLoaderDelegate, ImageDownloaderDelegate>
 
+@property (strong, nonatomic) IBOutlet UIButton *editButton;
 @property MainScrollSelector *panelScrollView;
 @property MainScrollSelector *thumbnailScrollView;
 
@@ -19,6 +22,8 @@
 @property NSString* _groupName;
 @property int currentPage;
 @property NSArray* panels;
+@property int currentPanelId;
+@property Panel* currentPanel;
 
 
 @end

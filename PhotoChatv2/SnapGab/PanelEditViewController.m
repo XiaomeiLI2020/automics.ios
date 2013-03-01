@@ -8,14 +8,16 @@
 
 #import "CameraViewController.h"
 #import <MobileCoreServices/UTCoreTypes.h>
-#import "PhotoPosterViewController.h"
 #import "UIImageView+WebCache.h"
+#import "PhotoPosterViewController.h"
 #import "SpeechBubbleView.h"
 #import "ResourceView.h"
 #import "PanelEditViewController.h"
 #import "PanelViewController.h"
 #import "ResourceImageView.h"
 #import "GUIConstant.h"
+#import "ResourceLoader.h"
+#import "Resource.h"
 
 @interface PanelEditViewController ()
 
@@ -35,6 +37,12 @@
 @synthesize _groupName;
 @synthesize currentPage;
 
+ResourceLoader *resourceLoader;
+NSMutableArray *resourceList;
+
+int resourceCounter;
+NSString* resourceImageURL;
+CGRect thumbFrame;
 
 int numResources;
 
@@ -70,6 +78,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     [super viewWillAppear:animated];
     
+
     if(self.imageView.image) return; //If image already loaded - do not reload it (since load moved from viewDidLoad)
     
     //self.imageView.image = [self squareImageWithImage:self.imageView.image scaledToSize:imageSize];
@@ -81,6 +90,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                                 {
                                     if([subview isMemberOfClass:[SpeechBubbleView class]])
                                     {
+                                        
                                         SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
                                         sbv.alpha = 1;
                                     }
@@ -102,34 +112,18 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                                 [alert show];
                             }];
     
-    // Add thumbnails to the scrollview
-    //CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin, thumbnailScrollYOrigin, thumbnailScrollObjWidth, thumbnailScrollObjHeight);
-    CGRect thumbFrame = CGRectMake(assetScrollXOrigin, assetScrollYOrigin, assetScrollObjWidth, assetScrollObjHeight);
-    
-    CGSize thumbnailSize = CGSizeMake(assetWidth, assetHeight);
-    thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize  andNumItems:numSpeechBubbles];
-    thumbnailScrollView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:thumbnailScrollView];
-    
 
-    [self loadSpeechBubbles];
     
-    [self loadResources];
     [thumbnailScrollView layoutAssets];
-    //[thumbnailScrollView layoutItems];
-    
 
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureCaptured:)];
-    //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
-    singleTap.cancelsTouchesInView = NO;
-    [thumbnailScrollView addGestureRecognizer:singleTap];
-    
 }
 
 
 - (void)loadSpeechBubbles
 {
+    /*
     CGRect thumbFrame = CGRectMake(assetScrollXOrigin, assetScrollYOrigin, assetScrollObjWidth, assetScrollObjHeight);
+    */
     
     NSUInteger i;
     for (i=0; i <numSpeechBubbles; i++)
@@ -152,30 +146,19 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         
         // add images to the thumbnail scrollview
         [thumbnailScrollView addSubview:styleButton];
-        //initWithImage:[UIImage imageNamed:@"bubble1.png"]];
+
     }
 }
 
-- (void)singleTapGestureCaptured:(UITapGestureRecognizer *)gesture
-{
-/*
-    CGPoint touchPoint=[gesture locationInView:thumbnailScrollView];
-    CGFloat pos = (CGFloat)touchPoint.x / assetWidth;
-    int styleId = round(ceilf(pos));
-    //NSLog(@"singleTap. styleId= %i", styleId);
-    
-    if(styleId<=numSpeechBubbles)
-        [self addBubbleWithStyle:(styleId-1)];
- */
-    
- }
 
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    //if(self.startWithCamera) [self useCameraPressed];
+
     self.thumbnailScrollView.delegate=self;
+    //NSLog(@"thumbnail.numItems=%i", [thumbnailScrollView numItems]);
+    [thumbnailScrollView layoutAssets];
 
 }
 
@@ -188,66 +171,6 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     //self.imageView.image = [self squareImageWithImage:image scaledToSize:imageSize];
 }
 
-- (void)loadResources
-{
-    CGRect thumbFrame = CGRectMake(assetScrollXOrigin, assetScrollYOrigin, assetScrollObjWidth, assetScrollObjHeight);
-    
-    
-    NSString* urlResourceString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/theme/1/resource"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlResourceString]
-                                                           cachePolicy:NSURLRequestReturnCacheDataElseLoad
-                                                       timeoutInterval:10];
-    
-    [request setHTTPMethod: @"GET"];
-    
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
-    
-    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
-    if(response)
-    {
-        NSError *parseError = nil;
-        id jsonObject = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingAllowFragments error:&parseError];
-        for(NSDictionary* resource in jsonObject)
-        {
-            
-            //NSString* name = [resource objectForKey:@"name"];
-            //NSString* type = [resource objectForKey:@"typ"];
-            int resourceId = [[resource objectForKey:@"id"] intValue];
-            //NSString* image_url = [resource objectForKey:@"image_url"];
-            NSString* thumb_url = [resource objectForKey:@"thumb_url"];
-            
-            NSString* urlImageString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk%@",thumb_url];
-            UIImage *image = [UIImage imageNamed:urlImageString];
-            
-            NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlImageString]];
-            image = [UIImage imageWithData:imageURL];
-            
-            UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
-            [styleButton setImage:image forState:UIControlStateNormal];
-            
-            CGRect rect1 = styleButton.frame;
-            rect1.size.height = assetHeight;
-            rect1.size.width = assetWidth;
-            styleButton.frame = rect1;
-            styleButton.tag = resourceId;	// tag our images for later use when we place them in serial fashion
-            
-            [styleButton addTarget:self action:@selector(addResourceWithId:) forControlEvents:UIControlEventTouchDown];
-            // add images to the thumbnail scrollview
-            [thumbnailScrollView addSubview:styleButton];
-            
-            //NSLog(@"urlImageString= %@", urlImageString);
-            //NSLog(@"id= %i", resourceId);
-            //NSLog(@"image_url= %@", image_url);
-            
-            [resourceList addObject:resource];
-            //if(resourceId==13)
-            //    break;
-        }//end for
-        
-    }//end if
-    
-}
 
 - (void)addBubbleWithId:(id)sender
 {
@@ -258,34 +181,18 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     [self.view addSubview:sbv];
 }
 
-- (void)addBubbleWithStyle:(int)styleId
-{
-    SpeechBubbleView *sbv = [[SpeechBubbleView alloc] initWithFrame:CGRectMake(100, 100, 0, 0) andText:@"  TAP TO EDIT\nDRAG TO MOVE" andStyle:styleId];
-    [self.view addSubview:sbv];
-}
-
-- (void)addResourceWithStyle:(int)styleId
-{
-    
-    //ResourceView *rv = [[ResourceView alloc] initWithFrame:CGRectMake(100, 100, 200, 200) andStyle:styleId];
-    ResourceImageView *resoureImageView = [[ResourceImageView alloc] initWithFrame:CGRectMake(100,100,200,200) image:[UIImage imageNamed:[NSString stringWithFormat:@"resource%d.png",styleId]]];
-    [self.view addSubview:resoureImageView];
-    
-}
 
 - (void)addResourceWithId:(id)sender
 {
     UIButton *clicked = (UIButton *) sender;
     int resourceId = clicked.tag;
+    int resourceIndex = clicked.tag;
     
     if([resourceList count]>0)
     {
-        NSDictionary* resource = [resourceList objectAtIndex:(resourceId-1)];
-        NSString* image_url = [resource objectForKey:@"image_url"];
-        NSString* type = [resource objectForKey:@"typ"];
+        Resource* resource = [resourceList objectAtIndex:(resourceIndex)];
+        NSString* type = resource.type;
         
-        NSString* urlImageString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk%@",image_url];
-        //NSLog(@"urlImageString=%@",urlImageString);
         CGRect resourceFrame;
         if([type isEqual:@"d"])
         {
@@ -296,10 +203,9 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
         }
         
-        ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:urlImageString andType:type];
+        ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:resource.imageURL andType:type andId:resource.resourceId];
         [self.view addSubview:rv];
     }
-    
     
 }
 
@@ -308,7 +214,20 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     [super viewDidLoad];
     
+    resourceCounter = 0;
+    
+    //Initiate thumbnail scrollview
+    [self initiateScrollViews];
+    
+    //Add speechbubbles to thumbnail scrollview
+    [self loadSpeechBubbles];
+    
+    
     resourceList = [[NSMutableArray alloc] init];
+    
+    resourceLoader = [[ResourceLoader alloc] init];
+    resourceLoader.delegate = self;
+    [resourceLoader submitRequestGetResourcesForTheme:1];
     
     [self registerForKeyboardNotifications];
     
@@ -331,6 +250,18 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     // e.g. self.myOutlet = nil;
     
     [self unregisterForKeyboardNotifications];
+}
+
+-(void)initiateScrollViews
+{
+    
+    // Add thumbnails scrollview
+    CGRect thumbFrame = CGRectMake(assetScrollXOrigin, assetScrollYOrigin, assetScrollObjWidth, assetScrollObjHeight);
+    CGSize thumbnailSize = CGSizeMake(assetScrollObjWidth, assetScrollObjHeight);
+    thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize andNumItems:numSpeechBubbles];
+    thumbnailScrollView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:thumbnailScrollView];
+    
 }
 
 - (void)registerForKeyboardNotifications
@@ -487,9 +418,6 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     } //end for
 } //end removeAllResources
 
-
-
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -525,10 +453,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             {
                 ResourceView* sbv =(ResourceView*)subview;
                 
-                //NSLog(@"before posting: sbv.frame.origin (%f,%f)",sbv.frame.origin.x, sbv.frame.origin.y);
-                //NSLog(@"before posting: sbv.frame.size (%f,%f)",sbv.frame.size.width, sbv.frame.size.height);
-                
-                ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andStyle:sbv.styleId];
+                ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andURL:sbv.urlImageString andType:sbv.type andId:sbv.resourceId];
                 new_sbv.userInteractionEnabled = NO;
                 [ppvc.view addSubview:new_sbv];
             }
@@ -542,6 +467,66 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 }
 
+-(void)addResourceToScrollViews:(Resource*)resource
+{
+    if(resource!=nil)
+    {
+        int resourceId = resource.resourceId;
+        NSString* thumb_url = resource.thumbURL;
+        
+        UIImage *image = [UIImage imageNamed:resource.thumbURL];
+        
+        NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:thumb_url]];
+        image = [UIImage imageWithData:imageURL];
+        
+        UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
+        [styleButton setImage:image forState:UIControlStateNormal];
+        
+        CGRect rect1 = styleButton.frame;
+        rect1.size.height = assetHeight;
+        rect1.size.width = assetWidth;
+        styleButton.frame = rect1;
+        //styleButton.tag = resourceId;	// tag our images for later use when we place them in serial fashion
+        styleButton.tag = resourceCounter;	// tag our images for later use when we place them in serial fashion
+        
+        [styleButton addTarget:self action:@selector(addResourceWithId:) forControlEvents:UIControlEventTouchDown];
+        // add images to the thumbnail scrollview
+        [thumbnailScrollView addSubview:styleButton];
+        
+        [resourceList addObject:resource];
+        resourceCounter++;
+        
+    }
+    
+}
+
+#pragma mark ResourceLoader functions.
+-(void)ResourceLoader:(ResourceLoader*)loader didFailWithError:(NSError*)error{
+    NSLog(@"resource failed to load.");
+    
+}
+
+-(void)ResourceLoader:(ResourceLoader *)loader didLoadResources:(NSArray*)resources{
+    //NSLog(@"resources loaded.");
+
+    numResources = [resources count];
+    
+    for(Resource* resource in resources)
+    {
+        if (resource.resourceId > 0)
+        {
+            [self addResourceToScrollViews:resource];
+            
+        }//end if
+        
+        
+    }//end for
+}
+
+-(void)ResourceLoader:(ResourceLoader *)loader didLoadResource:(Resource*)resource
+{
+    NSLog(@"Resource downloaded");
+}
 
 
 

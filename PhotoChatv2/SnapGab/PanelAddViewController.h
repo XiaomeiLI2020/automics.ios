@@ -31,10 +31,11 @@
 @property BOOL startWithCamera;
 @property CGSize imageSize;
 
-@property UIScrollView* scrollView;
+
 @property BOOL keyboardIsShown;
 
 @property MainScrollSelector *thumbnailScrollView;
+@property NSMutableArray* resourceList;
 
 - (IBAction)takeSnap:(id)sender;
 - (IBAction)showPhotos:(id)sender;

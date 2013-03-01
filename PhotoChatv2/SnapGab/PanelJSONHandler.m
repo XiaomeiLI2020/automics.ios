@@ -28,7 +28,6 @@
     if (photoId != nil && [photoId intValue] > 0){
         Photo *photo = [[Photo alloc] init];
         photo.photoId = [photoId intValue];
-
         //url dict string object uses NSNull value in json deserilization.
         NSString* url = [panelJSON objectForKey:@"photo_url"];
         url = [DataValidator checkKeyValueForNull:url];
@@ -39,7 +38,6 @@
         }
         panel.photo = photo;
     }
-    
     //placements
     if ([panelJSON valueForKey:@"placements"] != nil){
         NSArray* placementArray = [panelJSON valueForKey:@"placements"];
@@ -48,6 +46,7 @@
             panel.placements = placements;
         }
     }
+    
     //annotations
     if ([panelJSON valueForKey:@"annotations"] != nil){
         NSArray* annotationArray = [panelJSON valueForKey:@"annotations"];
@@ -56,6 +55,7 @@
             panel.annotations = annotations;
         }
     }
+
     return panel;
 }
 

@@ -483,6 +483,9 @@
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="editButton" destination="Uby-hF-3kl" id="zJR-mQ-qA6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gjl-RX-7QA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

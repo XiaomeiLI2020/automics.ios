@@ -12,12 +12,15 @@
 
 @property NSString* type;
 @property int styleId;
+@property int resourceId;
 @property UIImageView* imageView;
+@property NSString* urlImageString;
 
 
 - (id)initWithFrame:(CGRect)frame andStyle:(int)styleId;
 - (id)initWithFrame:(CGRect)frame andURL:(NSString*)imageURL;
 - (id)initWithFrame:(CGRect)frame andURL:(NSString*)imageURL andType:(NSString*)type;
+- (id)initWithFrame:(CGRect)frame andURL:(NSString*)imageURL andType:(NSString*)type andId:(int)resourceId;
 
 @end
 
