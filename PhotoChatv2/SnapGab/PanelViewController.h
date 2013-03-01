@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "MainScrollSelector.h"
+#import "PanelLoader.h"
 
-@interface PanelViewController : UIViewController <UIScrollViewDelegate>
+@interface PanelViewController : UIViewController <UIScrollViewDelegate, PanelLoaderDelegate>
 
 @property MainScrollSelector *panelScrollView;
 @property MainScrollSelector *thumbnailScrollView;

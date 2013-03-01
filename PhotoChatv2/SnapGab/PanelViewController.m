@@ -349,13 +349,13 @@ int panelId;
         }
         Panel *panel = [self.panels objectAtIndex:(currentPage-1)];
         NSLog(@"panel.panelId=%i", panel.panelId);
-        NSLog(@"panel.imageURL=%@", panel.imageURL);
+        NSLog(@"panel.imageURL=%@", panel.photo.imageURL);
         
 
         PanelEditViewController *pevc = (PanelEditViewController *)[segue destinationViewController];
         pevc.currentPage = currentPage;
         pevc._groupName = _groupName;
-        pevc.url = [NSURL URLWithString:panel.imageURL];
+        pevc.url = [NSURL URLWithString:panel.photo.imageURL];
         
         for (UIView *subview in self.view.subviews)
         {
