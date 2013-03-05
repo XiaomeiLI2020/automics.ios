@@ -124,6 +124,8 @@ NSString* hashId=@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
 
         if(self.sessionToken!=nil)
         {
+            user.currentSession = [[Session alloc] init];
+            user.currentSession.token = self.sessionToken;
             [userLoader submitRequestPostJoinGroup:sessionToken andGroupHashId:hashId];
         }
     }
@@ -136,9 +138,12 @@ NSString* hashId=@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
     {
         user.userId = currentUser.userId;
         user.groupHashId = currentUser.groupHashId;
-        //NSLog(@"user.userId=%i", user.userId);
-        //NSLog(@"user.group_hash=%@", user.groupHashId);
-        //NSLog(@"user.email=%@", user.email);
+        /*
+        NSLog(@"user.userId=%i", user.userId);
+        NSLog(@"user.group_hash=%@", user.groupHashId);
+        NSLog(@"user.session=%@", user.currentSession.token);
+        NSLog(@"user.email=%@", user.email);
+         */
     }
     
 }

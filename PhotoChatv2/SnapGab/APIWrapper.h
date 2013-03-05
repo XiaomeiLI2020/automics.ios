@@ -11,31 +11,23 @@
 @interface APIWrapper : NSObject
 
 +(NSString*)getURLForGetPanels;
-<<<<<<< HEAD
 +(NSString*)getURLForGetAnnotations;
 +(NSString*)getURLForGetResourcesWithTheme:(int)themeId;
 +(NSString*)getURLForGetResourceWithResourceId:(int)resourceId;
 +(NSString*)getURLForGetPanelWithId:(int)panelId;
 +(NSString*)getURLForPostPanel;
-=======
 
-+(NSString*)getURLForGetPanelWithId:(int)panelId;
 
-+(NSString*)getURLForPostPanel;
 
 +(NSString*)getURLForPostPhoto;
 
 +(NSString*)getAbsoluteURLUsingPanelImageRelativePath:(NSString*)imageURL;
 
-+(NSString*)getURLForGetResourcesWithTheme:(int)themeId;
 
 +(NSString*)getURLForGetResourceWithId:(int)resourceId;
 
-+(NSString*)getURLForGetResourceWithResourceId:(int)resourceId;
 
-+(NSString*)getURLForGetAnnotations;
 
->>>>>>> comicapi2
 +(NSString*)getURLForGetAnnotationWithId:(int)annotationId;
 
 //+(NSString*)getURLForGetPlacements;

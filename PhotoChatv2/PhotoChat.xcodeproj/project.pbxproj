@@ -441,7 +441,7 @@
 			children = (
 				48D933CE16E0C3A700B8C68D /* AnnotationJSONHandler.h */,
 				48D933CF16E0C3A700B8C68D /* AnnotationJSONHandler.m */,
-<<<<<<< HEAD
+
 				48D933C416E0B6D600B8C68D /* PhotoJSONHandler.h */,
 				48D933C516E0B6D600B8C68D /* PhotoJSONHandler.m */,
 				48D933C616E0B6D600B8C68D /* PhotoLoader.h */,
@@ -452,7 +452,7 @@
 				48B2FD5D16DCC6FD00EF9439 /* ComicJSONHandler.m */,
 				48B2FD5E16DCC6FD00EF9439 /* ComicLoader.h */,
 				48B2FD5F16DCC6FD00EF9439 /* ComicLoader.m */,
-=======
+
 				48CAFD3016CE943800D8EB4C /* APIConstant.h */,
 				48CAFD3116CE943800D8EB4C /* APIConstant.m */,
 				48CAFD3E16CEA7E600D8EB4C /* APIWrapper.h */,
@@ -461,7 +461,7 @@
 				D804612216E125BD00F80CAB /* ComicJSONHandler.h */,
 				D804612416E125BE00F80CAB /* ComicLoader.h */,
 				D804612516E125BE00F80CAB /* ComicLoader.m */,
->>>>>>> comicapi2
+
 				48F6277616D6440A0034A5A7 /* DataValidator.h */,
 				48F6277716D6440A0034A5A7 /* DataValidator.m */,
 				48CAFD2C16CE789600D8EB4C /* DataLoader.h */,
@@ -784,22 +784,20 @@
 				48F6277E16D6440A0034A5A7 /* PanelJSONHandler.m in Sources */,
 				48F6277F16D6440A0034A5A7 /* PlacementJSONHandler.m in Sources */,
 				D8932C7C16D7ED7B007D97A9 /* GUIConstant.m in Sources */,
-<<<<<<< HEAD
+
 				D894B8C816DCEEE400C31585 /* ResourceLoader.m in Sources */,
 				D894B8CB16DCEFC700C31585 /* Resource.m in Sources */,
 				D894B8CE16DCF5EB00C31585 /* ResourceJSONHandler.m in Sources */,
 				48B2FD5A16DCC6BF00EF9439 /* Comic.m in Sources */,
 				48B2FD6016DCC6FD00EF9439 /* ComicJSONHandler.m in Sources */,
 				48B2FD6116DCC6FD00EF9439 /* ComicLoader.m in Sources */,
-=======
->>>>>>> comicapi2
+
 				48053FC216DE875C0046BE60 /* JSONHandler.m in Sources */,
 				48D933C216E0B6C000B8C68D /* Photo.m in Sources */,
 				48D933C816E0B6D600B8C68D /* PhotoJSONHandler.m in Sources */,
 				48D933C916E0B6D600B8C68D /* PhotoLoader.m in Sources */,
 				48D933D016E0C3A700B8C68D /* AnnotationJSONHandler.m in Sources */,
-<<<<<<< HEAD
-=======
+
 				D804611816E1247400F80CAB /* Resource.m in Sources */,
 				D804611B16E124A300F80CAB /* ResourceJSONHandler.m in Sources */,
 				D804611E16E124BE00F80CAB /* ResourceLoader.m in Sources */,
@@ -819,7 +817,7 @@
 				D892741816E658260061FA14 /* User.m in Sources */,
 				D85D7EAC16E67A2B00BB864A /* UserLoader.m in Sources */,
 				D85D7EAF16E67BCE00BB864A /* UserJSONHandler.m in Sources */,
->>>>>>> comicapi2
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

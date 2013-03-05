@@ -475,10 +475,9 @@ NSString* urlImageString;
         NSLog(@"After comic loaded, didLoadPanel.Panel downloaded.%i", panel.panelId);
         currentPanel = panel;
         panelId = panel.panelId;
-<<<<<<< HEAD
-=======
+
         //urlImageString = panel.imageURL;
->>>>>>> comicapi2
+
         urlImageString = panel.photo.imageURL;
         //NSLog(@"Panel downloaded. urlImageString=%@", urlImageString);
         
