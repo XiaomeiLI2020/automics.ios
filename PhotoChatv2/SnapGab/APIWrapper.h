@@ -11,22 +11,37 @@
 @interface APIWrapper : NSObject
 
 +(NSString*)getURLForGetPanels;
-+(NSString*)getURLForGetAnnotations;
+
++(NSString*)getURLForGetPanelWithId:(int)panelId;
+
++(NSString*)getURLForPostPanel;
+
++(NSString*)getURLForPostPhoto;
+
++(NSString*)getAbsoluteURLUsingPanelImageRelativePath:(NSString*)imageURL;
 
 +(NSString*)getURLForGetResourcesWithTheme:(int)themeId;
-<<<<<<< HEAD
-+(NSString*)getURLForGetResourceWithId:(int)resourceId;
-=======
-+(NSString*)getURLForGetResourceWithResourceId:(int)resourceId;
-+(NSString*)getURLForGetPlacements;
 
->>>>>>> comicapi
-+(NSString*)getURLForGetPanelWithId:(int)panelId;
-+(NSString*)getURLForPostPanel;
++(NSString*)getURLForGetResourceWithId:(int)resourceId;
+
++(NSString*)getURLForGetResourceWithResourceId:(int)resourceId;
+
++(NSString*)getURLForGetAnnotations;
+
 +(NSString*)getURLForGetAnnotationWithId:(int)annotationId;
-+(NSString*)getAbsoluteURLUsingPanelImageRelativePath:(NSString*)imageURL;
+
+//+(NSString*)getURLForGetPlacements;
+
 +(NSString*)getURLForGetComics;
+
 +(NSString*)getURLForGetComicWithId:(int)comicId;
-+(NSString*)getURLForPostPhoto;
+
++(NSString*)getURLForPostLogin;
+
++(NSString*)getURLForGetGroups;
+
++(NSString*)getURLForGetGroup;
+
++(NSString*)getURLForPostGroupMembership;
 
 @end

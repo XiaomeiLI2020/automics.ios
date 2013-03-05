@@ -16,4 +16,5 @@
 @synthesize thumbURL;
 @synthesize text;
 
+
 @end

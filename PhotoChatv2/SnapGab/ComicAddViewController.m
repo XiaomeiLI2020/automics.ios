@@ -529,7 +529,7 @@ const CGFloat thumbnailHeight3= 80.0;
         
         
         //NSLog(@" currentPage=%i",  currentPage);
-        int itemReplaced;
+        int itemReplaced = 0;
         int itemRemoved= currentPage;
         //if(currentPage==0)
         //    itemRemoved = currentPage;

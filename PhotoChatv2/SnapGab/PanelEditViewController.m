@@ -16,8 +16,8 @@
 #import "PanelViewController.h"
 #import "ResourceImageView.h"
 #import "GUIConstant.h"
-#import "ResourceLoader.h"
 #import "Resource.h"
+#import "Annotation.h"
 
 @interface PanelEditViewController ()
 
@@ -35,7 +35,8 @@
 
 @synthesize resourceList;
 @synthesize _groupName;
-@synthesize currentPage;
+@synthesize currentPanel;
+@synthesize panelId;
 
 ResourceLoader *resourceLoader;
 NSMutableArray *resourceList;
@@ -43,6 +44,7 @@ NSMutableArray *resourceList;
 int resourceCounter;
 NSString* resourceImageURL;
 CGRect thumbFrame;
+
 
 int numResources;
 
@@ -118,6 +120,43 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 }
 
+-(void)loadAnnotations
+{
+    NSLog(@"loadAnnotations. currentPanel.panelId=%i", currentPanel.panelId);
+    NSLog(@"loadAnnotations. currentPanel.annotations=%i", [currentPanel.annotations count]);
+    
+    if(currentPanel!=nil)
+    {
+
+    if(currentPanel.annotations!=nil)
+    {
+        for(Annotation* annotation in currentPanel.annotations)
+        {
+            //NSLog(@"annotation=%@", annotation.text);
+            CGRect xywh = CGRectMake(annotation.xOffset,
+                                     annotation.yOffset,0,0);
+            
+            NSString* text = annotation.text;
+            int styleId = annotation.bubbleStyle;
+            
+            NSLog(@"loadAnnotations.text=%@", text);
+            
+            SpeechBubbleView* sbv = [[SpeechBubbleView alloc] initWithFrame:xywh andText:text andStyle:styleId];
+            sbv.userInteractionEnabled = NO;
+            sbv.alpha = 0.0f;
+            [self.view addSubview:sbv];
+            [UIView transitionWithView:self.view
+                              duration:0.25
+                               options:UIViewAnimationOptionLayoutSubviews
+                            animations:^ { sbv.alpha = 1.0f; }
+                            completion:nil];
+            
+        }
+         
+     }
+    }
+
+}
 
 - (void)loadSpeechBubbles
 {
@@ -157,12 +196,13 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     [super viewDidAppear:animated];
 
     self.thumbnailScrollView.delegate=self;
-    //NSLog(@"thumbnail.numItems=%i", [thumbnailScrollView numItems]);
+    NSLog(@"viewDidAppear.thumbnail.numItems=%i", [thumbnailScrollView numItems]);
     [thumbnailScrollView layoutAssets];
+    [self loadAnnotations];
 
 }
 
-
+/*
 - (void)loadImage:(UIImage*) image
 {
     self.imageView.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
@@ -170,7 +210,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
     //self.imageView.image = [self squareImageWithImage:image scaledToSize:imageSize];
 }
-
+*/
 
 - (void)addBubbleWithId:(id)sender
 {
@@ -185,7 +225,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 - (void)addResourceWithId:(id)sender
 {
     UIButton *clicked = (UIButton *) sender;
-    int resourceId = clicked.tag;
+    //int resourceId = clicked.tag;
     int resourceIndex = clicked.tag;
     
     if([resourceList count]>0)
@@ -234,6 +274,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     keyboardIsShown = NO;
     
     imageSize = CGSizeMake(panelWidth, panelHeight);
+    
+    [self loadAnnotations];
     
 }
 
@@ -471,7 +513,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     if(resource!=nil)
     {
-        int resourceId = resource.resourceId;
+        //int resourceId = resource.resourceId;
         NSString* thumb_url = resource.thumbURL;
         
         UIImage *image = [UIImage imageNamed:resource.thumbURL];
@@ -507,9 +549,10 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 }
 
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResources:(NSArray*)resources{
-    //NSLog(@"resources loaded.");
+    NSLog(@"resources loaded. %i", [resources count]);
 
     numResources = [resources count];
+    thumbnailScrollView.numItems = numSpeechBubbles + numResources;
     
     for(Resource* resource in resources)
     {

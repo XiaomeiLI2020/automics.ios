@@ -11,6 +11,7 @@
 
 @implementation APIWrapper
 
+
 +(NSString*)getURLForGetPanels{
     return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL,kAPIURL,kPanelURL];
 }
@@ -42,6 +43,11 @@
     return [NSString stringWithFormat:@"%@/%@/%@/%@", kBaseURL,kAPIURL,kResourceURL,inputId];
 }
 
++(NSString*)getURLForGetResourceWithId:(int)resourceId{
+    NSString* inputId = [NSString stringWithFormat:@"%d", resourceId];
+    return [NSString stringWithFormat:@"%@/%@/%@/%@", kBaseURL,kAPIURL,kResourceURL,inputId];
+}
+
 
 +(NSString*)getURLForGetAnnotations{
     return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL,kAPIURL,kAnnotationURL];
@@ -60,5 +66,22 @@
     NSString* inputId = [NSString stringWithFormat:@"%d", comicId];
     return [NSString stringWithFormat:@"%@/%@/%@/%@", kBaseURL,kAPIURL,kComicURL,inputId];
 }
+
++(NSString*)getURLForPostLogin{
+    return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL, kAPIURL, kLoginURL];
+}
+
++(NSString*)getURLForGetGroups{
+    return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL, kAPIURL, kGroupsURL];
+}
+
++(NSString*)getURLForGetGroup{
+    return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL, kAPIURL, kGroupURL];
+}
+
++(NSString*)getURLForPostGroupMembership{
+    return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL, kAPIURL, kMembershipURL];
+}
+
 
 @end

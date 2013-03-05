@@ -10,4 +10,14 @@
 
 @implementation Photo
 
+@synthesize photoId;
+@synthesize description;
+@synthesize width;
+@synthesize height;
+@synthesize imageURL;
+@synthesize image;
+@synthesize name;
+@synthesize thumbURL;
+@synthesize thumb;
+
 @end

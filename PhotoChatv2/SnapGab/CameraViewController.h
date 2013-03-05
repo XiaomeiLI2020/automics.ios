@@ -8,12 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "SelectBubbleStyleViewController.h"
-#import "ResourceViewController.h"
+
 
 
 @interface CameraViewController : UIViewController
-<UINavigationControllerDelegate, UIImagePickerControllerDelegate, SelectBubbleStyleDelegateProtocol, ResourceDelegateProtocol>
+<UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
     BOOL newMedia;
     int subviewId;
@@ -24,7 +23,7 @@
 - (UIImage *)squareImageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
 
 @property (strong, nonatomic) UIImagePickerController *imagePicker;
-@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 
 @property NSURL* url;

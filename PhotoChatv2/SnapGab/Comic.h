@@ -9,8 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface Comic : NSObject
+
 @property NSString* name;
 @property int comicId;
 @property NSString* description;
 @property NSArray* panels;
+
 @end

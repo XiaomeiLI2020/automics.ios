@@ -10,11 +10,11 @@
 #import "MainScrollSelector.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "SelectBubbleStyleViewController.h"
-#import "ResourceViewController.h"
+#import "ResourceLoader.h"
+#import "Panel.h"
 
 @interface PanelEditViewController : UIViewController
-<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, SelectBubbleStyleDelegateProtocol, ResourceDelegateProtocol>
+<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, ResourceLoaderDelegate>
 
 {
     BOOL newMedia;
@@ -27,16 +27,17 @@
 @property (strong, nonatomic) UIImagePickerController *imagePicker;
 //@property (strong, nonatomic) IBOutlet UIImageView *imageView;
 
-@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+//@property IBOutlet UIImageView *imageView;
 
 @property NSURL* url;
 @property BOOL startWithCamera;
 @property CGSize imageSize;
 
-
+@property Panel* currentPanel;
 @property BOOL keyboardIsShown;
-@property int currentPage;
 @property NSString* _groupName;
 @property NSMutableArray* resourceList;
+@property int panelId;
 
 @end

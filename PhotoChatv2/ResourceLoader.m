@@ -22,7 +22,7 @@
 
 int const kGetThemeResources = 0;
 int const kGetResource = 1;
-int numPanels;
+//int numPanels;
 
 
 @synthesize delegate;
@@ -68,13 +68,12 @@ int numPanels;
     return [NSURLRequest requestWithURL:url];
 }
 
-/*
 -(NSURLRequest*)prepareResourceRequestForGetResourceWithId:(int)resourceId{
     NSString* resourceURL = [APIWrapper getURLForGetResourceWithId:resourceId];
     NSURL* url = [NSURL URLWithString:resourceURL];
     return [NSURLRequest requestWithURL:url];
 }
-*/
+
 
 -(NSURLRequest*)prepareResourceRequestForGetResourceWithResourceId:(int)resourceId{
     NSString* resourceURL = [APIWrapper getURLForGetResourceWithResourceId:resourceId];
