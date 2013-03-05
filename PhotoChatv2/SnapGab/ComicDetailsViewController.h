@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "MainScrollSelector.h"
+#import "PanelLoader.h"
+#import "ComicLoader.h"
+#import "ResourceLoader.h"
 
-@interface ComicDetailsViewController : UIViewController<UIScrollViewDelegate>
+
+@interface ComicDetailsViewController : UIViewController
+<UIScrollViewDelegate, PanelLoaderDelegate, ComicLoaderDelegate, ResourceLoaderDelegate>
 
 @property MainScrollSelector *panelScrollView;
 @property MainScrollSelector *thumbnailScrollView;

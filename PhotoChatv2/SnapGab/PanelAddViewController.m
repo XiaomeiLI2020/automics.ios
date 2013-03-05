@@ -15,7 +15,7 @@
 #import "ResourceView.h"
 #import "PanelEditViewController.h"
 #import "GUIConstant.h"
-#import "ResourceLoader.h"
+
 #import "Resource.h"
 
 @interface PanelAddViewController ()
@@ -83,6 +83,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     [self.imageView setImageWithURL:self.url
                    placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]
                             success:^(UIImage *image) {
+                                
                                 for (UIView *subview in self.view.subviews)
                                 {
                                     if([subview isMemberOfClass:[SpeechBubbleView class]])
@@ -150,7 +151,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 - (void)addResourceWithId:(id)sender
 {
     UIButton *clicked = (UIButton *) sender;
-    int resourceId = clicked.tag;
+    //int resourceId = clicked.tag;
     int resourceIndex = clicked.tag;
     
     if([resourceList count]>0)
@@ -554,7 +555,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     if(resource!=nil)
     {        
-        int resourceId = resource.resourceId;
+        //int resourceId = resource.resourceId;
         NSString* thumb_url = resource.thumbURL;
 
         UIImage *image = [UIImage imageNamed:resource.thumbURL];

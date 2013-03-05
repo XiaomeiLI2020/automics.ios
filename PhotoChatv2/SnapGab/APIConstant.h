@@ -9,9 +9,20 @@
 extern NSString* const kBaseURL;
 extern NSString* const kAPIURL;
 extern NSString* const kPanelURL;
+<<<<<<< HEAD
+=======
+extern NSString* const kComicURL;
+>>>>>>> comicapi2
 extern NSString* const kPhotoURL;
 extern NSString* const kAnnotationURL;
 extern NSString* const kThemeURL;
 extern NSString* const kResourceURL;
 extern NSString* const kPlacementURL;
+<<<<<<< HEAD
 extern NSString* const kComicURL;
+=======
+extern NSString* const kLoginURL;
+extern NSString* const kGroupURL;
+extern NSString* const kGroupsURL;
+extern NSString* const kMembershipURL;
+>>>>>>> comicapi2

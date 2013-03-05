@@ -12,7 +12,9 @@
 #import "PanelLoader.h"
 #import "ResourceLoader.h"
 
-@interface PanelViewController : UIViewController<UIScrollViewDelegate,PanelLoaderDelegate, ResourceLoaderDelegate, ImageDownloaderDelegate>
+@interface PanelViewController : UIViewController
+<UIScrollViewDelegate, PanelLoaderDelegate, ResourceLoaderDelegate, ImageDownloaderDelegate>
+
 
 @property (strong, nonatomic) IBOutlet UIButton *editButton;
 @property MainScrollSelector *panelScrollView;
@@ -24,6 +26,6 @@
 @property NSArray* panels;
 @property int currentPanelId;
 @property Panel* currentPanel;
-
+@property int numPanels;
 
 @end

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="11G56" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="yR9-Y8-Uir">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C2034" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="yR9-Y8-Uir">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
         <!--LoginViewController-->
@@ -45,10 +45,32 @@
                                 <rect key="frame" x="8" y="0.0" width="305" height="126"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="ylb-r6-4IE" userLabel="Email">
+                                <rect key="frame" x="102" y="149" width="176" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="yR9-Y8-Uir" id="i8L-6p-eGL"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="eaI-Nc-7Zs" userLabel="Password">
+                                <rect key="frame" x="103" y="206" width="175" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="yR9-Y8-Uir" id="g2I-J1-rIB"/>
+                                </connections>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="emailTextField" destination="ylb-r6-4IE" id="quB-ML-qiF"/>
+                        <outlet property="passwordTextField" destination="eaI-Nc-7Zs" id="Jkf-Ru-V00"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KQg-1X-OdM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -260,7 +282,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" rowHeight="62" id="GUr-qQ-9IH" userLabel="ComicTableCell" customClass="ComicTableCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="TextCell" rowHeight="62" id="GUr-qQ-9IH" userLabel="ComicTableCell" customClass="ComicTableCell">
                                         <rect key="frame" x="0.0" y="22" width="320" height="62"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -543,7 +565,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="USc-bo-4yf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="312" y="-1304"/>
+            <point key="canvasLocation" x="661" y="-1276"/>
         </scene>
         <!--PanelAddViewController-->
         <scene sceneID="g9P-Bn-dcV">
@@ -665,7 +687,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0H2-gz-B1m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="883" y="-1304"/>
+            <point key="canvasLocation" x="1051" y="-1287"/>
         </scene>
         <!--ComicPosterViewController-->
         <scene sceneID="0Jt-XC-ADr">
@@ -759,8 +781,8 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginViewController.h"/>
             <relationships>
                 <relationship kind="action" name="loginPressed:"/>
-                <relationship kind="outlet" name="email" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="password" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="emailTextField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="passwordTextField" candidateClass="UITextField"/>
             </relationships>
         </class>
         <class className="PanelAddViewController" superclassName="UIViewController">
@@ -811,11 +833,11 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="woI-Op-NZA"/>
-        <segue reference="lbd-Gx-frY"/>
-        <segue reference="mP9-wY-8qV"/>
-        <segue reference="OdU-FZ-iAQ"/>
         <segue reference="lLZ-Tg-1fy"/>
+        <segue reference="OdU-FZ-iAQ"/>
         <segue reference="kZ1-sQ-Xvc"/>
+        <segue reference="sfN-v5-shT"/>
+        <segue reference="fjF-Bf-fik"/>
+        <segue reference="P1E-0g-8Qy"/>
     </inferredMetricsTieBreakers>
 </document>

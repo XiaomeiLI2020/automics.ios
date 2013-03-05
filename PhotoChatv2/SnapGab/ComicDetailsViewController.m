@@ -12,10 +12,8 @@
 #import "SpeechBubbleView.h"
 #import "ResourceView.h"
 #import "Comic.h"
-#import "ComicLoader.h"
 #import "GUIConstant.h"
-#import "PanelLoader.h"
-#import "ResourceLoader.h"
+
 #import "ResourceImageView.h"
 #import "ImageDownloader.h"
 #import "Annotation.h"
@@ -477,6 +475,10 @@ NSString* urlImageString;
         NSLog(@"After comic loaded, didLoadPanel.Panel downloaded.%i", panel.panelId);
         currentPanel = panel;
         panelId = panel.panelId;
+<<<<<<< HEAD
+=======
+        //urlImageString = panel.imageURL;
+>>>>>>> comicapi2
         urlImageString = panel.photo.imageURL;
         //NSLog(@"Panel downloaded. urlImageString=%@", urlImageString);
         
@@ -515,13 +517,13 @@ NSString* urlImageString;
             //for(Placement* placement in panel.placements)
             {
 
+                /*
                 Placement* placement = [placementList objectAtIndex:placementCounter];
-                int resourceId = placement.resourceId;
+                //int resourceId = placement.resourceId;
                 currentPlacement = placement;
                 [resourceLoader submitRequestGetResourceWithResourceId:placement.resourceId];
-                
-                CGRect xywh = CGRectMake(placement.xOffset,
-                                         placement.yOffset,200,200);
+                */
+                //CGRect xywh = CGRectMake(placement.xOffset,placement.yOffset,200,200);
                 
                 
             }//end for
@@ -562,7 +564,7 @@ NSString* urlImageString;
 
         NSString* type = resource.type;
         
-        NSString* urlImageString = resource.imageURL;
+        //NSString* urlImageString = resource.imageURL;
         //NSLog(@"resource.imageURL=%@",resource.imageURL);
         CGRect resourceFrame;
         if([type isEqual:@"d"])

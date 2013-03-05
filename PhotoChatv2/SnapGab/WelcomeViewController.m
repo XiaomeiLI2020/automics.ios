@@ -101,8 +101,8 @@
         {
             
             NSString* id = [resource objectForKey:@"id"];
-            NSString* organisationName = [resource objectForKey:@"name"];
-            self.organisationLabel.text = organisationName;
+            NSString* organisation = [resource objectForKey:@"name"];
+            self.organisationLabel.text = organisation;
             //NSLog(@"id= %@", id);
             //NSLog(@"organisationName= %@", organisationName);
             [self getThemesOfOrganisation:id];

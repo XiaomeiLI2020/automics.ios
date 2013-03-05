@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "MainScrollSelector.h"
+#import "ComicLoader.h"
 
 @interface ComicViewController : UIViewController
-<UITableViewDataSource, UITableViewDelegate>
+<UITableViewDataSource, UITableViewDelegate, ComicLoaderDelegate>
 
 
 

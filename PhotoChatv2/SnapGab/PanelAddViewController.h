@@ -9,12 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "MainScrollSelector.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "SelectBubbleStyleViewController.h"
-#import "ResourceViewController.h"
+#import "ResourceLoader.h"
 
 @interface PanelAddViewController : UIViewController
 
-<UINavigationControllerDelegate, UIImagePickerControllerDelegate, SelectBubbleStyleDelegateProtocol, ResourceDelegateProtocol>
+<UINavigationControllerDelegate, UIImagePickerControllerDelegate, ResourceLoaderDelegate>
 {
     BOOL newMedia;
     int subviewId;
@@ -24,7 +23,7 @@
 
 
 @property (strong, nonatomic) UIImagePickerController *imagePicker;
-@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 
 @property NSURL* url;

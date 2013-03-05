@@ -15,6 +15,9 @@
 
 extern int const kGetThemeResources;
 extern int const kGetResource;
+
+//@property int resourceRequestType;
+
 extern int numResources;
 
 @property (weak) id<ResourceLoaderDelegate> delegate;
@@ -24,7 +27,7 @@ extern int numResources;
 
 @end
 
-
+//@protocol ResourceLoaderDelegate<NSURLConnectionDataDelegate>
 @protocol ResourceLoaderDelegate<NSObject>
 @optional
 -(void)ResourceLoader:(ResourceLoader*)loader didFailWithError:(NSError*)error;
