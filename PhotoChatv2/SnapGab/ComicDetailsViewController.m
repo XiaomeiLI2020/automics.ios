@@ -336,7 +336,7 @@ NSString* urlImageString;
         NSLog(@"addPanelToPanelScrollViews. panel=%i, and comicPanelCounter=%i", panel.panelId, comicPanelCounter);
         
         UIImageView *thumbnailView = [[UIImageView alloc] init];
-        [thumbnailView setImageWithURL:[NSURL URLWithString:panel.imageURL]
+        [thumbnailView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
                       placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
         
         CGRect rect1 = thumbnailView.frame;
@@ -384,7 +384,7 @@ NSString* urlImageString;
         //NSLog(@"panel added to thumbnail scrollviews=%i, and panelCounter=%i", panel.panelId, panelCounter);
         
         UIImageView *thumbnailView = [[UIImageView alloc] init];
-        [thumbnailView setImageWithURL:[NSURL URLWithString:panel.imageURL]
+        [thumbnailView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
                       placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
         
         CGRect rect1 = thumbnailView.frame;
@@ -443,10 +443,10 @@ NSString* urlImageString;
     {
         for (Panel *panel in panels)
         {
-            if (panel.imageId > 0)
+            if (panel.photo.photoId > 0)
             {
                 
-                urlImageString = panel.imageURL;
+                urlImageString = panel.photo.imageURL;
                 
                 [self addPanelToScrollViews:panel];
                 
@@ -477,7 +477,7 @@ NSString* urlImageString;
         NSLog(@"After comic loaded, didLoadPanel.Panel downloaded.%i", panel.panelId);
         currentPanel = panel;
         panelId = panel.panelId;
-        urlImageString = panel.imageURL;
+        urlImageString = panel.photo.imageURL;
         //NSLog(@"Panel downloaded. urlImageString=%@", urlImageString);
         
         if(panel.annotations!=nil)

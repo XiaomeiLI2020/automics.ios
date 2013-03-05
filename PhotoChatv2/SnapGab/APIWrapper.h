@@ -12,15 +12,8 @@
 
 +(NSString*)getURLForGetPanels;
 +(NSString*)getURLForGetAnnotations;
-
 +(NSString*)getURLForGetResourcesWithTheme:(int)themeId;
-<<<<<<< HEAD
-+(NSString*)getURLForGetResourceWithId:(int)resourceId;
-=======
 +(NSString*)getURLForGetResourceWithResourceId:(int)resourceId;
-+(NSString*)getURLForGetPlacements;
-
->>>>>>> comicapi
 +(NSString*)getURLForGetPanelWithId:(int)panelId;
 +(NSString*)getURLForPostPanel;
 +(NSString*)getURLForGetAnnotationWithId:(int)annotationId;
