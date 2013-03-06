@@ -36,6 +36,7 @@
 		1D92BFF416667F1500CB37B3 /* SelectBubbleStyleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D92BFF316667F1500CB37B3 /* SelectBubbleStyleViewController.m */; };
 		1DA205B1166504BD003FF0B2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA205B0166504BD003FF0B2 /* MobileCoreServices.framework */; };
 		48053FC216DE875C0046BE60 /* JSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48053FC116DE875C0046BE60 /* JSONHandler.m */; };
+		48154DB216E6426D00024333 /* Session.m in Sources */ = {isa = PBXBuildFile; fileRef = 48154DB116E6426D00024333 /* Session.m */; };
 		48B2FD5A16DCC6BF00EF9439 /* Comic.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B2FD5916DCC6BF00EF9439 /* Comic.m */; };
 		48B2FD6016DCC6FD00EF9439 /* ComicJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B2FD5D16DCC6FD00EF9439 /* ComicJSONHandler.m */; };
 		48B2FD6116DCC6FD00EF9439 /* ComicLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B2FD5F16DCC6FD00EF9439 /* ComicLoader.m */; };
@@ -159,6 +160,8 @@
 		1DA205B0166504BD003FF0B2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		48053FC016DE875C0046BE60 /* JSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONHandler.h; path = SnapGab/JSONHandler.h; sourceTree = "<group>"; };
 		48053FC116DE875C0046BE60 /* JSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONHandler.m; path = SnapGab/JSONHandler.m; sourceTree = "<group>"; };
+		48154DB016E6426C00024333 /* Session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Session.h; path = SnapGab/Session.h; sourceTree = "<group>"; };
+		48154DB116E6426D00024333 /* Session.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Session.m; path = SnapGab/Session.m; sourceTree = "<group>"; };
 		48B2FD5816DCC6BF00EF9439 /* Comic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Comic.h; path = SnapGab/Comic.h; sourceTree = "<group>"; };
 		48B2FD5916DCC6BF00EF9439 /* Comic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Comic.m; path = SnapGab/Comic.m; sourceTree = "<group>"; };
 		48B2FD5C16DCC6FD00EF9439 /* ComicJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ComicJSONHandler.h; path = SnapGab/ComicJSONHandler.h; sourceTree = "<group>"; };
@@ -458,6 +461,8 @@
 				48CAFD2D16CE789600D8EB4C /* DataLoader.m */,
 				48CAFD3016CE943800D8EB4C /* APIConstant.h */,
 				48CAFD3116CE943800D8EB4C /* APIConstant.m */,
+				48154DB016E6426C00024333 /* Session.h */,
+				48154DB116E6426D00024333 /* Session.m */,
 			);
 			name = API;
 			sourceTree = "<group>";
@@ -765,6 +770,7 @@
 				48D933C816E0B6D600B8C68D /* PhotoJSONHandler.m in Sources */,
 				48D933C916E0B6D600B8C68D /* PhotoLoader.m in Sources */,
 				48D933D016E0C3A700B8C68D /* AnnotationJSONHandler.m in Sources */,
+				48154DB216E6426D00024333 /* Session.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
