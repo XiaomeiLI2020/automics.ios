@@ -92,60 +92,59 @@
         return;
     }
     */
-    NSString* boundary = @"0cfOXe12Fj";
     
     //uploading on Automics I server
-    NSURL* requestURL = [NSURL URLWithString:@"http://www.automics.net/automics/uploadcomic.php"];
+    NSURL* requestURL = [NSURL URLWithString:@"http://automicsapi.wp.horizon.ac.uk/v1/comic"];
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    NSString* groupname = [prefs objectForKey:@"groupname"];
-    NSDictionary* _params = [NSDictionary dictionaryWithObject:groupname forKey:@"group_name"];
+    NSString* token = [prefs objectForKey:@"session"];
     
+    NSError* writeErrorNew;
+    
+    NSString* panelIds;
+    
+    for(int i=0; i<[comicContents count]; i++)
+    {
+        if(panelIds==NULL)
+        {
+            panelIds= [NSString stringWithFormat:@"%i",[[comicContents objectAtIndex:i] integerValue]];
+        }
+        else
+            panelIds= [NSString stringWithFormat:@"%@,%i", panelIds, [[comicContents objectAtIndex:i] integerValue]];
+    }
+    
+    NSLog(@"panelIds=%@", panelIds);
+    
+    NSArray *objects = [NSArray arrayWithObjects:@"description", @"name", panelIds, token, nil];
+    NSArray *keys = [NSArray arrayWithObjects:@"description",@"name", @"panels", @"session", nil];
+    
+    //objects = [NSArray arrayWithObjects:@"description", @"type.png", imageString, nil];
+    //keys = [NSArray arrayWithObjects:@"description",@"name", @"blob", nil];
+    
+    NSDictionary *questionDict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    NSDictionary *jsonDict = [NSDictionary dictionaryWithObject:questionDict forKey:@"data"];
+    //Create JSON object
+    NSData *jsonRequestData = [NSJSONSerialization dataWithJSONObject:jsonDict options:NSJSONWritingPrettyPrinted error:&writeErrorNew];
+
     // create request
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
     [request setHTTPShouldHandleCookies:NO];
     [request setTimeoutInterval:30];
     [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setURL:requestURL];
     
     
-    // set Content-Type in HTTP header
-    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
-    [request setValue:contentType forHTTPHeaderField: @"Content-Type"];
-    
-    // post body
-    NSMutableData *body = [NSMutableData data];
-    
-    // add params (all params are strings)
-    for (NSString *param in _params) {
-        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", param] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"%@\r\n", [_params objectForKey:param]] dataUsingEncoding:NSUTF8StringEncoding]];
-    }
-    
-    
-    //Make json
-    NSError *writeError = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:comicContents options:NSJSONWritingPrettyPrinted error:&writeError];
-    
-    if (jsonData) {
-        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[@"Content-Disposition: form-data; name=\"bubble_file\"; filename=\"bubble.bub\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[@"Content-Type: text/html\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:jsonData];
-        [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-    }
-    
-    [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+      //Make json
+    //NSError *writeError = nil;
+    //NSData *jsonData = [NSJSONSerialization dataWithJSONObject:comicContents options:NSJSONWritingPrettyPrinted error:&writeError];
+
     
     // setting the body of the post to the reqeust
-    [request setHTTPBody:body];
-    
-    // set the content-length
-    NSString *postLength = [NSString stringWithFormat:@"%d", [body length]];
-    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    // set URL
-    [request setURL:requestURL];
+    [request setHTTPBody:jsonRequestData];
+
     
     self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     

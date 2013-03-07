@@ -26,5 +26,6 @@
 -(void)PanelLoader:(PanelLoader*)loader didFailWithError:(NSError*)error;
 -(void)PanelLoader:(PanelLoader *)loader didLoadPanels:(NSArray*)panels;
 -(void)PanelLoader:(PanelLoader *)loader didLoadPanel:(Panel*)panel;
--(void)PanelLoader:(PanelLoader *)loader didSavePanel:(Panel*)panel;
+//-(void)PanelLoader:(PanelLoader *)loader didSavePanel:(Panel*)panel;
+-(void)PanelLoader:(PanelLoader *)loader didSavePanel:(NSString*)responseString;
 @end

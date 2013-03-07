@@ -25,7 +25,7 @@
 
 @implementation PanelEditViewController
 
-@synthesize imagePicker;
+
 @synthesize imageView;
 @synthesize url;
 
@@ -34,9 +34,11 @@
 @synthesize thumbnailScrollView;
 
 @synthesize resourceList;
-@synthesize _groupName;
 @synthesize currentPanel;
 @synthesize panelId;
+
+@synthesize subviewId;
+@synthesize originalFrame;
 
 ResourceLoader *resourceLoader;
 NSMutableArray *resourceList;
@@ -83,8 +85,6 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
     if(self.imageView.image) return; //If image already loaded - do not reload it (since load moved from viewDidLoad)
     
-    //self.imageView.image = [self squareImageWithImage:self.imageView.image scaledToSize:imageSize];
-    
     [self.imageView setImageWithURL:self.url
                    placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]
                             success:^(UIImage *image) {
@@ -122,8 +122,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 -(void)loadAnnotations
 {
-    NSLog(@"loadAnnotations. currentPanel.panelId=%i", currentPanel.panelId);
-    NSLog(@"loadAnnotations. currentPanel.annotations=%i", [currentPanel.annotations count]);
+    //NSLog(@"loadAnnotations. currentPanel.panelId=%i", currentPanel.panelId);
+    //NSLog(@"loadAnnotations. currentPanel.annotations=%i", [currentPanel.annotations count]);
     
     if(currentPanel!=nil)
     {
@@ -139,10 +139,10 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             NSString* text = annotation.text;
             int styleId = annotation.bubbleStyle;
             
-            NSLog(@"loadAnnotations.text=%@", text);
+            //NSLog(@"loadAnnotations.text=%@", text);
             
             SpeechBubbleView* sbv = [[SpeechBubbleView alloc] initWithFrame:xywh andText:text andStyle:styleId];
-            sbv.userInteractionEnabled = NO;
+            sbv.userInteractionEnabled = YES;
             sbv.alpha = 0.0f;
             [self.view addSubview:sbv];
             [UIView transitionWithView:self.view
@@ -158,7 +158,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 }
 
-- (void)loadSpeechBubbles
+- (void)addSpeechBubblesToScrollView
 {
     /*
     CGRect thumbFrame = CGRectMake(assetScrollXOrigin, assetScrollYOrigin, assetScrollObjWidth, assetScrollObjHeight);
@@ -196,7 +196,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     [super viewDidAppear:animated];
 
     self.thumbnailScrollView.delegate=self;
-    NSLog(@"viewDidAppear.thumbnail.numItems=%i", [thumbnailScrollView numItems]);
+    //NSLog(@"viewDidAppear.thumbnail.numItems=%i", [thumbnailScrollView numItems]);
     [thumbnailScrollView layoutAssets];
     [self loadAnnotations];
 
@@ -260,7 +260,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     [self initiateScrollViews];
     
     //Add speechbubbles to thumbnail scrollview
-    [self loadSpeechBubbles];
+    [self addSpeechBubblesToScrollView];
     
     
     resourceList = [[NSMutableArray alloc] init];
@@ -488,6 +488,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                 SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
                 new_sbv.userInteractionEnabled = NO;
                 [ppvc.view addSubview:new_sbv];
+                
+                NSLog(@"speechbubble added for posting.");
             }
             
             //upload resources with the photo
@@ -498,6 +500,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                 ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andURL:sbv.urlImageString andType:sbv.type andId:sbv.resourceId];
                 new_sbv.userInteractionEnabled = NO;
                 [ppvc.view addSubview:new_sbv];
+                NSLog(@"resource added for posting.");
             }
         }//end for
     } //end if
@@ -528,7 +531,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         rect1.size.height = assetHeight;
         rect1.size.width = assetWidth;
         styleButton.frame = rect1;
-        //styleButton.tag = resourceId;	// tag our images for later use when we place them in serial fashion
+        //styleButton.tag = resource.resourceId;	// tag our images for later use when we place them in serial fashion
         styleButton.tag = resourceCounter;	// tag our images for later use when we place them in serial fashion
         
         [styleButton addTarget:self action:@selector(addResourceWithId:) forControlEvents:UIControlEventTouchDown];

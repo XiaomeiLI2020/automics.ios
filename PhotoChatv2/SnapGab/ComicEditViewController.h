@@ -8,14 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "MainScrollSelector.h"
+#import "ComicLoader.h"
+#import "ResourceLoader.h"
+#import "PanelLoader.h"
 
-@interface ComicEditViewController : UIViewController<UIScrollViewDelegate, UIAlertViewDelegate>
+@interface ComicEditViewController : UIViewController
+<UIScrollViewDelegate, UIAlertViewDelegate, PanelLoaderDelegate, ComicLoaderDelegate, ResourceLoaderDelegate>
 
 @property MainScrollSelector *panelScrollView;
 @property MainScrollSelector *thumbnailScrollView;
 
-
-@property NSString* _groupName;
 @property int currentPage;
 
 

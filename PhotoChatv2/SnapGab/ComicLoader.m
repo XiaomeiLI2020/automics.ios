@@ -44,13 +44,15 @@ int const kGetComic = 1;
 
 -(NSURLRequest*)prepareComicRequestForGroup:(int)groupId{
     NSString *comicURL = [APIWrapper getURLForGetComics];
-    NSURL* url = [NSURL URLWithString:comicURL];
+    NSString* authenticatedPanelURL = [self authenticatedGetURL:comicURL];
+    NSURL* url = [NSURL URLWithString:authenticatedPanelURL];
     return [NSURLRequest requestWithURL:url];
 }
 
 -(NSURLRequest*)prepareComicRequestForGetComicWithId:(int)comicId{
     NSString* comicURL = [APIWrapper getURLForGetComicWithId:comicId];
-    NSURL* url = [NSURL URLWithString:comicURL];
+    NSString* authenticatedPanelURL = [self authenticatedGetURL:comicURL];
+    NSURL* url = [NSURL URLWithString:authenticatedPanelURL];
     return [NSURLRequest requestWithURL:url];
 }
 

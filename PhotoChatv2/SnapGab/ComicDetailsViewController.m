@@ -25,9 +25,6 @@
 @implementation ComicDetailsViewController
 
 @synthesize comicId;
-@synthesize _groupName;
-
-
 @synthesize panelScrollView;
 @synthesize thumbnailScrollView;
 @synthesize currentPage;
@@ -66,6 +63,8 @@ NSString* urlImageString;
 {
     self = [super initWithCoder:aDecoder];
     if(self) {
+        
+        /*
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         _groupName = [prefs objectForKey:@"groupname"];
         //_groupname = @"d1";
@@ -78,6 +77,7 @@ NSString* urlImageString;
                                                  selector:@selector(newImageNotification)
                                                      name:UIApplicationDidBecomeActiveNotification
                                                    object:nil];
+        */ 
         [self initiateDataSet];
         
     }
@@ -512,20 +512,19 @@ NSString* urlImageString;
             placementList = panel.placements;
             numPlacements = [panel.placements count];
             placementCounter = 0;
-            
-            //for(Placement* placement in panel.placements)
+           
+            if(numPlacements > 0)
             {
-
-                /*
-                Placement* placement = [placementList objectAtIndex:placementCounter];
-                //int resourceId = placement.resourceId;
-                currentPlacement = placement;
-                [resourceLoader submitRequestGetResourceWithResourceId:placement.resourceId];
-                */
-                //CGRect xywh = CGRectMake(placement.xOffset,placement.yOffset,200,200);
+                //CGRect xywh = CGRectMake(placement.xOffset, placement.yOffset,200,200);
+                //int resourceId = [panel.placements objectAtIndex:0];
+                int resourceId = [[panel.placements objectAtIndex:placementCounter] resourceId];
+                
+                [resourceLoader submitRequestGetResourceWithResourceId:resourceId];
                 
                 
             }//end for
+            
+            
         }//end if
         
 

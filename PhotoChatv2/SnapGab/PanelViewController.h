@@ -21,7 +21,7 @@
 @property MainScrollSelector *thumbnailScrollView;
 
 
-@property NSString* _groupName;
+@property NSString* sessionToken;
 @property int currentPage;
 @property NSArray* panels;
 @property int currentPanelId;

@@ -30,21 +30,26 @@ int const kPostJoinGroup = 1;
 
 -(void)submitRequestPostJoinGroup:(NSString*)token andGroupHashId:(NSString*)hashId;
 {
-    userRequestType = kPostJoinGroup;
-    
-    NSString *loginURL = [APIWrapper getURLForPostGroupMembership];
-    //NSLog(@"generateSessionToken. loginURL=%@", loginURL);
-    NSURL* url = [NSURL URLWithString:loginURL];
-    
-    
-    NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
-    [urlRequest setHTTPMethod:@"POST"];
-    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    
-    [self setJoinGroupPostData:token andGroupHashId:hashId InURLRequest:urlRequest];
-    
-    [self submitGroupRequest:urlRequest];
+    if(token!=nil && hashId!=nil)
+    {
+        userRequestType = kPostJoinGroup;
+        
+        NSString *memberURL = [APIWrapper getURLForPostGroupMembership];
+        //NSLog(@"submitRequestPostJoinGroup. memberURL=%@", memberURL);
+        NSURL* url = [NSURL URLWithString:memberURL];
+        
+        
+        NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
+        [urlRequest setHTTPMethod:@"POST"];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        
+        [self setJoinGroupPostData:token andGroupHashId:hashId InURLRequest:urlRequest];
+        
+        [self submitUserRequest:urlRequest];
+        
+    }//end if
+
 }
 
 -(void)setJoinGroupPostData:(NSString*)token andGroupHashId:(NSString*)groupHashId InURLRequest:(NSMutableURLRequest*)urlRequest
@@ -70,7 +75,6 @@ int const kPostJoinGroup = 1;
     if(user!=nil)
     {
         userRequestType = kPostGenerateSession;
-        //[self generateSessionToken:email andPassword:password];
         
         NSString *loginURL = [APIWrapper getURLForPostLogin];
         NSURL* url = [NSURL URLWithString:loginURL];
@@ -83,9 +87,9 @@ int const kPostJoinGroup = 1;
         
         [self setGenerateSessionPostData:user InURLRequest:urlRequest];
         
-        [self submitGroupRequest:urlRequest];
+        [self submitUserRequest:urlRequest];
         
-    }
+    }//end if
  
 }
 
@@ -110,7 +114,7 @@ int const kPostJoinGroup = 1;
 
 
 
--(void)submitGroupRequest:(NSURLRequest*)urlRequest{
+-(void)submitUserRequest:(NSURLRequest*)urlRequest{
     [self initConnectionRequest];
     [self submitURLRequest:urlRequest];
 }

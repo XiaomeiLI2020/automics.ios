@@ -19,6 +19,7 @@
 -(void)submitRequestPostJoinGroup:(NSString*)sessionToken andGroupHashId:(NSString*)groupHashId;
 -(void)submitRequestPostGenerateSessionToken:(User*)user;
 
+
 @end
 
 
