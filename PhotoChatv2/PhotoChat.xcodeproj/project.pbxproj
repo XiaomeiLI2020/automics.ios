@@ -32,7 +32,6 @@
 		1D92BFF016667E2A00CB37B3 /* bubble-style7.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D92BFE716667E2A00CB37B3 /* bubble-style7.png */; };
 		1D92BFF116667E2A00CB37B3 /* bubble-style8.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D92BFE816667E2A00CB37B3 /* bubble-style8.png */; };
 		1DA205B1166504BD003FF0B2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA205B0166504BD003FF0B2 /* MobileCoreServices.framework */; };
-		48053FC216DE875C0046BE60 /* JSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48053FC116DE875C0046BE60 /* JSONHandler.m */; };
 		48CAFD2E16CE789600D8EB4C /* DataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CAFD2D16CE789600D8EB4C /* DataLoader.m */; };
 		48CAFD3216CE943900D8EB4C /* APIConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CAFD3116CE943800D8EB4C /* APIConstant.m */; };
 		48CAFD4016CEA7E600D8EB4C /* APIWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CAFD3F16CEA7E600D8EB4C /* APIWrapper.m */; };
@@ -69,6 +68,7 @@
 		D8585C69167A58490003B0BD /* placeholder-542x542.png in Resources */ = {isa = PBXBuildFile; fileRef = D8585C68167A58490003B0BD /* placeholder-542x542.png */; };
 		D85D7EAC16E67A2B00BB864A /* UserLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D85D7EAB16E67A2B00BB864A /* UserLoader.m */; };
 		D85D7EAF16E67BCE00BB864A /* UserJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D85D7EAE16E67BCD00BB864A /* UserJSONHandler.m */; };
+		D85D7EB116E8C7A000BB864A /* JSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D85D7EB016E8C7A000BB864A /* JSONHandler.m */; };
 		D88FF66916C556F000C0A2A8 /* post-panel.png in Resources */ = {isa = PBXBuildFile; fileRef = D88FF66816C556F000C0A2A8 /* post-panel.png */; };
 		D88FF66B16C5597D00C0A2A8 /* panel-edit.png in Resources */ = {isa = PBXBuildFile; fileRef = D88FF66A16C5597D00C0A2A8 /* panel-edit.png */; };
 		D892740916E61C200061FA14 /* GroupLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D892740816E61C200061FA14 /* GroupLoader.m */; };
@@ -156,8 +156,6 @@
 		1D92BFE716667E2A00CB37B3 /* bubble-style7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubble-style7.png"; sourceTree = "<group>"; };
 		1D92BFE816667E2A00CB37B3 /* bubble-style8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubble-style8.png"; sourceTree = "<group>"; };
 		1DA205B0166504BD003FF0B2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		48053FC016DE875C0046BE60 /* JSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONHandler.h; path = SnapGab/JSONHandler.h; sourceTree = "<group>"; };
-		48053FC116DE875C0046BE60 /* JSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONHandler.m; path = SnapGab/JSONHandler.m; sourceTree = "<group>"; };
 		48CAFD2C16CE789600D8EB4C /* DataLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataLoader.h; path = SnapGab/DataLoader.h; sourceTree = "<group>"; };
 		48CAFD2D16CE789600D8EB4C /* DataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataLoader.m; path = SnapGab/DataLoader.m; sourceTree = "<group>"; };
 		48CAFD3016CE943800D8EB4C /* APIConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APIConstant.h; path = SnapGab/APIConstant.h; sourceTree = "<group>"; };
@@ -186,7 +184,6 @@
 		48F6277116D643E60034A5A7 /* Placement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Placement.m; path = SnapGab/Placement.m; sourceTree = "<group>"; };
 		48F6277616D6440A0034A5A7 /* DataValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataValidator.h; path = SnapGab/DataValidator.h; sourceTree = "<group>"; };
 		48F6277716D6440A0034A5A7 /* DataValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataValidator.m; path = SnapGab/DataValidator.m; sourceTree = "<group>"; };
-		48F6277816D6440A0034A5A7 /* PanelJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PanelJSONHandler.h; path = SnapGab/PanelJSONHandler.h; sourceTree = "<group>"; };
 		48F6277916D6440A0034A5A7 /* PanelJSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PanelJSONHandler.m; path = SnapGab/PanelJSONHandler.m; sourceTree = "<group>"; };
 		48F6277A16D6440A0034A5A7 /* PlacementJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlacementJSONHandler.h; path = SnapGab/PlacementJSONHandler.h; sourceTree = "<group>"; };
 		48F6277B16D6440A0034A5A7 /* PlacementJSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlacementJSONHandler.m; path = SnapGab/PlacementJSONHandler.m; sourceTree = "<group>"; };
@@ -224,6 +221,8 @@
 		D85D7EAB16E67A2B00BB864A /* UserLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLoader.m; sourceTree = "<group>"; };
 		D85D7EAD16E67BCD00BB864A /* UserJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserJSONHandler.h; path = SnapGab/UserJSONHandler.h; sourceTree = "<group>"; };
 		D85D7EAE16E67BCD00BB864A /* UserJSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserJSONHandler.m; path = SnapGab/UserJSONHandler.m; sourceTree = "<group>"; };
+		D85D7EB016E8C7A000BB864A /* JSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONHandler.m; path = SnapGab/JSONHandler.m; sourceTree = "<group>"; };
+		D85D7EB216E8C88800BB864A /* JSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONHandler.h; path = SnapGab/JSONHandler.h; sourceTree = "<group>"; };
 		D88FF66816C556F000C0A2A8 /* post-panel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "post-panel.png"; path = "SnapGab/post-panel.png"; sourceTree = "<group>"; };
 		D88FF66A16C5597D00C0A2A8 /* panel-edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "panel-edit.png"; path = "SnapGab/panel-edit.png"; sourceTree = "<group>"; };
 		D892740716E61C1F0061FA14 /* GroupLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupLoader.h; sourceTree = "<group>"; };
@@ -459,11 +458,8 @@
 				D892740816E61C200061FA14 /* GroupLoader.m */,
 				48D0806C16D4EC6800346465 /* ImageDownloader.h */,
 				48D0806D16D4EC6800346465 /* ImageDownloader.m */,
-				48053FC016DE875C0046BE60 /* JSONHandler.h */,
-				48053FC116DE875C0046BE60 /* JSONHandler.m */,
-				48053FC016DE875C0046BE60 /* JSONHandler.h */,
-				48053FC116DE875C0046BE60 /* JSONHandler.m */,
-				48F6277816D6440A0034A5A7 /* PanelJSONHandler.h */,
+				D85D7EB216E8C88800BB864A /* JSONHandler.h */,
+				D85D7EB016E8C7A000BB864A /* JSONHandler.m */,
 				48F6277916D6440A0034A5A7 /* PanelJSONHandler.m */,
 				48D0806E16D4EC6800346465 /* PanelLoader.h */,
 				48D0806F16D4EC6800346465 /* PanelLoader.m */,
@@ -777,7 +773,6 @@
 				48F6277E16D6440A0034A5A7 /* PanelJSONHandler.m in Sources */,
 				48F6277F16D6440A0034A5A7 /* PlacementJSONHandler.m in Sources */,
 				D8932C7C16D7ED7B007D97A9 /* GUIConstant.m in Sources */,
-				48053FC216DE875C0046BE60 /* JSONHandler.m in Sources */,
 				48D933C216E0B6C000B8C68D /* Photo.m in Sources */,
 				48D933C816E0B6D600B8C68D /* PhotoJSONHandler.m in Sources */,
 				48D933C916E0B6D600B8C68D /* PhotoLoader.m in Sources */,
@@ -801,6 +796,7 @@
 				D892741816E658260061FA14 /* User.m in Sources */,
 				D85D7EAC16E67A2B00BB864A /* UserLoader.m in Sources */,
 				D85D7EAF16E67BCE00BB864A /* UserJSONHandler.m in Sources */,
+				D85D7EB116E8C7A000BB864A /* JSONHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
