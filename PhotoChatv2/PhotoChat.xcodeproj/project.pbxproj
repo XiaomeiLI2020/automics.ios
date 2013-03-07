@@ -884,16 +884,16 @@
 		1D8D50A1165FADC700C9817C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SnapGab/PhotoChat-Prefix.pch";
 				GENERATE_PROFILING_CODE = YES;
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				PRODUCT_NAME = PhotoChat;
-				PROVISIONING_PROFILE = "90A8735E-9CA8-46A7-A527-E69F05FCACE4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "90A8735E-9CA8-46A7-A527-E69F05FCACE4";
+				PROVISIONING_PROFILE = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
 				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = app;
 			};
@@ -902,16 +902,16 @@
 		1D8D50A2165FADC700C9817C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SnapGab/PhotoChat-Prefix.pch";
 				GENERATE_PROFILING_CODE = YES;
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				PRODUCT_NAME = PhotoChat;
-				PROVISIONING_PROFILE = "90A8735E-9CA8-46A7-A527-E69F05FCACE4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "90A8735E-9CA8-46A7-A527-E69F05FCACE4";
+				PROVISIONING_PROFILE = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
