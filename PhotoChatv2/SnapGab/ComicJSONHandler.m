@@ -12,6 +12,8 @@
 
 @implementation ComicJSONHandler
 
+
+
 +(Comic*)convertComicJSONDictIntoComic:(NSDictionary*)comicJSON{
     Comic *comic = [[Comic alloc] init];
     //id.
@@ -48,5 +50,7 @@
     }
     return comics;
 }
+
+
 
 @end

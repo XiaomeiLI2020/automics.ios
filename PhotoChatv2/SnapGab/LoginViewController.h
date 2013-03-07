@@ -7,17 +7,24 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GroupLoader.h"
+#import "UserLoader.h"
+#import "User.h"
 
 @interface LoginViewController : UIViewController
-<UIScrollViewDelegate, UINavigationControllerDelegate>
-- (IBAction)loginPressed:(id)sender;
+<UITextFieldDelegate, UserLoaderDelegate>
 
-@property (weak, nonatomic) NSString* token;
+@property NSString* sessionToken;
 
-@property (strong, nonatomic) IBOutlet UITextField *email;
-@property (strong, nonatomic) IBOutlet UITextField *password;
+@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 
-@property UIScrollView* scrollView;
-@property BOOL keyboardIsShown;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+
+@property NSString *userEmail;
+@property NSString *userPassword;
+
+
+@property UserLoader* userLoader;
+@property User* user;
 
 @end

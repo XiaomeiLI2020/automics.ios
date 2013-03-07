@@ -404,17 +404,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         }//end for
     } //end if
     
-    
-    if([[segue identifier] isEqualToString:@"startSelectBubbleStyleView"]){
-        SelectBubbleStyleViewController *sbsvc = (SelectBubbleStyleViewController *)[segue destinationViewController];
-        sbsvc.delegate = self;
-    }//end if
-    
-    if([[segue identifier] isEqualToString:@"startResourceView"]){
-       ResourceViewController *rvc = (ResourceViewController *)[segue destinationViewController];
-       rvc.delegate = self;
-        
-    }//end if
+
 }
 
 - (IBAction)takeSnap:(id)sender {

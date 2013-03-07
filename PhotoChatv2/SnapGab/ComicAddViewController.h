@@ -9,14 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "MainScrollSelector.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "SelectBubbleStyleViewController.h"
-#import "ResourceViewController.h"
 
 
 @interface ComicAddViewController : UIViewController
-<UINavigationControllerDelegate, UIImagePickerControllerDelegate, SelectBubbleStyleDelegateProtocol, ResourceDelegateProtocol,
-UIAlertViewDelegate>
-
+<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate>
+//<UINavigationControllerDelegate, UIImagePickerControllerDelegate, SelectBubbleStyleDelegateProtocol, ResourceDelegateProtocol, UIAlertViewDelegate>
 
 @property NSString* _groupName;
 @property int currentPage;

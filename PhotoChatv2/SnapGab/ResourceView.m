@@ -80,7 +80,7 @@ BOOL alertShown;
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame andURL:(NSString*)urlImageString
+- (id)initWithFrame:(CGRect)frame andURL:(NSString*)urlImage
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -88,7 +88,7 @@ BOOL alertShown;
         
         //UIImage *image = [UIImage imageNamed:urlImageString];
         
-        NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlImageString]];
+        NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlImage]];
         UIImage *image = [UIImage imageWithData:imageURL];
         
         _imageView = [[UIImageView alloc] initWithImage:image];
@@ -127,16 +127,16 @@ BOOL alertShown;
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame andURL:(NSString*)urlImageString andType:(NSString*)type
+- (id)initWithFrame:(CGRect)frame andURL:(NSString*)urlImage andType:(NSString*)resourceType
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
         
-        self.urlImageString = urlImageString;
-        self.type = type;
+        self.urlImageString = urlImage;
+        self.type = resourceType;
         
-        NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlImageString]];
+        NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlImage]];
         UIImage *image = [UIImage imageWithData:imageURL];
         
         _imageView = [[UIImageView alloc] initWithImage:image];
@@ -146,7 +146,7 @@ BOOL alertShown;
         alertShown = NO;
         
         //Scaling and moving enabled for decorators only
-        if([type isEqual:@"d"])
+        if([resourceType isEqual:@"d"])
         {
         
             UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scalePiece:)];
@@ -169,18 +169,18 @@ BOOL alertShown;
 }
 
 
-- (id)initWithFrame:(CGRect)frame andURL:(NSString*)urlImageString andType:(NSString*)type andId:(int)resourceId
+- (id)initWithFrame:(CGRect)frame andURL:(NSString*)urlImage andType:(NSString*)resourceType andId:(int)resourceIdSent
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
         
         
-        self.urlImageString = urlImageString;
-        self.type = type;
-        self.resourceId = resourceId;
+        self.urlImageString = urlImage;
+        self.type = resourceType;
+        self.resourceId = resourceIdSent;
         
-        NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlImageString]];
+        NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlImage]];
         UIImage *image = [UIImage imageWithData:imageURL];
         
         _imageView = [[UIImageView alloc] initWithImage:image];
@@ -190,7 +190,7 @@ BOOL alertShown;
         alertShown = NO;
         
         //Scaling and moving enabled for decorators only
-        if([type isEqual:@"d"])
+        if([resourceType isEqual:@"d"])
         {
             
             UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scalePiece:)];

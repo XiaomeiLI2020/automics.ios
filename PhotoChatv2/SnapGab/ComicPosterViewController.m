@@ -199,7 +199,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     
 }
 
-- (void)connection:(NSURLConnection *) didFailWithError:(NSError *)error
+- (void)connection:(NSURLConnection*) connection didFailWithError:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Upload Failure"

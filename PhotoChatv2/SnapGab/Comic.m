@@ -9,8 +9,12 @@
 #import "Comic.h"
 
 @implementation Comic
+
+
 @synthesize name;
 @synthesize comicId;
 @synthesize description;
 @synthesize panels;
+
+
 @end

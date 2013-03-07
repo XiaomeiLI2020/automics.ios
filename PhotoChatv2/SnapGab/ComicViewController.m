@@ -11,7 +11,7 @@
 #import "ComicDetailsViewController.h"
 #import "ComicTableCell.h"
 #import "Comic.h"
-#import "ComicLoader.h"
+
 
 @interface ComicViewController ()
 
@@ -30,7 +30,7 @@ int comicCounter;
 CGFloat yPos = 50.0;
 CGFloat xPos = 10.0;
 ComicLoader* comicLoader;
-NSMutableArray* comicList;
+NSArray* comicList;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -58,7 +58,7 @@ NSMutableArray* comicList;
     
     yPos= 40.0;
 
-    int page = 0;
+    //int page = 0;
     //NSLog(@"updateComics.numComics=%i", numComics);
     
     if(numComics>0)
@@ -94,29 +94,13 @@ NSMutableArray* comicList;
     numComics = 0;
     comicCounter = 0;
     
-    comicList = [[NSMutableArray alloc] init];
+    comicList = [[NSArray alloc] init];
     comicLoader = [[ComicLoader alloc] init];
     comicLoader.delegate = self;
     [comicLoader submitRequestGetComicsForGroup:1];
+ 
     
-    
-    /*
-    [self updateNumComics];
-    
-    if(numComics>0) {
-        NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:(numComics - 1) inSection:0];
-        
-        if(//[self.comicTableView numberOfSections] >0 &&
-           [self.comicTableView numberOfRowsInSection:0]>0 )
-        {
-            [self.comicTableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        }
-        
-    }
-    
-    comicTableView.dataSource = self;
-    comicTableView.delegate = self;
-     */
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -209,12 +193,6 @@ NSMutableArray* comicList;
     }
 }
 
-/*
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-}
- */
 
 #pragma ComicLoader methods.
 

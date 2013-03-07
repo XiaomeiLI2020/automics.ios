@@ -55,7 +55,7 @@ const CGFloat thumbnailHeight4= 80.0;
 {
     //NSURLRequestReloadIgnoringLocalCacheData does not seem to work for 3G
     
-    NSString* urlComicString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/comics/%d.bub",_groupName, comicId];
+    //NSString* urlComicString = [NSString stringWithFormat:@"http://www.automics.net/automics/userfiles/%@/comics/%d.bub",_groupName, comicId];
     
     //NSURLRequestReloadIgnoringLocalCacheData does not seem to work for 3G
     NSString* urlString = [NSString stringWithFormat:
@@ -283,8 +283,9 @@ const CGFloat thumbnailHeight4= 80.0;
 }
 
 
--(void)addImagesForComic:(int)comicId
+-(void)addImagesForComic:(int)comicIdLocal
 {
+    comicId = comicIdLocal;
     
     CGRect panelFrame = CGRectMake(panelScrollXOrigin4, panelScrollYOrigin4, panelScrollObjWidth4, panelScrollObjHeight4);
     CGSize panelSize = CGSizeMake(panelWidth4, panelHeight4);
@@ -581,7 +582,7 @@ const CGFloat thumbnailHeight4= 80.0;
     {
         //Get the identifier of current image in the comic
         NSLog(@"current page=%i", currentPage);
-        int itemReplaced;
+        int itemReplaced = 0;
         //int itemRemoved= currentPage-1;
         int itemRemoved = currentPage;
         //if(currentPage==0)

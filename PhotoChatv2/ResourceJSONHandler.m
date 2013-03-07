@@ -12,6 +12,8 @@
 
 @implementation ResourceJSONHandler
 
+
+
 +(Resource*)getResourceFromResourceJSON:(NSDictionary*)resourceJSON{
     Resource *resource = [[Resource alloc] init];
     

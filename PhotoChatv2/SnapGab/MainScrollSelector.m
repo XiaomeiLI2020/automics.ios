@@ -83,12 +83,14 @@
 }
 
 
-- (void)scrollItemToVisible:(int)sender
+- (void)scrollItemToVisible:(int)pageNum
 {
-    int itemPosition = sender;
+    //int itemPosition = sender;
+    //if(sender==0)
+    //    itemPosition = 1;
     // Scroll to the sepcified item in the scrollview
     CGRect scrollFrame1 = self.frame;
-    scrollFrame1.origin.x = self.itemWidth * (itemPosition-1);
+    scrollFrame1.origin.x = self.itemWidth * (pageNum);
     //NSLog(@"panelframe.origin.x = %f", panelFrame.origin.x);
     scrollFrame1.origin.y = 0;
     [self scrollRectToVisible:scrollFrame1 animated:YES];
@@ -105,7 +107,8 @@
 	CGFloat curXLoc = 0;
 	for (view in subviews)
 	{
-		if ([view isKindOfClass:[UIImageView class]] && view.tag > 0)
+		//if ([view isKindOfClass:[UIImageView class]] && view.tag > 0)
+        if ([view isKindOfClass:[UIImageView class]])
 		{
 			CGRect frame = view.frame;
 			frame.origin = CGPointMake(curXLoc, 0);
@@ -117,8 +120,10 @@
 	
 	// set the content size so it can be scrollable
 	//[self setContentSize:CGSizeMake((self.numItems * self.scrollObjWidth), [self bounds].size.height)];
-    //[self setContentSize:CGSizeMake((self.numItems * self.scrollObjWidth), self.frame.size.height)];
-    [self setContentSize:CGSizeMake((self.numItems * self.itemWidth), self.frame.size.height)];
+    [self setContentSize:CGSizeMake((self.numItems * self.scrollObjWidth), self.frame.size.height)];
+    //NSLog(@"self.numItems * self.itemWidth=%f", (self.numItems * self.itemWidth));
+    //NSLog(@"self.numItems * self.scrollObjWidth=%f", (self.numItems * self.scrollObjWidth));
+    //[self setContentSize:CGSizeMake((self.numItems * self.itemWidth), self.frame.size.height)];
     //[self setContentOffset:CGPointMake(1, 0) animated:YES];
 }
 
@@ -144,7 +149,8 @@
 	
 	// set the content size so it can be scrollable
 	//[self setContentSize:CGSizeMake((self.numItems * self.scrollObjWidth), [self bounds].size.height)];
-    [self setContentSize:CGSizeMake((self.numItems * self.scrollObjWidth), self.frame.size.height)];
+    //[self setContentSize:CGSizeMake((self.numItems * self.scrollObjWidth), self.frame.size.height)];
+    [self setContentSize:CGSizeMake((self.numItems * self.itemWidth), self.frame.size.height)];
     //[self setContentOffset:CGPointMake(1, 0) animated:YES];
 }
 

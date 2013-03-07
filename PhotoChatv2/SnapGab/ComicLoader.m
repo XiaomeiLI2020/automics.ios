@@ -11,16 +11,19 @@
 #import "ComicJSONHandler.h"
 
 @interface ComicLoader ()
-@property int comicRequestType;
+
 @end
 
 @implementation ComicLoader
+
 
 int const kGetGroupComics = 0;
 int const kGetComic = 1;
 
 @synthesize delegate;
 @synthesize comicRequestType;
+
+
 
 -(void)submitRequestGetComicsForGroup:(int)groupId{
     comicRequestType = kGetGroupComics;
@@ -110,5 +113,6 @@ int const kGetComic = 1;
 -(void)cancelComicLoad{
     [self cancelRequest];
 }
+
 
 @end
