@@ -223,6 +223,7 @@
 		D85D7EAE16E67BCD00BB864A /* UserJSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserJSONHandler.m; path = SnapGab/UserJSONHandler.m; sourceTree = "<group>"; };
 		D85D7EB016E8C7A000BB864A /* JSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONHandler.m; path = SnapGab/JSONHandler.m; sourceTree = "<group>"; };
 		D85D7EB216E8C88800BB864A /* JSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONHandler.h; path = SnapGab/JSONHandler.h; sourceTree = "<group>"; };
+		D85D7EB316E8D40100BB864A /* PanelJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PanelJSONHandler.h; path = SnapGab/PanelJSONHandler.h; sourceTree = "<group>"; };
 		D88FF66816C556F000C0A2A8 /* post-panel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "post-panel.png"; path = "SnapGab/post-panel.png"; sourceTree = "<group>"; };
 		D88FF66A16C5597D00C0A2A8 /* panel-edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "panel-edit.png"; path = "SnapGab/panel-edit.png"; sourceTree = "<group>"; };
 		D892740716E61C1F0061FA14 /* GroupLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupLoader.h; sourceTree = "<group>"; };
@@ -460,6 +461,7 @@
 				48D0806D16D4EC6800346465 /* ImageDownloader.m */,
 				D85D7EB216E8C88800BB864A /* JSONHandler.h */,
 				D85D7EB016E8C7A000BB864A /* JSONHandler.m */,
+				D85D7EB316E8D40100BB864A /* PanelJSONHandler.h */,
 				48F6277916D6440A0034A5A7 /* PanelJSONHandler.m */,
 				48D0806E16D4EC6800346465 /* PanelLoader.h */,
 				48D0806F16D4EC6800346465 /* PanelLoader.m */,

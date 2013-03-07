@@ -52,5 +52,93 @@
 }
 
 
++(NSDictionary*)convertComicIntoComicJSON:(Comic*)comic{
+    
+    NSMutableDictionary* comicdict = [[NSMutableDictionary alloc] init];
+    if (comic.comicId > 0)
+        [comicdict setValue:[[NSNumber alloc] initWithInt:comic.comicId] forKey:@"id"];
+    
+    if(comic.name != nil)
+    {
+        [comicdict setValue:comic.name forKey:@"name"];
+    }
+    
+    if(comic.description != nil)
+    {
+        [comicdict setValue:comic.description forKey:@"description"];
+    }
+    
+    if (comic.panels != nil){
+        
+        NSString* panelIds;
+        
+        for(int i=0; i<[comic.panels count]; i++)
+        {
+            if(panelIds==NULL)
+            {
+                panelIds= [NSString stringWithFormat:@"%i",[[comic.panels objectAtIndex:i] integerValue]];
+            }
+            else
+                panelIds= [NSString stringWithFormat:@"%@,%i", panelIds, [[comic.panels objectAtIndex:i] integerValue]];
+        }
+        
+        if(panelIds!=NULL)
+        {
+            [comicdict setValue:panelIds forKey:@"panels"];
+        }
+    }
+
+    
+    /*
+    if (panel.panelId > 0)
+        [paneldict setValue:[[NSNumber alloc] initWithInt:panel.panelId] forKey:@"id"];
+    if (panel.photo != nil){
+        if (panel.photo.photoId > 0)
+            [paneldict setValue:[[NSNumber alloc] initWithInt:panel.photo.photoId] forKey:@"photo_id"];
+        if (panel.photo.imageURL != nil)
+            [paneldict setValue:panel.photo.imageURL forKey:@"photo_url"];
+    }
+    if (panel.placements != nil){
+        NSArray* placementsJSON = [PlacementJSONHandler convertPlacementsIntoPlacementsJSON:panel.placements];
+        if (placementsJSON.count > 0)
+            [paneldict setValue:placementsJSON forKey:@"placements"];
+    }
+    if (panel.annotations != nil){
+        NSArray* annotationsJSON = [AnnotationJSONHandler convertAnnotationsIntoAnnotationsJSON:panel.annotations];
+        if (annotationsJSON.count > 0)
+            [paneldict setValue:annotationsJSON forKey:@"annotations"];
+    }
+     */
+    return comicdict;
+}
+
+/*
+
+ +(NSDictionary*)convertPanelIntoPanelJSON:(Panel *)panel{
+ NSMutableDictionary* paneldict = [[NSMutableDictionary alloc] init];
+ if (panel.panelId > 0)
+ [paneldict setValue:[[NSNumber alloc] initWithInt:panel.panelId] forKey:@"id"];
+ if (panel.photo != nil){
+ if (panel.photo.photoId > 0)
+ [paneldict setValue:[[NSNumber alloc] initWithInt:panel.photo.photoId] forKey:@"photo_id"];
+ if (panel.photo.imageURL != nil)
+ [paneldict setValue:panel.photo.imageURL forKey:@"photo_url"];
+ }
+ if (panel.placements != nil){
+ NSArray* placementsJSON = [PlacementJSONHandler convertPlacementsIntoPlacementsJSON:panel.placements];
+ if (placementsJSON.count > 0)
+ [paneldict setValue:placementsJSON forKey:@"placements"];
+ }
+ if (panel.annotations != nil){
+ NSArray* annotationsJSON = [AnnotationJSONHandler convertAnnotationsIntoAnnotationsJSON:panel.annotations];
+ if (annotationsJSON.count > 0)
+ [paneldict setValue:annotationsJSON forKey:@"annotations"];
+ }
+ return paneldict;
+ }
+
+ 
+ */
+
 
 @end
