@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ComicLoader.h"
 
 @interface ComicPosterViewController : UIViewController
+<ComicLoaderDelegate>
 
 @property (nonatomic, retain) IBOutlet UIImageView *imageView;
 @property (nonatomic, retain) IBOutlet UIProgressView *progressView;
@@ -16,6 +18,7 @@
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) UIImage *image;
 
+@property ComicLoader* comicLoader;
 @property NSMutableArray *comicContents;
 
 - (IBAction)cancelPressed:(id)sender;

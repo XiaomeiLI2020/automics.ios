@@ -19,6 +19,7 @@
 
 int const kGetGroupComics = 0;
 int const kGetComic = 1;
+int const kPostComic = 2;
 
 @synthesize delegate;
 @synthesize comicRequestType;
@@ -37,6 +38,13 @@ int const kGetComic = 1;
     [self submitComicRequest:urlRequest];
 }
 
+
+-(void)submitRequestPostComic:(Comic*)comic{
+    comicRequestType = kPostComic;
+    NSURLRequest* urlRequest = [self prepareComicRequestForPostComic:comic];
+    [self submitComicRequest:urlRequest];
+}
+
 -(void)submitComicRequest:(NSURLRequest*)urlRequest{
     [self initConnectionRequest];
     [self submitURLRequest:urlRequest];
@@ -44,14 +52,43 @@ int const kGetComic = 1;
 
 -(NSURLRequest*)prepareComicRequestForGroup:(int)groupId{
     NSString *comicURL = [APIWrapper getURLForGetComics];
-    NSURL* url = [NSURL URLWithString:comicURL];
+    NSString* authenticatedPanelURL = [self authenticatedGetURL:comicURL];
+    NSURL* url = [NSURL URLWithString:authenticatedPanelURL];
     return [NSURLRequest requestWithURL:url];
 }
 
 -(NSURLRequest*)prepareComicRequestForGetComicWithId:(int)comicId{
     NSString* comicURL = [APIWrapper getURLForGetComicWithId:comicId];
-    NSURL* url = [NSURL URLWithString:comicURL];
+    NSString* authenticatedPanelURL = [self authenticatedGetURL:comicURL];
+    NSURL* url = [NSURL URLWithString:authenticatedPanelURL];
     return [NSURLRequest requestWithURL:url];
+}
+
+-(NSURLRequest*)prepareComicRequestForPostComic:(Comic*)comic{
+    NSString *comicURL = [APIWrapper getURLForGetComics];
+    NSURL* url = [NSURL URLWithString:comicURL];
+    NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
+    [urlRequest setHTTPMethod:@"POST"];
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [self setComicPostData:comic InURLRequest:urlRequest];
+    return urlRequest;
+}
+
+
+-(void)setComicPostData:(Comic*)comic InURLRequest:(NSMutableURLRequest*)urlRequest{
+
+    NSDictionary* comicdict = [ComicJSONHandler convertComicIntoComicJSON:comic];
+    comicdict = [self authenticatedPostData:comicdict];
+    comicdict = [ComicJSONHandler wrapJSONDictWithDataTag:comicdict];
+    NSError *error;
+    NSData* data = [NSJSONSerialization dataWithJSONObject:comicdict options:NSJSONWritingPrettyPrinted error:&error];
+    
+    // NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    // NSLog(@"panelData: %@", responseString);
+    
+    
+    [urlRequest setHTTPBody:data];
+
 }
 
 #pragma mark NSURLConnectionDelegate functions.
@@ -64,6 +101,9 @@ int const kGetComic = 1;
                 break;
             case kGetComic:
                 [self handleGetComicWithIdResponse];
+                break;
+            case kPostComic:
+                [self handlePostComicResponse];
                 break;
         }
     }
@@ -88,6 +128,23 @@ int const kGetComic = 1;
         Comic *comic = [ComicJSONHandler convertComicJSONDictIntoComic:comicdict];
         if ([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComic:)])
             [self.delegate ComicLoader:self didLoadComic:comic];
+    }else{
+        [self reportErrorToDelegate:error];
+    }
+}
+
+-(void)handlePostComicResponse{
+    NSError* error;
+    NSDictionary* comicdict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+    
+    if (comicdict != nil){
+        //Comic *comic = [ComicJSONHandler convertComicJSONDictIntoComic:comicdict];
+        
+        NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
+        //NSLog(@"panelData: %@", responseString);
+         
+        if ([self.delegate respondsToSelector:@selector(ComicLoader:didSaveComic:)])
+            [self.delegate ComicLoader:self didSaveComic:responseString];
     }else{
         [self reportErrorToDelegate:error];
     }

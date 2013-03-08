@@ -11,32 +11,25 @@
 
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "ResourceLoader.h"
+#import "PanelLoader.h"
 #import "Panel.h"
 
 @interface PanelEditViewController : UIViewController
-<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, ResourceLoaderDelegate>
+<UIScrollViewDelegate, PanelLoaderDelegate, ResourceLoaderDelegate, ImageDownloaderDelegate>
 
-{
-    BOOL newMedia;
-    int subviewId;
-    CGRect originalFrame;
-}
 
 @property MainScrollSelector *thumbnailScrollView;
 
-@property (strong, nonatomic) UIImagePickerController *imagePicker;
-//@property (strong, nonatomic) IBOutlet UIImageView *imageView;
-
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
-//@property IBOutlet UIImageView *imageView;
+
+@property int subviewId;
+@property CGRect originalFrame;
 
 @property NSURL* url;
-@property BOOL startWithCamera;
 @property CGSize imageSize;
 
 @property Panel* currentPanel;
 @property BOOL keyboardIsShown;
-@property NSString* _groupName;
 @property NSMutableArray* resourceList;
 @property int panelId;
 

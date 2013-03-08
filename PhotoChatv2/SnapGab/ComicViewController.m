@@ -37,6 +37,8 @@ NSArray* comicList;
 {
     self = [super initWithCoder:aDecoder];
     if(self) {
+        
+        /*
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         _groupName = [prefs objectForKey:@"groupname"];
 
@@ -48,7 +50,7 @@ NSArray* comicList;
                                                  selector:@selector(newImageNotification)
                                                      name:UIApplicationDidBecomeActiveNotification
                                                    object:nil];
-        
+        */
     }
     return self;
 }

@@ -7,14 +7,25 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PanelLoader.h"
+#import "PhotoLoader.h"
 
 @interface PhotoPosterViewController : UIViewController
+<PanelLoaderDelegate, PhotoLoaderDelegate>
+
 @property (nonatomic, retain) IBOutlet UIImageView *imageView;
 @property (nonatomic, retain) IBOutlet UIProgressView *progressView;
 
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) UIImage *image;
 @property NSString* imageURL;
+
+@property PanelLoader* panelsLoader;
+@property PhotoLoader* photoLoader;
+
+@property NSMutableArray* placementsArray;
+@property NSMutableArray* annotationsArray;
+
 
 - (IBAction)cancelPressed:(id)sender;
 

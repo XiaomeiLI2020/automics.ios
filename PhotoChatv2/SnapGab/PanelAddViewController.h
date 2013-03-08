@@ -13,7 +13,7 @@
 
 @interface PanelAddViewController : UIViewController
 
-<UINavigationControllerDelegate, UIImagePickerControllerDelegate, ResourceLoaderDelegate>
+<UINavigationControllerDelegate, UIScrollViewDelegate, UIImagePickerControllerDelegate, ResourceLoaderDelegate>
 {
     BOOL newMedia;
     int subviewId;

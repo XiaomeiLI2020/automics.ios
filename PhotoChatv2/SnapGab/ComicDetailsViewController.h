@@ -19,12 +19,7 @@
 @property MainScrollSelector *panelScrollView;
 @property MainScrollSelector *thumbnailScrollView;
 
-
-@property NSString* _groupName;
 @property int currentPage;
-
-
-@property (strong, nonatomic) UIImagePickerController *imagePicker;
 
 
 @property (strong, nonatomic) IBOutlet UIButton *editPressed;

@@ -7,7 +7,6 @@
 //
 
 #import "PanelAddViewController.h"
-//#import "CameraViewController.h"
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "PhotoPosterViewController.h"
 #import "UIImageView+WebCache.h"
@@ -144,8 +143,6 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     [self.view addSubview:sbv];
 
 }
-
-
 
 
 - (void)addResourceWithId:(id)sender
@@ -595,7 +592,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
 
     numResources = [resources count];
-
+    
+    thumbnailScrollView.numItems = numSpeechBubbles + numResources;
     
     for(Resource* resource in resources)
     {

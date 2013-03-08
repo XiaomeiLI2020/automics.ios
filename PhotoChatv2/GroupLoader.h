@@ -8,11 +8,17 @@
 
 #import "DataLoader.h"
 #import "Group.h"
-#import "Session.h"
-#import "User.h"
 
-
+@protocol GroupLoaderDelegate;
 
 @interface GroupLoader : DataLoader
 
+-(void)submitRequestGetGroups;
+
+@end
+
+@protocol GroupLoaderDelegate
+@optional
+-(void)GroupLoader:(GroupLoader*)groupLoader didLoadGroups:(NSArray*)groups;
+-(void)GroupLoader:(GroupLoader*)groupLoader didFailWithError:(NSError*)errors;
 @end

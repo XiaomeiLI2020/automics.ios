@@ -37,7 +37,7 @@
         self.itemWidth = itemSize.width;
         self.itemWidth = itemSize.height;
         
-        self.numItems = 1;
+        self.numItems = 0;
         
         // setup the scrollview for items
         [self setCanCancelContentTouches:NO];
@@ -48,6 +48,10 @@
         // pagingEnabled property default is NO, if set the scroller will stop or snap at each photo
         // if you want free-flowing scroll, don't set this property.
         self.pagingEnabled = YES;
+        
+        for (UIView *subview in self.subviews) {
+            [subview removeFromSuperview];
+        }
     }
     return self;
 }
@@ -78,6 +82,10 @@
         // pagingEnabled property default is NO, if set the scroller will stop or snap at each photo
         // if you want free-flowing scroll, don't set this property.
         self.pagingEnabled = YES;
+        
+        for (UIView *subview in self.subviews) {
+            [subview removeFromSuperview];
+        }
     }
     return self;
 }
@@ -120,10 +128,10 @@
 	
 	// set the content size so it can be scrollable
 	//[self setContentSize:CGSizeMake((self.numItems * self.scrollObjWidth), [self bounds].size.height)];
-    [self setContentSize:CGSizeMake((self.numItems * self.scrollObjWidth), self.frame.size.height)];
+    //[self setContentSize:CGSizeMake((self.numItems * self.scrollObjWidth), self.frame.size.height)];
     //NSLog(@"self.numItems * self.itemWidth=%f", (self.numItems * self.itemWidth));
     //NSLog(@"self.numItems * self.scrollObjWidth=%f", (self.numItems * self.scrollObjWidth));
-    //[self setContentSize:CGSizeMake((self.numItems * self.itemWidth), self.frame.size.height)];
+    [self setContentSize:CGSizeMake((self.numItems * self.itemWidth), self.frame.size.height)];
     //[self setContentOffset:CGPointMake(1, 0) animated:YES];
 }
 

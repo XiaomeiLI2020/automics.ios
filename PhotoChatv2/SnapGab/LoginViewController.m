@@ -138,6 +138,14 @@ NSString* hashId=@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
     {
         user.userId = currentUser.userId;
         user.groupHashId = currentUser.groupHashId;
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:user.currentSession.token forKey:@"session"];
+        [userDefaults setObject:user.groupHashId forKey:@"group"];
+        [userDefaults setObject:[NSNumber numberWithInt:user.userId] forKey:@"user_id"];
+        [userDefaults synchronize];
+        
+        
         /*
         NSLog(@"user.userId=%i", user.userId);
         NSLog(@"user.group_hash=%@", user.groupHashId);

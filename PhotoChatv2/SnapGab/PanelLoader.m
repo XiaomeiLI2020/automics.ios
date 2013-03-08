@@ -52,13 +52,15 @@ int const kPostPanel = 2;
 
 -(NSURLRequest*)preparePanelRequestForGroup:(int)groupId{
     NSString *panelURL = [APIWrapper getURLForGetPanels];
-    NSURL* url = [NSURL URLWithString:panelURL];
+    NSString* authenticatedPanelURL = [self authenticatedGetURL:panelURL];
+    NSURL* url = [NSURL URLWithString:authenticatedPanelURL];
     return [NSURLRequest requestWithURL:url];
 }
 
 -(NSURLRequest*)preparePanelRequestForGetPanelWithId:(int)panelId{
     NSString* panelURL = [APIWrapper getURLForGetPanelWithId:panelId];
-    NSURL* url = [NSURL URLWithString:panelURL];
+    NSString* authenticatedPanelURL = [self authenticatedGetURL:panelURL];
+    NSURL* url = [NSURL URLWithString:authenticatedPanelURL];
     return [NSURLRequest requestWithURL:url];
 }
 
@@ -73,10 +75,17 @@ int const kPostPanel = 2;
 }
 
 -(void)setPanelPostData:(Panel*)panel InURLRequest:(NSMutableURLRequest*)urlRequest{
+    
     NSDictionary* paneldict = [PanelJSONHandler convertPanelIntoPanelJSON:panel];
+    paneldict = [self authenticatedPostData:paneldict];
     paneldict = [PanelJSONHandler wrapJSONDictWithDataTag:paneldict];
     NSError *error;
     NSData* data = [NSJSONSerialization dataWithJSONObject:paneldict options:NSJSONWritingPrettyPrinted error:&error];
+    
+    // NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    // NSLog(@"panelData: %@", responseString);
+
+    
     [urlRequest setHTTPBody:data];
 }
 
@@ -109,11 +118,27 @@ int const kPostPanel = 2;
 -(void)handlePostPanel{
     NSError* error;
     NSDictionary* paneldict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+    
+    
+    NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
+    //NSLog(@"panelData: %@", responseString);
+    if(paneldict != nil)
+    {
+        
+        if ([self.delegate respondsToSelector:@selector(PanelLoader:didSavePanel:)])
+            [self.delegate PanelLoader:self didSavePanel:responseString];
+    }
+    
+    /*
     if (paneldict != nil){
-        Panel *panel = [PanelJSONHandler convertPanelJSONDictIntoPanel:paneldict];
+        
+        //Panel *panel = [PanelJSONHandler convertPanelJSONDictIntoPanel:paneldict];
+
+        
         if ([self.delegate respondsToSelector:@selector(PanelLoader:didSavePanel:)])
             [self.delegate PanelLoader:self didSavePanel:panel];
     }
+     */
 }
 
 -(void)reportErrorToDelegate:(NSError*)error{

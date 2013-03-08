@@ -15,6 +15,8 @@
 
 @property NSMutableData *downloadedData;
 @property NSURLConnection *dataFeedConnection;
+-(NSString*)authenticatedGetURL:(NSString*)urlString;
+-(NSDictionary*)authenticatedPostData:(NSDictionary*)dictionary;
 -(void)initConnectionRequest;
 -(void)submitURLRequest:(NSURLRequest*)urlRequest;
 -(void)cancelRequest;

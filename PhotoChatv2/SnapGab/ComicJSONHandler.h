@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "Comic.h"
+#import "JSONHandler.h"
 
-@interface ComicJSONHandler : NSObject
+@interface ComicJSONHandler : JSONHandler
 
 +(Comic*)convertComicJSONDictIntoComic:(NSDictionary*)comicJSON;
 +(NSArray*)convertComicsJSONArrayIntoComics:(NSArray*)comicsJSON;
++(NSDictionary*)convertComicIntoComicJSON:(Comic*)comic;
 
 @end

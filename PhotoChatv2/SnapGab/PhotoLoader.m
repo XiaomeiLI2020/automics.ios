@@ -41,9 +41,16 @@ int const kPostPhoto = 1;
 
 -(void)setPhotoPostData:(Photo*)photo InURLRequest:(NSMutableURLRequest*)urlRequest{
     NSDictionary* photodict = [PhotoJSONHandler convertPhotoIntoPhotoJSON:photo];
+    
+    photodict = [self authenticatedPostData:photodict];
+    
     photodict = [PhotoJSONHandler wrapJSONDictWithDataTag:photodict];
     NSError *error;
     NSData* data = [NSJSONSerialization dataWithJSONObject:photodict options:NSJSONWritingPrettyPrinted error:&error];
+    /*
+    NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"photoData: %@", responseString);
+    */
    [urlRequest setHTTPBody:data];
 }
 

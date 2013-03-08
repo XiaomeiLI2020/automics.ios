@@ -15,4 +15,8 @@
 
 @implementation GroupLoader
 
+-(void)submitRequestGetGroups{
+    
+}
+
 @end

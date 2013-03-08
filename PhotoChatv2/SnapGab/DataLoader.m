@@ -20,6 +20,26 @@
     self.downloadedData = nil;
 }
 
+-(NSString*)authenticatedGetURL:(NSString*)urlString
+{
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSString* sessionToken = [prefs objectForKey:@"session"];
+    NSString* authenticatedPanelURL = [NSString stringWithFormat:@"%@?session=%@", urlString, sessionToken];
+    
+    return authenticatedPanelURL;
+}
+
+-(NSDictionary*)authenticatedPostData:(NSDictionary*)dictionary
+{
+
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSString* sessionToken = [prefs objectForKey:@"session"];
+    
+    [dictionary setValue:sessionToken forKey:@"session"];
+    
+    return dictionary;
+}
+
 -(void)submitURLRequest:(NSURLRequest*)urlRequest{
 
     NSURLConnection *urlConnection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:NO];
