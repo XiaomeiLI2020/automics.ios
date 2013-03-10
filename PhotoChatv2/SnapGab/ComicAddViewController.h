@@ -9,11 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "MainScrollSelector.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-
+#import "ComicLoader.h"
+#import "ResourceLoader.h"
+#import "PanelLoader.h"
 
 @interface ComicAddViewController : UIViewController
-<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate>
-//<UINavigationControllerDelegate, UIImagePickerControllerDelegate, SelectBubbleStyleDelegateProtocol, ResourceDelegateProtocol, UIAlertViewDelegate>
+//<UIScrollViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate>
+<UIScrollViewDelegate, UIAlertViewDelegate, PanelLoaderDelegate, ComicLoaderDelegate, ResourceLoaderDelegate>
+
 
 @property NSString* _groupName;
 @property int currentPage;
@@ -21,7 +24,7 @@
 
 @property NSURL* url;
 
-@property MainScrollSelector *comicScrollView;
+@property MainScrollSelector *panelScrollView;
 @property MainScrollSelector *thumbnailScrollView;
 
 @property NSMutableArray *panelArray;

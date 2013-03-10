@@ -59,8 +59,9 @@ int const kPostComic = 2;
 
 -(NSURLRequest*)prepareComicRequestForGetComicWithId:(int)comicId{
     NSString* comicURL = [APIWrapper getURLForGetComicWithId:comicId];
-    NSString* authenticatedPanelURL = [self authenticatedGetURL:comicURL];
-    NSURL* url = [NSURL URLWithString:authenticatedPanelURL];
+    NSString* authenticatedComicURL = [self authenticatedGetURL:comicURL];
+    //NSLog(@"authenticatedComicURL=%@", authenticatedComicURL);
+    NSURL* url = [NSURL URLWithString:authenticatedComicURL];
     return [NSURLRequest requestWithURL:url];
 }
 

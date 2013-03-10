@@ -489,7 +489,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                 new_sbv.userInteractionEnabled = NO;
                 [ppvc.view addSubview:new_sbv];
                 
-                NSLog(@"speechbubble added for posting.");
+                //NSLog(@"speechbubble added for posting.");
             }
             
             //upload resources with the photo
@@ -500,7 +500,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                 ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andURL:sbv.urlImageString andType:sbv.type andId:sbv.resourceId];
                 new_sbv.userInteractionEnabled = NO;
                 [ppvc.view addSubview:new_sbv];
-                NSLog(@"resource added for posting.");
+                //NSLog(@"resource added for posting.");
             }
         }//end for
     } //end if
@@ -552,7 +552,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 }
 
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResources:(NSArray*)resources{
-    NSLog(@"resources loaded. %i", [resources count]);
+    //NSLog(@"resources loaded. %i", [resources count]);
 
     numResources = [resources count];
     thumbnailScrollView.numItems = numSpeechBubbles + numResources;
@@ -571,7 +571,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResource:(Resource*)resource
 {
-    NSLog(@"Resource downloaded");
+    //NSLog(@"Resource downloaded");
 }
 
 

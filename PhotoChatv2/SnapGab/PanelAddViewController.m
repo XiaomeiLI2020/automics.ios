@@ -583,7 +583,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 #pragma mark ResourceLoader functions.
 -(void)ResourceLoader:(ResourceLoader*)loader didFailWithError:(NSError*)error{
-    NSLog(@"resource failed to load.");
+    //NSLog(@"resource failed to load.");
     
 }
 
@@ -611,7 +611,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResource:(Resource*)resource
 {
-    NSLog(@"Resource downloaded");
+    //NSLog(@"Resource downloaded");
 }
 
 

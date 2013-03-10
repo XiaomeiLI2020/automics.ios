@@ -81,11 +81,11 @@ NSArray *placementList;
         currentPage = panelScrollView.numItems-1;
         //currentPage = 0;
         
-        NSLog(@"updateScrollViews.currentPage=%i", currentPage);
+        //NSLog(@"updateScrollViews.currentPage=%i", currentPage);
 
         currentPanel = [self.panels objectAtIndex:(currentPage)];
-        if(currentPanel!=nil)
-            NSLog(@"updateScrollViews.currentPanel.panelId=%i", currentPanel.panelId);
+        //if(currentPanel!=nil)
+        //    NSLog(@"updateScrollViews.currentPanel.panelId=%i", currentPanel.panelId);
 
 
 
@@ -225,7 +225,7 @@ NSArray *placementList;
     panelScrollView.delegate=self;
     [self.view addSubview:panelScrollView];
     
-    NSLog(@"initiateScrollView.panelScrollView.subviews.count=%i", [[panelScrollView subviews] count]);
+    //NSLog(@"initiateScrollView.panelScrollView.subviews.count=%i", [[panelScrollView subviews] count]);
     
     // Add thumbnails scrollview
     CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin, thumbnailScrollYOrigin, thumbnailScrollObjWidth, thumbnailScrollObjHeight);
@@ -325,7 +325,7 @@ NSArray *placementList;
 
 -(void)newImageNotification
 {
-    NSLog(@"newImageNotification.");
+    //NSLog(@"newImageNotification.");
     [self removeAllBubbles];
     [self removeAllResources];
     [panelsLoader submitRequestGetPanelsForGroup:1];
@@ -499,12 +499,12 @@ NSArray *placementList;
 }
 
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResources:(NSArray*)resources{
-    NSLog(@"resources loaded.");
+    //NSLog(@"resources loaded.");
 }
 
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResource:(Resource*)resource
 {
-    NSLog(@"Resource downloaded");
+    //NSLog(@"Resource downloaded");
     
     if (resource != nil)
     {
@@ -600,8 +600,7 @@ NSArray *placementList;
         }
         else
         {
-            NSLog(@"No new image added. Scrollviews updated. panelCounter=%i and panelScrollView.numItems=%i", panelCounter,
-                  panelScrollView.numItems);
+            //NSLog(@"No new image added. Scrollviews updated. panelCounter=%i and panelScrollView.numItems=%i", panelCounter, panelScrollView.numItems);
             [self updateScrollViews];
 
         }

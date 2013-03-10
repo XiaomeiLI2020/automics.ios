@@ -159,7 +159,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 
 
 -(void)ComicLoader:(ComicLoader*)loader didSaveComic:(NSString*)response{
-    NSLog(@"Comic saved. %@", response);
+    //NSLog(@"Comic saved. %@", response);
     
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Upload Successful"

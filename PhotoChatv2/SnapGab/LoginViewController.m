@@ -145,11 +145,11 @@ NSString* hashId=@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
         [userDefaults setObject:[NSNumber numberWithInt:user.userId] forKey:@"user_id"];
         [userDefaults synchronize];
         
-        
+        //NSLog(@"user.session=%@", user.currentSession.token);
         /*
         NSLog(@"user.userId=%i", user.userId);
         NSLog(@"user.group_hash=%@", user.groupHashId);
-        NSLog(@"user.session=%@", user.currentSession.token);
+        
         NSLog(@"user.email=%@", user.email);
          */
     }
