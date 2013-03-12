@@ -7,8 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "JSONHandler.h"
 #import "Group.h"
 
-@interface GroupJSONHandler : NSObject
+@interface GroupJSONHandler : JSONHandler
+
++(NSArray*)convertGroupsJSONIntoGroups:(NSArray*)groupsJSON;
++(Group*)convertGroupJSONIntoGroup:(NSDictionary*)groupJSON;
 
 @end

@@ -12,12 +12,11 @@
 @protocol GroupLoaderDelegate;
 
 @interface GroupLoader : DataLoader
-
+@property (weak) id<GroupLoaderDelegate> delegate;
 -(void)submitRequestGetGroups;
-
 @end
 
-@protocol GroupLoaderDelegate
+@protocol GroupLoaderDelegate<NSObject>
 @optional
 -(void)GroupLoader:(GroupLoader*)groupLoader didLoadGroups:(NSArray*)groups;
 -(void)GroupLoader:(GroupLoader*)groupLoader didFailWithError:(NSError*)errors;
