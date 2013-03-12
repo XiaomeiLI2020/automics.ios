@@ -200,7 +200,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 
 #pragma mark PanelLoader functions.
 -(void)PanelLoader:(PanelLoader *)loader didSavePanel:(NSString*)response{
-    NSLog(@"Panel saved: %@", response);
+    //NSLog(@"Panel saved: %@", response);
     
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Upload Successful"
@@ -214,13 +214,13 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 
 #pragma mark PhotoLoader functions.
 -(void)PhotoLoader:(PhotoLoader *)photoLoader didUploadPhoto:(Photo*)photo{
-    NSLog(@"Photo downloaded %@", photo);
+    //NSLog(@"Photo uploaded %@", photo);
     
     if(photo!=nil)
     {
         int photoId = photo.photoId;
         
-        NSLog(@"Photo downloaded.photoId=%i", photoId);
+        //NSLog(@"Photo uploaded.photoId=%i", photoId);
         if(photoId > 0)
         {
             Panel *panel = [[Panel alloc] init];

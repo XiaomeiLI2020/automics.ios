@@ -161,15 +161,28 @@ NSArray* comicList;
     }
     
     NSString* buttonTitle = [NSString stringWithFormat:@"Comic%d", indexPath.row+1];
+    //NSLog(@"comicId=%i", [[comicList objectAtIndex:indexPath.row] comicId]);
     
-    cell.comicButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [cell.comicButton setTitle:buttonTitle forState:UIControlStateNormal];
-    cell.comicButton.frame = CGRectMake(10.0, 10.0, 70.0, 20.0);
-    cell.comicButton.tag = indexPath.row+1;
-    [cell.comicButton addTarget:self action:@selector(viewComicDetails:) forControlEvents:UIControlEventTouchDown];
-    //[cell.contentView addSubview:cell.comicButton];
-    [cell addSubview:cell.comicButton];
-       
+    Comic* comic = [comicList objectAtIndex:indexPath.row];
+    if(comic!=nil)
+    {
+        int comicId = comic.comicId;
+        if(comicId > 0)
+        {
+            
+            cell.comicButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [cell.comicButton setTitle:buttonTitle forState:UIControlStateNormal];
+            cell.comicButton.frame = CGRectMake(10.0, 10.0, 70.0, 20.0);
+            cell.comicButton.tag = comicId;
+            //cell.comicButton.tag = indexPath.row+1;
+            [cell.comicButton addTarget:self action:@selector(viewComicDetails:) forControlEvents:UIControlEventTouchDown];
+            //[cell.contentView addSubview:cell.comicButton];
+            [cell addSubview:cell.comicButton];
+            
+        }
+
+    }
+    
     return cell;
 }
 

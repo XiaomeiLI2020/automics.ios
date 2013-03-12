@@ -22,6 +22,7 @@
 
 
 @protocol PanelLoaderDelegate<NSURLConnectionDataDelegate>
+//@protocol PanelLoaderDelegate<NSObject>
 @optional
 -(void)PanelLoader:(PanelLoader*)loader didFailWithError:(NSError*)error;
 -(void)PanelLoader:(PanelLoader *)loader didLoadPanels:(NSArray*)panels;

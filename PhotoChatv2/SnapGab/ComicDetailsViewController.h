@@ -17,7 +17,7 @@
 <UIScrollViewDelegate, PanelLoaderDelegate, ComicLoaderDelegate, ResourceLoaderDelegate>
 
 @property MainScrollSelector *panelScrollView;
-@property MainScrollSelector *thumbnailScrollView;
+
 
 @property int currentPage;
 
