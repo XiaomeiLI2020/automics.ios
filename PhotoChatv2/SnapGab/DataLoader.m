@@ -24,9 +24,9 @@
 {
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSString* sessionToken = [prefs objectForKey:@"session"];
-    NSString* authenticatedPanelURL = [NSString stringWithFormat:@"%@?session=%@", urlString, sessionToken];
+    NSString* authenticatedURL = [NSString stringWithFormat:@"%@?session=%@", urlString, sessionToken];
     
-    return authenticatedPanelURL;
+    return authenticatedURL;
 }
 
 -(NSDictionary*)authenticatedPostData:(NSDictionary*)dictionary

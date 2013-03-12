@@ -23,6 +23,6 @@ NSString* const kPlacementURL = @"placement";
 
 NSString* const kLoginURL = @"login";
 NSString* const kGroupURL = @"group";
-NSString* const kGroupsURL = @"groups";
+NSString* const kGroupsURL = @"group";
 NSString* const kMembershipURL = @"membership";
 

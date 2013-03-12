@@ -22,6 +22,7 @@
 
 int const kGetThemeResources = 0;
 int const kGetResource = 1;
+int numResources;
 //int numPanels;
 
 
