@@ -1,3 +1,11 @@
+//
+//  QRView.m
+//  PhotoChat
+//
+//  Created by Shakir Ali on 14/03/2013.
+//  Copyright (c) 2013 horizon. All rights reserved.
+//
+
 #import <QuartzCore/QuartzCore.h>
 #import "QRView.h"
 
@@ -53,20 +61,6 @@
 {
     UITapGestureRecognizer *deleteGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(deleteTap:)];
     [self.deleteView addGestureRecognizer:deleteGesture];
-}
-
-// scale and rotation transforms are applied relative to the layer's anchor point
-// this method moves a gesture recognizer's view's anchor point between the user's fingers
-- (void)adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
-{
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        UIView *mainView = gestureRecognizer.view;
-        CGPoint locationInView = [gestureRecognizer locationInView:mainView];
-        CGPoint locationInSuperview = [gestureRecognizer locationInView:mainView.superview];
-        
-        mainView.layer.anchorPoint = CGPointMake(locationInView.x / mainView.bounds.size.width, locationInView.y / mainView.bounds.size.height);
-        mainView.center = locationInSuperview;
-    }
 }
 
 -(void)deleteTap:(UITapGestureRecognizer*)recognizer{

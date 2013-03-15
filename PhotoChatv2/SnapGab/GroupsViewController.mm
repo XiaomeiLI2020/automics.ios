@@ -1,8 +1,8 @@
 //
 //  GroupsViewController.m
-//  scaleView
+//  PhotoChat
 //
-//  Created by horizon on 12/03/2013.
+//  Created by Shakir Ali on 12/03/2013.
 //  Copyright (c) 2013 horizon. All rights reserved.
 //
 
@@ -17,6 +17,8 @@
 @end
 
 @implementation GroupsViewController
+
+#define QRCODE_SIZE 200
 
 - (void)viewDidLoad
 {
@@ -42,18 +44,15 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     Group *group = [_groups objectAtIndex:indexPath.item];
     NSString *url = [NSString stringWithFormat:@"%@/%@",[APIWrapper getURLForGetGroup],[group hashId]];
-    
-    DataMatrix *qrMatrix = [QREncoder encodeWithECLevel:QR_ECLEVEL_AUTO version:QR_VERSION_AUTO string:url];
-    
-    UIImage* qrcodeImage = [QREncoder renderDataMatrix:qrMatrix imageDimension:250];
-    CGRect imageFrame = CGRectMake(60, 100, qrcodeImage.size.width, qrcodeImage.size.height);
-    UIImageView* qrcodeImageView = [[UIImageView alloc] initWithFrame:imageFrame];
-    [qrcodeImageView setImage:qrcodeImage];
-    
-    QRView *qrView = [[QRView alloc] initWithFrame:CGRectMake(abs(self.view.frame.size.width / 2.0 - 200/2.0), abs(self.view.frame.size.height / 2.0 - 200/2.0), 200, 200) image:qrcodeImage];
+    UIImage* qrcodeImage = [self generateQRCodeImageForURL:url];
+    QRView *qrView = [[QRView alloc] initWithFrame:CGRectMake(abs(self.view.frame.size.width / 2.0 - QRCODE_SIZE/2.0), abs(self.view.frame.size.height / 2.0 - QRCODE_SIZE/2.0), QRCODE_SIZE, QRCODE_SIZE) image:qrcodeImage];
     [self.view addSubview:qrView];
-    
-    
+}
+
+-(UIImage*)generateQRCodeImageForURL:(NSString*)url{
+    DataMatrix *qrMatrix = [QREncoder encodeWithECLevel:QR_ECLEVEL_AUTO version:QR_VERSION_AUTO string:url];
+    UIImage* qrcodeImage = [QREncoder renderDataMatrix:qrMatrix imageDimension:250];
+    return qrcodeImage;
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{

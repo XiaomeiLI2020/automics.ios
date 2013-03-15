@@ -35,6 +35,11 @@
 		48C71E9E16EF86BF009ACD6A /* JSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C71E9D16EF86BF009ACD6A /* JSONHandler.m */; };
 		48C71EB216EF88A1009ACD6A /* Organisation.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C71EAF16EF88A1009ACD6A /* Organisation.m */; };
 		48C71EB316EF88A1009ACD6A /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C71EB116EF88A1009ACD6A /* Theme.m */; };
+		48C8C21E16F319A50010FB13 /* GroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C8C21716F319A50010FB13 /* GroupCell.m */; };
+		48C8C21F16F319A50010FB13 /* GroupLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C8C21916F319A50010FB13 /* GroupLayout.m */; };
+		48C8C22016F319A50010FB13 /* GroupsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48C8C21B16F319A50010FB13 /* GroupsViewController.mm */; };
+		48C8C22116F319A50010FB13 /* QRView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C8C21D16F319A50010FB13 /* QRView.m */; };
+		48C8C27016F31F030010FB13 /* libqrencoder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48C8C26216F31D820010FB13 /* libqrencoder.a */; };
 		48CAFD2E16CE789600D8EB4C /* DataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CAFD2D16CE789600D8EB4C /* DataLoader.m */; };
 		48CAFD3216CE943900D8EB4C /* APIConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CAFD3116CE943800D8EB4C /* APIConstant.m */; };
 		48CAFD4016CEA7E600D8EB4C /* APIWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CAFD3F16CEA7E600D8EB4C /* APIWrapper.m */; };
@@ -124,6 +129,30 @@
 		D8F30B6116D27B81001CF4B5 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8F30B5F16D27B80001CF4B5 /* Storyboard.storyboard */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		48C8C26116F31D820010FB13 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 48C8C25816F31D820010FB13 /* QRCodeEncoderObjectiveCAtGithub.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9672D35713BD662F0002B0E2;
+			remoteInfo = qrencoder;
+		};
+		48C8C26316F31D820010FB13 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 48C8C25816F31D820010FB13 /* QRCodeEncoderObjectiveCAtGithub.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9621844115431DBA00447877;
+			remoteInfo = QRCodeEncoderDemo;
+		};
+		48C8C27116F31F150010FB13 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 48C8C25816F31D820010FB13 /* QRCodeEncoderObjectiveCAtGithub.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9672D35613BD662F0002B0E2;
+			remoteInfo = qrencoder;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		1D8D5082165FADC700C9817C /* PhotoChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D8D5086165FADC700C9817C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -164,6 +193,15 @@
 		48C71EB016EF88A1009ACD6A /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Theme.h; path = SnapGab/Theme.h; sourceTree = "<group>"; };
 		48C71EB116EF88A1009ACD6A /* Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Theme.m; path = SnapGab/Theme.m; sourceTree = "<group>"; };
 		48C71EB416EF88E5009ACD6A /* Organisation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Organisation.h; path = SnapGab/Organisation.h; sourceTree = "<group>"; };
+		48C8C21616F319A50010FB13 /* GroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GroupCell.h; path = SnapGab/GroupCell.h; sourceTree = "<group>"; };
+		48C8C21716F319A50010FB13 /* GroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GroupCell.m; path = SnapGab/GroupCell.m; sourceTree = "<group>"; };
+		48C8C21816F319A50010FB13 /* GroupLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GroupLayout.h; path = SnapGab/GroupLayout.h; sourceTree = "<group>"; };
+		48C8C21916F319A50010FB13 /* GroupLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GroupLayout.m; path = SnapGab/GroupLayout.m; sourceTree = "<group>"; };
+		48C8C21A16F319A50010FB13 /* GroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GroupsViewController.h; path = SnapGab/GroupsViewController.h; sourceTree = "<group>"; };
+		48C8C21B16F319A50010FB13 /* GroupsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GroupsViewController.mm; path = SnapGab/GroupsViewController.mm; sourceTree = "<group>"; };
+		48C8C21C16F319A50010FB13 /* QRView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRView.h; path = SnapGab/QRView.h; sourceTree = "<group>"; };
+		48C8C21D16F319A50010FB13 /* QRView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QRView.m; path = SnapGab/QRView.m; sourceTree = "<group>"; };
+		48C8C25816F31D820010FB13 /* QRCodeEncoderObjectiveCAtGithub.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = QRCodeEncoderObjectiveCAtGithub.xcodeproj; sourceTree = "<group>"; };
 		48CAFD2C16CE789600D8EB4C /* DataLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataLoader.h; path = SnapGab/DataLoader.h; sourceTree = "<group>"; };
 		48CAFD2D16CE789600D8EB4C /* DataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataLoader.m; path = SnapGab/DataLoader.m; sourceTree = "<group>"; };
 		48CAFD3016CE943800D8EB4C /* APIConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APIConstant.h; path = SnapGab/APIConstant.h; sourceTree = "<group>"; };
@@ -319,6 +357,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48C8C27016F31F030010FB13 /* libqrencoder.a in Frameworks */,
 				1D92BFD81666332300CB37B3 /* MapKit.framework in Frameworks */,
 				1D92BFD51666330E00CB37B3 /* ImageIO.framework in Frameworks */,
 				1DA205B1166504BD003FF0B2 /* MobileCoreServices.framework in Frameworks */,
@@ -334,6 +373,8 @@
 		1D8D5077165FADC600C9817C = {
 			isa = PBXGroup;
 			children = (
+				48C8C25816F31D820010FB13 /* QRCodeEncoderObjectiveCAtGithub.xcodeproj */,
+				48C8C21416F319640010FB13 /* Group */,
 				48D0806816D4EA6D00346465 /* Model */,
 				48CAFD2316CE761700D8EB4C /* API */,
 				48D0EA8016CD4B8600FE11E2 /* images */,
@@ -440,6 +481,30 @@
 				D8E0E7D1168345640003FE14 /* resource3.png */,
 			);
 			name = Media;
+			sourceTree = "<group>";
+		};
+		48C8C21416F319640010FB13 /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				48C8C21616F319A50010FB13 /* GroupCell.h */,
+				48C8C21716F319A50010FB13 /* GroupCell.m */,
+				48C8C21816F319A50010FB13 /* GroupLayout.h */,
+				48C8C21916F319A50010FB13 /* GroupLayout.m */,
+				48C8C21A16F319A50010FB13 /* GroupsViewController.h */,
+				48C8C21B16F319A50010FB13 /* GroupsViewController.mm */,
+				48C8C21C16F319A50010FB13 /* QRView.h */,
+				48C8C21D16F319A50010FB13 /* QRView.m */,
+			);
+			name = Group;
+			sourceTree = "<group>";
+		};
+		48C8C25916F31D820010FB13 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				48C8C26216F31D820010FB13 /* libqrencoder.a */,
+				48C8C26416F31D820010FB13 /* QRCodeEncoderDemo.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		48CAFD2316CE761700D8EB4C /* API */ = {
@@ -655,6 +720,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				48C8C27216F31F150010FB13 /* PBXTargetDependency */,
 			);
 			name = PhotoChat;
 			productName = SnapGab;
@@ -680,12 +746,35 @@
 			mainGroup = 1D8D5077165FADC600C9817C;
 			productRefGroup = 1D8D5083165FADC700C9817C /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 48C8C25916F31D820010FB13 /* Products */;
+					ProjectRef = 48C8C25816F31D820010FB13 /* QRCodeEncoderObjectiveCAtGithub.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1D8D5081165FADC700C9817C /* PhotoChat */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		48C8C26216F31D820010FB13 /* libqrencoder.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libqrencoder.a;
+			remoteRef = 48C8C26116F31D820010FB13 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		48C8C26416F31D820010FB13 /* QRCodeEncoderDemo.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = QRCodeEncoderDemo.app;
+			remoteRef = 48C8C26316F31D820010FB13 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D8D5080165FADC700C9817C /* Resources */ = {
@@ -811,10 +900,22 @@
 				48C71E9E16EF86BF009ACD6A /* JSONHandler.m in Sources */,
 				48C71EB216EF88A1009ACD6A /* Organisation.m in Sources */,
 				48C71EB316EF88A1009ACD6A /* Theme.m in Sources */,
+				48C8C21E16F319A50010FB13 /* GroupCell.m in Sources */,
+				48C8C21F16F319A50010FB13 /* GroupLayout.m in Sources */,
+				48C8C22016F319A50010FB13 /* GroupsViewController.mm in Sources */,
+				48C8C22116F319A50010FB13 /* QRView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		48C8C27216F31F150010FB13 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = qrencoder;
+			targetProxy = 48C8C27116F31F150010FB13 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		1D8D508F165FADC700C9817C /* InfoPlist.strings */ = {
@@ -901,6 +1002,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SnapGab/PhotoChat-Prefix.pch";
 				GENERATE_PROFILING_CODE = YES;
+				HEADER_SEARCH_PATHS = QRCodeEncoderObjectiveCAtGithub;
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				PRODUCT_NAME = PhotoChat;
@@ -919,6 +1021,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SnapGab/PhotoChat-Prefix.pch";
 				GENERATE_PROFILING_CODE = YES;
+				HEADER_SEARCH_PATHS = QRCodeEncoderObjectiveCAtGithub;
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				PRODUCT_NAME = PhotoChat;

@@ -1,8 +1,8 @@
 //
 //  QRView.h
-//  scaleView
+//  PhotoChat
 //
-//  Created by horizon on 14/03/2013.
+//  Created by Shakir Ali on 14/03/2013.
 //  Copyright (c) 2013 horizon. All rights reserved.
 //
 
