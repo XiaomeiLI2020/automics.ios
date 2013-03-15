@@ -137,13 +137,6 @@
 			remoteGlobalIDString = 9672D35713BD662F0002B0E2;
 			remoteInfo = qrencoder;
 		};
-		48C8C26316F31D820010FB13 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 48C8C25816F31D820010FB13 /* QRCodeEncoderObjectiveCAtGithub.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9621844115431DBA00447877;
-			remoteInfo = QRCodeEncoderDemo;
-		};
 		48C8C27116F31F150010FB13 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 48C8C25816F31D820010FB13 /* QRCodeEncoderObjectiveCAtGithub.xcodeproj */;
@@ -502,7 +495,6 @@
 			isa = PBXGroup;
 			children = (
 				48C8C26216F31D820010FB13 /* libqrencoder.a */,
-				48C8C26416F31D820010FB13 /* QRCodeEncoderDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -767,13 +759,6 @@
 			remoteRef = 48C8C26116F31D820010FB13 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		48C8C26416F31D820010FB13 /* QRCodeEncoderDemo.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = QRCodeEncoderDemo.app;
-			remoteRef = 48C8C26316F31D820010FB13 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -947,8 +932,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -963,8 +948,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -978,8 +963,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Shakir Ali (Y8897BNPAH)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -987,8 +972,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44B70B98-B4B5-45AA-85AD-AF8BE5AE9371";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
