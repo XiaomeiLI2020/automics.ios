@@ -56,7 +56,11 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    [self startUpload];
+    if(comicContents!=nil)
+    {
+        [self startUpload];
+    }
+
 }
 
 -(void)image:(UIImage *)image finishedSavingWithError:(NSError *)error

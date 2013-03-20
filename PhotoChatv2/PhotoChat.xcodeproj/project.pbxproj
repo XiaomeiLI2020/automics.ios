@@ -68,7 +68,6 @@
 		D804612A16E1263F00F80CAB /* PanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D804612916E1263E00F80CAB /* PanelViewController.m */; };
 		D804612F16E126F400F80CAB /* PanelAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D804612C16E126F400F80CAB /* PanelAddViewController.m */; };
 		D804613016E126F400F80CAB /* PanelEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D804612E16E126F400F80CAB /* PanelEditViewController.m */; };
-		D804613316E1278900F80CAB /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D804613216E1278900F80CAB /* CameraViewController.m */; };
 		D804613616E128CD00F80CAB /* ComicDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D804613516E128CD00F80CAB /* ComicDetailsViewController.m */; };
 		D804FC5C1677519100605338 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D804FC5B1677519100605338 /* Icon.png */; };
 		D804FC5E1677527E00605338 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D804FC5D1677527E00605338 /* Icon@2x.png */; };
@@ -247,8 +246,6 @@
 		D804612C16E126F400F80CAB /* PanelAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelAddViewController.m; sourceTree = "<group>"; };
 		D804612D16E126F400F80CAB /* PanelEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelEditViewController.h; sourceTree = "<group>"; };
 		D804612E16E126F400F80CAB /* PanelEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelEditViewController.m; sourceTree = "<group>"; };
-		D804613116E1278800F80CAB /* CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraViewController.h; sourceTree = "<group>"; };
-		D804613216E1278900F80CAB /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
 		D804613416E128CD00F80CAB /* ComicDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComicDetailsViewController.h; sourceTree = "<group>"; };
 		D804613516E128CD00F80CAB /* ComicDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComicDetailsViewController.m; sourceTree = "<group>"; };
 		D804FC5B1677519100605338 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
@@ -555,14 +552,10 @@
 		48CED3CE16B923FF00EF4CD3 /* Panel */ = {
 			isa = PBXGroup;
 			children = (
-				D804613116E1278800F80CAB /* CameraViewController.h */,
-				D804613216E1278900F80CAB /* CameraViewController.m */,
 				D804612B16E126F400F80CAB /* PanelAddViewController.h */,
 				D804612C16E126F400F80CAB /* PanelAddViewController.m */,
 				D804612D16E126F400F80CAB /* PanelEditViewController.h */,
 				D804612E16E126F400F80CAB /* PanelEditViewController.m */,
-				48D0EA7D16CD4B7100FE11E2 /* ResourceImageView.h */,
-				48D0EA7E16CD4B7100FE11E2 /* ResourceImageView.m */,
 				D804612816E1263E00F80CAB /* PanelViewController.h */,
 				D804612916E1263E00F80CAB /* PanelViewController.m */,
 				D8E0F1F7167771DB005DE293 /* PhotoPosterViewController.h */,
@@ -664,6 +657,8 @@
 		D88FF66D16C9080400C0A2A8 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				48D0EA7D16CD4B7100FE11E2 /* ResourceImageView.h */,
+				48D0EA7E16CD4B7100FE11E2 /* ResourceImageView.m */,
 				D8A098A6167F497100762DB0 /* ResourceView.h */,
 				D8A098A7167F497100762DB0 /* ResourceView.m */,
 			);
@@ -872,7 +867,6 @@
 				D804612A16E1263F00F80CAB /* PanelViewController.m in Sources */,
 				D804612F16E126F400F80CAB /* PanelAddViewController.m in Sources */,
 				D804613016E126F400F80CAB /* PanelEditViewController.m in Sources */,
-				D804613316E1278900F80CAB /* CameraViewController.m in Sources */,
 				D804613616E128CD00F80CAB /* ComicDetailsViewController.m in Sources */,
 				D892740916E61C200061FA14 /* GroupLoader.m in Sources */,
 				D892740C16E61C960061FA14 /* Group.m in Sources */,

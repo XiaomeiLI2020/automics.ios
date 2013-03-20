@@ -10,4 +10,5 @@
 
 @interface ResourceImageView : UIView
 - (id)initWithFrame:(CGRect)frame image:(UIImage*)image;
+- (id)initWithFrame:(CGRect)frame imageURL:(NSString*)imageURLString;
 @end

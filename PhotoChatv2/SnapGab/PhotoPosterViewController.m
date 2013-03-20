@@ -15,6 +15,7 @@
 #import "User.h"
 #import "Photo.h"
 #import "Annotation.h"
+#import "GUIConstant.h"
 
 
 @interface PhotoPosterViewController ()
@@ -49,7 +50,7 @@ BOOL panelUploaded;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.imageView.frame = CGRectMake(0.0, 40.0, 320.0, 320);
+    self.imageView.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelWidth, panelHeight);
     self.imageView.image = self.image;
     
     panelsLoader = [[PanelLoader alloc] init];
@@ -116,7 +117,7 @@ BOOL panelUploaded;
 
     Photo *photo = [[Photo alloc] init];
     photo.description = @"Photo description";
-    photo.image = scaledImage;
+    photo.image = imageView.image;
     photo.name = @"phototype.png";
     photo.width = 320;
     photo.height = 320;
@@ -146,11 +147,20 @@ BOOL panelUploaded;
             ResourceView* sbv =(ResourceView*)subview;
             
             Placement *placement = [[Placement alloc] init];
-            placement.resourceId = sbv.resourceId;
+            if(sbv.resource!=nil)
+            {
+                if(sbv.resource.resourceId>0)
+                {
+                    placement.resourceId = sbv.resource.resourceId;
+                }
+                
+            }
             placement.xOffset = sbv.frame.origin.x;
             placement.yOffset = sbv.frame.origin.y;
-            placement.scale = 1.0;
+            placement.scale = sbv.scale;
+            placement.angle = sbv.angle;
             placement.zIndex = 1;
+
             
             [placementsArray addObject:placement];
         }//end add resource data

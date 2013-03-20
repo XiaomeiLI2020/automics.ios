@@ -7,6 +7,8 @@
 //
 
 #import "ResourceView.h"
+#import <QuartzCore/QuartzCore.h>
+#import "GUIConstant.h"
 
 @interface ResourceView()
 {
@@ -15,17 +17,40 @@
     UIImageView* _imageView;
     int _styleId;
 }
- 
+
+@property UIImageView* deleteView;
+@property UIImageView* scaleView;
+@property UIImageView* rotateView;
+@property CGPoint prevPoint;
+@property BOOL isScaling;
+@property CGAffineTransform rotateTransform;
+@property float deltaAngle;
+@property int gestureAction;
+
 @end
 
 @implementation ResourceView
-
+@synthesize scale;
 @synthesize resourceId;
 @synthesize urlImageString;
 @synthesize type;
 @synthesize styleId = _styleId;
 @synthesize imageView = _imageView;
-float lastScale = 1.0;
+@synthesize longPressed;
+@synthesize actionPerformed;
+@synthesize angle;
+@synthesize resource;
+
+UITapGestureRecognizer *resourceTapRecognizer;
+UITapGestureRecognizer *deleteGesture;
+UIPanGestureRecognizer *panGesture;
+UIRotationGestureRecognizer* rotationGesture;
+UIPinchGestureRecognizer *pinchGesture;
+
+CGPoint initiallocPoint;
+CGPoint initialCentrePoint;
+
+CGFloat lastScale = 1.0;
 float firstX;
 float firstY;
 BOOL started = false;
@@ -36,187 +61,181 @@ float MAX_SCALE = 1.05;
 float MIN_SCALE = 0.90;
 BOOL alertShown;
 
+CGFloat originalDiagonal;
+CGFloat originalWidth;
+CGRect originalBounds;
+                                 
 
-- (id)initWithFrame:(CGRect)frame andStyle:(int)styleId
+#define PADDING 25.0
+#define kNONE 0
+#define kSCALE 1
+#define kROTATE 2
+#define kTRANSLATE 3
+
+#define DISTANCE_FROM_CONTROL 30.0
+#define MAXWIDTH 1400
+#define MINWIDTH 115
+
+
+
+- (id)initWithFrame:(CGRect)frame andResource:(Resource*)resourceSent andScale:(float)scaleSent andAngle:(float)angleSent
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
         
-        _imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"resource%d.png",styleId]]];
-        _imageView.userInteractionEnabled = NO;
-        [self addSubview:_imageView];
-        
-        
-        _styleId = styleId;
-        alertShown = NO;
-        
-        /*
-         
-         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
-         [self addGestureRecognizer:tap];
-         
-         */
-        
-        UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scalePiece:)];
-        [self addGestureRecognizer:pinchGesture];
-        
-        /*
-         UIRotationGestureRecognizer *rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotate:)];
-         [self addGestureRecognizer:rotateGesture];
-         */
-        
-        UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
-        [panRecognizer setMinimumNumberOfTouches:1];
-        [panRecognizer setMaximumNumberOfTouches:1];
-        [self addGestureRecognizer:panRecognizer];
-        
-        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]
-                                                          initWithTarget:self action:@selector(handleLongPress:)];
-        longPressGesture.minimumPressDuration = 0.30; //seconds
-        [self addGestureRecognizer:longPressGesture];
-        
-    }//end if self
-    return self;
-}
-
-- (id)initWithFrame:(CGRect)frame andURL:(NSString*)urlImage
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-        
-        //UIImage *image = [UIImage imageNamed:urlImageString];
-        
-        NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlImage]];
-        UIImage *image = [UIImage imageWithData:imageURL];
-        
-        _imageView = [[UIImageView alloc] initWithImage:image];
-        _imageView.userInteractionEnabled = NO;
-        [self addSubview:_imageView];
-        
-        alertShown = NO;
-        
-        //_styleId = styleId;
- /*
-
-       UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
-       [self addGestureRecognizer:tap];
-        
- */ 
- 
-        UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scalePiece:)];
-        [self addGestureRecognizer:pinchGesture];
-     
-        /*
-        UIRotationGestureRecognizer *rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotate:)];
-        [self addGestureRecognizer:rotateGesture];
-        */
-        
-        UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
-        [panRecognizer setMinimumNumberOfTouches:1];
-        [panRecognizer setMaximumNumberOfTouches:1];
-        [self addGestureRecognizer:panRecognizer];
-        
-        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]
-                                              initWithTarget:self action:@selector(handleLongPress:)];
-        longPressGesture.minimumPressDuration = 0.30; //seconds
-        [self addGestureRecognizer:longPressGesture];
-
-    }//end if self
-    return self;
-}
-
-- (id)initWithFrame:(CGRect)frame andURL:(NSString*)urlImage andType:(NSString*)resourceType
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-        
-        self.urlImageString = urlImage;
-        self.type = resourceType;
-        
-        NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlImage]];
-        UIImage *image = [UIImage imageWithData:imageURL];
-        
-        _imageView = [[UIImageView alloc] initWithImage:image];
-        _imageView.userInteractionEnabled = NO;
-        [self addSubview:_imageView];
-        
-        alertShown = NO;
-        
-        //Scaling and moving enabled for decorators only
-        if([resourceType isEqual:@"d"])
+        if(resourceSent!=nil)
         {
+            self.frame = frame;
+            
+            self.resource = resourceSent;
+            self.urlImageString = resource.imageURL;
+            self.type = resource.type;
+            self.resourceId = resource.resourceId;
+            self.scale = scaleSent;
+            self.angle = angleSent;
+            
+            
+            NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:resource.imageURL]];
+            UIImage *image = [UIImage imageWithData:imageURL];
+            
+            _imageView = [[UIImageView alloc] initWithImage:image];
+            _imageView.userInteractionEnabled = NO;
+            /*
+            NSLog(@"original imageview.frame=%@", NSStringFromCGRect(_imageView.frame));
+            NSLog(@"original imageview.bounds%@", NSStringFromCGRect(_imageView.bounds));
+            NSLog(@"original self.scale%f", self.scale);
+            NSLog(@"original self.angle%f", self.angle);
+            */
+            originalBounds = _imageView.frame;
+            originalWidth = CGRectGetWidth(originalBounds);
+            originalDiagonal = sqrtf(CGRectGetHeight(originalBounds)*CGRectGetHeight(originalBounds) +
+                                     CGRectGetWidth(originalBounds)*CGRectGetWidth(originalBounds) );
+            [_imageView setFrame:CGRectMake(0.0,0.0,_imageView.frame.size.width*self.scale, _imageView.frame.size.height*self.scale)];
+            [self addSubview:_imageView];
+            
+            //[self.imageView setFrame:CGRectMake(0.0,0.0,self.imageView.frame.size.width*self.scale, self.imageView.frame.size.height*self.scale)];
+            //[self addSubview:self.imageView];
+            
+            
+            
+            
+            if([resource.type isEqual:@"d"])
+            {
+                    
+                    CGRect selfFrame = self.frame;
+                    selfFrame.size = _imageView.frame.size;
+                    self.frame = selfFrame;
+                    
+                    //self.transform = CGAffineTransformScale(self.transform, self.scale, self.scale);
+                    //NSLog(@"self.angle=%f", self.angle);
+                    self.transform = CGAffineTransformMakeRotation(self.angle);
+                
+                //NSLog(@"original self.frame=%@", NSStringFromCGRect(self.frame));
+                //NSLog(@"original self.bounds%@", NSStringFromCGRect(self.bounds));
+            }
+            
+            else if([self.type isEqual:@"f"])
+            {
+                
+                [_imageView setFrame:CGRectMake(0.0,0.0,self.frame.size.width, self.frame.size.height)];
+                //_imageView.frame = self.frame;
+                
+            }
+            
+            
+            alertShown = NO;
+            longPressed = NO;
+            actionPerformed = NO;
+
+            
+            
+            resourceTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+            //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
+            resourceTapRecognizer.cancelsTouchesInView = NO;
+            [self addGestureRecognizer:resourceTapRecognizer];
+            
+        }//end if resource!=nil
+    }//end if self
+    return self;    
+}
+
+
+- (void)handleTapGesture:(UITapGestureRecognizer*)sender
+{
+    //NSLog(@"handleTapGesture.self.type=%@", self.type);
+    if([self.type isEqual:@"d"])
+    {
         
-            UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scalePiece:)];
-            [self addGestureRecognizer:pinchGesture];
+        for (UIView *subview in self.superview.subviews)
+        {
+            if([subview isKindOfClass:[ResourceView class]])
+            {
+                
+                ResourceView* sbv =(ResourceView*)subview;
+                [sbv disappearControls];
+                
+            }//end if
+        }//end for
         
         
-            UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
-            [panRecognizer setMinimumNumberOfTouches:1];
-            [panRecognizer setMaximumNumberOfTouches:1];
-            [self addGestureRecognizer:panRecognizer];
+        self.imageView.backgroundColor = [UIColor clearColor];
+        self.imageView.layer.borderColor = [[UIColor blackColor] CGColor];
+        self.imageView.layer.borderWidth = 2.0;
+        [self setupScaleView];
+        [self setupDeleteView];
+        [self setupDeleteGesture];
+        [self setupPanGesture];
+        //[self setUpPinchGesture];
+        [self setupDeleteGesture];
+        [self setupRotateView];
+        [self setupRotationGesture];
+    }
+    else if([self.type isEqual:@"f"])
+    {
+        
+        if(!alertShown)
+        {
+            alertShown = YES;
+            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Delete Resource"
+                                                              message:@"Delete resource from the image."
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Delete"
+                                                    otherButtonTitles:@"Cancel", nil];
+            [message show];
+            
+        }
+    }
+    
+
+}
+
+-(void)disappearControls{
+    
+    //NSLog(@"disappearControls.");
+    self.imageView.layer.borderColor = [[UIColor clearColor] CGColor];
+    self.imageView.layer.borderWidth = 2.0;
+    //NSLog(@"self.subviews.count=%i", self.subviews.count);
+    [self.deleteView removeGestureRecognizer:deleteGesture];
+    [self.rotateView removeGestureRecognizer:rotationGesture];
+    [self removeGestureRecognizer:panGesture];
+    //[self removeGestureRecognizer:pinchGesture];
+    
+    //Remove scale, rotate and delete subivews
+    for(UIView* subview in self.subviews)
+    {
+        if(subview.tag==1 || subview.tag==2 || subview.tag==3)
+        {
+            [subview removeFromSuperview];
         }
         
-        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]
-                                                          initWithTarget:self action:@selector(handleLongPress:)];
-        longPressGesture.minimumPressDuration = 0.30; //seconds
-        [self addGestureRecognizer:longPressGesture];
-        
-    }//end if self
-    return self;
+    }
+    
 }
-
-
-- (id)initWithFrame:(CGRect)frame andURL:(NSString*)urlImage andType:(NSString*)resourceType andId:(int)resourceIdSent
+//- (void)handleLongPress:(id)gestureRecognizer
+- (void)handleLongPress:(UILongPressGestureRecognizer*)sender
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-        
-        
-        self.urlImageString = urlImage;
-        self.type = resourceType;
-        self.resourceId = resourceIdSent;
-        
-        NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlImage]];
-        UIImage *image = [UIImage imageWithData:imageURL];
-        
-        _imageView = [[UIImageView alloc] initWithImage:image];
-        _imageView.userInteractionEnabled = NO;
-        [self addSubview:_imageView];
-        
-        alertShown = NO;
-        
-        //Scaling and moving enabled for decorators only
-        if([resourceType isEqual:@"d"])
-        {
-            
-            UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scalePiece:)];
-            [self addGestureRecognizer:pinchGesture];
-            
-            
-            UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
-            [panRecognizer setMinimumNumberOfTouches:1];
-            [panRecognizer setMaximumNumberOfTouches:1];
-            [self addGestureRecognizer:panRecognizer];
-        }
-        
-        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]
-                                                          initWithTarget:self action:@selector(handleLongPress:)];
-        longPressGesture.minimumPressDuration = 0.30; //seconds
-        [self addGestureRecognizer:longPressGesture];
-        
-    }//end if self
-    return self;
-}
-
-
-
-- (void)handleLongPress:(id)gestureRecognizer
-{
-    //NSLog(@"speechbubbleview. handlelongPress. alertShown=%d", alertShown);
+    
     if(!alertShown)
     {
         alertShown = YES;
@@ -228,7 +247,7 @@ BOOL alertShown;
         [message show];
         
     }
-    
+
 }
 
 
@@ -237,6 +256,15 @@ BOOL alertShown;
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
     if([title isEqualToString:@"Delete"])
     {
+
+        if([self.type isEqualToString:@"d"])
+        {
+            for(UIView* subview in self.subviews)
+            {
+                [subview removeFromSuperview];
+            }
+        }//end if
+
         [self removeFromSuperview];
         alertShown = NO;
     }
@@ -247,400 +275,289 @@ BOOL alertShown;
     }
 }
 
-/*
-- (void)handleLongPress:(id)gestureRecognizer
+
+-(void)setupScaleView{
+    self.scaleView = [[UIImageView alloc] initWithFrame:[self calculateScaleViewFrame]];
+    self.scaleView.image = [UIImage imageNamed:@"scale"];
+    self.scaleView.userInteractionEnabled = YES;
+    self.scaleView.tag = 1;
+    [self addSubview:self.scaleView];
+}
+
+
+-(void)setupDeleteView{
+    self.deleteView = [[UIImageView alloc] initWithFrame:[self calculateDeleteViewFrame]];
+    self.deleteView.image = [UIImage imageNamed:@"close_gold"];
+    self.deleteView.userInteractionEnabled = YES;
+    self.deleteView.tag = 2;
+    [self addSubview:self.deleteView];
+}
+
+-(CGRect)calculateDeleteViewFrame{
+    return CGRectMake(0.0, 0.0, PADDING, PADDING);
+}
+
+-(CGRect)calculateScaleViewFrame{
+    return CGRectMake(self.bounds.size.width - PADDING, self.bounds.size.height - PADDING, PADDING, PADDING);
+}
+
+-(void)setupDeleteGesture
 {
-    
-    UIView *piece = [(UITapGestureRecognizer*)gestureRecognizer view];
-    [piece removeFromSuperview];
-
-}
-
- */
-
-- (void)handleRotate:(UIRotationGestureRecognizer *)recognizer {
-    
-    recognizer.view.transform = CGAffineTransformRotate(recognizer.view.transform, recognizer.rotation);
-    recognizer.rotation = 0;
+    deleteGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(deleteTap:)];
+    [self.deleteView addGestureRecognizer:deleteGesture];
     
 }
-- (void)scalePiece:(UIPinchGestureRecognizer *)gestureRecognizer
+
+-(void)deleteTap:(UITapGestureRecognizer*)recognizer{
+    //NSLog(@"deleteTap.");
+    //UIView * delete = (UIView *)[recognizer view];
+    //[delete.superview removeFromSuperview];
+    
+    if(!alertShown)
+    {
+        alertShown = YES;
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Delete Resource"
+                                                          message:@"Delete resource from the image."
+                                                         delegate:self
+                                                cancelButtonTitle:@"Delete"
+                                                otherButtonTitles:@"Cancel", nil];
+        [message show];
+        
+    }
+}
+
+// scale and rotation transforms are applied relative to the layer's anchor point
+// this method moves a gesture recognizer's view's anchor point between the user's fingers
+- (void)adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
 {
-    //[self adjustAnchorPointForGestureRecognizer:gestureRecognizer];
-    UIView *piece = [(UITapGestureRecognizer*)gestureRecognizer view];
-    
-    /*
-     NSLog(@"scale.[piece superview].frame.origin (%f,%f) ", [piece superview].frame.origin.x, [piece superview].frame.origin.x);
-     NSLog(@"scale. piece.frame.origin (%f,%f)", piece.frame.origin.x, piece.frame.origin.x);
-     NSLog(@"scale. piece.frame.size (%f,%f)", piece.frame.size.width, piece.frame.size.height);
-     NSLog(@"scale. _imageView.frame.origin (%f,%f) ", _imageView.frame.origin.x, _imageView.frame.origin.x);
-     NSLog(@"scale. _imageView.frame.size (%f,%f) ", _imageView.frame.size.width, _imageView.frame.size.height);
-     */
-    /*
-    
-    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan || [gestureRecognizer state] == UIGestureRecognizerStateChanged)
-    {
-        //[gestureRecognizer view].transform = CGAffineTransformScale([[gestureRecognizer view] transform], [gestureRecognizer scale], [gestureRecognizer scale]);
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        UIView *mainView = gestureRecognizer.view;
+        CGPoint locationInView = [gestureRecognizer locationInView:mainView];
+        CGPoint locationInSuperview = [gestureRecognizer locationInView:mainView.superview];
         
-        piece.transform = CGAffineTransformScale([piece transform], [gestureRecognizer scale], [gestureRecognizer scale]);
-        
-
-        
-        lastScale = [gestureRecognizer scale];
-        
-        //[gestureRecognizer setScale:1];
-    }
-     */
-    
-    //NSLog(@"Scale: %f", [gestureRecognizer scale]);
-    
-    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan || [gestureRecognizer state] == UIGestureRecognizerStateChanged)
-    {
-        
-        //lastScale = [gestureRecognizer scale];
-        _previousScale = _scale;
-    }
-    
-    CGFloat currentScale = [gestureRecognizer scale];
-    //currentScale = MAX(MIN ([gesture scale]*_scale, MAX_SCALE), MIN_SCALE);
-    //CGFloat scaleStep = currentScale /_previousScale;
-    
-    //[self.view setTransform: CGAffineTransformScale(self.view.transform, scaleStep, scaleStep)];
-    
-    /*
-    if(currentScale < MIN_SCALE)
-        currentScale = MIN_SCALE;
-    if(currentScale >MAX_SCALE)
-        currentScale = MAX_SCALE;
-    */
-    /*
-    NSLog(@"scale. self.frame.origin (%f,%f)", self.frame.origin.x, self.frame.origin.x);
-    NSLog(@"scale. self.frame.size (%f,%f)", self.frame.size.width, self.frame.size.height);
-    NSLog(@"scale. piece.frame.origin (%f,%f)", piece.frame.origin.x, piece.frame.origin.x);
-    NSLog(@"scale. piece.frame.size (%f,%f)", piece.frame.size.width, piece.frame.size.height);
-    NSLog(@"scale. _imageView.frame.origin (%f,%f) ", _imageView.frame.origin.x, _imageView.frame.origin.x);
-    NSLog(@"scale. _imageView.frame.size (%f,%f) ", _imageView.frame.size.width, _imageView.frame.size.height);
-    
-*/
-    
-    //NSLog(@"Final scale: %f", currentScale);
-    /*
-    if(piece.frame.size.width*currentScale > 80 && piece.frame.size.height*currentScale > 80
-       && piece.frame.size.width*currentScale < 500 && piece.frame.size.height*currentScale < 500
-       )
-     */
-    {
-            piece.transform = CGAffineTransformScale([piece transform], currentScale, currentScale);
-    }
-    
-  
-    //piece.transform = CGAffineTransformScale([piece transform], currentScale, currentScale);
-    
-    /*
-    if(piece.frame.size.width < 80)
-    {
-        
-        CGRect imageFrame;
-        //imageFrame = self.frame;
-        imageFrame.origin = CGPointMake(piece.frame.origin.x, piece.frame.origin.y);
-        imageFrame.size = CGSizeMake(80.1, piece.frame.size.height);
-        piece.frame = imageFrame;
-
-    }
-    if(piece.frame.size.height < 80)
-    {
-        
-        CGRect imageFrame;
-        //imageFrame = self.frame;
-        imageFrame.origin = CGPointMake(piece.frame.origin.x, piece.frame.origin.y);
-        imageFrame.size = CGSizeMake(piece.frame.size.width, 80.1);
-        piece.frame = imageFrame;
-        
-    }
-    
-    if(piece.frame.size.width > 500)
-    {
-        
-        CGRect imageFrame;
-        //imageFrame = self.frame;
-        imageFrame.origin = CGPointMake(piece.frame.origin.x, piece.frame.origin.y);
-        imageFrame.size = CGSizeMake(500.1, piece.frame.size.height);
-        piece.frame = imageFrame;
-        
-    }
-    if(piece.frame.size.height > 500)
-    {
-        
-        CGRect imageFrame;
-        //imageFrame = self.frame;
-        imageFrame.origin = CGPointMake(piece.frame.origin.x, piece.frame.origin.y);
-        imageFrame.size = CGSizeMake(piece.frame.size.width, 500.1);
-        piece.frame = imageFrame;
-        
-    }
-    */
-    /*
-    if(imageFrame.size.width > 500)
-    {
-        imageFrame.size = CGSizeMake(500, 500);
-    }
-     */
-    
-  /*
-    NSLog(@"Finalscale. self.frame.origin (%f,%f)", self.frame.origin.x, self.frame.origin.x);
-    NSLog(@"Finalscale. self.frame.size (%f,%f)", self.frame.size.width, self.frame.size.height);
-    NSLog(@"Finalscale. piece.frame.origin (%f,%f)", piece.frame.origin.x, piece.frame.origin.x);
-    NSLog(@"Finalscale. piece.frame.size (%f,%f)", piece.frame.size.width, piece.frame.size.height);
-    NSLog(@"Finalscale. _imageView.frame.origin (%f,%f) ", _imageView.frame.origin.x, _imageView.frame.origin.x);
-    NSLog(@"Finalscale. _imageView.frame.size (%f,%f) ", _imageView.frame.size.width, _imageView.frame.size.height);
-    */
-    _previousScale = currentScale;
-    
-    if ([gestureRecognizer state] == UIGestureRecognizerStateEnded ||
-        [gestureRecognizer state] == UIGestureRecognizerStateCancelled ||
-        [gestureRecognizer state] == UIGestureRecognizerStateFailed)
-    {
-        // Gesture can fail (or cancelled?) when the notification and the object is dragged simultaneously
-        _scale = currentScale;
-
+        mainView.layer.anchorPoint = CGPointMake(locationInView.x / mainView.bounds.size.width, locationInView.y / mainView.bounds.size.height);
+        mainView.center = locationInSuperview;
     }
 }
 
-- (void)handlePinchGesture:(id)sender
+-(void)setupPanGesture
 {
-  	//[_imageview bringSubviewToFront:[(UIPinchGestureRecognizer*)sender view]];
+    panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    [self addGestureRecognizer:panGesture];
     
-	if([(UIPinchGestureRecognizer*)sender state] == UIGestureRecognizerStateEnded) {
-        
-		lastScale = 1.0;
-		return;
-	}
-    
-	CGFloat scale = 1.0 - (lastScale - [(UIPinchGestureRecognizer*)sender scale]);
-    
-	CGAffineTransform currentTransform = [(UIPinchGestureRecognizer*)sender view].transform;
-	CGAffineTransform newTransform = CGAffineTransformScale(currentTransform, scale, scale);
-    
-	[[(UIPinchGestureRecognizer*)sender view] setTransform:newTransform];
-    
-	lastScale = [(UIPinchGestureRecognizer*)sender scale];
-    
-    //return;
 }
 
--(void)move:(id)sender {
+-(void)setUpPinchGesture
+{
+    pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(scalePiece:)];
+    [self addGestureRecognizer:pinchGesture];
+}
+
+-(int)detectActionUsingGesturePointLocation:(CGPoint)point{
+    CGRect scaleViewRect = [self convertRect:self.scaleView.frame toView:self.superview];
+    CGRect rotateViewRect = [self convertRect:self.rotateView.frame toView:self.superview];
     
-    UIView *piece = [(UITapGestureRecognizer*)sender view];
+    scaleViewRect = CGRectInset(scaleViewRect, -1 * DISTANCE_FROM_CONTROL, -1 * DISTANCE_FROM_CONTROL);
+    rotateViewRect = CGRectInset(rotateViewRect, -1 * DISTANCE_FROM_CONTROL, -1 * DISTANCE_FROM_CONTROL);
     
-    //[self adjustAnchorPointForGestureRecognizer:gestureRecognizer];
+    if (CGRectContainsPoint(scaleViewRect, point))
+        return kSCALE;
+    else
+    if (CGRectContainsPoint(rotateViewRect, point))
+        return kROTATE;
+    else
+        return kTRANSLATE;
+}
+
+- (void)handlePanGesture:(UIPanGestureRecognizer *)gestureRecognizer
+{
+    //NSLog(@"handlePanGesture.");
+
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan){
+        
+        CGPoint winGestureLoc = [gestureRecognizer locationInView:self.superview];
+        self.gestureAction = [self detectActionUsingGesturePointLocation:winGestureLoc];
+    }
+    if (self.gestureAction == kSCALE){
+        [self scaleView:gestureRecognizer];
+    }else
+    if (self.gestureAction == kROTATE){
+        
+        initiallocPoint = [gestureRecognizer locationInView:self.superview];
+        initialCentrePoint = [self convertPoint:self.center toView:self.superview];
+        
+        [self rotateViewWithControl:gestureRecognizer];
+    }else{
+        [self translateView:gestureRecognizer];
+    }
+}
+
+
+-(void)translateView:(UIPanGestureRecognizer *)gestureRecognizer{
+    UIView *mainView = [gestureRecognizer view];
+    [self adjustAnchorPointForGestureRecognizer:gestureRecognizer];
     
-    if ([sender state] == UIGestureRecognizerStateBegan || [sender state] == UIGestureRecognizerStateChanged)
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan || [gestureRecognizer state] == UIGestureRecognizerStateChanged) {
+        CGPoint translation = [gestureRecognizer translationInView:self.superview];
+        
+        [mainView setCenter:CGPointMake([mainView center].x + translation.x, [mainView center].y + translation.y)];
+        [gestureRecognizer setTranslation:CGPointZero inView:[mainView superview]];
+    }
+}
+
+-(void)scaleView:(UIPanGestureRecognizer *)gestureRecognizer
+{
+    //NSLog(@"scaleView:gestureRecognizer.");
+    
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan){
+        self.prevPoint = [gestureRecognizer locationInView:self.superview];
+        [self setNeedsDisplay];
+    }
+    else if ([gestureRecognizer state] == UIGestureRecognizerStateChanged)
     {
+        
+        CGPoint changedPoint = [gestureRecognizer locationInView:self.superview];
+        CGFloat deltaW = changedPoint.x - self.prevPoint.x;
+        CGFloat deltaH = changedPoint.y - self.prevPoint.y;
+        CGFloat deltaNet = MAX(deltaH, deltaW);
+        //self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width + deltaW, self.bounds.size.height + deltaH);
+        self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width + deltaNet,
+                                 self.bounds.size.height + deltaNet);
         /*
-        NSLog(@"move. piece.frame.origin (%f,%f)", piece.frame.origin.x, piece.frame.origin.x);
-        NSLog(@"move. piece.frame.size (%f,%f)", piece.frame.size.width, piece.frame.size.height);
-        NSLog(@"move. _imageView.frame.origin (%f,%f) ", _imageView.frame.origin.x, _imageView.frame.origin.x);
-        NSLog(@"move. _imageView.frame.size (%f,%f) ", _imageView.frame.size.width, _imageView.frame.size.height);
+        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.bounds.size.width,
+                                 self.bounds.size.height);
+        
+        _imageView.frame = CGRectMake(_imageView.frame.origin.x, _imageView.frame.origin.y, self.bounds.size.width,
+                                      self.bounds.size.height);
+        _imageView.bounds = CGRectMake(_imageView.bounds.origin.x, _imageView.bounds.origin.y, self.bounds.size.width,
+                                       self.bounds.size.height);
         */
-        CGPoint translation = [sender translationInView:[piece superview]];
         
-        [piece setCenter:CGPointMake([piece center].x + translation.x, [piece center].y + translation.y)];
-        [sender setTranslation:CGPointZero inView:[piece superview]];
+        //_imageView.frame = CGRectMake(PADDING/2, PADDING/2, self.bounds.size.width - PADDING, self.bounds.size.height - PADDING);
+        _imageView.frame = CGRectMake(0.0, 0.0, self.bounds.size.width, self.bounds.size.height);
+        
         /*
-        NSLog(@"move. final. piece.frame.origin (%f,%f)", piece.frame.origin.x, piece.frame.origin.x);
-        NSLog(@"move. final. piece.frame.size (%f,%f)", piece.frame.size.width, piece.frame.size.height);
-        NSLog(@"move. final. _imageView.frame.origin (%f,%f) ", _imageView.frame.origin.x, _imageView.frame.origin.x);
-        NSLog(@"move. final. _imageView.frame.size (%f,%f) ", _imageView.frame.size.width, _imageView.frame.size.height);
+        CGRect selfFrame = self.frame;
+        selfFrame.size = _imageView.frame.size;
+        self.frame = selfFrame;
+         */
+        //self.imageView.frame = [self calculateImageViewFrame];
+        
+        
+        
+        self.deleteView.frame = [self calculateDeleteViewFrame];
+        self.scaleView.frame = [self calculateScaleViewFrame];
+        self.rotateView.frame = [self calculateRotateViewFrame];
+        self.prevPoint = [gestureRecognizer locationInView:self.superview];
+        [self setNeedsDisplay];
+    }
+    else if ([gestureRecognizer state] == UIGestureRecognizerStateEnded)
+    {
+        self.prevPoint = [gestureRecognizer locationInView:self.superview];
+        [self setNeedsDisplay];
+        self.gestureAction = kNONE;
+        
+        /*
+        NSLog(@"new self.frame=%@", NSStringFromCGRect(self.frame));
+        NSLog(@"new self.bounds%@", NSStringFromCGRect(self.bounds));
+        NSLog(@"new self.imageview.frame=%@", NSStringFromCGRect(self.imageView.frame));
+        NSLog(@"new self.imageview.bounds%@", NSStringFromCGRect(self.imageView.bounds));
+        */
+        self.scale = _imageView.bounds.size.width/originalWidth;
+        //CGFloat currentScale = [[[gestureRecognizer view].layer valueForKeyPath:@"transform.scale"] floatValue];
+        //NSLog(@"self.scale=%f", self.scale);
+    }
+    else if ([gestureRecognizer state] == UIGestureRecognizerStateCancelled)
+    {
+        self.gestureAction = kNONE;
+    }
+}
+
+-(void)rotateViewWithControl:(UIPanGestureRecognizer*)gestureRecognizer
+{
+    CGPoint locPoint = [gestureRecognizer locationInView:self.superview];
+    CGPoint centrePoint = [self convertPoint:self.center toView:self.superview];
+    /*
+    NSLog(@"before start, initialLocPoint=%f,%f", initiallocPoint.x, initiallocPoint.y);
+    NSLog(@"before start, initialCentrePoint=%f,%f", initialCentrePoint.x, initialCentrePoint.y);
+    NSLog(@"before start, locPoint=%f,%f", locPoint.x, locPoint.y);
+    NSLog(@"before start, centrePoint=%f,%f", centrePoint.x, centrePoint.y);
+    */
+    float angleDiff = 0.0;
+    
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan)
+    {
+        self.rotateTransform = self.transform;
+        self.deltaAngle = atan2(locPoint.y-centrePoint.y, locPoint.x- centrePoint.x);
+    }
+    else if ([gestureRecognizer state] == UIGestureRecognizerStateChanged)
+    {
+        float angleView = atan2(locPoint.y-centrePoint.y, locPoint.x- centrePoint.x);
+        angleDiff = self.deltaAngle - angleView;
+        self.transform = CGAffineTransformMakeRotation(-angleDiff);
+        [self setNeedsDisplay];
+        self.angle = -angleDiff;
+        //NSLog(@"changed.angleDiff=%f", -angleDiff);
+        //NSLog(@"changed.locPoint=%f,%f", locPoint.x, locPoint.y);
+        //NSLog(@"changed.centrePoint=%f,%f", centrePoint.x, centrePoint.y);
+    }
+    else if ([gestureRecognizer state] == UIGestureRecognizerStateEnded)
+    {
+        self.rotateTransform = self.transform;
+        [self setNeedsDisplay];
+        self.gestureAction = kNONE;
+        //self.angle = -angleDiff;
+        //self.angle = atan2(locPoint.y-initialCentrePoint.y, locPoint.x- initialCentrePoint.x);
+        //NSLog(@"ended.self.angle=%f", self.angle);
+        //NSLog(@"ended.locPoint=%f,%f", locPoint.x, locPoint.y);
+        //NSLog(@"ended.centrePoint=%f,%f", centrePoint.x, centrePoint.y);
+    }
+    else if ([gestureRecognizer state] == UIGestureRecognizerStateCancelled)
+    {
+        self.rotateTransform = self.transform;
+        self.gestureAction = kNONE;
+        //self.angle = -angleDiff;
+        /*
+        NSLog(@"cancelled.self.angle =-angleDiff=%f", self.angle);
+        NSLog(@"cancelled.locPoint=%f,%f", locPoint.x, locPoint.y);
+        NSLog(@"cancelled.centrePoint=%f,%f", centrePoint.x, centrePoint.y);
          */
     }
-    
-    /*
-	//[[[(UITapGestureRecognizer*)sender view] layer] removeAllAnimations];
-    
-	//[self.view bringSubviewToFront:[(UIPanGestureRecognizer*)sender view]];
-	CGPoint translatedPoint = [(UIPanGestureRecognizer*)sender translationInView:self];
-    
-	if([(UIPanGestureRecognizer*)sender state] == UIGestureRecognizerStateBegan) {
-        
-		firstX = [self center].x;
-		firstY = [self  center].y;
-	}
-    
-	translatedPoint = CGPointMake(firstX+translatedPoint.x, firstY+translatedPoint.y);
-    
-	[[sender view] setCenter:translatedPoint];
-    
-	if([(UIPanGestureRecognizer*)sender state] == UIGestureRecognizerStateEnded) {
-        
-		CGFloat finalX = translatedPoint.x + (.35*[(UIPanGestureRecognizer*)sender velocityInView:self].x);
-		CGFloat finalY = translatedPoint.y + (.35*[(UIPanGestureRecognizer*)sender velocityInView:self].y);
-        
-		if(UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
-            
-			if(finalX < 0)
-            {
-                finalX = 0;
-            }
-            else if(finalX > 768)
-            {
-                
-				finalX = 768;
-			}
-            
-			if(finalY < 0)
-            {
-                finalY = 0;
-            }
-            else if(finalY > 1024) {
-                
-				finalY = 1024;
-			}
-		}
-        
-		else {
-            
-			if(finalX < 0) {
-                finalX = 0;
-            }
-            else if(finalX > 1024) {
-                
-				finalX = 768;
-			}
-            
-			if(finalY < 0)
-            {
-                finalY = 0;
-            }
-            else if(finalY > 768)
-            {
-                finalY = 1024;
-			}
-		}
-        
-		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:.35];
-		[UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-		[[sender view] setCenter:CGPointMake(finalX, finalY)];
-		[UIView commitAnimations];
-	}
-     */
 }
 
-
-/*
- UIButton* _invisibleButton;
- - (void)pressedInvisibleButton:(id)button
- {
- [_imageView resignFirstResponder];
- _imageView.userInteractionEnabled = NO;
- [_invisibleButton removeFromSuperview];
- _invisibleButton=nil;
- 
- }
-*/
-
-- (void)tapped:(id)sender
-{
-    /*
-    _imageView.userInteractionEnabled = !_imageView.userInteractionEnabled;
-    if(_imageView.userInteractionEnabled)
-    {
-        if(!_invisibleButton)
-        {
-            _invisibleButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            
-            [_invisibleButton addTarget:self
-                                 action:@selector(pressedInvisibleButton:)
-                       forControlEvents:UIControlEventTouchDown];
-            
-            _invisibleButton.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.75];
-            
-            _invisibleButton.alpha = 0.5;
-            _invisibleButton.frame = [[UIScreen mainScreen] bounds];
-            [self.superview addSubview:_invisibleButton];
-        }
-        [self.superview bringSubviewToFront:_invisibleButton];
-        [self.superview bringSubviewToFront:self];
-        [_imageView becomeFirstResponder];
+-(void)rotateView:(UIRotationGestureRecognizer *)gestureRecognizer{
+    //NSLog(@"rotateView:(UIRotationGestureRecognizer *)gestureRecognizer");
+    [self adjustAnchorPointForGestureRecognizer:gestureRecognizer];
+    
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan || [gestureRecognizer state] == UIGestureRecognizerStateChanged) {
+        [gestureRecognizer view].transform = CGAffineTransformRotate([[gestureRecognizer view] transform], [gestureRecognizer rotation]);
+        [gestureRecognizer setRotation:0];
     }
-     */
+}
 
+-(CGRect)calculateImageViewFrame{
+    return CGRectMake(PADDING/2, PADDING/2, self.bounds.size.width - PADDING, self.bounds.size.height - PADDING);
+    //return CGRectMake(PADDING/2, PADDING/2, self.imageView.bounds.size.width - PADDING, self.imageView.bounds.size.height - PADDING);
 }
 
 
-- (void)layoutSubviews
+-(CGRect)calculateRotateViewFrame{
+    return CGRectMake(0.0, self.bounds.size.height - PADDING, PADDING, PADDING);
+}
+
+-(void)setupRotateView{
+    self.rotateView = [[UIImageView alloc] initWithFrame:[self calculateRotateViewFrame]];
+    self.rotateView.image = [UIImage imageNamed:@"rotate"];
+    self.rotateView.tag=3;
+    self.rotateView.userInteractionEnabled = YES;
+    [self addSubview:self.rotateView];
+}
+
+-(void)setupRotationGesture
 {
-  
-    /*
-    NSLog(@"layoutSubviews called");
-    NSLog(@"layoutSubiew. initial  self.frame.origin = (/%f,%f)",self.frame.origin.x,self.frame.origin.y);
-    NSLog(@"layoutSubiew. initial self.frame.size = (/%f,%f)",self.frame.size.width,self.frame.size.height);
-    
-    
-    NSLog(@"layoutSubiew. initial  _imageView.frame.origin = (/%f,%f)",_imageView.frame.origin.x,_imageView.frame.origin.y);
-    NSLog(@"layoutSubiew. initial _imageView.frame.size = (/%f,%f)",_imageView.frame.size.width,_imageView.frame.size.height);
-    */
-    
-    
-    //Find new size of image
-    CGRect imageFrame;
-    //imageFrame = self.frame;
-    imageFrame.origin = CGPointMake(0.0f, 0.0f);
-    //imageFrame.origin = self.frame.origin;
-    //imageFrame.origin = CGPointMake(self.frame.origin.x, self.frame.origin.y);
-    
-    if(!started)
-    {
-        imageFrame.size = CGSizeMake(_imageView.frame.size.width, _imageView.frame.size.height);
-        started = true;
-    }
-    else{
-        imageFrame.size = CGSizeMake(self.frame.size.width, self.frame.size.height);
-    }
-
-  
-    //Make this view and the image the same size
-    CGRect selfFrame = self.frame;
-    selfFrame.size = imageFrame.size;
-    self.frame = selfFrame;
-
-    _imageView.frame = imageFrame;
-
-    /*
-    NSLog(@"layoutSubiew. final  self.frame.origin = (/%f,%f)",self.frame.origin.x,self.frame.origin.y);
-    NSLog(@"layoutSubiew. final  self.frame.size = (/%f,%f)",self.frame.size.width,self.frame.size.height);
-    NSLog(@"layoutSubiew. final  _imageView.frame.origin = (/%f,%f)",_imageView.frame.origin.x,_imageView.frame.origin.y);
-    NSLog(@"layoutSubiew. final _imageView.frame.size = (/%f,%f)",_imageView.frame.size.width,_imageView.frame.size.height);
-*/
-
+    rotationGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotateView:)];
+    [self addGestureRecognizer:rotationGesture];
 }
 
-
-/*
-CGPoint _ptOffset;
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch* t = [touches anyObject];
-    _ptOffset = [t locationInView: self];
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch* t = [touches anyObject];
-    CGPoint pt = [t locationInView: self.superview];
-    pt.x -= _ptOffset.x;
-    pt.y -= _ptOffset.y;
-    
-    CGRect r = self.frame;
-    r.origin = pt;
-    self.frame = r;
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    _ptOffset = CGPointMake(-1, -1);
-}
-*/
 
 @end

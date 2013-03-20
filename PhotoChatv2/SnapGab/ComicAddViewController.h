@@ -31,5 +31,6 @@
 
 - (IBAction)deletePanel:(id*)sender;
 
+@property (weak, nonatomic) IBOutlet UIButton *postButton;
 
 @end

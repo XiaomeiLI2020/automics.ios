@@ -49,6 +49,27 @@
     return self;
 }
 
+- (id)initWithFrame:(CGRect)frame imageURL:(NSString*)imageURLString
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        
+        NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURLString]];
+        UIImage *image = [UIImage imageWithData:imageURL];
+        
+        self.isScaling = NO;
+        self.backgroundColor = [UIColor clearColor];
+        [self setupImageViewWithImage:image];
+        [self setupScaleView];
+        [self setupDeleteView];
+        [self setupRotateView];
+        [self setupPanGesture];
+        [self setupDeleteGesture];
+        [self setupRotationGesture];
+    }
+    return self;
+}
+
 -(void)setupImageViewWithImage:(UIImage*)image
 {
     self.imageView = [[UIImageView alloc] initWithFrame:[self calculateImageViewFrame]];
@@ -183,7 +204,10 @@
         CGPoint changedPoint = [gestureRecognizer locationInView:self.superview];
         CGFloat deltaW = changedPoint.x - self.prevPoint.x;
         CGFloat deltaH = changedPoint.y - self.prevPoint.y;
-        self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width + deltaW, self.bounds.size.height + deltaH);
+        CGFloat deltaNet = MAX(deltaH, deltaW);
+        //self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width + deltaW, self.bounds.size.height + deltaH);
+        self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width + deltaNet,
+                                 self.bounds.size.height + deltaNet);
         self.imageView.frame = [self calculateImageViewFrame];
         self.deleteView.frame = [self calculateDeleteViewFrame];
         self.scaleView.frame = [self calculateScaleViewFrame];
