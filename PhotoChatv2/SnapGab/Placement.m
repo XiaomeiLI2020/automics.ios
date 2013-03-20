@@ -14,6 +14,8 @@
 @synthesize xOffset;
 @synthesize yOffset;
 @synthesize scale;
+@synthesize angle;
 @synthesize zIndex;
+
 
 @end

@@ -7,13 +7,13 @@
 //
 
 #import "PanelAddViewController.h"
-#import <MobileCoreServices/UTCoreTypes.h>
 #import "PhotoPosterViewController.h"
 #import "UIImageView+WebCache.h"
 #import "SpeechBubbleView.h"
 #import "ResourceView.h"
 #import "PanelEditViewController.h"
 #import "GUIConstant.h"
+
 
 #import "Resource.h"
 
@@ -27,12 +27,13 @@
 @synthesize imageView;
 @synthesize url;
 @synthesize startWithCamera;
+@synthesize resourceList;
 
 @synthesize keyboardIsShown;
 @synthesize thumbnailScrollView;
 
 ResourceLoader *resourceLoader;
-NSMutableArray *resourceList;
+
 
 int resourceCounter;
 NSString* resourceImageURL;
@@ -72,12 +73,14 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    //NSLog(@"viewWillAppear.");
     [super viewWillAppear:animated];
+
 
     
     if(self.imageView.image) return; //If image already loaded - do not reload it (since load moved from viewDidLoad)
     
-    //self.imageView.image = [self squareImageWithImage:self.imageView.image scaledToSize:imageSize];
+
     
     [self.imageView setImageWithURL:self.url
                    placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]
@@ -116,6 +119,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    //NSLog(@"viewDidAppear.");
     [super viewDidAppear:animated];
     //if(self.startWithCamera) [self useCameraPressed];
     if(self.startWithCamera) [self takeSnap:0];
@@ -125,14 +129,16 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     [thumbnailScrollView layoutAssets];
 }
 
-
+/*
 - (void)loadImage:(UIImage*) image
 {
+    NSLog(@"LoadImage.");
     self.imageView.image = image;
     
+    self.imageView.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelWidth, panelHeight);
     //self.imageView.image = [self squareImageWithImage:image scaledToSize:imageSize];
 }
-
+ */
 
 - (void)addBubbleWithId:(id)sender
 {
@@ -151,25 +157,31 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     //int resourceId = clicked.tag;
     int resourceIndex = clicked.tag;
     
-    if([resourceList count]>0)
+    if([resourceList count]>0 && [resourceList count]>resourceIndex)
     {
         Resource* resource = [resourceList objectAtIndex:(resourceIndex)];
-        NSString* type = resource.type;
-        
-        CGRect resourceFrame;
-        if([type isEqual:@"d"])
+        if(resource!=nil)
         {
-            resourceFrame = CGRectMake(100, 100, decoratorWidth, decoratorHeight);
-        }
-        if([type isEqual:@"f"])
-        {
-            resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
-        }
-        
-        ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:resource.imageURL andType:type andId:resource.resourceId];
-        [self.view addSubview:rv];
-    }
-
+            NSString* type = resource.type;
+            
+            CGRect resourceFrame;
+            if([type isEqual:@"d"])
+            {
+                resourceFrame = CGRectMake(100, 100, decoratorWidth, decoratorHeight);
+                
+            }
+            if([type isEqual:@"f"])
+            {
+                resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
+                //resourceFrame = CGRectMake(0.0, 20.0, frameWidth, frameHeight);
+            }
+            
+            //ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:resource.imageURL andType:type andId:resource.resourceId];
+            ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource andScale:1.0 andAngle:0.0];
+            
+            [self.view addSubview:rv];
+        }//end if resource!=nil
+    }//end if
     
 }
 
@@ -203,26 +215,29 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 - (void)viewDidLoad
 {
+    //NSLog(@"viewDidLoad.");
     [super viewDidLoad];
     
     resourceCounter = 0;
+    resourceList = [[NSMutableArray alloc] init];
+    resourceLoader = [[ResourceLoader alloc] init];
+    resourceLoader.delegate = self;
     
     //Initiate thumbnail scrollview
     [self initiateScrollViews];
     
     //Add speechbubbles to thumbnail scrollview
     [self loadSpeechBubbles];
-
     
-    resourceList = [[NSMutableArray alloc] init];
-    
-    resourceLoader = [[ResourceLoader alloc] init];
-    resourceLoader.delegate = self;
     [resourceLoader submitRequestGetResourcesForTheme:1];
     
     [self registerForKeyboardNotifications];
     
     keyboardIsShown = NO;
+    
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureCaptured:)];
+    singleTap.cancelsTouchesInView = NO;
+    [self.view addGestureRecognizer:singleTap];
     
     //imageSize = CGSizeMake(320, 320);
 }
@@ -261,6 +276,23 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardWillHideNotification object:nil];
+    
+}
+
+- (void)singleTapGestureCaptured:(UITapGestureRecognizer *)gesture
+{
+    //NSLog(@"singleTapcaptured.");
+    
+    for (UIView *subview in self.view.subviews)
+    {
+        if([subview isKindOfClass:[ResourceView class]])
+        {
+            
+            ResourceView* sbv =(ResourceView*)subview;
+            [sbv disappearControls];
+            
+        }//end if
+    }//end for
     
 }
 
@@ -399,6 +431,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 // Responding to after the user accepts a newly-captured picture
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    //NSLog(@"didFinishPickingMediaWithInfo");
     NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
     
     
@@ -409,11 +442,18 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         
         UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
         
-        [self loadImage:image];
+        
+        //[self loadImage:image];
         [self removeAllBubbles];
         [self removeAllResources];
         
+        self.imageView.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelWidth, panelHeight);
+        
+        image= [self imageWithImage:image scaledToSize:CGSizeMake(panelWidth, panelHeight)];
+        
         imageView.image = image;
+
+        [imageView setBackgroundColor:[UIColor greenColor]];
         
         //If newMedia, then save the new image to camera roll
         if (newMedia)
@@ -427,6 +467,14 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+-(UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize
+{
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
@@ -482,7 +530,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             {
                 ResourceView* sbv =(ResourceView*)subview;
 
-                ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andURL:sbv.urlImageString andType:sbv.type andId:sbv.resourceId];
+                //ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andURL:sbv.urlImageString andType:sbv.type andId:sbv.resourceId];
+                ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
                 new_sbv.userInteractionEnabled = NO;
                 [ppvc.view addSubview:new_sbv];
             }
@@ -493,6 +542,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 - (IBAction)takeSnap:(id)sender {
     
+    //NSLog(@"takesnap called.");
     //Check if device's camera is available to use
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
@@ -512,7 +562,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         //Assign delegate object to ImagePickerController's delegate property
         imagePicker.delegate = self;
         
-        imagePicker.allowsEditing = NO;
+        imagePicker.allowsEditing = YES;
         [self presentViewController:imagePicker animated:YES completion:nil];
         
         newMedia = YES;
@@ -523,6 +573,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 //Show photos from camera roll
 - (IBAction)showPhotos:(id)sender {
     
+    //NSLog(@"showphotos called.");
     if ([UIImagePickerController isSourceTypeAvailable:
          UIImagePickerControllerSourceTypeSavedPhotosAlbum])
     {
@@ -541,7 +592,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         //Assign delegate object to ImagePickerController's delegate property
         imagePicker.delegate = self;
         
-        imagePicker.allowsEditing = NO;
+        imagePicker.allowsEditing = YES;
         [self presentViewController:imagePicker animated:YES completion:nil];
         newMedia = NO;
     }//end if
@@ -551,7 +602,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 -(void)addResourceToScrollViews:(Resource*)resource
 {
     if(resource!=nil)
-    {        
+    {
+        //NSLog(@"addResoruceToscrolView.");
         //int resourceId = resource.resourceId;
         NSString* thumb_url = resource.thumbURL;
 
@@ -577,6 +629,10 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         [resourceList addObject:resource];
         resourceCounter++;
 
+        if(resourceCounter==[resourceList count])
+        {
+            [thumbnailScrollView layoutAssets];
+        }
     }
 
 }
@@ -590,23 +646,29 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResources:(NSArray*)resources{
     //NSLog(@"resources loaded.");
     
-
-    numResources = [resources count];
-    
-    thumbnailScrollView.numItems = numSpeechBubbles + numResources;
-    
-    for(Resource* resource in resources)
+    if(resources!=nil)
     {
-            if (resource.resourceId > 0)
+        numResources = [resources count];
+        thumbnailScrollView.numItems = numSpeechBubbles + numResources;
+        
+        if([resources count]>0)
+        {
+            for(Resource* resource in resources)
             {
-                //resourceImageURL = resource.imageURL;
-                
-                [self addResourceToScrollViews:resource];
+                if(resource!=nil)
+                {
+                    if (resource.resourceId > 0)
+                    {
+                        //resourceImageURL = resource.imageURL;
+                        [self addResourceToScrollViews:resource];
+                        
+                    }//end if
+                }//end if resource!=nil
 
-            }//end if
+            }//end for
+        }//end if
+    }//end if resources!=nil
 
-
-    }//end for
 }
 
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResource:(Resource*)resource

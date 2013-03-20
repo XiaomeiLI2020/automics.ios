@@ -34,7 +34,7 @@
 @property BOOL keyboardIsShown;
 
 @property MainScrollSelector *thumbnailScrollView;
-@property NSMutableArray* resourceList;
+@property (retain) NSMutableArray* resourceList;
 
 - (IBAction)takeSnap:(id)sender;
 - (IBAction)showPhotos:(id)sender;

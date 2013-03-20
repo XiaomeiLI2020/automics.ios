@@ -14,6 +14,7 @@
 @property CGFloat xOffset;
 @property CGFloat yOffset;
 @property CGFloat scale;
+@property CGFloat angle;
 @property int zIndex;
 
 @end

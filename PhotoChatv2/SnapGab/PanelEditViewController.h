@@ -30,7 +30,7 @@
 
 @property Panel* currentPanel;
 @property BOOL keyboardIsShown;
-@property NSMutableArray* resourceList;
+@property (retain) NSMutableArray* resourceList;
 @property int panelId;
 
 @end

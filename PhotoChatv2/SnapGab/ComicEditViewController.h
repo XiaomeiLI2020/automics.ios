@@ -19,10 +19,13 @@
 @property MainScrollSelector *thumbnailScrollView;
 
 @property int currentPage;
-
+@property NSArray* panelList;
+@property NSArray* comicPanelList;
+@property NSMutableArray* downloadedPanels;
 
 - (IBAction)deletePanel:(id)sender;
 
+@property (weak, nonatomic) IBOutlet UIButton *postButton;
 
 @property NSMutableArray *panelArray;
 @property int comicId;

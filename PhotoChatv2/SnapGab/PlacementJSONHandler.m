@@ -44,6 +44,13 @@
         if (zIndex != nil)
             placement.zIndex = [zIndex intValue];
     }
+    
+    if ([placementJSON valueForKey:@"angle"] != nil){
+        NSNumber* angle = [DataValidator checkKeyValueForNull:[placementJSON valueForKey:@"angle"]];
+        if (angle != nil)
+            placement.angle = [angle floatValue];
+    }
+
     return placement;
 }
 
@@ -59,8 +66,9 @@
 +(NSDictionary*)convertPlacementIntoPlacementJSON:(Placement*)placement{
     NSMutableDictionary* placementdict = [[NSMutableDictionary alloc] init];
     if (placement.resourceId > 0)
-        [placementdict setValue:[[NSNumber alloc] initWithInt:placement.resourceId] forKey:@"resource_id"];
+    [placementdict setValue:[[NSNumber alloc] initWithInt:placement.resourceId] forKey:@"resource_id"];
     [placementdict setValue:[[NSNumber alloc] initWithFloat:placement.scale] forKey:@"scale"];
+    [placementdict setValue:[[NSNumber alloc] initWithFloat:placement.angle] forKey:@"angle"];
     [placementdict setValue:[[NSNumber alloc] initWithFloat:placement.xOffset] forKey:@"xoff"];
     [placementdict setValue:[[NSNumber alloc] initWithFloat:placement.yOffset] forKey:@"yoff"];
     [placementdict setValue:[[NSNumber alloc] initWithInt:placement.zIndex] forKey:@"z_index"];
