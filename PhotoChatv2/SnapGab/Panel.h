@@ -15,4 +15,5 @@
 @property Photo *photo;
 @property NSArray* placements;
 @property NSArray* annotations;
+@property NSMutableArray* resources;
 @end

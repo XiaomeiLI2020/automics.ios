@@ -547,7 +547,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="whh-GX-ZLe">
-                                <rect key="frame" x="256" y="2" width="55" height="39"/>
+                                <rect key="frame" x="260" y="2" width="55" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" image="post-panel.png">
@@ -628,7 +628,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ULz-3m-jMF">
-                                <rect key="frame" x="260" y="4" width="55" height="39"/>
+                                <rect key="frame" x="260" y="2" width="55" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" image="post-panel.png">
@@ -842,11 +842,11 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="P1E-0g-8Qy"/>
+        <segue reference="fjF-Bf-fik"/>
+        <segue reference="sfN-v5-shT"/>
         <segue reference="NfJ-eZ-2KR"/>
         <segue reference="eqx-Lk-Ciz"/>
         <segue reference="lLZ-Tg-1fy"/>
-        <segue reference="sfN-v5-shT"/>
-        <segue reference="lbd-Gx-frY"/>
-        <segue reference="woI-Op-NZA"/>
     </inferredMetricsTieBreakers>
 </document>

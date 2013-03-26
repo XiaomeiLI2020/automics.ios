@@ -22,9 +22,13 @@
 @property BOOL longPressed;
 @property BOOL actionPerformed;
 @property Resource* resource;
+@property CGPoint originalOrigin;
+@property CGSize originalImageSize;
+@property CGRect originalFrame;
 
 
 - (id)initWithFrame:(CGRect)frame andResource:(Resource*)resource andScale:(float)scale andAngle:(float)angle;
+
 
 -(void)disappearControls;
 @end

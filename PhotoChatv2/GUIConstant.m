@@ -17,7 +17,7 @@ const CGFloat panelWidth= 320.0;
 const CGFloat panelHeight= 320.0;
 
 const CGFloat thumbnailScrollXOrigin= 0.0;
-const CGFloat thumbnailScrollYOrigin= 410.0;
+const CGFloat thumbnailScrollYOrigin= 380.0;
 const CGFloat thumbnailScrollObjHeight= 80.0;
 const CGFloat thumbnailScrollObjWidth= 320.0;
 const CGFloat thumbnailWidth= 80.0;

@@ -50,6 +50,8 @@ BOOL panelUploaded;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    NSLog(@"Post.viewDidLoad.");
+    
     self.imageView.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelWidth, panelHeight);
     self.imageView.image = self.image;
     
@@ -146,6 +148,22 @@ BOOL panelUploaded;
 
             ResourceView* sbv =(ResourceView*)subview;
             
+            /*
+            NSLog(@"posted sbv.frame=%@", NSStringFromCGRect(sbv.frame));
+            NSLog(@"posted sbv.originalFrame=%@", NSStringFromCGRect(sbv.originalFrame));
+            NSLog(@"posted old_sbv.bounds%@", NSStringFromCGRect(sbv.bounds));
+            */
+             /*
+            sbv.transform = CGAffineTransformMakeRotation(0.0);
+            NSLog(@"posted pre-rotation old_sbv.frame=%@", NSStringFromCGRect(sbv.frame));
+            NSLog(@"posted pre-rotation old_sbv.bounds%@", NSStringFromCGRect(sbv.bounds));
+            CGPoint preRotationOrigin = sbv.frame.origin;
+            NSLog(@"preRotationOrigin=%f,%f", preRotationOrigin.x, preRotationOrigin.y);
+            //ResourceView *sbv = [[ResourceView alloc] initWithFrame:old_sbv.frame andResource:old_sbv.resource andScale:old_sbv.scale andAngle:old_sbv.angle];
+
+            sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
+            */
+            
             Placement *placement = [[Placement alloc] init];
             if(sbv.resource!=nil)
             {
@@ -155,14 +173,17 @@ BOOL panelUploaded;
                 }
                 
             }
-            placement.xOffset = sbv.frame.origin.x;
-            placement.yOffset = sbv.frame.origin.y;
+            placement.xOffset = sbv.originalFrame.origin.x;
+            placement.yOffset = sbv.originalFrame.origin.y;
             placement.scale = sbv.scale;
             placement.angle = sbv.angle;
             placement.zIndex = 1;
 
             
             [placementsArray addObject:placement];
+            //sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
+            NSLog(@"posted sbv.frame=%@", NSStringFromCGRect(sbv.frame));
+            NSLog(@"posted sbv.bounds%@", NSStringFromCGRect(sbv.bounds));
         }//end add resource data
        
     }//end for
