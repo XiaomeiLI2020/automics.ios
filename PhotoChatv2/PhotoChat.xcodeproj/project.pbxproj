@@ -54,6 +54,7 @@
 		48D58FF41704A23D002ACF3E /* groupDecoration@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FF01704A23D002ACF3E /* groupDecoration@2x.png */; };
 		48D58FF51704A23D002ACF3E /* groupBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FF11704A23D002ACF3E /* groupBackground.png */; };
 		48D58FF61704A23D002ACF3E /* groupBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FF21704A23D002ACF3E /* groupBackground@2x.png */; };
+		48D58FFD1704A93B002ACF3E /* cellBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FFC1704A93B002ACF3E /* cellBackground.png */; };
 		48D933C216E0B6C000B8C68D /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D933C116E0B6C000B8C68D /* Photo.m */; };
 		48D933C816E0B6D600B8C68D /* PhotoJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D933C516E0B6D600B8C68D /* PhotoJSONHandler.m */; };
 		48D933C916E0B6D600B8C68D /* PhotoLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D933C716E0B6D600B8C68D /* PhotoLoader.m */; };
@@ -223,6 +224,7 @@
 		48D58FF01704A23D002ACF3E /* groupDecoration@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "groupDecoration@2x.png"; sourceTree = "<group>"; };
 		48D58FF11704A23D002ACF3E /* groupBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = groupBackground.png; sourceTree = "<group>"; };
 		48D58FF21704A23D002ACF3E /* groupBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "groupBackground@2x.png"; sourceTree = "<group>"; };
+		48D58FFC1704A93B002ACF3E /* cellBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cellBackground.png; sourceTree = "<group>"; };
 		48D933C016E0B6C000B8C68D /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Photo.h; path = SnapGab/Photo.h; sourceTree = "<group>"; };
 		48D933C116E0B6C000B8C68D /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Photo.m; path = SnapGab/Photo.m; sourceTree = "<group>"; };
 		48D933C416E0B6D600B8C68D /* PhotoJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoJSONHandler.h; path = SnapGab/PhotoJSONHandler.h; sourceTree = "<group>"; };
@@ -616,6 +618,7 @@
 		48D0EA8016CD4B8600FE11E2 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				48D58FFC1704A93B002ACF3E /* cellBackground.png */,
 				48D58FEF1704A23D002ACF3E /* groupDecoration.png */,
 				48D58FF01704A23D002ACF3E /* groupDecoration@2x.png */,
 				48D58FF11704A23D002ACF3E /* groupBackground.png */,
@@ -835,6 +838,7 @@
 				48D58FF41704A23D002ACF3E /* groupDecoration@2x.png in Resources */,
 				48D58FF51704A23D002ACF3E /* groupBackground.png in Resources */,
 				48D58FF61704A23D002ACF3E /* groupBackground@2x.png in Resources */,
+				48D58FFD1704A93B002ACF3E /* cellBackground.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
