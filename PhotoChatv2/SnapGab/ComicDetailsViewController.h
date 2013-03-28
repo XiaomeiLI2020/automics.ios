@@ -25,5 +25,6 @@
 @property (strong, nonatomic) IBOutlet UIButton *editPressed;
 
 @property int comicId;
+@property UIActivityIndicatorView *activityIndicator;
 
 @end

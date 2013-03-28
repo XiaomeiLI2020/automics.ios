@@ -37,10 +37,11 @@
 
 @synthesize panels;
 @synthesize sessionToken;
+@synthesize activityIndicator;
 
 BOOL _bubblesAdded;
 BOOL _resourcesAdded;
-bool initialized;
+BOOL initialized;
 
 PanelLoader *panelsLoader;
 ResourceLoader *resourceLoader;
@@ -203,6 +204,7 @@ NSMutableArray* downloadedPanels;
     
     _bubblesAdded = NO;
     _resourcesAdded = NO;
+    initialized = NO;
 
 }
 
@@ -221,15 +223,22 @@ NSMutableArray* downloadedPanels;
     //NSLog(@"viewDidLoad");
     [self initiateDataSet];
     [self initiateScrollViews];
+    
+    
+    activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	activityIndicator.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
+	activityIndicator.center = self.view.center;
+	[self.view addSubview: activityIndicator];
+    [activityIndicator startAnimating];
+    
     [panelsLoader submitRequestGetPanelsForGroup:1];
-    //[self loadPanelsToScrollViews];
+
 
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     //NSLog(@"viewDidAppear");
-    [self loadPanelsToScrollViews];
 
 }
 
@@ -302,6 +311,8 @@ NSMutableArray* downloadedPanels;
     //NSLog(@"alignPageInPhotoTableView.numPanels=%i", numPanels);
     if(numPanels>0)
     {
+        [activityIndicator startAnimating];
+        
         //NSLog(@"alignPage. numPanels= %i", numPanels);
         //Constrain horizontal page position and add bubbles and resources
         CGFloat pos = (CGFloat)self.panelScrollView.contentOffset.x / panelWidth;
@@ -331,6 +342,7 @@ NSMutableArray* downloadedPanels;
                 imageView.frame = CGRectMake(currentPage*panelScrollObjWidth, 0, panelScrollObjWidth, panelScrollObjHeight);                
                 imageView.tag = currentPage;	// tag our images for later use when we place them in serial fashion
     
+                [activityIndicator stopAnimating];
                 // add images to the panel scrollview
                 [panelScrollView addSubview:imageView];
                 
@@ -636,9 +648,9 @@ NSMutableArray* downloadedPanels;
             {
                 if(currentPanel.photo!=nil)
                 {
-                    if(currentPanel.photo.photoId>0)
+                    //if(currentPanel.photo.photoId>0)
                     {
-                        urlImageString = currentPanel.photo.imageURL;
+                        //urlImageString = currentPanel.photo.imageURL;
                         //NSLog(@"loadPanelsToScrollViews.panel.panelId=%i and imageurl=%@",currentPanel.panelId, urlImageString);
                       
                         //Download the latest panel and add to the panelscrollview
@@ -790,7 +802,7 @@ NSMutableArray* downloadedPanels;
                         float defaultScale = 1.0;
                         float defaultAngle = 0.0;
                         
-                        CGRect resourceFrame;
+                        CGRect resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
                         if([type isEqual:@"d"])
                         {
                             if(currentPanel.placements!=nil && [currentPanel.placements count]>placementCounter)
@@ -871,6 +883,14 @@ NSMutableArray* downloadedPanels;
 
     panels= panelsLocal;
     numPanels = [panelsLocal count];
+    
+    if(!initialized)
+    {
+        initialized = YES;
+        [self loadPanelsToScrollViews];
+        [activityIndicator stopAnimating];
+        
+    }
  
     //NSLog(@"didLoadPanels.numPanels=%i", numPanels);
     //initialzed array to boolean NO. No panel downloaded yet.
@@ -879,6 +899,8 @@ NSMutableArray* downloadedPanels;
         NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
         [downloadedPanels addObject:panelDownloaded];
     }
+    
+
  
 }
 
@@ -970,7 +992,7 @@ NSMutableArray* downloadedPanels;
         float defaultScale = 1.0;
         float defaultAngle = 0.0;
 
-        CGRect resourceFrame;
+        CGRect resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
         if([type isEqual:@"d"])
         {
             if(currentPanel.placements!=nil && [currentPanel.placements count]>placementCounter)

@@ -225,7 +225,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         {
             NSString* type = resource.type;
             
-            CGRect resourceFrame;
+            CGRect resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
             if([type isEqual:@"d"])
             {
                 resourceFrame = CGRectMake(100, 100, decoratorWidth, decoratorHeight);
@@ -553,10 +553,10 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         //int resourceId = resource.resourceId;
         NSString* thumb_url = resource.thumbURL;
         
-        UIImage *image = [UIImage imageNamed:resource.thumbURL];
+        //UIImage *image = [UIImage imageNamed:resource.thumbURL];
         
         NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:thumb_url]];
-        image = [UIImage imageWithData:imageURL];
+         UIImage *image = [UIImage imageWithData:imageURL];
         
         UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
         [styleButton setImage:image forState:UIControlStateNormal];

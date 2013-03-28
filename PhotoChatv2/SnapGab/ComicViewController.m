@@ -174,7 +174,7 @@ NSArray* comicList;
                 
                 cell.comicButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                 [cell.comicButton setTitle:buttonTitle forState:UIControlStateNormal];
-                cell.comicButton.frame = CGRectMake(10.0, 10.0, 70.0, 20.0);
+                cell.comicButton.frame = CGRectMake(10.0, 5.0, 70.0, 40.0);
                 cell.comicButton.tag = comicId;
                 //cell.comicButton.tag = indexPath.row+1;
                 [cell.comicButton addTarget:self action:@selector(viewComicDetails:) forControlEvents:UIControlEventTouchDown];
