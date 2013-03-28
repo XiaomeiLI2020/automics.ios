@@ -33,7 +33,7 @@
         NSString* imageURL = [DataValidator checkKeyValueForNull:[resourceJSON valueForKey:@"image_url"]];
         if (imageURL != nil)
         {
-            imageURL = [APIWrapper getAbsoluteURLUsingPanelImageRelativePath:imageURL];
+            imageURL = [APIWrapper getAbsoluteURLUsingImageRelativePath:imageURL];
             resource.imageURL = imageURL;
         }
     }
@@ -42,7 +42,7 @@
         NSString* thumbURL = [DataValidator checkKeyValueForNull:[resourceJSON valueForKey:@"thumb_url"]];
         if (thumbURL != nil)
         {
-            thumbURL = [APIWrapper getAbsoluteURLUsingPanelImageRelativePath:thumbURL];
+            thumbURL = [APIWrapper getAbsoluteURLUsingImageRelativePath:thumbURL];
             resource.thumbURL = thumbURL;
         }
     }

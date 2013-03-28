@@ -16,12 +16,13 @@
 }
 @property (weak) id<ImageDownloaderDelegate> delegate;
 @property (readonly) UIImage* image;
+@property NSObject *obj;
 
 -(id)initWithImageURL:(NSString*)imageURL;
 @end
 
 @protocol ImageDownloaderDelegate <NSObject>
 @optional
--(void)imageDownloader:(ImageDownloader*)imageDownloader didLoadImage:(UIImage*)image;
+-(void)imageDownloader:(ImageDownloader*)imageDownloader didLoadImage:(UIImage*)image forObject:(NSObject*)obj;
 -(void)imageDownloader:(ImageDownloader *)imageDownloader didFailWithError:(NSError*)error;
 @end

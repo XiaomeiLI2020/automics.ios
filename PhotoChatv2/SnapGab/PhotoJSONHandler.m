@@ -22,6 +22,16 @@ NSString* THUMB_URL = @"thumb_url";
 NSString* NAME = @"name";
 NSString* BLOB = @"blob";
 
+
++(NSArray*)convertPhotosJSONArrayIntoPhotos:(NSArray*)photosJSON{
+    NSMutableArray *photos = [[NSMutableArray alloc] initWithCapacity:photosJSON.count];
+    for (NSDictionary *obj in photosJSON){
+        Photo *photo = [PhotoJSONHandler convertPhotoJSONIntoPhoto:obj];
+        [photos addObject:photo];
+    }
+    return photos;
+}
+
 +(NSDictionary*)convertPhotoIntoPhotoJSON:(Photo*)photo{
     NSMutableDictionary *photodict = [[NSMutableDictionary alloc] init];
     if (photo.photoId > 0)

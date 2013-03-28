@@ -18,14 +18,23 @@
 @implementation PhotoLoader
 
 int const kPostPhoto = 1;
+int const kGetPhotosForGroup = 2;
+
 @synthesize photoRequestType;
 @synthesize delegate;
+@synthesize obj;
 
 -(void)submitRequestPostPhoto:(Photo*)photo{
     photoRequestType = kPostPhoto;
     NSURLRequest* urlRequest = [self preparePhotoRequestForPostPhoto:photo];
     [self submitPhotoRequest:urlRequest];
 
+}
+
+-(void)submitRequestGetPhotosForGroup:(NSString*)groupHashId{
+    photoRequestType = kGetPhotosForGroup;
+    NSURLRequest *urlRequest = [self prepareRequestForGetPhotosForGroup:groupHashId];
+    [self submitPhotoRequest:urlRequest];
 }
 
 -(NSURLRequest*)preparePhotoRequestForPostPhoto:(Photo*)photo{
@@ -38,19 +47,19 @@ int const kPostPhoto = 1;
     return urlRequest;
 }
 
+-(NSURLRequest*)prepareRequestForGetPhotosForGroup:(NSString*)groupHashId{
+    NSString *photoURL = [APIWrapper getURLForGetPhotosForGroup:groupHashId];
+    photoURL = [self authenticatedGetURL:photoURL];
+    NSURL* url = [NSURL URLWithString:photoURL];
+    return [NSURLRequest requestWithURL:url];
+}
 
 -(void)setPhotoPostData:(Photo*)photo InURLRequest:(NSMutableURLRequest*)urlRequest{
     NSDictionary* photodict = [PhotoJSONHandler convertPhotoIntoPhotoJSON:photo];
-    
     photodict = [self authenticatedPostData:photodict];
-    
     photodict = [PhotoJSONHandler wrapJSONDictWithDataTag:photodict];
     NSError *error;
     NSData* data = [NSJSONSerialization dataWithJSONObject:photodict options:NSJSONWritingPrettyPrinted error:&error];
-    /*
-    NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"photoData: %@", responseString);
-    */
    [urlRequest setHTTPBody:data];
 }
 
@@ -71,6 +80,19 @@ int const kPostPhoto = 1;
     }
 }
 
+-(void)handleGetPhotosForGroup{
+    NSError* error;
+    NSArray* photosJSON = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+    if (photosJSON != nil){
+        NSArray *photos = [PhotoJSONHandler convertPhotosJSONArrayIntoPhotos:photosJSON];
+        if ([self.delegate respondsToSelector:@selector(PhotoLoader:didLoadPhotos:forObject:)])
+                [self.delegate PhotoLoader:self didLoadPhotos:photos forObject:obj];
+        else{
+            [self reportErrorToDelegate:error];
+        }
+    }
+}
+
 -(void)reportErrorToDelegate:(NSError*)error{
     if ([self.delegate respondsToSelector:@selector(PhotoLoader:didFailWithError:)])
         [delegate PhotoLoader:self didFailWithError:error];
@@ -86,7 +108,9 @@ int const kPostPhoto = 1;
             case kPostPhoto:
                 [self handlePostPhoto];
                 break;
-                
+            case kGetPhotosForGroup:
+                [self handleGetPhotosForGroup];
+                break;
         }
     }
 }
