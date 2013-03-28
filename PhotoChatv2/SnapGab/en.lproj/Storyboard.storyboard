@@ -187,7 +187,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="Egv-5e-YEj" kind="push" id="cDf-Ra-7g8"/>
+                                    <segue destination="Egv-5e-YEj" kind="modal" id="cDf-Ra-7g8"/>
                                 </connections>
                             </button>
                         </subviews>
