@@ -32,7 +32,7 @@
         NSString* url = [panelJSON objectForKey:@"photo_url"];
         url = [DataValidator checkKeyValueForNull:url];
         if (url != nil){
-            url = [APIWrapper getAbsoluteURLUsingPanelImageRelativePath:url];
+            url = [APIWrapper getAbsoluteURLUsingImageRelativePath:url];
             photo.imageURL = url;
             
         }

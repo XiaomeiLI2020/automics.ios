@@ -35,10 +35,6 @@
 		48C71E9E16EF86BF009ACD6A /* JSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C71E9D16EF86BF009ACD6A /* JSONHandler.m */; };
 		48C71EB216EF88A1009ACD6A /* Organisation.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C71EAF16EF88A1009ACD6A /* Organisation.m */; };
 		48C71EB316EF88A1009ACD6A /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C71EB116EF88A1009ACD6A /* Theme.m */; };
-		48C8C21E16F319A50010FB13 /* GroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C8C21716F319A50010FB13 /* GroupCell.m */; };
-		48C8C21F16F319A50010FB13 /* GroupLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C8C21916F319A50010FB13 /* GroupLayout.m */; };
-		48C8C22016F319A50010FB13 /* GroupsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48C8C21B16F319A50010FB13 /* GroupsViewController.mm */; };
-		48C8C22116F319A50010FB13 /* QRView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C8C21D16F319A50010FB13 /* QRView.m */; };
 		48C8C27016F31F030010FB13 /* libqrencoder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48C8C26216F31D820010FB13 /* libqrencoder.a */; };
 		48CAFD2E16CE789600D8EB4C /* DataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CAFD2D16CE789600D8EB4C /* DataLoader.m */; };
 		48CAFD3216CE943900D8EB4C /* APIConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CAFD3116CE943800D8EB4C /* APIConstant.m */; };
@@ -47,6 +43,17 @@
 		48D0807016D4EC6800346465 /* ImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D0806D16D4EC6800346465 /* ImageDownloader.m */; };
 		48D0807116D4EC6800346465 /* PanelLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D0806F16D4EC6800346465 /* PanelLoader.m */; };
 		48D0EA7F16CD4B7200FE11E2 /* ResourceImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D0EA7E16CD4B7100FE11E2 /* ResourceImageView.m */; };
+		48D58FDE1704A07D002ACF3E /* GroupsFlowViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48D58FDD1704A07D002ACF3E /* GroupsFlowViewController.mm */; };
+		48D58FE11704A0B2002ACF3E /* GroupCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D58FE01704A0B2002ACF3E /* GroupCollectionViewCell.m */; };
+		48D58FE41704A0E6002ACF3E /* GroupCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D58FE31704A0E6002ACF3E /* GroupCollectionViewLayout.m */; };
+		48D58FE81704A119002ACF3E /* GroupQRView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D58FE61704A119002ACF3E /* GroupQRView.m */; };
+		48D58FE91704A119002ACF3E /* GroupQRView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FE71704A119002ACF3E /* GroupQRView.xib */; };
+		48D58FEC1704A145002ACF3E /* GroupDecorationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D58FEB1704A145002ACF3E /* GroupDecorationView.m */; };
+		48D58FEE1704A1E7002ACF3E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48D58FED1704A1E7002ACF3E /* QuartzCore.framework */; };
+		48D58FF31704A23D002ACF3E /* groupDecoration.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FEF1704A23D002ACF3E /* groupDecoration.png */; };
+		48D58FF41704A23D002ACF3E /* groupDecoration@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FF01704A23D002ACF3E /* groupDecoration@2x.png */; };
+		48D58FF51704A23D002ACF3E /* groupBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FF11704A23D002ACF3E /* groupBackground.png */; };
+		48D58FF61704A23D002ACF3E /* groupBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FF21704A23D002ACF3E /* groupBackground@2x.png */; };
 		48D933C216E0B6C000B8C68D /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D933C116E0B6C000B8C68D /* Photo.m */; };
 		48D933C816E0B6D600B8C68D /* PhotoJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D933C516E0B6D600B8C68D /* PhotoJSONHandler.m */; };
 		48D933C916E0B6D600B8C68D /* PhotoLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D933C716E0B6D600B8C68D /* PhotoLoader.m */; };
@@ -185,14 +192,6 @@
 		48C71EB016EF88A1009ACD6A /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Theme.h; path = SnapGab/Theme.h; sourceTree = "<group>"; };
 		48C71EB116EF88A1009ACD6A /* Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Theme.m; path = SnapGab/Theme.m; sourceTree = "<group>"; };
 		48C71EB416EF88E5009ACD6A /* Organisation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Organisation.h; path = SnapGab/Organisation.h; sourceTree = "<group>"; };
-		48C8C21616F319A50010FB13 /* GroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GroupCell.h; path = SnapGab/GroupCell.h; sourceTree = "<group>"; };
-		48C8C21716F319A50010FB13 /* GroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GroupCell.m; path = SnapGab/GroupCell.m; sourceTree = "<group>"; };
-		48C8C21816F319A50010FB13 /* GroupLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GroupLayout.h; path = SnapGab/GroupLayout.h; sourceTree = "<group>"; };
-		48C8C21916F319A50010FB13 /* GroupLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GroupLayout.m; path = SnapGab/GroupLayout.m; sourceTree = "<group>"; };
-		48C8C21A16F319A50010FB13 /* GroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GroupsViewController.h; path = SnapGab/GroupsViewController.h; sourceTree = "<group>"; };
-		48C8C21B16F319A50010FB13 /* GroupsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GroupsViewController.mm; path = SnapGab/GroupsViewController.mm; sourceTree = "<group>"; };
-		48C8C21C16F319A50010FB13 /* QRView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QRView.h; path = SnapGab/QRView.h; sourceTree = "<group>"; };
-		48C8C21D16F319A50010FB13 /* QRView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QRView.m; path = SnapGab/QRView.m; sourceTree = "<group>"; };
 		48C8C25816F31D820010FB13 /* QRCodeEncoderObjectiveCAtGithub.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = QRCodeEncoderObjectiveCAtGithub.xcodeproj; sourceTree = "<group>"; };
 		48CAFD2C16CE789600D8EB4C /* DataLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataLoader.h; path = SnapGab/DataLoader.h; sourceTree = "<group>"; };
 		48CAFD2D16CE789600D8EB4C /* DataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataLoader.m; path = SnapGab/DataLoader.m; sourceTree = "<group>"; };
@@ -208,6 +207,22 @@
 		48D0806F16D4EC6800346465 /* PanelLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PanelLoader.m; path = SnapGab/PanelLoader.m; sourceTree = "<group>"; };
 		48D0EA7D16CD4B7100FE11E2 /* ResourceImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceImageView.h; sourceTree = "<group>"; };
 		48D0EA7E16CD4B7100FE11E2 /* ResourceImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceImageView.m; sourceTree = "<group>"; };
+		48D58FDC1704A07D002ACF3E /* GroupsFlowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupsFlowViewController.h; sourceTree = "<group>"; };
+		48D58FDD1704A07D002ACF3E /* GroupsFlowViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GroupsFlowViewController.mm; sourceTree = "<group>"; };
+		48D58FDF1704A0B2002ACF3E /* GroupCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupCollectionViewCell.h; sourceTree = "<group>"; };
+		48D58FE01704A0B2002ACF3E /* GroupCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupCollectionViewCell.m; sourceTree = "<group>"; };
+		48D58FE21704A0E6002ACF3E /* GroupCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GroupCollectionViewLayout.h; path = SnapGab/GroupCollectionViewLayout.h; sourceTree = "<group>"; };
+		48D58FE31704A0E6002ACF3E /* GroupCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GroupCollectionViewLayout.m; path = SnapGab/GroupCollectionViewLayout.m; sourceTree = "<group>"; };
+		48D58FE51704A119002ACF3E /* GroupQRView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GroupQRView.h; path = SnapGab/GroupQRView.h; sourceTree = "<group>"; };
+		48D58FE61704A119002ACF3E /* GroupQRView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GroupQRView.m; path = SnapGab/GroupQRView.m; sourceTree = "<group>"; };
+		48D58FE71704A119002ACF3E /* GroupQRView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GroupQRView.xib; path = SnapGab/GroupQRView.xib; sourceTree = "<group>"; };
+		48D58FEA1704A145002ACF3E /* GroupDecorationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GroupDecorationView.h; path = SnapGab/GroupDecorationView.h; sourceTree = "<group>"; };
+		48D58FEB1704A145002ACF3E /* GroupDecorationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GroupDecorationView.m; path = SnapGab/GroupDecorationView.m; sourceTree = "<group>"; };
+		48D58FED1704A1E7002ACF3E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		48D58FEF1704A23D002ACF3E /* groupDecoration.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = groupDecoration.png; sourceTree = "<group>"; };
+		48D58FF01704A23D002ACF3E /* groupDecoration@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "groupDecoration@2x.png"; sourceTree = "<group>"; };
+		48D58FF11704A23D002ACF3E /* groupBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = groupBackground.png; sourceTree = "<group>"; };
+		48D58FF21704A23D002ACF3E /* groupBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "groupBackground@2x.png"; sourceTree = "<group>"; };
 		48D933C016E0B6C000B8C68D /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Photo.h; path = SnapGab/Photo.h; sourceTree = "<group>"; };
 		48D933C116E0B6C000B8C68D /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Photo.m; path = SnapGab/Photo.m; sourceTree = "<group>"; };
 		48D933C416E0B6D600B8C68D /* PhotoJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoJSONHandler.h; path = SnapGab/PhotoJSONHandler.h; sourceTree = "<group>"; };
@@ -347,6 +362,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48D58FEE1704A1E7002ACF3E /* QuartzCore.framework in Frameworks */,
 				48C8C27016F31F030010FB13 /* libqrencoder.a in Frameworks */,
 				1D92BFD81666332300CB37B3 /* MapKit.framework in Frameworks */,
 				1D92BFD51666330E00CB37B3 /* ImageIO.framework in Frameworks */,
@@ -363,6 +379,7 @@
 		1D8D5077165FADC600C9817C = {
 			isa = PBXGroup;
 			children = (
+				48D58FED1704A1E7002ACF3E /* QuartzCore.framework */,
 				48C8C25816F31D820010FB13 /* QRCodeEncoderObjectiveCAtGithub.xcodeproj */,
 				48C8C21416F319640010FB13 /* Group */,
 				48D0806816D4EA6D00346465 /* Model */,
@@ -476,14 +493,17 @@
 		48C8C21416F319640010FB13 /* Group */ = {
 			isa = PBXGroup;
 			children = (
-				48C8C21616F319A50010FB13 /* GroupCell.h */,
-				48C8C21716F319A50010FB13 /* GroupCell.m */,
-				48C8C21816F319A50010FB13 /* GroupLayout.h */,
-				48C8C21916F319A50010FB13 /* GroupLayout.m */,
-				48C8C21A16F319A50010FB13 /* GroupsViewController.h */,
-				48C8C21B16F319A50010FB13 /* GroupsViewController.mm */,
-				48C8C21C16F319A50010FB13 /* QRView.h */,
-				48C8C21D16F319A50010FB13 /* QRView.m */,
+				48D58FEA1704A145002ACF3E /* GroupDecorationView.h */,
+				48D58FEB1704A145002ACF3E /* GroupDecorationView.m */,
+				48D58FE51704A119002ACF3E /* GroupQRView.h */,
+				48D58FE61704A119002ACF3E /* GroupQRView.m */,
+				48D58FE71704A119002ACF3E /* GroupQRView.xib */,
+				48D58FE21704A0E6002ACF3E /* GroupCollectionViewLayout.h */,
+				48D58FE31704A0E6002ACF3E /* GroupCollectionViewLayout.m */,
+				48D58FDF1704A0B2002ACF3E /* GroupCollectionViewCell.h */,
+				48D58FE01704A0B2002ACF3E /* GroupCollectionViewCell.m */,
+				48D58FDC1704A07D002ACF3E /* GroupsFlowViewController.h */,
+				48D58FDD1704A07D002ACF3E /* GroupsFlowViewController.mm */,
 			);
 			name = Group;
 			sourceTree = "<group>";
@@ -596,6 +616,10 @@
 		48D0EA8016CD4B8600FE11E2 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				48D58FEF1704A23D002ACF3E /* groupDecoration.png */,
+				48D58FF01704A23D002ACF3E /* groupDecoration@2x.png */,
+				48D58FF11704A23D002ACF3E /* groupBackground.png */,
+				48D58FF21704A23D002ACF3E /* groupBackground@2x.png */,
 				48F6278016D6442A0034A5A7 /* close_gold.png */,
 				48F6278116D6442A0034A5A7 /* rotate.png */,
 				48F6278216D6442A0034A5A7 /* scale.png */,
@@ -806,6 +830,11 @@
 				48F6278316D6442A0034A5A7 /* close_gold.png in Resources */,
 				48F6278416D6442A0034A5A7 /* rotate.png in Resources */,
 				48F6278516D6442A0034A5A7 /* scale.png in Resources */,
+				48D58FE91704A119002ACF3E /* GroupQRView.xib in Resources */,
+				48D58FF31704A23D002ACF3E /* groupDecoration.png in Resources */,
+				48D58FF41704A23D002ACF3E /* groupDecoration@2x.png in Resources */,
+				48D58FF51704A23D002ACF3E /* groupBackground.png in Resources */,
+				48D58FF61704A23D002ACF3E /* groupBackground@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -879,10 +908,11 @@
 				48C71E9E16EF86BF009ACD6A /* JSONHandler.m in Sources */,
 				48C71EB216EF88A1009ACD6A /* Organisation.m in Sources */,
 				48C71EB316EF88A1009ACD6A /* Theme.m in Sources */,
-				48C8C21E16F319A50010FB13 /* GroupCell.m in Sources */,
-				48C8C21F16F319A50010FB13 /* GroupLayout.m in Sources */,
-				48C8C22016F319A50010FB13 /* GroupsViewController.mm in Sources */,
-				48C8C22116F319A50010FB13 /* QRView.m in Sources */,
+				48D58FDE1704A07D002ACF3E /* GroupsFlowViewController.mm in Sources */,
+				48D58FE11704A0B2002ACF3E /* GroupCollectionViewCell.m in Sources */,
+				48D58FE41704A0E6002ACF3E /* GroupCollectionViewLayout.m in Sources */,
+				48D58FE81704A119002ACF3E /* GroupQRView.m in Sources */,
+				48D58FEC1704A145002ACF3E /* GroupDecorationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

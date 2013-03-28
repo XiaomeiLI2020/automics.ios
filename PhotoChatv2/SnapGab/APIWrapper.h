@@ -17,7 +17,8 @@
 +(NSString*)getURLForGetPanelWithId:(int)panelId;
 +(NSString*)getURLForPostPanel;
 +(NSString*)getURLForPostPhoto;
-+(NSString*)getAbsoluteURLUsingPanelImageRelativePath:(NSString*)imageURL;
++(NSString*)getURLForGetPhotosForGroup:(NSString*)groupHashId;
++(NSString*)getAbsoluteURLUsingImageRelativePath:(NSString*)imageURL;
 +(NSString*)getURLForGetResourceWithId:(int)resourceId;
 +(NSString*)getURLForGetAnnotationWithId:(int)annotationId;
 +(NSString*)getURLForGetComics;

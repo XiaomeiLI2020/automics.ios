@@ -12,12 +12,15 @@
 @protocol PhotoLoaderDelegate;
 
 @interface PhotoLoader : DataLoader
+@property NSObject *obj;
 @property (weak) id<PhotoLoaderDelegate> delegate;
 -(void)submitRequestPostPhoto:(Photo*)photo;
+-(void)submitRequestGetPhotosForGroup:(NSString*)groupHashId;
 @end
 
 @protocol PhotoLoaderDelegate<NSURLConnectionDataDelegate>
 @optional
 -(void)PhotoLoader:(PhotoLoader*)photoLoader didUploadPhoto:(Photo*)photo;
+-(void)PhotoLoader:(PhotoLoader *)photoLoader didLoadPhotos:(NSArray*)photos forObject:(NSObject*)obj;
 -(void)PhotoLoader:(PhotoLoader*)photoLoader didFailWithError:(NSError*)error;
 @end

@@ -20,6 +20,7 @@
 @synthesize delegate;
 @synthesize imageURL;
 @synthesize image;
+@synthesize obj;
 
 -(id)initWithImageURL:(NSString *)url{
     self = [super init];
@@ -46,8 +47,8 @@
     [super connectionDidFinishLoading:connection];
     downloading = NO;
     image = [UIImage imageWithData:self.downloadedData];
-    if ([self.delegate respondsToSelector:@selector(imageDownloader:didLoadImage:)]){
-        [self.delegate imageDownloader:self didLoadImage:image];
+    if ([self.delegate respondsToSelector:@selector(imageDownloader:didLoadImage:forObject:)]){
+        [self.delegate imageDownloader:self didLoadImage:image forObject:obj];
     }
 }
 

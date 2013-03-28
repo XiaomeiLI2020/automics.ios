@@ -29,7 +29,7 @@
     return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL,kAPIURL,kPhotoURL];
 }
 
-+(NSString*)getAbsoluteURLUsingPanelImageRelativePath:(NSString*)imageURL{
++(NSString*)getAbsoluteURLUsingImageRelativePath:(NSString*)imageURL{
     return [NSString stringWithFormat:@"%@%@", kBaseURL, imageURL];
 }
 
@@ -81,6 +81,10 @@
 
 +(NSString*)getURLForPostGroupMembership{
     return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL, kAPIURL, kMembershipURL];
+}
+
++(NSString*)getURLForGetPhotosForGroup:(NSString*)groupHashId{
+    return [NSString stringWithFormat:@"%@/%@/%@",[self getURLForGetGroup], groupHashId, kPhotoURL];
 }
 
 
