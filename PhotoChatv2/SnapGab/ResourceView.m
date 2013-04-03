@@ -9,6 +9,8 @@
 #import "ResourceView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "GUIConstant.h"
+#import "UIImageView+WebCache.h"
+
 
 @interface ResourceView()
 {
@@ -35,11 +37,14 @@
 @synthesize urlImageString;
 @synthesize type;
 @synthesize styleId = _styleId;
-@synthesize imageView = _imageView;
+@synthesize imageView =_imageView;
 @synthesize longPressed;
 @synthesize actionPerformed;
 @synthesize angle;
 @synthesize resource;
+@synthesize originalOrigin;
+@synthesize originalImageSize;
+@synthesize originalFrame;
 
 UITapGestureRecognizer *resourceTapRecognizer;
 UITapGestureRecognizer *deleteGesture;
@@ -86,7 +91,11 @@ CGRect originalBounds;
         
         if(resourceSent!=nil)
         {
-            self.frame = frame;
+            //self.frame = frame;
+            
+            //self.originalFrame = frame;
+            
+            //__weak ResourceView *self_ = self;
             
             self.resource = resourceSent;
             self.urlImageString = resource.imageURL;
@@ -95,39 +104,146 @@ CGRect originalBounds;
             self.scale = scaleSent;
             self.angle = angleSent;
             
+            //NSLog(@"original self.frame=%@", NSStringFromCGRect(self.frame));
+            //NSLog(@"original self.bounds%@", NSStringFromCGRect(self.bounds));
+            originalOrigin = frame.origin;
             
-            NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:resource.imageURL]];
-            UIImage *image = [UIImage imageWithData:imageURL];
             
-            _imageView = [[UIImageView alloc] initWithImage:image];
-            _imageView.userInteractionEnabled = NO;
+            //NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:resource.imageURL]];
+            //UIImage *image = [UIImage imageWithData:imageURL];
+            
             /*
-            NSLog(@"original imageview.frame=%@", NSStringFromCGRect(_imageView.frame));
-            NSLog(@"original imageview.bounds%@", NSStringFromCGRect(_imageView.bounds));
-            NSLog(@"original self.scale%f", self.scale);
-            NSLog(@"original self.angle%f", self.angle);
-            */
-            originalBounds = _imageView.frame;
+             UIImageView *imageView = [[UIImageView alloc] init];
+             [imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
+             */
+            
+            /*
+             NSLog(@"original imageview.frame=%@", NSStringFromCGRect(_imageView.frame));
+             NSLog(@"original imageview.bounds%@", NSStringFromCGRect(_imageView.bounds));
+             NSLog(@"original self.scale=%f", self.scale);
+             NSLog(@"original self.angle=%f", self.angle);
+             */
+            
+            //_imageView = [[UIImageView alloc] initWithImage:image];
+            _imageView = [[UIImageView alloc] init];
+            __weak UIImageView *imageView_ = _imageView;
+            
+            __weak ResourceView *self_ = self;
+            //[_imageView setImageWithURL:[NSURL URLWithString:resource.imageURL]
+            //           placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
+            
+            [_imageView setImageWithURL:[NSURL URLWithString:resource.imageURL]
+                           placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]
+                                    success:^(UIImage *imageDownloaded) {
+                                        //NSLog(@"image successfully downloaded.");
+                                        //_imageView.image = imageDownloaded;
+                                        
+                                        //NSLog(@"imageDownloaded.size=%@", NSStringFromCGSize(imageDownloaded.size));
+                                        
+                                        
+                                        //_imageView.userInteractionEnabled = NO;
+                                        imageView_.userInteractionEnabled = NO;
+                                        
+                                        //NSLog(@"original _imageView.image.size=%@", NSStringFromCGSize(imageDownloaded.size));
+                                        //originalImageSize = imageDownloaded.size;
+                                        originalBounds = CGRectMake(0.0, 0.0,imageDownloaded.size.width,imageDownloaded.size.height);
+                                        originalWidth = CGRectGetWidth(originalBounds);
+                                        originalDiagonal = sqrtf(CGRectGetHeight(originalBounds)*CGRectGetHeight(originalBounds) +
+                                                                 CGRectGetWidth(originalBounds)*CGRectGetWidth(originalBounds) );
+                                        [imageView_ setFrame:CGRectMake(0.0,0.0,imageDownloaded.size.width*self_.scale, imageDownloaded.size.height*self_.scale)];
+                                        //[_imageView setFrame:CGRectMake(0.0,0.0,_imageView.frame.size.width*self.scale, _imageView.frame.size.height*self.scale)];
+                                        [self_ addSubview:imageView_];
+                                        
+                                        
+                                        
+                                        if([self_.resource.type isEqual:@"d"])
+                                        {
+                                            /*
+                                            NSLog(@"original _imageView.image.size=%@", NSStringFromCGSize(_imageView.image.size));
+                                            NSLog(@"original self.scale=%f", self.scale);
+                                            NSLog(@"original self.angle=%f", self.angle);
+                                            */
+                                            //NSLog(@"original _imageView.frame=%@", NSStringFromCGRect(_imageView.frame));
+                                            //NSLog(@"original imageview.bounds%@", NSStringFromCGRect(_imageView.bounds));
+                                           
+                                             //[_imageView setFrame:CGRectMake(0.0,0.0,200, 200)];
+                                            
+                                            CGRect selfFrame = self_.frame;
+                                            selfFrame.size = imageView_.frame.size;
+                                            self_.frame = selfFrame;
+                                            
+                                            //NSLog(@"after imageAdd, original self.frame=%@", NSStringFromCGRect(self.frame));
+                                            //NSLog(@"after imageAdd, self.bounds%@", NSStringFromCGRect(self.bounds));
+                                           // [self setFrame:CGRectMake(self.frame.origin.x,self.frame.origin.x,_imageView.image.size.width*self.scale, _imageView.image.size.height*self.scale)];
+                                            
+                                            //self.transform = CGAffineTransformScale(self.transform, self.scale, self.scale);
+                                            //NSLog(@"self.angle=%f", self.angle);
+                                            self_.transform = CGAffineTransformMakeRotation(self_.angle);
+                                            
+                                            //NSLog(@"after rotation, self.frame=%@", NSStringFromCGRect(self.frame));
+                                            //NSLog(@"after rotation, original self.bounds%@", NSStringFromCGRect(self.bounds));
+                                        }
+                                        
+                                        else if([self_.type isEqual:@"f"])
+                                            
+                                        {
+                                            
+                                            [imageView_ setFrame:CGRectMake(0.0,0.0,self_.frame.size.width, self_.frame.size.height)];
+                                            //_imageView.frame = self.frame;
+                                            
+                                        }
+                                        
+                                        
+                                        alertShown = NO;
+                                        self_.longPressed = NO;
+                                        self_.actionPerformed = NO;
+                                        
+                                        resourceTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self_ action:@selector(handleTapGesture:)];
+                                        //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
+                                        resourceTapRecognizer.cancelsTouchesInView = NO;
+                                        [self_ addGestureRecognizer:resourceTapRecognizer];
+                                        
+                                        
+                                    }
+                                    failure:^(NSError *error) {
+                                        UIAlertView *alert = [[UIAlertView alloc]
+                                                              initWithTitle: @"Load failed"
+                                                              message: @"Failed to load image"
+                                                              delegate: nil
+                                                              cancelButtonTitle:@"OK"
+                                                              otherButtonTitles:nil];
+                                        [alert show];
+                                    }];
+            /*
+            _imageView.userInteractionEnabled = NO;
+
+            NSLog(@"original _imageView.image.size=%@", NSStringFromCGSize(_imageView.image.size));
+            originalBounds = CGRectMake(0.0, 0.0,_imageView.image.size.width,_imageView.image.size.height);
             originalWidth = CGRectGetWidth(originalBounds);
             originalDiagonal = sqrtf(CGRectGetHeight(originalBounds)*CGRectGetHeight(originalBounds) +
                                      CGRectGetWidth(originalBounds)*CGRectGetWidth(originalBounds) );
-            [_imageView setFrame:CGRectMake(0.0,0.0,_imageView.frame.size.width*self.scale, _imageView.frame.size.height*self.scale)];
+            [_imageView setFrame:CGRectMake(0.0,0.0,_imageView.image.size.width*self.scale, _imageView.image.size.height*self.scale)];
+            //[_imageView setFrame:CGRectMake(0.0,0.0,_imageView.frame.size.width*self.scale, _imageView.frame.size.height*self.scale)];
             [self addSubview:_imageView];
-            
-            //[self.imageView setFrame:CGRectMake(0.0,0.0,self.imageView.frame.size.width*self.scale, self.imageView.frame.size.height*self.scale)];
-            //[self addSubview:self.imageView];
-            
             
             
             
             if([resource.type isEqual:@"d"])
             {
-                    
+                NSLog(@"original _imageView.image.size=%@", NSStringFromCGSize(_imageView.image.size));
+                NSLog(@"original self.scale=%f", self.scale);
+                NSLog(@"original self.angle=%f", self.angle);
+                NSLog(@"original _imageView.frame=%@", NSStringFromCGRect(_imageView.frame));
+                NSLog(@"original imageview.bounds%@", NSStringFromCGRect(_imageView.bounds));
+                //[_imageView setFrame:CGRectMake(0.0,0.0,200, 200)];
+                
                     CGRect selfFrame = self.frame;
                     selfFrame.size = _imageView.frame.size;
                     self.frame = selfFrame;
-                    
-                    //self.transform = CGAffineTransformScale(self.transform, self.scale, self.scale);
+                
+                [self setFrame:CGRectMake(self.frame.origin.x,self.frame.origin.x,_imageView.image.size.width*self.scale, _imageView.image.size.height*self.scale)];
+                
+                    self.transform = CGAffineTransformScale(self.transform, self.scale, self.scale);
                     //NSLog(@"self.angle=%f", self.angle);
                     self.transform = CGAffineTransformMakeRotation(self.angle);
                 
@@ -136,7 +252,8 @@ CGRect originalBounds;
             }
             
             else if([self.type isEqual:@"f"])
-            {
+        
+             {
                 
                 [_imageView setFrame:CGRectMake(0.0,0.0,self.frame.size.width, self.frame.size.height)];
                 //_imageView.frame = self.frame;
@@ -154,6 +271,7 @@ CGRect originalBounds;
             //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
             resourceTapRecognizer.cancelsTouchesInView = NO;
             [self addGestureRecognizer:resourceTapRecognizer];
+             */
             
         }//end if resource!=nil
     }//end if self
@@ -402,6 +520,7 @@ CGRect originalBounds;
         
         [mainView setCenter:CGPointMake([mainView center].x + translation.x, [mainView center].y + translation.y)];
         [gestureRecognizer setTranslation:CGPointZero inView:[mainView superview]];
+        //originalOrigin = self.frame.origin;
     }
 }
 
@@ -457,15 +576,15 @@ CGRect originalBounds;
         [self setNeedsDisplay];
         self.gestureAction = kNONE;
         
-        /*
+        
         NSLog(@"new self.frame=%@", NSStringFromCGRect(self.frame));
         NSLog(@"new self.bounds%@", NSStringFromCGRect(self.bounds));
         NSLog(@"new self.imageview.frame=%@", NSStringFromCGRect(self.imageView.frame));
         NSLog(@"new self.imageview.bounds%@", NSStringFromCGRect(self.imageView.bounds));
-        */
+        
         self.scale = _imageView.bounds.size.width/originalWidth;
         //CGFloat currentScale = [[[gestureRecognizer view].layer valueForKeyPath:@"transform.scale"] floatValue];
-        //NSLog(@"self.scale=%f", self.scale);
+        NSLog(@"self.scale=%f", self.scale);
     }
     else if ([gestureRecognizer state] == UIGestureRecognizerStateCancelled)
     {
@@ -506,6 +625,20 @@ CGRect originalBounds;
         self.rotateTransform = self.transform;
         [self setNeedsDisplay];
         self.gestureAction = kNONE;
+        
+        /*
+        NSLog(@"new imageview.frame=%@", NSStringFromCGRect(_imageView.frame));
+        NSLog(@"new imageview.bounds%@", NSStringFromCGRect(_imageView.bounds));
+        NSLog(@"new self.frame=%@", NSStringFromCGRect(self.frame));
+        NSLog(@"new self.bounds%@", NSStringFromCGRect(self.bounds));
+ 
+ 
+        
+        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.bounds.size.width,
+                                      self.bounds.size.height);
+        */
+         //self.frame.size = CGSizeMake(self.bounds.size.width, self.bounds.size.height);
+        
         //self.angle = -angleDiff;
         //self.angle = atan2(locPoint.y-initialCentrePoint.y, locPoint.x- initialCentrePoint.x);
         //NSLog(@"ended.self.angle=%f", self.angle);

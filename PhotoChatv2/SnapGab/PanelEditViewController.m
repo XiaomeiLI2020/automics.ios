@@ -79,6 +79,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    //NSLog(@"viewWillAppear.");
     [super viewWillAppear:animated];
     
 
@@ -89,6 +90,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     [self.imageView setImageWithURL:self.url
                    placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]
                             success:^(UIImage *image) {
+                                
                                 for (UIView *subview in self.view.subviews)
                                 {
                                     if([subview isMemberOfClass:[SpeechBubbleView class]])
@@ -104,6 +106,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                                         sbv.alpha = 1;
                                     }
                                 }//end for
+                                 
+                                 
                             }
                             failure:^(NSError *error) {
                                 UIAlertView *alert = [[UIAlertView alloc]
@@ -194,7 +198,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
     self.thumbnailScrollView.delegate=self;
     [thumbnailScrollView layoutAssets];
-    [self loadAnnotations];
+
 
 }
 
@@ -221,7 +225,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         {
             NSString* type = resource.type;
             
-            CGRect resourceFrame;
+            CGRect resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
             if([type isEqual:@"d"])
             {
                 resourceFrame = CGRectMake(100, 100, decoratorWidth, decoratorHeight);
@@ -246,7 +250,9 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 - (void)viewDidLoad
 {
+
     [super viewDidLoad];
+    NSLog(@"Edit.viewDidLoad");
     
     resourceCounter = 0;
     resourceList = [[NSMutableArray alloc] init];
@@ -267,8 +273,6 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     keyboardIsShown = NO;
     
     imageSize = CGSizeMake(panelWidth, panelHeight);
-    
-    [self loadAnnotations];
     
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureCaptured:)];
     singleTap.cancelsTouchesInView = NO;
@@ -511,10 +515,23 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             if([subview isMemberOfClass:[ResourceView class]])
             {
                 ResourceView* sbv =(ResourceView*)subview;
+                sbv.transform = CGAffineTransformMakeRotation(0.0);
+                //[sbv removeFromSuperview];
                 
-                //ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andURL:sbv.urlImageString andType:sbv.type andId:sbv.resourceId andScale:sbv.scale];
+                /*
+                NSLog(@"posted pre-rotation.sbv.frame=%@", NSStringFromCGRect(sbv.frame));
+                NSLog(@"posted pre-rotation.sbv.bounds%@", NSStringFromCGRect(sbv.bounds));
+                */
                 ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
+                new_sbv.originalFrame = sbv.frame;
                 
+                sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
+                /*
+                NSLog(@"posted new_sbv.originalFrame=%@", NSStringFromCGRect(new_sbv.originalFrame));
+                NSLog(@"posted after-rotation new_sbv.frame=%@", NSStringFromCGRect(new_sbv.frame));
+                NSLog(@"posted after-rotation new_sbv.bounds%@", NSStringFromCGRect(new_sbv.bounds));
+                NSLog(@"new_sbv.scale=%f", new_sbv.scale);
+                */
                 new_sbv.userInteractionEnabled = NO;
                 [ppvc.view addSubview:new_sbv];
                 //NSLog(@"resource added for posting.");
@@ -536,10 +553,10 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         //int resourceId = resource.resourceId;
         NSString* thumb_url = resource.thumbURL;
         
-        UIImage *image = [UIImage imageNamed:resource.thumbURL];
+        //UIImage *image = [UIImage imageNamed:resource.thumbURL];
         
         NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:thumb_url]];
-        image = [UIImage imageWithData:imageURL];
+         UIImage *image = [UIImage imageWithData:imageURL];
         
         UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
         [styleButton setImage:image forState:UIControlStateNormal];

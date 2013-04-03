@@ -22,6 +22,9 @@
 @property NSArray* panelList;
 @property NSArray* comicPanelList;
 @property NSMutableArray* downloadedPanels;
+@property NSArray *resourceList;
+@property NSArray *placementList;
+
 
 - (IBAction)deletePanel:(id)sender;
 
@@ -29,6 +32,6 @@
 
 @property NSMutableArray *panelArray;
 @property int comicId;
-
+@property UIActivityIndicatorView *activityIndicator;
 
 @end

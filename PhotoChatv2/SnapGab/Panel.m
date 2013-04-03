@@ -14,5 +14,5 @@
 @synthesize photo;
 @synthesize placements;
 @synthesize annotations;
-
+@synthesize resources;
 @end
