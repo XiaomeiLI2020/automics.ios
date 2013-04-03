@@ -935,10 +935,6 @@
 				48C71E9E16EF86BF009ACD6A /* JSONHandler.m in Sources */,
 				48C71EB216EF88A1009ACD6A /* Organisation.m in Sources */,
 				48C71EB316EF88A1009ACD6A /* Theme.m in Sources */,
-				48C8C21E16F319A50010FB13 /* GroupCell.m in Sources */,
-				48C8C21F16F319A50010FB13 /* GroupLayout.m in Sources */,
-				48C8C22016F319A50010FB13 /* GroupsViewController.mm in Sources */,
-				48C8C22116F319A50010FB13 /* QRView.m in Sources */,
 				D8E8135516FE40AF000BA2CF /* UIImage+Resize.m in Sources */,
 				D8E8135816FE4153000BA2CF /* UIImage+RoundedCorner.m in Sources */,
 				D8C02DA416FE424B0020F96E /* UIImage+Alpha.m in Sources */,
@@ -1040,8 +1036,8 @@
 		1D8D50A1165FADC700C9817C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SnapGab/PhotoChat-Prefix.pch";
 				GENERATE_PROFILING_CODE = YES;
@@ -1049,8 +1045,8 @@
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				PRODUCT_NAME = PhotoChat;
-				PROVISIONING_PROFILE = "90A8735E-9CA8-46A7-A527-E69F05FCACE4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "90A8735E-9CA8-46A7-A527-E69F05FCACE4";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1059,8 +1055,8 @@
 		1D8D50A2165FADC700C9817C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Umar Rashid";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Umar Rashid";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SnapGab/PhotoChat-Prefix.pch";
 				GENERATE_PROFILING_CODE = YES;
@@ -1068,7 +1064,8 @@
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				PRODUCT_NAME = PhotoChat;
-				PROVISIONING_PROFILE = "30A60B3F-3F4E-440C-A72D-1957843A2638";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
