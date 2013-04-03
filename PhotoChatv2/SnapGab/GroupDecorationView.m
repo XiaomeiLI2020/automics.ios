@@ -19,15 +19,8 @@ const NSString *kViewKind = @"GroupDecorationView";
     if (self) {
         // Initialization code
         [self setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"groupDecoration"]]];
-        //self.layer.shadowOpacity = 0.5;
-        //self.layer.shadowOffset = CGSizeMake(0, 5);
     }
     return self;
-}
-
--(void)layoutSubviews{
-    //CGRect shadowBounds = CGRectMake(0, -5, self.bounds.size.width, self.bounds.size.height + 5);
-    //self.layer.shadowPath = [UIBezierPath bezierPathWithRect:shadowBounds].CGPath;
 }
 
 +(NSString*)kind{

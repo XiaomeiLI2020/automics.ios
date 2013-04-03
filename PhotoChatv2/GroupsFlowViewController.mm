@@ -33,7 +33,7 @@ NSString *kCellID = @"GROUP_CELL";
 {
     [super viewDidLoad];
     [self loadGroups];
-    self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupBackground"]];
+    self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
     photoLoadersInProgess = [[NSMutableDictionary alloc] init];
     imageDownloadersInProgress = [[NSMutableDictionary alloc] init];
     groupImages = [[NSMutableDictionary alloc] init];
@@ -189,7 +189,10 @@ NSString *kCellID = @"GROUP_CELL";
     [self cancelImageDownloadRequests];
 }
 
-
+#pragma mark - Back button
+-(IBAction)backButtonClick:(id)sender{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 #pragma mark - gesture
 -(void)handleShareGesture:(UITapGestureRecognizer*)sender

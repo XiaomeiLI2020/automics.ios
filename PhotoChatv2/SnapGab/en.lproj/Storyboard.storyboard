@@ -187,7 +187,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="Egv-5e-YEj" kind="modal" id="cDf-Ra-7g8"/>
+                                    <segue destination="baH-GS-9Zg" kind="modal" id="hAz-qI-h1O"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -467,7 +467,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KqT-iu-3Z7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-321" y="-724"/>
+            <point key="canvasLocation" x="244" y="-361"/>
         </scene>
         <!--PanelViewController-->
         <scene sceneID="NU1-xg-px1">
@@ -751,74 +751,96 @@
             </objects>
             <point key="canvasLocation" x="-475" y="-15"/>
         </scene>
-        <!--Groups Flow View Controller - Invite Friends-->
-        <scene sceneID="Dfj-cr-Sfq">
+        <!--Groups Flow View Controller-->
+        <scene sceneID="5lK-Yz-WEi">
             <objects>
-                <collectionViewController title="Invite Friends" id="Egv-5e-YEj" customClass="GroupsFlowViewController" sceneMemberID="viewController">
-                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="fSw-GX-3ne">
+                <viewController id="baH-GS-9Zg" customClass="GroupsFlowViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="DXJ-o0-yvN">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="BBc-3M-HDt" customClass="GroupCollectionViewLayout">
-                            <size key="itemSize" width="135" height="162"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GROUP_CELL" id="qOT-zI-IIe" customClass="GroupCollectionViewCell">
-                                <rect key="frame" x="0.0" y="0.0" width="135" height="162"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="135" height="162"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="dsghsdj sdfghjsd ghsdjghdsj" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4hE-t5-ioA">
-                                            <rect key="frame" x="16" y="135" width="100" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="cellBackground.png" id="K7I-v0-g9D">
-                                            <rect key="frame" x="3" y="3" width="126" height="126"/>
-                                        </imageView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="c8S-k0-KnC">
-                                            <rect key="frame" x="16" y="18" width="100" height="100"/>
-                                        </imageView>
-                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="white" id="9by-fi-oed">
-                                            <rect key="frame" x="56" y="58" width="20" height="20"/>
-                                        </activityIndicatorView>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="ab3-Ba-e3i">
+                                <rect key="frame" x="0.0" y="44" width="320" height="416"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Boo-dB-lHJ">
+                                    <size key="itemSize" width="136" height="162"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GROUP_CELL" id="TFM-Cv-nV7" customClass="GroupCollectionViewCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="136" height="162"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="136" height="162"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="dsghsdj sdfghjsd ghsdjghdsj" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7wI-vB-8D5">
+                                                    <rect key="frame" x="16" y="131" width="100" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="groupCellBackground.png" id="C9C-Ag-JmR">
+                                                    <rect key="frame" x="3" y="3" width="126" height="126"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="chL-aq-TCV">
+                                                    <rect key="frame" x="16" y="19" width="100" height="100"/>
+                                                </imageView>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="white" id="Imc-Pa-CE9">
+                                                    <rect key="frame" x="56" y="59" width="20" height="20"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </activityIndicatorView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <connections>
+                                            <outlet property="activityIndicator" destination="Imc-Pa-CE9" id="hVx-uN-lbB"/>
+                                            <outlet property="imageView" destination="chL-aq-TCV" id="k9Z-4w-hIM"/>
+                                            <outlet property="label" destination="7wI-vB-8D5" id="pn7-mc-QKM"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
                                 <connections>
-                                    <outlet property="activityIndicator" destination="9by-fi-oed" id="0xy-ji-Ood"/>
-                                    <outlet property="imageView" destination="c8S-k0-KnC" id="0ZP-Kb-LeE"/>
-                                    <outlet property="label" destination="4hE-t5-ioA" id="wTS-Lu-cRb"/>
+                                    <outlet property="dataSource" destination="baH-GS-9Zg" id="Qy1-Ey-G9S"/>
+                                    <outlet property="delegate" destination="baH-GS-9Zg" id="Rii-XX-rG2"/>
                                 </connections>
-                            </collectionViewCell>
-                        </cells>
-                        <connections>
-                            <outlet property="dataSource" destination="Egv-5e-YEj" id="Bgf-G7-rar"/>
-                            <outlet property="delegate" destination="Egv-5e-YEj" id="oM9-5X-11x"/>
-                        </connections>
-                    </collectionView>
-                    <navigationItem key="navigationItem" title="Invite Friends" id="fK8-nU-ZAd">
-                        <barButtonItem key="leftBarButtonItem" title="Back" id="LjG-Qe-u5X"/>
-                    </navigationItem>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FnA-AZ-08y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                            </collectionView>
+                            <navigationBar contentMode="scaleToFill" id="AmH-lv-JpB">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="0.36159899639999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <items>
+                                    <navigationItem title="Invite Friends" id="YT9-M8-fG4">
+                                        <barButtonItem key="leftBarButtonItem" title="Back" id="vLS-M3-s0r">
+                                            <connections>
+                                                <action selector="backButtonClick:" destination="baH-GS-9Zg" id="1md-Tp-RHv"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="ab3-Ba-e3i" id="Agb-b1-CKf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sot-EH-n2e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="418" y="-517"/>
+            <point key="canvasLocation" x="815" y="-615"/>
         </scene>
     </scenes>
     <resources>
         <image name="add-image.png" width="81" height="70"/>
         <image name="back-icon.png" width="107" height="44"/>
         <image name="camera.png" width="122" height="87"/>
-        <image name="cellBackground.png" width="126" height="126"/>
         <image name="delete.png" width="38" height="32"/>
         <image name="gallery.png" width="47" height="43"/>
+        <image name="groupCellBackground.png" width="126" height="126"/>
         <image name="logo.png" width="222" height="114"/>
         <image name="panel-edit.png" width="81" height="48"/>
         <image name="post-panel.png" width="91" height="74"/>
@@ -827,6 +849,7 @@
         <class className="ComicAddViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicAddViewController.h"/>
             <relationships>
+                <relationship kind="action" name="deletePanel:"/>
                 <relationship kind="outlet" name="postButton" candidateClass="UIButton"/>
             </relationships>
         </class>
@@ -871,11 +894,12 @@
                 <relationship kind="outlet" name="label" candidateClass="UILabel"/>
             </relationships>
         </class>
-        <class className="GroupCollectionViewLayout" superclassName="UICollectionViewFlowLayout">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupCollectionViewLayout.h"/>
-        </class>
-        <class className="GroupsFlowViewController" superclassName="UICollectionViewController">
+        <class className="GroupsFlowViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupsFlowViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="backButtonClick:"/>
+                <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
+            </relationships>
         </class>
         <class className="LoginViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginViewController.h"/>
@@ -918,11 +942,11 @@
         <class className="UICollectionViewCell" superclassName="UICollectionReusableView">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewCell.h"/>
         </class>
-        <class className="UICollectionViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewController.h"/>
-        </class>
         <class className="UICollectionViewFlowLayout" superclassName="UICollectionViewLayout">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewFlowLayout.h"/>
+        </class>
+        <class className="UICollectionViewLayout" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewLayout.h"/>
         </class>
         <class className="WelcomeViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/WelcomeViewController.h"/>
@@ -941,14 +965,14 @@
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
+        <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="7K2-Cr-pvV"/>
+        <segue reference="fjF-Bf-fik"/>
+        <segue reference="P1E-0g-8Qy"/>
+        <segue reference="lLZ-Tg-1fy"/>
         <segue reference="NfJ-eZ-2KR"/>
         <segue reference="eqx-Lk-Ciz"/>
-        <segue reference="lLZ-Tg-1fy"/>
-        <segue reference="9PL-ZN-yjP"/>
-        <segue reference="woI-Op-NZA"/>
+        <segue reference="sfN-v5-shT"/>
     </inferredMetricsTieBreakers>
 </document>
