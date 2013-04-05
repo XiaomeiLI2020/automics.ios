@@ -10,12 +10,6 @@
 #import "GroupLoader.h"
 #import "PhotoLoader.h"
 
-/*
-@interface GroupsFlowViewController : UICollectionViewController<GroupLoaderDelegate, PhotoLoaderDelegate, ImageDownloaderDelegate>
-
-@end
- */
-
 @interface GroupsFlowViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource,GroupLoaderDelegate, PhotoLoaderDelegate, ImageDownloaderDelegate>
 
 @property IBOutlet UICollectionView *collectionView;

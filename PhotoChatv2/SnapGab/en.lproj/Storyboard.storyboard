@@ -190,6 +190,21 @@
                                     <segue destination="baH-GS-9Zg" kind="modal" id="hAz-qI-h1O"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Wkt-W9-Euj">
+                                <rect key="frame" x="92" y="297" width="155" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Comics Collection">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="j9X-cF-RKP" kind="modal" id="NBx-gM-Yb4"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -265,10 +280,12 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Pjt-oW-6W1">
                                 <rect key="frame" x="3" y="2" width="70" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" image="back-icon.png">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -337,7 +354,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a1M-w8-laa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-743" y="-724"/>
+            <point key="canvasLocation" x="-570" y="-711"/>
         </scene>
         <!--ComicEditViewController-->
         <scene sceneID="NEd-p3-Ij7">
@@ -468,6 +485,73 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KqT-iu-3Z7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="244" y="-361"/>
+        </scene>
+        <!--Comic Collection View Controller-->
+        <scene sceneID="r1p-oa-RBE">
+            <objects>
+                <viewController id="j9X-cF-RKP" customClass="ComicCollectionViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="asI-XG-G9d">
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="52S-g1-jAi">
+                                <rect key="frame" x="0.0" y="44" width="320" height="416"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                <collectionViewLayout key="collectionViewLayout" id="LWs-dz-Wf2" customClass="ComicCollectionViewLayout"/>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="COMIC_CELL" id="dJN-CV-mDh" customClass="ComicCollectionViewCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="129" height="148"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="129" height="148"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="comicCell.png" id="X3s-1D-5Vk">
+                                                    <rect key="frame" x="0.0" y="0.0" width="129" height="130"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                </imageView>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Comic XXXXX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="enR-jN-p0I">
+                                                    <rect key="frame" x="2" y="126" width="124" height="17"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="y3P-Cr-fQg">
+                                                    <rect key="frame" x="15" y="6" width="100" height="100"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="gray" id="Ada-vj-QGW">
+                                                    <rect key="frame" x="56" y="45" width="20" height="20"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </activityIndicatorView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <size key="customSize" width="129" height="148"/>
+                                        <connections>
+                                            <outlet property="activityView" destination="Ada-vj-QGW" id="EwX-iK-UsR"/>
+                                            <outlet property="imageView" destination="y3P-Cr-fQg" id="hFS-R4-TsX"/>
+                                            <outlet property="label" destination="enR-jN-p0I" id="p2F-RZ-Nw4"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="j9X-cF-RKP" id="yHj-rG-nk5"/>
+                                    <outlet property="delegate" destination="j9X-cF-RKP" id="Dci-Hn-5b2"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="52S-g1-jAi" id="taq-FO-EAo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Stk-cj-JUb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="295" y="325"/>
         </scene>
         <!--PanelViewController-->
         <scene sceneID="NU1-xg-px1">
@@ -763,31 +847,31 @@
                                 <rect key="frame" x="0.0" y="44" width="320" height="416"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Boo-dB-lHJ">
-                                    <size key="itemSize" width="136" height="162"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="BJQ-jy-CaB">
+                                    <size key="itemSize" width="129" height="161"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GROUP_CELL" id="TFM-Cv-nV7" customClass="GroupCollectionViewCell">
-                                        <rect key="frame" x="0.0" y="0.0" width="136" height="162"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="135" height="162"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="136" height="162"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="135" height="162"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="dsghsdj sdfghjsd ghsdjghdsj" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7wI-vB-8D5">
-                                                    <rect key="frame" x="16" y="131" width="100" height="21"/>
+                                                    <rect key="frame" x="16" y="134" width="100" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="groupCellBackground.png" id="C9C-Ag-JmR">
-                                                    <rect key="frame" x="3" y="3" width="126" height="126"/>
+                                                    <rect key="frame" x="3" y="2" width="126" height="126"/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="chL-aq-TCV">
-                                                    <rect key="frame" x="16" y="19" width="100" height="100"/>
+                                                    <rect key="frame" x="16" y="15" width="100" height="100"/>
                                                 </imageView>
                                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="white" id="Imc-Pa-CE9">
                                                     <rect key="frame" x="56" y="59" width="20" height="20"/>
@@ -796,6 +880,7 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
+                                        <size key="customSize" width="135" height="162"/>
                                         <connections>
                                             <outlet property="activityIndicator" destination="Imc-Pa-CE9" id="hVx-uN-lbB"/>
                                             <outlet property="imageView" destination="chL-aq-TCV" id="k9Z-4w-hIM"/>
@@ -838,6 +923,7 @@
         <image name="add-image.png" width="81" height="70"/>
         <image name="back-icon.png" width="107" height="44"/>
         <image name="camera.png" width="122" height="87"/>
+        <image name="comicCell.png" width="129" height="129"/>
         <image name="delete.png" width="38" height="32"/>
         <image name="gallery.png" width="47" height="43"/>
         <image name="groupCellBackground.png" width="126" height="126"/>
@@ -851,6 +937,23 @@
             <relationships>
                 <relationship kind="outlet" name="postButton" candidateClass="UIButton"/>
             </relationships>
+        </class>
+        <class className="ComicCollectionViewCell" superclassName="UICollectionViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicCollectionViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="activityView" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="label" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="ComicCollectionViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicCollectionViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
+            </relationships>
+        </class>
+        <class className="ComicCollectionViewLayout" superclassName="UICollectionViewFlowLayout">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicCollectionViewLayout.h"/>
         </class>
         <class className="ComicDetailsViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicDetailsViewController.h"/>
@@ -964,11 +1067,11 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="j7a-6V-AnY"/>
-        <segue reference="sfN-v5-shT"/>
         <segue reference="lLZ-Tg-1fy"/>
-        <segue reference="eqx-Lk-Ciz"/>
+        <segue reference="j7a-6V-AnY"/>
+        <segue reference="7K2-Cr-pvV"/>
+        <segue reference="9PL-ZN-yjP"/>
         <segue reference="P1E-0g-8Qy"/>
-        <segue reference="fjF-Bf-fik"/>
+        <segue reference="eqx-Lk-Ciz"/>
     </inferredMetricsTieBreakers>
 </document>
