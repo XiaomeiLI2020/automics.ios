@@ -74,7 +74,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KQg-1X-OdM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-743" y="-1304"/>
+            <point key="canvasLocation" x="-1471" y="-1612"/>
         </scene>
         <!--WelcomeViewController-->
         <scene sceneID="qhr-TX-Nf2">
@@ -217,7 +217,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S5s-fK-zpW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-399" y="-1304"/>
+            <point key="canvasLocation" x="-775" y="-1600"/>
         </scene>
         <!--ComicDetailsViewController-->
         <scene sceneID="O6h-Sc-0O7">
@@ -239,7 +239,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="hWB-mI-fkD" kind="modal" identifier="detailToComics" modalTransitionStyle="crossDissolve" id="OdU-FZ-iAQ"/>
+                                    <action selector="comicsButtonCicked:" destination="mOw-fD-4Tm" eventType="touchDown" id="F9Y-uU-qMA"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ydg-60-tfz">
@@ -267,7 +267,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lpc-Xa-vNH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-916" y="-15"/>
+            <point key="canvasLocation" x="-1554" y="168"/>
         </scene>
         <!--ComicViewController-->
         <scene sceneID="gNP-G4-Wie">
@@ -354,7 +354,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a1M-w8-laa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-570" y="-711"/>
+            <point key="canvasLocation" x="-743" y="-738"/>
         </scene>
         <!--ComicEditViewController-->
         <scene sceneID="NEd-p3-Ij7">
@@ -419,7 +419,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DrR-EZ-pSa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1154" y="-731"/>
+            <point key="canvasLocation" x="-1554" y="-763"/>
         </scene>
         <!--ComicAddViewController-->
         <scene sceneID="TA9-4J-CzE">
@@ -441,7 +441,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="hWB-mI-fkD" kind="modal" identifier="backComics" modalTransitionStyle="crossDissolve" id="NfJ-eZ-2KR"/>
+                                    <action selector="comicsButtonCicked:" destination="Yee-0B-mIQ" eventType="touchDown" id="A8x-Zq-H0W"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="QeJ-hM-gcD">
@@ -484,7 +484,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KqT-iu-3Z7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="244" y="-361"/>
+            <point key="canvasLocation" x="28" y="-717"/>
         </scene>
         <!--Comic Collection View Controller-->
         <scene sceneID="r1p-oa-RBE">
@@ -534,6 +534,7 @@
                                             <outlet property="activityView" destination="Ada-vj-QGW" id="EwX-iK-UsR"/>
                                             <outlet property="imageView" destination="y3P-Cr-fQg" id="hFS-R4-TsX"/>
                                             <outlet property="label" destination="enR-jN-p0I" id="p2F-RZ-Nw4"/>
+                                            <segue destination="mOw-fD-4Tm" kind="modal" identifier="COMIC_DETAIL" id="scZ-oz-ppB"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -542,6 +543,44 @@
                                     <outlet property="delegate" destination="j9X-cF-RKP" id="Dci-Hn-5b2"/>
                                 </connections>
                             </collectionView>
+                            <view contentMode="scaleToFill" id="aOa-rV-llv">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Comics" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="p2v-4O-6iz">
+                                        <rect key="frame" x="129" y="11" width="62" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" id="zZ9-ml-VtP">
+                                        <rect key="frame" x="279" y="8" width="29" height="29"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <connections>
+                                            <segue destination="Yee-0B-mIQ" kind="modal" id="T94-jC-2l0"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="DZZ-PY-KAd">
+                                        <rect key="frame" x="7" y="7" width="73" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal" image="menu.png">
+                                            <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="menuButtonAction:" destination="j9X-cF-RKP" eventType="touchDown" id="JgY-RP-t5e"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.36159899639999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -551,7 +590,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Stk-cj-JUb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="295" y="325"/>
+            <point key="canvasLocation" x="79" y="53"/>
         </scene>
         <!--PanelViewController-->
         <scene sceneID="NU1-xg-px1">
@@ -616,7 +655,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gjl-RX-7QA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="19" y="-1328"/>
+            <point key="canvasLocation" x="107" y="-1612"/>
         </scene>
         <!--PanelEditViewController-->
         <scene sceneID="OGm-P4-cX4">
@@ -670,7 +709,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="USc-bo-4yf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="674" y="-1304"/>
+            <point key="canvasLocation" x="522" y="-1168"/>
         </scene>
         <!--PanelAddViewController-->
         <scene sceneID="g9P-Bn-dcV">
@@ -751,7 +790,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dbC-ZG-0e6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="322" y="-1304"/>
+            <point key="canvasLocation" x="906" y="-1660"/>
         </scene>
         <!--PhotoPosterViewController-->
         <scene sceneID="XEW-r9-aVc">
@@ -792,7 +831,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0H2-gz-B1m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1033" y="-1304"/>
+            <point key="canvasLocation" x="1373" y="-1184"/>
         </scene>
         <!--ComicPosterViewController-->
         <scene sceneID="0Jt-XC-ADr">
@@ -833,7 +872,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sSP-bP-GIO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-475" y="-15"/>
+            <point key="canvasLocation" x="-402" y="81"/>
         </scene>
         <!--Groups Flow View Controller-->
         <scene sceneID="5lK-Yz-WEi">
@@ -928,6 +967,7 @@
         <image name="gallery.png" width="47" height="43"/>
         <image name="groupCellBackground.png" width="126" height="126"/>
         <image name="logo.png" width="222" height="114"/>
+        <image name="menu.png" width="157" height="55"/>
         <image name="panel-edit.png" width="81" height="48"/>
         <image name="post-panel.png" width="91" height="74"/>
     </resources>
@@ -935,6 +975,7 @@
         <class className="ComicAddViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicAddViewController.h"/>
             <relationships>
+                <relationship kind="action" name="comicsButtonCicked:"/>
                 <relationship kind="outlet" name="postButton" candidateClass="UIButton"/>
             </relationships>
         </class>
@@ -949,6 +990,7 @@
         <class className="ComicCollectionViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicCollectionViewController.h"/>
             <relationships>
+                <relationship kind="action" name="menuButtonAction:"/>
                 <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
             </relationships>
         </class>
@@ -958,6 +1000,7 @@
         <class className="ComicDetailsViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicDetailsViewController.h"/>
             <relationships>
+                <relationship kind="action" name="comicsButtonCicked:"/>
                 <relationship kind="outlet" name="editPressed" candidateClass="UIButton"/>
             </relationships>
         </class>
@@ -1067,11 +1110,13 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="lLZ-Tg-1fy"/>
-        <segue reference="j7a-6V-AnY"/>
-        <segue reference="7K2-Cr-pvV"/>
-        <segue reference="9PL-ZN-yjP"/>
+        <segue reference="fjF-Bf-fik"/>
         <segue reference="P1E-0g-8Qy"/>
+        <segue reference="7K2-Cr-pvV"/>
+        <segue reference="j7a-6V-AnY"/>
+        <segue reference="T94-jC-2l0"/>
+        <segue reference="scZ-oz-ppB"/>
         <segue reference="eqx-Lk-Ciz"/>
+        <segue reference="vnI-2b-eqB"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -27,4 +27,6 @@
 @property int comicId;
 @property UIActivityIndicatorView *activityIndicator;
 
+-(IBAction)comicsButtonCicked:(id)sender;
+
 @end

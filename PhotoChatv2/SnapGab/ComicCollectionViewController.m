@@ -11,6 +11,7 @@
 #import "ComicCollectionViewCell.h"
 #import "APIWrapper.h"
 #import "ComicCollectionViewLayout.h"
+#import "ComicDetailsViewController.h"
 
 @interface ComicCollectionViewController ()
 @property NSArray* comics;
@@ -38,7 +39,7 @@ NSString *kComicCellID = @"COMIC_CELL";
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
-    [self cleanupDataDowloadRequests];
+    [self cancelDownLoadRequests];
     [super viewDidDisappear:animated];
 }
 
@@ -46,7 +47,7 @@ NSString *kComicCellID = @"COMIC_CELL";
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-    [self cleanupDataDowloadRequests];
+    [self cleanupData];
 }
 
 #pragma mark - DataDownloadList methods.
@@ -56,9 +57,13 @@ NSString *kComicCellID = @"COMIC_CELL";
     comicImages = [[NSMutableDictionary alloc] init];
 }
 
--(void)cleanupDataDowloadRequests{
+-(void)cancelDownLoadRequests{
     [self cancelPanelLoadRequests];
     [self cancelImageDownloadRequests];
+}
+
+-(void)cleanupData{
+    [self cancelDownLoadRequests];
     [comicImages removeAllObjects];
 }
 
@@ -108,7 +113,7 @@ NSString *kComicCellID = @"COMIC_CELL";
     [alertView show];
 }
 
-#pragma mark - UICollectionViewDataSourceDelegate
+#pragma mark - UICollectionViewDataSource
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     if (self.comics != nil)
         return [self.comics count];
@@ -139,12 +144,11 @@ NSString *kComicCellID = @"COMIC_CELL";
     return cell;
 }
 
+#pragma mark UICollectionViewDelegate
 -(void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
     [self cancelPanelLoadRequestForIndexPath:indexPath];
     [self cancelImageDownloadRequestForIndexPath:indexPath];
-    //[comicImages removeObjectForKey:indexPath];
 }
-
 
 -(void)loadPanelWithId:(int)panelId atIndexPath:(NSIndexPath *)indexPath{
     PanelLoader *panelLoader = [[PanelLoader alloc] init];
@@ -185,6 +189,23 @@ NSString *kComicCellID = @"COMIC_CELL";
 
 -(void)PanelLoader:(PanelLoader *)loader didFailWithError:(NSError *)error{
     [self cancelPanelLoadRequests];
+}
+
+
+-(IBAction)menuButtonAction:(id)sender{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([[segue identifier] isEqualToString:@"COMIC_DETAIL"])
+    {
+        [self cancelDownLoadRequests];
+        NSIndexPath *indexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
+        Comic* selectedComic = [self.comics objectAtIndex:indexPath.item];
+        ComicDetailsViewController *cpvc = (ComicDetailsViewController *)[segue destinationViewController];
+        cpvc.comicId = selectedComic.comicId;
+    }
 }
 
 @end

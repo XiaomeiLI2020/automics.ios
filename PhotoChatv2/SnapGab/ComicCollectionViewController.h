@@ -14,5 +14,6 @@
 @interface ComicCollectionViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource,ComicLoaderDelegate, PanelLoaderDelegate, ImageDownloaderDelegate>
 
 @property IBOutlet UICollectionView* collectionView;
+-(IBAction)menuButtonAction:(id)sender;
 
 @end

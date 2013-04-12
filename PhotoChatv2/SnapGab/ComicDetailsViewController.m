@@ -739,5 +739,9 @@ if (image){
 }
 
 
+-(IBAction)comicsButtonCicked:(id)sender{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 @end
