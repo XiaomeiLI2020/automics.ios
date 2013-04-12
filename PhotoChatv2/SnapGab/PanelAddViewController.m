@@ -13,6 +13,7 @@
 #import "ResourceView.h"
 #import "PanelEditViewController.h"
 #import "GUIConstant.h"
+#import "APIWrapper.h"
 
 
 #import "Resource.h"

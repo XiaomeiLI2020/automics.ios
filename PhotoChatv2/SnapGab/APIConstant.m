@@ -8,8 +8,11 @@
 
 #import "APIConstant.h"
 
+<<<<<<< HEAD
 //NSString* const kBaseURL = @"http://automicsapi.wp.horizon.ac.uk";
 NSString* const kHostName = @"automicsii.cloudapp.net";
+=======
+>>>>>>> 7d1d359f9d0db604173f781c79b80f21b4dae6e2
 NSString* const kBaseURL = @"http://automicsii.cloudapp.net";
 NSString* const kAPIURL = @"v1";
 NSString* const kPanelURL = @"panel";
@@ -26,5 +29,6 @@ NSString* const kPlacementURL = @"placement";
 NSString* const kLoginURL = @"login";
 NSString* const kGroupURL = @"group";
 NSString* const kGroupsURL = @"group";
+NSString* const kJoinGroupURL = @"join";
 NSString* const kMembershipURL = @"membership";
 

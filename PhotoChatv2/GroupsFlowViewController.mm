@@ -16,13 +16,13 @@
 @interface GroupsFlowViewController ()
 @property NSArray* groups;
 @property NSMutableDictionary *groupImages;
-@property NSMutableDictionary* photoLoadersInProgess;
+@property NSMutableDictionary* photoLoadersInProgress;
 @property NSMutableDictionary* imageDownloadersInProgress;
 @end
 
 @implementation GroupsFlowViewController
 
-@synthesize photoLoadersInProgess;
+@synthesize photoLoadersInProgress;
 @synthesize imageDownloadersInProgress;
 @synthesize groupImages;
 
@@ -33,8 +33,8 @@ NSString *kCellID = @"GROUP_CELL";
 {
     [super viewDidLoad];
     [self loadGroups];
-    self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupBackground"]];
-    photoLoadersInProgess = [[NSMutableDictionary alloc] init];
+    self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
+    photoLoadersInProgress = [[NSMutableDictionary alloc] init];
     imageDownloadersInProgress = [[NSMutableDictionary alloc] init];
     groupImages = [[NSMutableDictionary alloc] init];
     [self.collectionView setCollectionViewLayout:[[GroupCollectionViewLayout alloc] init]];
@@ -58,19 +58,19 @@ NSString *kCellID = @"GROUP_CELL";
     photoLoader.delegate = self;
     photoLoader.obj = indexPath;
     [photoLoader submitRequestGetPhotosForGroup:[group hashId]];
-    [photoLoadersInProgess setObject:photoLoader forKey:indexPath];
+    [photoLoadersInProgress setObject:photoLoader forKey:indexPath];
 }
 
 -(void)cancelPhotoLoadRequests{
-    NSArray *allPhotoLoaders = [self.photoLoadersInProgess allValues];
+    NSArray *allPhotoLoaders = [self.photoLoadersInProgress allValues];
     [allPhotoLoaders makeObjectsPerformSelector:@selector(cancelRequest)];
-    [self.photoLoadersInProgess removeAllObjects];
+    [self.photoLoadersInProgress removeAllObjects];
 }
 
 -(void)cancelPhotoLoadRequestForIndexPath:(NSIndexPath*)indexPath{
-    PhotoLoader *photoLoader = [photoLoadersInProgess objectForKey:indexPath];
+    PhotoLoader *photoLoader = [photoLoadersInProgress objectForKey:indexPath];
     [photoLoader cancelRequest];
-    [photoLoadersInProgess removeObjectForKey:indexPath];
+    [photoLoadersInProgress removeObjectForKey:indexPath];
 }
 
 -(void)cancelImageDownloadRequestForIndexPath:(NSIndexPath*)indexPath{
@@ -86,7 +86,7 @@ NSString *kCellID = @"GROUP_CELL";
 }
 
 -(void)setDefaultImageForIndexPath:(NSIndexPath*)indexPath{
-    UIImage *image = [UIImage imageNamed:@"milky_way.jpg"];
+    UIImage *image = [UIImage imageNamed:@"groupDefaultCellBackground.jpg"];
     [groupImages setObject:image forKey:indexPath];
 }
 
@@ -94,7 +94,7 @@ NSString *kCellID = @"GROUP_CELL";
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     GroupCollectionViewCell* selectedGroupCell = (GroupCollectionViewCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
     Group *group = [selectedGroupCell getGroup];
-    NSString *url = [NSString stringWithFormat:@"%@/%@",[APIWrapper getURLForGetGroup],[group hashId]];
+    NSString *url = [APIWrapper getURLForJoinGroupWithHashId:[group hashId]];
     UIImage* qrcodeImage = [self generateQRCodeImageForURL:url];
     GroupQRView *qrView = [[[NSBundle mainBundle] loadNibNamed:@"GroupQRView" owner:self options:nil] objectAtIndex:0];
     qrView.qrImageView.image = qrcodeImage;
@@ -129,13 +129,13 @@ NSString *kCellID = @"GROUP_CELL";
     GroupCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCellID forIndexPath:indexPath];
     Group *group = [_groups objectAtIndex:indexPath.item];
     [cell setGroup:group];
-    cell.label.text = group.name;
+    //cell.label.text = group.name;
     if ([groupImages objectForKey:indexPath] != nil){
         cell.imageView.image = [groupImages objectForKey:indexPath];
         [cell.activityIndicator stopAnimating];
     }else{
         // load the image for this cell
-        if ([photoLoadersInProgess objectForKey:indexPath] == nil && [imageDownloadersInProgress objectForKey:indexPath] == nil){
+        if ([photoLoadersInProgress objectForKey:indexPath] == nil && [imageDownloadersInProgress objectForKey:indexPath] == nil){
             [self loadPhotosForGroup:group atIndexPath:indexPath];
             [cell.activityIndicator startAnimating];
         }
@@ -158,7 +158,7 @@ NSString *kCellID = @"GROUP_CELL";
 #pragma mark - PhotoLoaderDelegate
 -(void)PhotoLoader:(PhotoLoader *)photoLoader didLoadPhotos:(NSArray *)photos forObject:(NSObject *)obj{
     NSIndexPath *indexPath = (NSIndexPath*)obj;
-    [photoLoadersInProgess removeObjectForKey:indexPath];
+    [photoLoadersInProgress removeObjectForKey:indexPath];
     if (photos.count > 0){
         Photo* photo = [photos objectAtIndex:arc4random_uniform(photos.count)];
         ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[APIWrapper getAbsoluteURLUsingImageRelativePath:[photo imageURL]]];
@@ -189,7 +189,10 @@ NSString *kCellID = @"GROUP_CELL";
     [self cancelImageDownloadRequests];
 }
 
-
+#pragma mark - Back button
+-(IBAction)backButtonClick:(id)sender{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 #pragma mark - gesture
 -(void)handleShareGesture:(UITapGestureRecognizer*)sender

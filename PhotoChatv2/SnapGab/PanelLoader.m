@@ -25,6 +25,7 @@ int const kPostPanel = 2;
 
 @synthesize delegate;
 @synthesize panelRequestType;
+@synthesize obj;
 
 
 -(void)submitRequestGetPanelsForGroup:(int)groupId{
@@ -85,10 +86,6 @@ int const kPostPanel = 2;
     NSError *error;
     NSData* data = [NSJSONSerialization dataWithJSONObject:paneldict options:NSJSONWritingPrettyPrinted error:&error];
     
-    // NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    // NSLog(@"panelData: %@", responseString);
-
-    
     [urlRequest setHTTPBody:data];
 }
 
@@ -108,11 +105,10 @@ int const kPostPanel = 2;
 -(void)handleGetPanelWithIdResponse{
     NSError* error;
     NSDictionary* paneldict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
-    //NSLog(@"paneldict=%i", [paneldict count]);
     if (paneldict != nil){
         Panel *panel = [PanelJSONHandler convertPanelJSONDictIntoPanel:paneldict];
-        if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:)])
-            [self.delegate PanelLoader:self didLoadPanel:panel];
+        if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:forObject:)])
+            [self.delegate PanelLoader:self didLoadPanel:panel forObject:obj];
     }else{
         [self reportErrorToDelegate:error];
     }

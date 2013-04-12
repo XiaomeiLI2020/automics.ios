@@ -58,15 +58,14 @@ int const kPostComic = 2;
 
 -(NSURLRequest*)prepareComicRequestForGroup:(int)groupId{
     NSString *comicURL = [APIWrapper getURLForGetComics];
-    NSString* authenticatedPanelURL = [self authenticatedGetURL:comicURL];
-    NSURL* url = [NSURL URLWithString:authenticatedPanelURL];
+    NSString* authenticatedComicURL = [self authenticatedGetURL:comicURL];
+    NSURL* url = [NSURL URLWithString:authenticatedComicURL];
     return [NSURLRequest requestWithURL:url];
 }
 
 -(NSURLRequest*)prepareComicRequestForGetComicWithId:(int)comicId{
     NSString* comicURL = [APIWrapper getURLForGetComicWithId:comicId];
     NSString* authenticatedComicURL = [self authenticatedGetURL:comicURL];
-    //NSLog(@"authenticatedComicURL=%@", authenticatedComicURL);
     NSURL* url = [NSURL URLWithString:authenticatedComicURL];
     return [NSURLRequest requestWithURL:url];
 }

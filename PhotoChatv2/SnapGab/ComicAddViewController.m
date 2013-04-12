@@ -1116,6 +1116,9 @@ NSMutableArray* downloadedPanels;
     NSLog(@"Error in image downloaded.");
 }
 
+-(IBAction)comicsButtonCicked:(id)sender{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 
 @end

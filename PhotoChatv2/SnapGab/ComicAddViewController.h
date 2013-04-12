@@ -29,7 +29,8 @@
 
 @property NSMutableArray *panelArray;
 
-- (IBAction)deletePanel:(id*)sender;
+-(IBAction)deletePanel:(id*)sender;
+-(IBAction)comicsButtonCicked:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIButton *postButton;
 @property UIActivityIndicatorView *activityIndicator;

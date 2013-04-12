@@ -27,6 +27,7 @@
 +(NSString*)getURLForPostLogin;
 +(NSString*)getURLForGetGroups;
 +(NSString*)getURLForGetGroup;
++(NSString*)getURLForJoinGroupWithHashId:(NSString*)hashId;
 +(NSString*)getURLForPostGroupMembership;
 
 @end

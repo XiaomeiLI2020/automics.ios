@@ -84,6 +84,10 @@
     return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL, kAPIURL, kGroupURL];
 }
 
++(NSString*)getURLForJoinGroupWithHashId:(NSString*)hashId{
+    return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL, kJoinGroupURL, hashId];
+}
+
 +(NSString*)getURLForPostGroupMembership{
     return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL, kAPIURL, kMembershipURL];
 }
