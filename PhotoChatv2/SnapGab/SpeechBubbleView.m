@@ -7,6 +7,7 @@
 //
 
 #import "SpeechBubbleView.h"
+#import "GUIConstant.h"
 
 @interface SpeechBubbleView()
 {
@@ -222,8 +223,25 @@ CGPoint _ptOffset;
     pt.x -= _ptOffset.x;
     pt.y -= _ptOffset.y;
     
+    /*
+    if(pt.x<panelScrollXOrigin)
+        pt.x=panelScrollXOrigin;
+    if(pt.y<panelScrollYOrigin)
+        pt.y=panelScrollYOrigin;
+    if(pt.x+self.frame.size.width>panelScrollObjWidth)
+    {
+        CGFloat overhead = pt.x+self.frame.size.width - panelScrollObjWidth;
+        pt.x-= overhead;
+    }
+    if(pt.y+self.frame.size.height>panelScrollObjHeight)
+    {
+        CGFloat overhead = pt.y+self.frame.size.height - panelScrollObjHeight;
+        pt.y-= overhead;
+    }
+    */
+    
     CGRect r = self.frame;
-    r.origin = pt;
+    r.origin = pt; 
     self.frame = r;
 }
 

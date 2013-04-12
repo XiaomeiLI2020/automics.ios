@@ -17,6 +17,7 @@
 -(void)submitRequestGetPanelsForGroup:(int)groupId;
 -(void)submitRequestGetPanelWithId:(int)panelId;
 -(void)submitRequestPostPanel:(Panel*)panel;
+-(NSURLRequest*)preparePanelRequestForPostPanel:(Panel*)panel;
 
 @end
 

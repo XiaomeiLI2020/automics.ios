@@ -9,6 +9,7 @@
 #import "PhotoJSONHandler.h"
 #import "NSData+Base64.h"
 #import "DataValidator.h"
+#import "APIWrapper.h"
 
 
 @implementation PhotoJSONHandler
@@ -54,6 +55,7 @@ NSString* BLOB = @"blob";
             [photodict setValue:photo.name forKey:NAME];
         }
     }
+    
     return photodict;
 }
 
@@ -81,9 +83,16 @@ NSString* BLOB = @"blob";
     }
     if ([photodict valueForKey:IMAGE_URL] != nil){
         photo.imageURL = [DataValidator checkKeyValueForNull:[photodict valueForKey:IMAGE_URL]];
+        if (photo.imageURL != nil){
+            photo.imageURL = [APIWrapper getAbsoluteURLUsingImageRelativePath:photo.imageURL];
+        }
     }
     if ([photodict valueForKey:THUMB_URL] != nil){
         photo.thumbURL = [DataValidator checkKeyValueForNull:[photodict valueForKey:THUMB_URL]];
+        
+        if (photo.thumbURL != nil){
+            photo.thumbURL = [APIWrapper getAbsoluteURLUsingImageRelativePath:photo.thumbURL];
+        }
     }
     return photo;
 }

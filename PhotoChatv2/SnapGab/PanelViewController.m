@@ -12,6 +12,7 @@
 #import "SpeechBubbleView.h"
 #import "ResourceView.h"
 #import "PanelLoader.h"
+#import "PhotoLoader.h"
 #import "ResourceLoader.h"
 #import "ResourceImageView.h"
 #import "ImageDownloader.h"
@@ -19,6 +20,7 @@
 #import "Annotation.h"
 #import "UIImage+Resize.h"
 #import <QuartzCore/QuartzCore.h>
+#import "ThumbnailView.h"
 
 @interface PanelViewController ()
 
@@ -29,7 +31,7 @@
 @synthesize panelScrollView;
 @synthesize thumbnailScrollView;
 
-
+@synthesize thumbPage;
 @synthesize currentPage;
 @synthesize currentPanel;
 @synthesize currentPanelId;
@@ -42,7 +44,9 @@
 BOOL _bubblesAdded;
 BOOL _resourcesAdded;
 BOOL initialized;
+BOOL thumbMode;
 
+PhotoLoader *photoLoader;
 PanelLoader *panelsLoader;
 ResourceLoader *resourceLoader;
 
@@ -50,6 +54,7 @@ NSString* urlImageString;
 
 int panelId;
 int panelCounter;
+int thumbnailIndex;
 
 int numPlacements;
 int placementCounter;
@@ -61,6 +66,13 @@ Placement* currentPlacement;
 NSArray *resourceList;
 NSArray *placementList;
 NSMutableArray* downloadedPanels;
+NSMutableArray* downloadedPhotos;
+NSArray* photos;
+
+UIActivityIndicatorView* aIndicator0;
+UIActivityIndicatorView* aIndicator1;
+UIActivityIndicatorView* aIndicator2;
+UIActivityIndicatorView* aIndicator3;
 
 - (void)updateScrollViews
 {
@@ -85,9 +97,7 @@ NSMutableArray* downloadedPanels;
         currentPanel = [self.panels objectAtIndex:(currentPage)];
         //if(currentPanel!=nil)
         //    NSLog(@"updateScrollViews.currentPanel.panelId=%i", currentPanel.panelId);
-
-
-
+        
         //Scroll to the last added panel in the serial layout within the scrollview
         [panelScrollView scrollItemToVisible:(currentPage)];
         
@@ -126,14 +136,13 @@ NSMutableArray* downloadedPanels;
         currentPage = page - 1;
         if(currentPage>0 && currentPage<[self.panels count])
         {
+            //NSLog(@"singleTapcaptured. objectAtIndex");
             currentPanel = [self.panels objectAtIndex:(currentPage)];
         }
         
         
         //NSLog(@"singleTap. touchPoint.x = %f", (CGFloat)touchPoint.x);
         //NSLog(@"singleTap. page= %i and currentPage=%i", page, currentPage);
-        
-        
         //Remove bubbles and resources from the current view
         [self removeAllBubbles];
         [self removeAllResources];
@@ -142,19 +151,6 @@ NSMutableArray* downloadedPanels;
         [panelScrollView scrollItemToVisible:(currentPage)];
 
     }//end if
-     
-    /*
-    //Add bubbles and resources to the new panel's view after scrolling
-    //[panelsLoader submitRequestGetPanelWithId:currentPanel.panelId];
-    if(currentPanel!=nil)
-    {
-        if(currentPanel.annotations==nil || currentPanel.placements==nil)
-        {
-            [panelsLoader submitRequestGetPanelWithId:currentPanel.panelId];
-        }
-        
-    }
-     */
 
 }
 
@@ -193,19 +189,20 @@ NSMutableArray* downloadedPanels;
     resourceList = [[NSArray alloc] init];
     placementList = [[NSArray alloc] init];
     downloadedPanels = [[NSMutableArray alloc] init];
+    downloadedPhotos = [[NSMutableArray alloc] init];
     
     currentPanel = [[Panel alloc] init];
     
     panelsLoader = [[PanelLoader alloc] init];
     panelsLoader.delegate = self;
-    
+
     resourceLoader = [[ResourceLoader alloc] init];
     resourceLoader.delegate = self;
     
     _bubblesAdded = NO;
     _resourcesAdded = NO;
     initialized = NO;
-
+    thumbMode = NO;
 }
 
 /*
@@ -230,6 +227,11 @@ NSMutableArray* downloadedPanels;
 	activityIndicator.center = self.view.center;
 	[self.view addSubview: activityIndicator];
     [activityIndicator startAnimating];
+    
+    aIndicator0 = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    aIndicator1 = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    aIndicator2 = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    aIndicator3 = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
     [panelsLoader submitRequestGetPanelsForGroup:1];
 
@@ -302,15 +304,55 @@ NSMutableArray* downloadedPanels;
     {
         [self removeAllBubbles];
         [self removeAllResources];
-    }
+    }//end if
 
+}
+
+-(void)displayPageInPanelScrollView:(int)page
+{
+    if(page>=0 && page<[self.panels count])
+    {
+        BOOL displayed= NO;
+        for(UIView* subView in panelScrollView.subviews)
+        {
+            if(subView.tag==page)
+            {
+                displayed=YES;
+                break;
+            }//end if
+        }//end for
+        
+        //NSLog(@"displayPageInPanelScrollView.panel#%i displayed=%d.", page, displayed);
+        if(!displayed)
+        {
+            //NSLog(@"displayPageInPanelScrollView.objectAtIndex:page");
+            Panel* panel = [self.panels objectAtIndex:page];
+            //NSLog(@"displayPageInPanelScrollView.page=%i,currentPage=%i, panelId=%i", page, currentPage, panel.panelId);
+            if(panel!=nil)
+            {
+                UIImageView *imageView = [[UIImageView alloc] init];
+                [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
+                imageView.frame = CGRectMake(page*panelScrollObjWidth, 0, panelScrollObjWidth, panelScrollObjHeight);
+                imageView.tag = page;	// tag our images for later use when we place them in serial fashion
+                // add images to the panel scrollview
+                [panelScrollView addSubview:imageView];
+            }//end if panel!=nil
+        }//end if(!displayed)
+        else
+        {
+            //NSLog(@"displayPageInPanelScrollView.panel#%i already displayed.", page);
+        }
+
+    }//end if(page>=0 && page<[panels count])
 }
 
 -(void)alignPageInPanelScrollView
 {
-    //NSLog(@"alignPageInPhotoTableView.numPanels=%i", numPanels);
-    if(numPanels>0)
+    thumbMode = NO;
+    //NSLog(@"alignPageInPanelScrollView.numPanels=%i", numPanels);
+    if([self.panels count]>0)
     {
+
         [activityIndicator startAnimating];
         
         //NSLog(@"alignPage. numPanels= %i", numPanels);
@@ -333,23 +375,43 @@ NSMutableArray* downloadedPanels;
         //Add new panel after scrolling
         if(currentPage>=0 && currentPage<[self.panels count])
         {
-           //Load new panel after scrolling
+            //Load new panel after scrolling
+            //NSLog(@"alignPageInPhotoTableView. objectAtIndex:currentPage, currentPage=%i, [self.panels count]=%i", currentPage, [self.panels count]);
             currentPanel = [self.panels objectAtIndex:(currentPage)];
+            //NSLog(@"alignPageInPhotoTableView.page=%i,currentPage=%i, panelId=%i", page, currentPage, currentPanel.panelId);
             if(currentPanel!=nil)
             {
-                UIImageView *imageView = [[UIImageView alloc] init];
-                [imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
-                imageView.frame = CGRectMake(currentPage*panelScrollObjWidth, 0, panelScrollObjWidth, panelScrollObjHeight);                
-                imageView.tag = currentPage;	// tag our images for later use when we place them in serial fashion
-    
-                [activityIndicator stopAnimating];
-                // add images to the panel scrollview
-                [panelScrollView addSubview:imageView];
+                BOOL displayed= NO;
+                for(UIView* subView in panelScrollView.subviews)
+                {
+                    if(subView.tag==currentPage)
+                    {
+                        displayed=YES;
+                        break;
+                    }//end if
+                }//end for
                 
+                if(!displayed)
+                {
+                    UIImageView *imageView = [[UIImageView alloc] init];
+                    [imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
+                    imageView.frame = CGRectMake(currentPage*panelScrollObjWidth, 0, panelScrollObjWidth, panelScrollObjHeight);
+                    imageView.tag = currentPage;	// tag our images for later use when we place them in serial fashion
+                    
+                    //[activityIndicator stopAnimating];
+                    // add images to the panel scrollview
+                    [panelScrollView addSubview:imageView];
+                }//end if(!displayed)
+                
+
+                [activityIndicator stopAnimating];
+                
+                //NSLog(@"alignPageInPhotoTableView. downloadedPanels objectAtIndex:currentPage.currentPage=%i, [self.panels count]=%i", currentPage, [self.panels count]);
                 //Check if the panel alongwith placements and annotations have already been downloaded
                 BOOL panelDownloaded = [[downloadedPanels objectAtIndex:currentPage] boolValue];
                 if(!panelDownloaded)
                 {
+                    //NSLog(@"alignPageInPanelScrollView. Panel#%i download called.", currentPage);
                     //Download annotations and placements of the panel
                     [panelsLoader submitRequestGetPanelWithId:currentPanel.panelId];
                 }
@@ -360,14 +422,25 @@ NSMutableArray* downloadedPanels;
                     //NSLog(@"placements already downloaded.");
                     [self loadPlacements:currentPanel];
                 }//end else
-                
+
+                if(currentPage==[self.panels count]-1)
+                {
+                    [self displayPageInPanelScrollView:currentPage-1];
+                }
+                else if(currentPage<[self.panels count]-1)
+                {
+                    [self displayPageInPanelScrollView:currentPage+1];
+                    if(currentPage>0)
+                        [self displayPageInPanelScrollView:currentPage-1];
+                }
                 //Remove other panels to free up memory
-                if([panels count]>3)
+                if([self.panels count]>3)
                 {
                     for(UIView* subView in panelScrollView.subviews)
                     {
-                        //if(subView.tag!=currentPage || subView.tag!=currentPage-1 || subView.tag!=currentPage+1)
-                        if(subView.tag!=currentPage)
+                        if(subView.tag!=currentPage && subView.tag!=currentPage-1 && subView.tag!=currentPage+1)
+                           //&& subView.tag!=currentPage-2 && subView.tag!=currentPage+2)
+                        //if(subView.tag!=currentPage)
                         {
                             [subView removeFromSuperview];
                         }
@@ -379,11 +452,11 @@ NSMutableArray* downloadedPanels;
 
             // Scroll to the current page's thumbnail in thumbnail scrollview
             [thumbnailScrollView scrollItemToVisible:(currentPage)];
-            [self alignPageInThumbnailScrollView];
-            //[self addPageToThumbnailScrollView:currentPage];
+            //[self alignPageInThumbnailScrollView];
+
         }//end if currentPage>=0 && currentPage<[self.panels count]
         
-    }//end if _numImages>0
+    }//end if numPanels>0
 }
 
 -(void)alignPageInThumbnailScrollView
@@ -394,13 +467,16 @@ NSMutableArray* downloadedPanels;
         //NSLog(@"alignPage. numPanels= %i", numPanels);
         CGFloat pos = (CGFloat)self.thumbnailScrollView.contentOffset.x / thumbnailWidth;
         int page = round(ceilf(pos));
-    
+        thumbPage = page;
         
-        //NSLog(@"alignPageInThumbnailScrollView.page=%i", page);
+        //NSLog(@"alignPageInThumbnailScrollView.thumbPage=%i and currentPage=%i", thumbPage, currentPage);
         
         //Add new panels to thumbnailscrollviews
         if(page>=0 && page<[self.panels count])
         {
+            thumbnailIndex = thumbPage;
+            [self generateThumbails];
+            /*
             for(int index=page; index<page+4; index++)
             {
                 //Load new panel after scrolling
@@ -408,28 +484,29 @@ NSMutableArray* downloadedPanels;
                 {
                     Panel* thumbnailPanel = [self.panels objectAtIndex:(index)];
                     if(thumbnailPanel!=nil)
-                    {
-                        //NSLog(@"panel downloaded.");
-                        UIImageView *imageView = [[UIImageView alloc] init];
-                        [imageView setImageWithURL:[NSURL URLWithString:thumbnailPanel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
-                        imageView.frame = CGRectMake(index*thumbnailWidth, 0, thumbnailWidth, thumbnailScrollObjHeight);
-                        imageView.tag = index;
-                        // add images to the thumbnail scrollview
-                        [thumbnailScrollView addSubview:imageView];
-                        
-                        if(index==currentPage)
+                    {                    
+                        if(thumbnailPanel.thumbnail==nil)
                         {
-                            //NSLog(@"alignPageInThumbnailScrollView.index=%i, currentPage=%i", index, currentPage);
-                            //imageView.backgroundColor = [UIColor clearColor];
-                            imageView.layer.borderColor = [[UIColor blackColor] CGColor];
-                            imageView.layer.borderWidth = 2.0;
+                            CGRect thumbFrame= CGRectMake(index*thumbnailWidth, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
+                            ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:thumbnailPanel];
+                            thumbnailPanel.thumbnail=thumbnailView.snapshot;
                         }
                         
-                    }//end if
-
-                }//end if(index<[panels count]
+                        UIImageView *imageView = [[UIImageView alloc] init];
+                        [imageView setImage:thumbnailPanel.thumbnail];
+                        imageView.frame = CGRectMake(index*thumbnailWidth, 0, thumbnailWidth, thumbnailHeight);
+                        imageView.tag = index;
+                        [thumbnailScrollView addSubview:imageView];
+                        
+                        break;
+                    }//end if(thumbnailPanel!=nil)
+                    
+                }//end if
             }//end for
             
+            */
+            
+            /*
             if([panels count]>4)
             {
                 for(UIView* subView in thumbnailScrollView.subviews)
@@ -440,69 +517,176 @@ NSMutableArray* downloadedPanels;
                     }
                 }//end for
             }//end if([panels count]>4)
-            
+            */
         }//end if page>=0 && page<[self.panels count]
         
     }//end if _numImages>0
 }
 
--(void)addPageToThumbnailScrollView:(int)page
+
+-(void)generateThumbails
 {
-    NSLog(@"addPageToThumbnailScrollView.page=%i", page);
-    if([panels count]>0)
+    //thumbnailIndex = thumbPage;
+    thumbMode = YES;
+    //Load new panel after scrolling
+    if(thumbnailIndex<[self.panels count])
     {
-       //Add bubbles and resources to a panel after scrolling
-        if(page>=0 && page<[self.panels count])
+        //NSLog(@"generateThumbnails. thumbnailIndex=%i", thumbnailIndex);
+        //NSLog(@"generateThumbnails. self.panels objectAtIndex:currentPage.currentPage=%i, [self.panels count]=%i", currentPage, [self.panels count]);
+        Panel* thumbnailPanel = [self.panels objectAtIndex:(thumbnailIndex)];
+        BOOL panelDownloaded = [[downloadedPanels objectAtIndex:thumbnailIndex] boolValue];
+        
+        if(!panelDownloaded)
         {
-            //Load new panel after scrolling
-            Panel* thumbnailPanel = [self.panels objectAtIndex:(page)];
+            //NSLog(@"generateThumbnails. Panel%i download called.", thumbnailIndex);
+            //Download annotations and placements of the panel
+            [panelsLoader submitRequestGetPanelWithId:thumbnailPanel.panelId];
+        }
+        else
+        {
+            //NSLog(@"generateThumbnails. Panel#%i already downloaded.", thumbnailIndex);
+        }
+        [self displayThumbails];
+        
+    }//end if(thumbnailIndex<[self.panels count])
+}
+
+-(void)displayThumbails
+{
+
+    for(int index=thumbPage; index<thumbPage+4; index++)
+    {
+        if(index<[self.panels count])
+        {
+            /*
+            UIActivityIndicatorView* aIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            aIndicator.frame = CGRectMake((index-thumbPage)*thumbnailWidth, thumbnailScrollYOrigin, thumbnailWidth, thumbnailScrollObjHeight);
+            aIndicator.center = CGPointMake(aIndicator.frame.origin.x+(thumbnailWidth/2), thumbnailScrollYOrigin+(thumbnailScrollObjHeight/2));
+            [aIndicator startAnimating];
+            [self.view addSubview:aIndicator];
+            */
+            /*
+            BOOL displayed= NO;
+
+            for(UIView* subView in thumbnailScrollView.subviews)
+            {
+                if(subView.tag==index)
+                {
+                    displayed=YES;
+                    [subView removeFromSuperview];
+                    break;
+                }//end if
+            }//end for
+            */
+            //NSLog(@"displayThumbails. self.panels objectAtIndex:currentPage.currentPage=%i, index=%i, [self.panels count]=%i", currentPage, index, [self.panels count]);
+            Panel* thumbnailPanel = [self.panels objectAtIndex:index];
+            //NSLog(@"displayThumbnails. PanelIndex=%i", index);
             if(thumbnailPanel!=nil)
             {
-                
-                //BOOL panelDownloaded = [[downloadedPanels objectAtIndex:currentPage] boolValue];
-                //If panel not already downloaded, add it to the panelScrollView, and download placements and annotations
-                //if(!panelDownloaded)
+                //NSData *imgData = UIImagePNGRepresentation(thumbnailPanel.thumbnail);
+                //NSLog(@"Size of Image%i (bytes):%d",index, [imgData length]);
+                //if([imgData length]==0)
                 {
-                    //NSLog(@"panel downloaded.");
-                    //Add to panelscrollview
-                    UIImageView *imageView = [[UIImageView alloc] init];
-                    [imageView setImageWithURL:[NSURL URLWithString:thumbnailPanel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
-                    imageView.frame = CGRectMake(page*thumbnailWidth, 0, thumbnailWidth, thumbnailScrollObjHeight);
-                    imageView.tag = page;
-                    
-                    // add images to the thumbnail scrollview
-                    [thumbnailScrollView addSubview:imageView];
-                    
-                    
-                    /*
-                    if([panels count]>4)
-                    {
-                        for(UIView* subView in thumbnailScrollView.subviews)
-                        {
-                            if(subView.tag!=currentPage || subView.tag!=currentPage+1 || subView.tag!=currentPage-1 ||
-                               subView.tag!=currentPage+2 || subView.tag!=currentPage-2)
-                            {
-                                [subView removeFromSuperview];
-                            }
-                        }//end for
-                        
-                    }//end if([panels count]>3)
-                    */
+                    CGRect thumbFrame= CGRectMake(index*thumbnailWidth, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
+                    ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:thumbnailPanel];
+                    thumbnailPanel.thumbnail=thumbnailView.snapshot;
+                    //NSLog(@"thumbnail#%i displayed=%d",index, thumbnailPanel.displayed);
                 }
 
-            }//if currentPanel!=nil
+                UIImageView *imageView = [[UIImageView alloc] init];
+                imageView.frame = CGRectMake(index*thumbnailWidth, 0, thumbnailWidth, thumbnailHeight);
+                [imageView setImage:thumbnailPanel.thumbnail];
+                imageView.tag = index;
+                [thumbnailScrollView addSubview:imageView];
+
+            }//end if(thumbnailPanel!=nil)
             
-            // Scroll to the current page's thumbnail in thumbnail scrollview
-            //[thumbnailScrollView scrollItemToVisible:(currentPage)];
-        }//end if currentPage>=0 && currentPage<[self.panels count]
-        
-    }//end if _numImages>0
+        }//end if(index<[self.panels count])
+    }//end for
     
+    //NSLog(@"thumbPage=%i", thumbPage);
+    if(thumbPage<=currentPage)
+    {
+        for(int page=thumbPage-1; page>thumbPage-5; page--)
+        {
+            [self displayPageInThumbnailScrollView:page];
+        }
+        
+        for(int page=thumbPage+5; page<thumbPage+9; page++)
+        {
+            [self displayPageInThumbnailScrollView:page];
+        }
+        
+    }
+    
+
+    if([self.panels count]>4)
+    {
+        for(UIView* subView in thumbnailScrollView.subviews)
+        {
+            if(subView.tag>thumbPage+8 || subView.tag<thumbPage-4)
+            {
+                [subView removeFromSuperview];
+            }
+        }//end for
+    }//end if([panels count]>4)
+
+}
+
+-(void)displayPageInThumbnailScrollView:(int)page
+{
+    if(page>=0 && page<[self.panels count])
+    {
+        
+        BOOL displayed= NO;
+        for(UIView* subView in thumbnailScrollView.subviews)
+        {
+            if(subView.tag==page)
+            {
+                displayed=YES;
+                break;
+            }//end if
+        }//end for
+        
+        
+        NSLog(@"displayPageInThumbnailScrollView.panel#%i displayed=%d.", page, displayed);
+        if(!displayed)
+        {
+            //NSLog(@"displayPageInThumbnailScrollView.objectAtIndex:page");
+            Panel* panel = [self.panels objectAtIndex:page];
+            //NSLog(@"displayPageInPanelScrollView.page=%i,currentPage=%i, panelId=%i", page, currentPage, panel.panelId);
+            if(panel!=nil)
+            {
+                UIImageView *imageView = [[UIImageView alloc] init];
+                [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
+                imageView.frame = CGRectMake(page*thumbnailWidth, 0, thumbnailWidth, thumbnailHeight);
+                imageView.tag = page;	// tag our images for later use when we place them in serial fashion
+                // add images to the panel scrollview
+                [thumbnailScrollView addSubview:imageView];
+            }//end if panel!=nil
+        }//end if(!displayed)
+        //else
+        {
+            //NSLog(@"displayPageInPanelScrollView.panel#%i already displayed.", page);
+        }
+        
+    }//end if(page>=0 && page<[panels count])
+}
+
+
+-(UIImage*) imageWithView:(UIView *)view
+{
+    NSLog(@"imageWithView");
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, [[UIScreen mainScreen] scale]);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage * img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return img;
 }
 
 -(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    //NSLog(@"scrollViewDidEndScrollingAnimation");
+    //NSLog(@"scrollViewDidEndScrollingAnimation.scrollView.tag=%i", scrollView.tag);
     if(scrollView.tag==0)
         [self alignPageInPanelScrollView];
     if(scrollView.tag==1)
@@ -511,7 +695,7 @@ NSMutableArray* downloadedPanels;
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    //NSLog(@"scrollViewDidEndDecelerating");
+    //NSLog(@"scrollViewDidEndDecelerating.scrollView.tag=%i", scrollView.tag);
     if(scrollView.tag==0)
         [self alignPageInPanelScrollView];
     if(scrollView.tag==1)
@@ -564,46 +748,13 @@ NSMutableArray* downloadedPanels;
                     {
                         ResourceView* sbv =(ResourceView*)subview;
                         
-                        //ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andURL:sbv.urlImageString andType:sbv.type andId:sbv.resourceId andScale:sbv.scale];
-                        /*
-                        NSLog(@"edited resource.frame=%@", NSStringFromCGRect(sbv.frame));
-                        NSLog(@"edited resource.bounds%@", NSStringFromCGRect(sbv.bounds));
-                        NSLog(@"edited resource.imageView.frame=%@", NSStringFromCGRect(sbv.imageView.frame));
-                        NSLog(@"edited resource.imageView.bounds%@", NSStringFromCGRect(sbv.imageView.bounds));
-                        */
-                        
-                        //CGRect transformedBounds = CGRectApplyAffineTransform(sbv.bounds, sbv.transform);
-                        //CGRect transformedFrame = CGRectApplyAffineTransform(sbv.frame, CGAffineTransformMakeRotation(0.0));
-                        //CGAffineTransform transform = CGAffineTransformMakeRotation(-sbv.angle);
-                        //CGRect rawFrame = CGRectApplyAffineTransform(sbv.frame, transform);
-                        //CGRect nextFrame = CGRectApplyAffineTransform(rawFrame, transform);
-                        /*
-                        CGAffineTransform transform = CGAffineTransformScale([[sender view] transform], newScale, newScale);
-                        CGAffineTransform iTransform = CGAffineTransformInvert([[sender view] transform]);
-                        CGRect rawFrame = CGRectApplyAffineTransform([[sender view] frame], iTransform);
-                        CGRect nextFrame = CGRectApplyAffineTransform(rawFrame, transform);
-                        */
-                        //CGRect (CGAffineTransformMakeRotation(0.0));
-                        //CGAffineTransformRotate(myImage.transform, 180.0)
-                        //CGRect transformedFrame = CGAffineTransformRotate;
-                        //NSLog(@"edited transformedFrame=%@", NSStringFromCGRect(rawFrame));
-                        //NSLog(@"edited pre-rotation resource.bounds%@", NSStringFromCGRect(sbv.bounds));
-                        
-                        sbv.transform = CGAffineTransformMakeRotation(0.0);
-                        //[sbv removeFromSuperview];
-
-                        NSLog(@"edited pre-rotation resource.frame=%@", NSStringFromCGRect(sbv.frame));
-                        //NSLog(@"edited pre-rotation resource.bounds%@", NSStringFromCGRect(sbv.bounds));
-                        //CGRect originalRect = CGRectMake(sbv.originalOrigin.x, sbv.originalOrigin.y, sbv.bounds.size.width, sbv.bounds.size.height);
-                        //ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:originalRect andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
-                        
+                        if(sbv.angle!=0.00)
+                            sbv.transform = CGAffineTransformMakeRotation(0.0);
                         
                         ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
                         
-                        sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
-                        //new_sbv.transform = CGAffineTransformMakeRotation(0.0);
-                        NSLog(@"edited pre-rotation newresource.frame=%@", NSStringFromCGRect(new_sbv.frame));
-                        NSLog(@"edited pre-rotation newresource.bounds%@", NSStringFromCGRect(new_sbv.bounds));
+                        if(sbv.angle!=0.00)
+                            sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
                         
                         new_sbv.userInteractionEnabled = YES;
                         new_sbv.alpha = 0;
@@ -629,109 +780,31 @@ NSMutableArray* downloadedPanels;
         thumbnailScrollView.numItems = [panels count];
         [thumbnailScrollView layoutItems];
         
-        
         //Scroll panelscrollview and thumbnailscrollview to the last item
         currentPage = [panels count]-1;
         [panelScrollView scrollItemToVisible:(currentPage)];
-        [thumbnailScrollView scrollItemToVisible:(currentPage)];
+        //[thumbnailScrollView scrollItemToVisible:(currentPage)];
         
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureCaptured:)];
         //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
         singleTap.cancelsTouchesInView = NO;
         [thumbnailScrollView addGestureRecognizer:singleTap];
-
-        //int index= currentPage;
-        for(int index=currentPage; index>=0; index--)
+        /*
+        currentPanel= [panels objectAtIndex:currentPage];
+        if(currentPanel!=nil)
         {
-            currentPanel= [panels objectAtIndex:index];
-            if(currentPanel!=nil)
+            if(currentPanel.photo!=nil)
             {
-                if(currentPanel.photo!=nil)
-                {
-                    //if(currentPanel.photo.photoId>0)
-                    {
-                        //urlImageString = currentPanel.photo.imageURL;
-                        //NSLog(@"loadPanelsToScrollViews.panel.panelId=%i and imageurl=%@",currentPanel.panelId, urlImageString);
-                      
-                        //Download the latest panel and add to the panelscrollview
-                        if(index==currentPage)
-                        {
-                            //Add to panelscrollview
-                            UIImageView *imageView = [[UIImageView alloc] init];
-                            [imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
-                            imageView.frame = CGRectMake(index*panelScrollObjWidth, 0, panelScrollObjWidth, panelScrollObjHeight);
-                            imageView.tag = currentPage;	// tag our images for later use when we place them in serial fashion
-                            
-                            // add images to the panel scrollview
-                            [panelScrollView addSubview:imageView];
-                            
-                            //Load annotations and placements of the panel
-                            [panelsLoader submitRequestGetPanelWithId:currentPanel.panelId];
-                            
-                            //NSNumber* yesObj = [NSNumber numberWithBool:YES];
-                            //[downloadedPanels replaceObjectAtIndex:currentPage withObject:yesObj];
-                            
-                            //break;
-                        }
-                        
-                        
-                        if([panels count]>4)
-                        {
-                            if(index==currentPage-3)
-                                break;
-                            
-                        }
-                        UIImageView *thumbnailView = [[UIImageView alloc] init];
-                        __weak UIImageView* _thumbnailView = thumbnailView;
-                        
-                        //[thumbnailView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
-                        [thumbnailView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL]
-                                      placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]
-                                               success:^(UIImage *imageDownloaded) {
-                                                   
-                                                   /*
-                                                   UIImage * resizedImage = [imageDownloaded resizedImage:CGSizeMake(thumbnailWidth, thumbnailWidth) interpolationQuality:kCGInterpolationLow];
-                                                   */
-                                                   _thumbnailView.frame = CGRectMake(index*thumbnailWidth, 0, thumbnailWidth, thumbnailScrollObjHeight);
-                                                   _thumbnailView.tag = index;	// tag our images for later use when we place them in serial fashion
-                                                   
-                                                   _thumbnailView.image = imageDownloaded;
-                                                   // add images to the thumbnail scrollview
-                                                   [thumbnailScrollView addSubview:_thumbnailView];
-                                                   
-                                                   if(index==currentPage)
-                                                   {
-                                                       _thumbnailView.layer.borderColor = [[UIColor blackColor] CGColor];
-                                                       _thumbnailView.layer.borderWidth = 2.0;
-                                                   }
-                                                   
-                                               }
-                                               failure:^(NSError *error) {
-                                                   UIAlertView *alert = [[UIAlertView alloc]
-                                                                         initWithTitle: @"Load failed"
-                                                                         message: @"Failed to load image"
-                                                                         delegate: nil
-                                                                         cancelButtonTitle:@"OK"
-                                                                         otherButtonTitles:nil];
-                                                   [alert show];
-                                               }];
-                         
-                         
-                        /*
+                //Add to panelscrollview
+                UIImageView *imageView = [[UIImageView alloc] init];
+                [imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
+                imageView.frame = CGRectMake(currentPage*panelScrollObjWidth, 0, panelScrollObjWidth, panelScrollObjHeight);
+                imageView.tag = currentPage;	
+                [panelScrollView addSubview:imageView];
+            }//end if(currentPanel.photo!=nil)
+        }//end if(currentPanel!=nil)
+         */
 
-                        thumbnailView.frame = CGRectMake(index*thumbnailWidth, 0, thumbnailWidth, thumbnailScrollObjHeight);
-                        thumbnailView.tag = panelCounter;	// tag our images for later use when we place them in serial fashion
-                        
-                        // add images to the thumbnail scrollview
-                        [thumbnailScrollView addSubview:thumbnailView];
-                        */
-
-                    }//end if(currentPanel.photo.photoId>0)
-                    
-                }//end if(currentPanel.photo!=nil)
-                
-            }//end if(currentPanel!=nil)
-        }//end for
     }//end if [panels count]>0
 }
 
@@ -747,7 +820,7 @@ NSMutableArray* downloadedPanels;
 {
     if (panel != nil)
     {
-        currentPanel = panel;
+        //currentPanel = panel;
         panelId = panel.panelId;
         if(panel.annotations!=nil)
         {
@@ -781,7 +854,7 @@ NSMutableArray* downloadedPanels;
     //NSLog(@"loadPlacements.");
     if (panel != nil)
     {
-        currentPanel = panel;
+        //currentPanel = panel;
         panelId = panel.panelId;
         
         if(panel.placements!=nil)
@@ -794,6 +867,7 @@ NSMutableArray* downloadedPanels;
             {
                 for(placementCounter=0; placementCounter<numPlacements; placementCounter++)
                 {
+                    //NSLog(@"loadPlacements. currentPanel.resources objectAtIndex:currentPage.currentPage=%i, [self.panels count]=%i", currentPage, [self.panels count]);
                     Resource* resource = [currentPanel.resources objectAtIndex:placementCounter];
                     if(resource!=nil)
                     {
@@ -807,6 +881,7 @@ NSMutableArray* downloadedPanels;
                         {
                             if(currentPanel.placements!=nil && [currentPanel.placements count]>placementCounter)
                             {
+                                //NSLog(@"loadPlacements. currentPanel.placements objectAtIndex:currentPage.currentPage=%i, [self.panels count]=%i", currentPage, [self.panels count]);
                                 Placement* placement = [currentPanel.placements objectAtIndex:placementCounter];
                                 if(placement!=nil)
                                 {
@@ -846,35 +921,74 @@ NSMutableArray* downloadedPanels;
     }//end if panel!=null
 }
 
--(void)loadPlacementsCache:(Panel*)panel
-{
-    if (panel != nil)
-    {
-        currentPanel = panel;
-        panelId = panel.panelId;
-        
-        if(panel.placements!=nil)
-        {
-            numPlacements = [panel.placements count];
-            placementCounter = 0;
-            //for(Placement* placement in panel.placements)
-            if(numPlacements > 0)
-            {
-                int resourceId = [[panel.placements objectAtIndex:placementCounter] resourceId];
-                [resourceLoader submitRequestGetResourceWithResourceId:resourceId];
-                
-                
-            }//end for
-            
-            _resourcesAdded = YES;
-        }//end if
-    }//end if panel!=null
-}
 
+#pragma rendering subviews into an image
+- (UIImage*)imageFromView:(UIView*)view
+{
+    /*
+    // Create a graphics context with the target size
+    // On iOS 4 and later, use UIGraphicsBeginImageContextWithOptions to take the scale into consideration
+    // On iOS prior to 4, fall back to use UIGraphicsBeginImageContext
+    CGSize imageSize = [view bounds].size;
+    if (NULL != UIGraphicsBeginImageContextWithOptions)
+        UIGraphicsBeginImageContextWithOptions(imageSize, NO, 0);
+    else
+        UIGraphicsBeginImageContext(imageSize);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    // -renderInContext: renders in the coordinate space of the layer,
+    // so we must first apply the layer's geometry to the graphics context
+    CGContextSaveGState(context);
+    // Center the context around the view's anchor point
+    CGContextTranslateCTM(context, [view center].x, [view center].y);
+    // Apply the view's transform about the anchor point
+    CGContextConcatCTM(context, [view transform]);
+    // Offset by the portion of the bounds left of and above the anchor point
+    CGContextTranslateCTM(context, -[view bounds].size.width * [[view layer] anchorPoint].x,
+                          -[view bounds].size.height * [[view layer] anchorPoint].y);
+    
+    // Render the layer hierarchy to the current context
+    [[view layer] renderInContext:context];
+    
+    // Restore the context
+    CGContextRestoreGState(context);
+
+    
+    // Retrieve the screenshot image
+    UIImage *imageWhole = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return imageWhole;
+          */
+    
+    // Retrieve the screenshot image
+    UIImage *imageWhole = [[UIImage alloc] init];
+    
+    /*
+    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:MyURL]]];
+    
+    CGSize imageSize = CGSizeMake(thumbnailWidth, thumbnailHeight);
+    CGRect imageRect = CGRectMake(0.0, 0.0, thumbnailWidth, thumbnailHeight);
+    
+    if (NULL != UIGraphicsBeginImageContextWithOptions)
+        UIGraphicsBeginImageContextWithOptions(imageSize, NO, 0);
+    else
+        UIGraphicsBeginImageContext(imageSize);
+    */
+
+
+    
+    UIGraphicsEndImageContext();
+    
+    return imageWhole;
+    
+}
 
 #pragma mark PanelLoader functions.
 -(void)PanelLoader:(PanelLoader*)loader didFailWithError:(NSError*)error{
-    NSLog(@"Panel failed to load.");
+    NSLog(@"PanelViewController.Panel failed to load.");
     
 }
 
@@ -883,6 +997,9 @@ NSMutableArray* downloadedPanels;
 
     panels= panelsLocal;
     numPanels = [panelsLocal count];
+    
+    //NSLog(@"numPanels=%i", numPanels);
+    //[photoLoader submitRequestGetPhotosForGroup:@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12"];
     
     if(!initialized)
     {
@@ -899,31 +1016,40 @@ NSMutableArray* downloadedPanels;
         NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
         [downloadedPanels addObject:panelDownloaded];
     }
-    
-
- 
+     
 }
 
--(void)PanelLoader:(PanelLoader*)loader didLoadPanel:(Panel *)panel{
-    //NSLog(@"Panel downloaded.currentPage=%i", currentPage);
+-(void)PanelLoader:(PanelLoader*)loader didLoadPanel:(Panel*)panel{
     
-    if (panel != nil)
+    if (panel!= nil)
     {
-        currentPanel = panel;
+        int index=0;
+        if(!thumbMode)
+        {
+            currentPanel = panel;
+            index = currentPage;
+        }
+        else{
+            index = thumbnailIndex;
+        }
+
+        //NSLog(@"Panel downloaded.currentPage=%i, and panelIndex=%i", currentPage, index);
+        
         panelId = panel.panelId;
-        //panel.resources = [[NSMutableArray alloc] init];
-        
+        //NSLog(@"didloadPanel. self.panels objectAtIndex:currentPage.currentPage=%i, [self.panels count]=%i", currentPage, [self.panels count]);
+        Panel* panelInArray = [self.panels objectAtIndex:index];
+ 
         //Replace the panel in the panels array with the downloaded panel that contains annotations and placements
-        panels = [self arrayByReplacingObject:panels andObjectIndex:currentPage andNewObject:currentPanel];
-        
+        //panels = [self arrayByReplacingObject:panels andObjectIndex:currentPage andNewObject:currentPanel];
         //NSNumber* yesObj = [NSNumber numberWithBool:YES];
         //[downloadedPanels replaceObjectAtIndex:currentPage withObject:yesObj];
-        
         //NSLog(@"Panel downloaded %i. currentPanel.annotations.count=%i", panel.panelId, [currentPanel.annotations count]);
         //NSLog(@"Panel downloaded %i. currentPanel.placements.count=%i", panel.panelId, [currentPanel.placements count]);
         
+
         if(panel.annotations!=nil)
         {
+            panelInArray.annotations = panel.annotations;
             //NSLog(@"annotations loaded.");
             for(Annotation* annotation in panel.annotations)
             {
@@ -933,38 +1059,108 @@ NSMutableArray* downloadedPanels;
                 
                 NSString* text = annotation.text;
                 int styleId = annotation.bubbleStyle;
-                
-                SpeechBubbleView* sbv = [[SpeechBubbleView alloc] initWithFrame:xywh andText:text andStyle:styleId];
-                sbv.userInteractionEnabled = NO;
-                sbv.alpha = 0.0f;
-                [self.view addSubview:sbv];
-                [UIView transitionWithView:self.view
-                                  duration:0.25
-                                   options:UIViewAnimationOptionLayoutSubviews
-                                animations:^ { sbv.alpha = 1.0f; }
-                                completion:nil];
-                
-            }
+         
+                if(!thumbMode)
+                {
+                    SpeechBubbleView* sbv = [[SpeechBubbleView alloc] initWithFrame:xywh andText:text andStyle:styleId];
+                    sbv.userInteractionEnabled = NO;
+                    sbv.alpha = 0.0f;
+                    [self.view addSubview:sbv];
+                    [UIView transitionWithView:self.view
+                                      duration:0.25
+                                       options:UIViewAnimationOptionLayoutSubviews
+                                    animations:^ { sbv.alpha = 1.0f; }
+                                    completion:nil];
+                }//end if(!thumbMode)
+            }//end for
         }//end if
         
         
         if(panel.placements!=nil)
         {
-            //panel.resources = [[NSMutableArray alloc] initWithArray:panel.placements];
-            //panel.resources = [NSMutableArray arrayWithArray:panel.placements];
+            panelInArray.placements = panel.placements;
             panel.resources = [[NSMutableArray alloc] init];
+            panelInArray.resources = panel.resources;
+            
             numPlacements = [panel.placements count];
+            //NSLog(@"numPlacements=%i", numPlacements);
             placementCounter = 0;
-            
-            
             if(numPlacements > 0)
             {
                 //NSLog(@"placements loaded.");
-                int resourceId = [[panel.placements objectAtIndex:placementCounter] resourceId];
-                [resourceLoader submitRequestGetResourceWithResourceId:resourceId];
-                
-            }//end for
+                //NSLog(@"didLoadPanel. self.panels objectAtIndex:currentPage.currentPage=%i, [self.panels count]=%i", currentPage, [self.panels count]);
+                if(placementCounter<[panel.placements count])
+                {
+                    int resourceId = [[panel.placements objectAtIndex:placementCounter] resourceId];
+                    [resourceLoader submitRequestGetResourceWithResourceId:resourceId];
+                }
+            }//end if
+            else{
+                //Declare a panel downloaded
+                NSNumber* yesObj = [NSNumber numberWithBool:YES];
+                if(!thumbMode)
+                {
+                    if(currentPage<[downloadedPanels count])
+                        [downloadedPanels replaceObjectAtIndex:currentPage withObject:yesObj];
+                }
+               if(thumbMode)
+                {
+                    if(thumbnailIndex<[downloadedPanels count])
+                        [downloadedPanels replaceObjectAtIndex:thumbnailIndex withObject:yesObj];
+                    //[downloadedPanels replaceObjectAtIndex:thumbnailIndex withObject:yesObj];
+                    CGRect thumbFrame= CGRectMake(thumbnailIndex*thumbnailWidth, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
+                    ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:panelInArray];
+                    panelInArray.thumbnail=thumbnailView.snapshot;
+                    
+                    if(thumbnailIndex<currentPage)
+                    {
+                        thumbnailIndex++;
+                        [self generateThumbails];
+                    }
+
+                    /*
+                     
+                    if(thumbnailIndex<currentPage)
+                    {
+                        thumbnailIndex++;
+                        [self generateThumbails];
+                    }
+                    else{
+                        thumbMode = NO;
+                        [self displayThumbails];
+                    }
+                     */
+                }//end if thumbMode
+            }
         }//end if
+        else{
+            //Declare a panel downloaded
+            NSNumber* yesObj = [NSNumber numberWithBool:YES];
+            if(!thumbMode)
+            {
+                if(currentPage<[downloadedPanels count])
+                    [downloadedPanels replaceObjectAtIndex:currentPage withObject:yesObj];
+                
+            }
+            if(thumbMode)
+            {
+                if(thumbnailIndex<[downloadedPanels count])
+                    [downloadedPanels replaceObjectAtIndex:thumbnailIndex withObject:yesObj];
+                CGRect thumbFrame= CGRectMake(thumbnailIndex*thumbnailWidth, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
+                ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:panelInArray];
+                panelInArray.thumbnail=thumbnailView.snapshot;
+                
+                if(thumbnailIndex<currentPage)
+                {
+                    thumbnailIndex++;
+                    [self generateThumbails];
+                }
+                else{
+                    thumbMode = NO;
+                    [self displayThumbails];
+                }
+            }//end if thumbMode
+        }
     }//end if panel!=nil
  
 }
@@ -984,56 +1180,111 @@ NSMutableArray* downloadedPanels;
     //NSLog(@"Resource downloaded");
     if (resource != nil)
     {
-        //Add resource to the panel object's resources array.
-        [currentPanel.resources addObject:resource];
-        //NSLog(@"currentPanel.resources count=%i", [currentPanel.resources count]);
-        
-        NSString* type = resource.type;
-        float defaultScale = 1.0;
-        float defaultAngle = 0.0;
-
-        CGRect resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
-        if([type isEqual:@"d"])
+        Panel* resourcePanel;
+        if(!thumbMode)
         {
-            if(currentPanel.placements!=nil && [currentPanel.placements count]>placementCounter)
+            resourcePanel = currentPanel;
+        }
+        else
+        {
+            //NSLog(@"didLoadResource. self.panels objectAtIndex called");
+            if(thumbnailIndex<[self.panels count])
+                resourcePanel = [self.panels objectAtIndex:thumbnailIndex];
+        }
+        
+        if(resourcePanel==nil){
+            NSLog(@"didLoadResource.resourcePanel is nil");
+        }
+        
+        if(resourcePanel!=nil)
+        {
+            //Add resource to the panel object's resources array.
+            [resourcePanel.resources addObject:resource];
+            //NSLog(@"currentPanel.resources count=%i", [currentPanel.resources count]);
+            
+            if(!thumbMode)
             {
-                Placement* placement = [currentPanel.placements objectAtIndex:placementCounter];
-                if(placement!=nil)
+                //Add resources to the view if the resourcePanel is the currentPanel (i.e. on display in panelscrollView)
+                NSString* type = resource.type;
+                float defaultScale = 1.0;
+                float defaultAngle = 0.0;
+                
+                CGRect resourceFrame; //= CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
+                if([type isEqual:@"d"])
                 {
-                    resourceFrame = CGRectMake(placement.xOffset,
-                                               placement.yOffset,
-                                               decoratorWidth, decoratorHeight);
-                    defaultScale = placement.scale;
-                    defaultAngle = placement.angle;
+                    if(resourcePanel.placements!=nil && [resourcePanel.placements count]>placementCounter)
+                    {
+                        //NSLog(@"didLoadResource. resourcePanel.placements objectAtIndex.");
+                        Placement* placement = [resourcePanel.placements objectAtIndex:placementCounter];
+                        if(placement!=nil)
+                        {
+                            resourceFrame = CGRectMake(placement.xOffset,
+                                                       placement.yOffset,
+                                                       decoratorWidth, decoratorHeight);
+                            defaultScale = placement.scale;
+                            defaultAngle = placement.angle;
+                        }
+                    }
                 }
-            }
-        }
-        if([type isEqual:@"f"])
-        {
-            resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
-        }
-        
-        //ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:resource.imageURL andType:resource.type andId:resource.resourceId andScale:defaultScale];
-        
-        ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource andScale:defaultScale andAngle:defaultAngle];
-        rv.userInteractionEnabled = NO;
-        [self.view addSubview:rv];
-        
-        //Download other placements in the placements array
-        if(placementCounter<(numPlacements-1))
-        {
-            placementCounter++;
-            int resourceId = [[currentPanel.placements objectAtIndex:placementCounter] resourceId];
-            //NSLog(@"resourceId #%i", resourceId);
-            [resourceLoader submitRequestGetResourceWithResourceId:resourceId];
-        }
-        else{
-            //NSLog(@"all placements downloaded.");
-            //Declaring a panel downloaded after all placements are downloaded
-            NSNumber* yesObj = [NSNumber numberWithBool:YES];
-            [downloadedPanels replaceObjectAtIndex:currentPage withObject:yesObj];
-        }
+                if([type isEqual:@"f"])
+                {
+                    resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
+                }
+                
+                ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource andScale:defaultScale andAngle:defaultAngle];
+                rv.userInteractionEnabled = NO;
+                [self.view addSubview:rv];
+            }//end if(!thumbMode)
+            
+            
+            //Download other placements in the placements array
+            if(placementCounter<(numPlacements-1))
+            {
+                placementCounter++;
+                if(placementCounter<[resourcePanel.placements count])
+                {
+                    //NSLog(@"didLoadResource. resourcePanel.placements objectAtIndex:placementCounter. resourceId");
+                    int resourceId = [[resourcePanel.placements objectAtIndex:placementCounter] resourceId];
+                    //NSLog(@"resourceId #%i", resourceId);
+                    [resourceLoader submitRequestGetResourceWithResourceId:resourceId];
+                }
 
+            }
+            else
+            {
+                //NSLog(@"all placements downloaded.");
+                //Declaring a panel downloaded after all placements are downloaded
+                NSNumber* yesObj = [NSNumber numberWithBool:YES];
+                
+                if(!thumbMode)
+                {
+                    if(currentPage<[downloadedPanels count])
+                        [downloadedPanels replaceObjectAtIndex:currentPage withObject:yesObj];
+                }
+                
+                if(thumbMode)
+                {
+                    if(thumbnailIndex<[downloadedPanels count])
+                        [downloadedPanels replaceObjectAtIndex:thumbnailIndex withObject:yesObj];
+                    
+                    CGRect thumbFrame= CGRectMake(thumbnailIndex*thumbnailWidth, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
+                    ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:resourcePanel];
+                    resourcePanel.thumbnail=thumbnailView.snapshot;
+                    
+                    if(thumbnailIndex<currentPage)
+                    {
+                        thumbnailIndex++;
+                        [self generateThumbails];
+                    }
+                    else{
+                        thumbMode = NO;
+                        [self displayThumbails];
+                    }
+                }//end if thumbMode
+            }//end else if(placementCounter==(numPlacements-1))
+
+        }//end if resourcePanel!=nil
+ 
     }//end if resource!=nil
 }
 
@@ -1050,7 +1301,6 @@ NSMutableArray* downloadedPanels;
 -(void)imageDownloader:(ImageDownloader *)imageDownloader didFailWithError:(NSError*)error{
     NSLog(@"Error in image downloaded.");
 }
-
 
 
 @end

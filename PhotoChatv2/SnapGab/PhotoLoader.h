@@ -16,11 +16,14 @@
 @property (weak) id<PhotoLoaderDelegate> delegate;
 -(void)submitRequestPostPhoto:(Photo*)photo;
 -(void)submitRequestGetPhotosForGroup:(NSString*)groupHashId;
+-(void)submitRequestGetPhotoWithId:(int)photoId;
+-(NSURLRequest*)preparePhotoRequestForPostPhoto:(Photo*)photo;
 @end
 
 @protocol PhotoLoaderDelegate<NSURLConnectionDataDelegate>
 @optional
 -(void)PhotoLoader:(PhotoLoader*)photoLoader didUploadPhoto:(Photo*)photo;
+-(void)PhotoLoader:(PhotoLoader *)photoLoader didLoadPhoto:(Photo*)photo;
 -(void)PhotoLoader:(PhotoLoader *)photoLoader didLoadPhotos:(NSArray*)photos forObject:(NSObject*)obj;
 -(void)PhotoLoader:(PhotoLoader*)photoLoader didFailWithError:(NSError*)error;
 @end

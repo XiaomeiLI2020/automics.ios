@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="11G56" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="yR9-Y8-Uir">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="yR9-Y8-Uir">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -558,7 +558,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="Sxs-cu-8kg">
-                                <rect key="frame" x="0.0" y="48" width="320" height="320"/>
+                                <rect key="frame" x="0.0" y="40" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="whh-GX-ZLe">
@@ -586,7 +586,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="USc-bo-4yf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="674" y="-1304"/>
+            <point key="canvasLocation" x="687" y="-1321"/>
         </scene>
         <!--PanelAddViewController-->
         <scene sceneID="g9P-Bn-dcV">
@@ -597,7 +597,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" id="ATL-z9-E3K">
-                                <rect key="frame" x="0.0" y="55" width="320" height="320"/>
+                                <rect key="frame" x="0.0" y="40" width="320" height="320"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Vh5-KH-a6T">
                                 <rect key="frame" x="109" y="1" width="47" height="36"/>
@@ -667,7 +667,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dbC-ZG-0e6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="322" y="-1304"/>
+            <point key="canvasLocation" x="348" y="-1321"/>
         </scene>
         <!--PhotoPosterViewController-->
         <scene sceneID="XEW-r9-aVc">
@@ -678,25 +678,11 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="Cje-XN-8KM">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="417"/>
+                                <rect key="frame" x="0.0" y="40" width="320" height="320"/>
                             </imageView>
                             <progressView opaque="NO" contentMode="scaleToFill" progress="0.5" id="kLa-ex-Sov">
                                 <rect key="frame" x="100" y="442" width="213" height="9"/>
                             </progressView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="5Kz-TB-cE0">
-                                <rect key="frame" x="6" y="436" width="74" height="23"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Cancel">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="cancelPressed:" destination="1sZ-ET-6h0" eventType="touchUpInside" id="WKH-p1-zxg"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -704,11 +690,12 @@
                     <connections>
                         <outlet property="imageView" destination="Cje-XN-8KM" id="jAm-e4-ZZF"/>
                         <outlet property="progressView" destination="kLa-ex-Sov" id="lnF-qm-3DA"/>
+                        <segue destination="xKX-9l-Tt1" kind="modal" identifier="postToView" modalTransitionStyle="crossDissolve" id="snA-Gb-6Qz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0H2-gz-B1m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1033" y="-1304"/>
+            <point key="canvasLocation" x="1028" y="-1321"/>
         </scene>
         <!--ComicPosterViewController-->
         <scene sceneID="0Jt-XC-ADr">
@@ -719,13 +706,13 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="QlY-Kb-7Jg">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="417"/>
+                                <rect key="frame" x="0.0" y="40" width="320" height="320"/>
                             </imageView>
                             <progressView opaque="NO" contentMode="scaleToFill" progress="0.5" id="HfP-HS-Esg">
                                 <rect key="frame" x="100" y="442" width="213" height="9"/>
                             </progressView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bg2-uK-RTN">
-                                <rect key="frame" x="6" y="436" width="74" height="23"/>
+                                <rect key="frame" x="6" y="425" width="74" height="34"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Cancel">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -745,11 +732,12 @@
                     <connections>
                         <outlet property="imageView" destination="QlY-Kb-7Jg" id="9d3-qZ-099"/>
                         <outlet property="progressView" destination="HfP-HS-Esg" id="fOg-ns-zrb"/>
+                        <segue destination="hWB-mI-fkD" kind="modal" identifier="postToComic" modalTransitionStyle="crossDissolve" id="Qqf-pa-bVd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sSP-bP-GIO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-475" y="-15"/>
+            <point key="canvasLocation" x="-113" y="-43"/>
         </scene>
         <!--Groups Flow View Controller - Invite Friends-->
         <scene sceneID="Dfj-cr-Sfq">
@@ -823,141 +811,17 @@
         <image name="panel-edit.png" width="81" height="48"/>
         <image name="post-panel.png" width="91" height="74"/>
     </resources>
-    <classes>
-        <class className="ComicAddViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicAddViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="postButton" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="ComicDetailsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicDetailsViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="editPressed" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="ComicEditViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicEditViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="deletePanel:"/>
-                <relationship kind="outlet" name="postButton" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="ComicPosterViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicPosterViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancelPressed:"/>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="progressView" candidateClass="UIProgressView"/>
-            </relationships>
-        </class>
-        <class className="ComicTableCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicTableCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="comicButton" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="ComicViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="comicTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="GroupCollectionViewCell" superclassName="UICollectionViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupCollectionViewCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="label" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="GroupCollectionViewLayout" superclassName="UICollectionViewFlowLayout">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupCollectionViewLayout.h"/>
-        </class>
-        <class className="GroupsFlowViewController" superclassName="UICollectionViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupsFlowViewController.h"/>
-        </class>
-        <class className="LoginViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="emailTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="passwordTextField" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="PanelAddViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PanelAddViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="showPhotos:"/>
-                <relationship kind="action" name="takeSnap:"/>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-            </relationships>
-        </class>
-        <class className="PanelEditViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PanelEditViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-            </relationships>
-        </class>
-        <class className="PanelViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PanelViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="editButton" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="PhotoPosterViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PhotoPosterViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancelPressed:"/>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="progressView" candidateClass="UIProgressView"/>
-            </relationships>
-        </class>
-        <class className="UICollectionReusableView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionReusableView.h"/>
-        </class>
-        <class className="UICollectionViewCell" superclassName="UICollectionReusableView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewCell.h"/>
-        </class>
-        <class className="UICollectionViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewController.h"/>
-        </class>
-        <class className="UICollectionViewFlowLayout" superclassName="UICollectionViewLayout">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewFlowLayout.h"/>
-        </class>
-        <class className="WelcomeViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WelcomeViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="logoutPressed:"/>
-                <relationship kind="action" name="makeGroup:"/>
-                <relationship kind="outlet" name="groupLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="groupTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="organisationLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="organisationTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="themeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="themeTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-<<<<<<< HEAD
-        <segue reference="sfN-v5-shT"/>
-        <segue reference="j7a-6V-AnY"/>
-        <segue reference="lLZ-Tg-1fy"/>
-        <segue reference="eqx-Lk-Ciz"/>
-        <segue reference="fjF-Bf-fik"/>
+        <segue reference="snA-Gb-6Qz"/>
         <segue reference="P1E-0g-8Qy"/>
-=======
-        <segue reference="7K2-Cr-pvV"/>
-        <segue reference="NfJ-eZ-2KR"/>
+        <segue reference="Qqf-pa-bVd"/>
         <segue reference="eqx-Lk-Ciz"/>
         <segue reference="lLZ-Tg-1fy"/>
-        <segue reference="9PL-ZN-yjP"/>
-        <segue reference="woI-Op-NZA"/>
->>>>>>> 8dcd07bedb812feb442739dd5b1e0901d792604b
+        <segue reference="7K2-Cr-pvV"/>
     </inferredMetricsTieBreakers>
 </document>

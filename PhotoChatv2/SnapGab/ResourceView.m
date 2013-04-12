@@ -68,6 +68,7 @@ BOOL alertShown;
 
 CGFloat originalDiagonal;
 CGFloat originalWidth;
+CGFloat originalHeight;
 CGRect originalBounds;
                                  
 
@@ -82,6 +83,10 @@ CGRect originalBounds;
 #define MINWIDTH 115
 
 
+- (id)initWithResourceView:(ResourceView *)resourceView{
+    self= resourceView;
+    return self;
+}
 
 - (id)initWithFrame:(CGRect)frame andResource:(Resource*)resourceSent andScale:(float)scaleSent andAngle:(float)angleSent
 {
@@ -139,7 +144,7 @@ CGRect originalBounds;
                                         //_imageView.image = imageDownloaded;
                                         
                                         //NSLog(@"imageDownloaded.size=%@", NSStringFromCGSize(imageDownloaded.size));
-                                        
+                                        //NSLog(@"self_.scale=%f", self_.scale);
                                         
                                         //_imageView.userInteractionEnabled = NO;
                                         imageView_.userInteractionEnabled = NO;
@@ -147,11 +152,40 @@ CGRect originalBounds;
                                         //NSLog(@"original _imageView.image.size=%@", NSStringFromCGSize(imageDownloaded.size));
                                         //originalImageSize = imageDownloaded.size;
                                         originalBounds = CGRectMake(0.0, 0.0,imageDownloaded.size.width,imageDownloaded.size.height);
+                                        
+                                        /*
+                                        if(imageDownloaded.size.width>=imageDownloaded.size.height)
+                                        {
+                                            //NSLog(@"wider than taller");
+                                            if(imageDownloaded.size.width>panelScrollObjWidth)
+                                            {
+                                                CGFloat scaleReversed = panelScrollObjWidth/imageDownloaded.size.width;
+                                                originalBounds = CGRectMake(0.0, 0.0,panelScrollObjWidth,imageDownloaded.size.height*scaleReversed);
+                                            }
+                                            
+                                        }
+                                        
+
+                                        
+                                        else if(imageDownloaded.size.height>imageDownloaded.size.width)
+                                        {
+                                            //NSLog(@"taller than wider");
+                                            if(imageDownloaded.size.height>panelScrollObjHeight)
+                                            {
+                                                CGFloat scaleReversed = panelScrollObjHeight/imageDownloaded.size.height;
+                                                originalBounds = CGRectMake(0.0, 0.0,imageDownloaded.size.width*scaleReversed,panelScrollObjHeight);
+                                            }
+                                            
+                                        }
+                                        */
+                                        
                                         originalWidth = CGRectGetWidth(originalBounds);
+                                        originalHeight = CGRectGetHeight(originalBounds);
                                         originalDiagonal = sqrtf(CGRectGetHeight(originalBounds)*CGRectGetHeight(originalBounds) +
                                                                  CGRectGetWidth(originalBounds)*CGRectGetWidth(originalBounds) );
-                                        [imageView_ setFrame:CGRectMake(0.0,0.0,imageDownloaded.size.width*self_.scale, imageDownloaded.size.height*self_.scale)];
-                                        //[_imageView setFrame:CGRectMake(0.0,0.0,_imageView.frame.size.width*self.scale, _imageView.frame.size.height*self.scale)];
+                                        
+                                        [imageView_ setFrame:CGRectMake(0.0,0.0,originalWidth*self_.scale, originalHeight*self_.scale)];
+                                        //[imageView_ setFrame:CGRectMake(0.0,0.0,imageDownloaded.size.width*self_.scale, imageDownloaded.size.height*self_.scale)];
                                         [self_ addSubview:imageView_];
                                         
                                         
@@ -172,8 +206,8 @@ CGRect originalBounds;
                                             selfFrame.size = imageView_.frame.size;
                                             self_.frame = selfFrame;
                                             
-                                            //NSLog(@"after imageAdd, original self.frame=%@", NSStringFromCGRect(self.frame));
-                                            //NSLog(@"after imageAdd, self.bounds%@", NSStringFromCGRect(self.bounds));
+                                            //NSLog(@"after imageAdd, original self.frame=%@", NSStringFromCGRect(self_.frame));
+                                            //NSLog(@"after imageAdd, self.bounds%@", NSStringFromCGRect(self_.bounds));
                                            // [self setFrame:CGRectMake(self.frame.origin.x,self.frame.origin.x,_imageView.image.size.width*self.scale, _imageView.image.size.height*self.scale)];
                                             
                                             //self.transform = CGAffineTransformScale(self.transform, self.scale, self.scale);
@@ -518,9 +552,22 @@ CGRect originalBounds;
     if ([gestureRecognizer state] == UIGestureRecognizerStateBegan || [gestureRecognizer state] == UIGestureRecognizerStateChanged) {
         CGPoint translation = [gestureRecognizer translationInView:self.superview];
         
-        [mainView setCenter:CGPointMake([mainView center].x + translation.x, [mainView center].y + translation.y)];
+        //NSLog(@"self.frame.origin=(%f,%f)", self.frame.origin.x, self.frame.origin.y);
+        //NSLog(@"[mainView center]=(%f,%f)", [mainView center].x, [mainView center].y);
+
+        //if(self.frame.origin.y+translation.y>=panelScrollYOrigin) //&& self.frame.origin.x+translation.x>=panelScrollXOrigin)
+        {
+            [mainView setCenter:CGPointMake([mainView center].x + translation.x, [mainView center].y + translation.y)];
+            //NSLog(@"self.frame.origin changed=(%f,%f)", self.frame.origin.x, self.frame.origin.y);
+            //NSLog(@"[mainView center] changed=(%f,%f)", [mainView center].x, [mainView center].y);
+            [gestureRecognizer setTranslation:CGPointZero inView:[mainView superview]];
+        }
+        /*
+        NSLog(@"self.frame.origin changed=(%f,%f)", self.frame.origin.x, self.frame.origin.y);
+        NSLog(@"[mainView center] changed=(%f,%f)", [mainView center].x, [mainView center].y);
         [gestureRecognizer setTranslation:CGPointZero inView:[mainView superview]];
         //originalOrigin = self.frame.origin;
+       */
     }
 }
 
@@ -538,35 +585,68 @@ CGRect originalBounds;
         CGPoint changedPoint = [gestureRecognizer locationInView:self.superview];
         CGFloat deltaW = changedPoint.x - self.prevPoint.x;
         CGFloat deltaH = changedPoint.y - self.prevPoint.y;
-        CGFloat deltaNet = MAX(deltaH, deltaW);
-        //self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width + deltaW, self.bounds.size.height + deltaH);
-        self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width + deltaNet,
-                                 self.bounds.size.height + deltaNet);
+        CGFloat scaleX = (self.bounds.size.width+deltaW)/self.bounds.size.width;
+        CGFloat scaleY = (self.bounds.size.width+deltaH)/self.bounds.size.height;
+        NSLog(@"deltaW=%f, delateH=%f", deltaW, deltaH);
+        //CGFloat deltaNet = MAX(deltaH, deltaW);
+        CGFloat scaleNet = MAX(scaleX, scaleY);
+        if(self.bounds.size.width > self.bounds.size.height)
+            scaleNet = MIN(scaleX, scaleY);
+        
+        if(scaleNet>1.2)
+            scaleNet = 1.2;
+        if(scaleNet<0.8)
+            scaleNet = 0.8;
         /*
-        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.bounds.size.width,
-                                 self.bounds.size.height);
+        if(scaleX==1.00)
+        {
+            scaleNet=scaleY;
+        }
+        if(scaleY==1.00)
+        {
+            scaleNet=scaleX;
+        }
+         */
+        //CGFloat deltaNet = MAX(deltaH, deltaW);
+        //deltaNet = MAX(sqrtf(deltaH*deltaH), sqrt(deltaW*deltaW));
+
+        //self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width + deltaW, self.bounds.size.height + deltaH);
+        NSLog(@"scaleX=%f, scaleY=%f, scaleNet=%f", scaleX, scaleY, scaleNet);
+
+        //NSLog(@"pre-scaling self.frame=%@", NSStringFromCGRect(self.frame));
+        //NSLog(@"pre-scaling new self.bounds%@", NSStringFromCGRect(self.bounds));
         
-        _imageView.frame = CGRectMake(_imageView.frame.origin.x, _imageView.frame.origin.y, self.bounds.size.width,
-                                      self.bounds.size.height);
-        _imageView.bounds = CGRectMake(_imageView.bounds.origin.x, _imageView.bounds.origin.y, self.bounds.size.width,
-                                       self.bounds.size.height);
-        */
-        
-        //_imageView.frame = CGRectMake(PADDING/2, PADDING/2, self.bounds.size.width - PADDING, self.bounds.size.height - PADDING);
+        self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width*scaleNet, self.bounds.size.height*scaleNet);
+        /*
+        if(self.frame.origin.y<panelScrollYOrigin)
+        {
+            self.frame = CGRectMake(self.frame.origin.x, panelScrollYOrigin, self.frame.size.width, self.frame.size.height);
+            self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.frame.size.width, self.frame.size.height);
+            //_imageView.frame = CGRectMake(0.0, 0.0, self.bounds.size.width, self.bounds.size.height);
+        }
+         */
         _imageView.frame = CGRectMake(0.0, 0.0, self.bounds.size.width, self.bounds.size.height);
         
+        //NSLog(@"post-scaling self.frame=%@", NSStringFromCGRect(self.frame));
+        //NSLog(@"post-scaling new self.bounds%@", NSStringFromCGRect(self.bounds));
+        /*if(self.frame.origin.y<panelScrollYOrigin)
+        {
+            self.frame = CGRectMake(self.frame.origin.x, panelScrollYOrigin, self.frame.size.width,
+                                    self.frame.size.height);
+            self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, self.bounds.size.height);
+            //_imageView.frame = CGRectMake(0.0, 0.0, self.bounds.size.width, self.bounds.size.height);
+        }
+         */
         /*
         CGRect selfFrame = self.frame;
         selfFrame.size = _imageView.frame.size;
         self.frame = selfFrame;
          */
         //self.imageView.frame = [self calculateImageViewFrame];
-        
-        
-        
         self.deleteView.frame = [self calculateDeleteViewFrame];
         self.scaleView.frame = [self calculateScaleViewFrame];
         self.rotateView.frame = [self calculateRotateViewFrame];
+
         self.prevPoint = [gestureRecognizer locationInView:self.superview];
         [self setNeedsDisplay];
     }
@@ -576,14 +656,20 @@ CGRect originalBounds;
         [self setNeedsDisplay];
         self.gestureAction = kNONE;
         
-        
+        /*
         NSLog(@"new self.frame=%@", NSStringFromCGRect(self.frame));
         NSLog(@"new self.bounds%@", NSStringFromCGRect(self.bounds));
         NSLog(@"new self.imageview.frame=%@", NSStringFromCGRect(self.imageView.frame));
         NSLog(@"new self.imageview.bounds%@", NSStringFromCGRect(self.imageView.bounds));
-        
+        */
         self.scale = _imageView.bounds.size.width/originalWidth;
         //CGFloat currentScale = [[[gestureRecognizer view].layer valueForKeyPath:@"transform.scale"] floatValue];
+        CGFloat newDiagonal = sqrtf(CGRectGetHeight(_imageView.bounds)*CGRectGetHeight(_imageView.bounds) +
+                                 CGRectGetWidth(_imageView.bounds)*CGRectGetWidth(_imageView.bounds) );
+        
+        //self.scale = _imageView.bounds.size.width/originalWidth;
+        self.scale = newDiagonal/originalDiagonal;
+        NSLog(@"self.scaleX=%f, self.scaleY=%f, self.scaleDiagonal=%f", _imageView.bounds.size.width/originalWidth, _imageView.bounds.size.height/originalHeight, newDiagonal/originalDiagonal);
         NSLog(@"self.scale=%f", self.scale);
     }
     else if ([gestureRecognizer state] == UIGestureRecognizerStateCancelled)
@@ -614,8 +700,30 @@ CGRect originalBounds;
         float angleView = atan2(locPoint.y-centrePoint.y, locPoint.x- centrePoint.x);
         angleDiff = self.deltaAngle - angleView;
         self.transform = CGAffineTransformMakeRotation(-angleDiff);
-        [self setNeedsDisplay];
-        self.angle = -angleDiff;
+        /*
+        if(self.frame.origin.y<panelScrollYOrigin)
+        {
+            self.angle=0.0;
+            self.transform = CGAffineTransformMakeRotation(self.angle);
+            [self setNeedsDisplay];
+        }
+        else
+        */
+        {
+            [self setNeedsDisplay];
+            self.angle = -angleDiff;
+        }
+        //[self setNeedsDisplay];
+        //self.angle = -angleDiff;
+        
+        /*
+        if(self.frame.origin.y<panelScrollYOrigin)
+        {
+            self.frame = CGRectMake(self.frame.origin.x, panelScrollYOrigin, self.frame.size.width,
+                                    self.frame.size.height);
+        }
+        */
+        
         //NSLog(@"changed.angleDiff=%f", -angleDiff);
         //NSLog(@"changed.locPoint=%f,%f", locPoint.x, locPoint.y);
         //NSLog(@"changed.centrePoint=%f,%f", centrePoint.x, centrePoint.y);

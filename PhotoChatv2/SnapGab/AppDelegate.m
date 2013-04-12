@@ -7,10 +7,14 @@
 //
 
 #import "AppDelegate.h"
+#import "APIConstant.h"
+#import "Reachability.h"
+
 
 @implementation AppDelegate
 
 @synthesize window = _window;
+@synthesize automicsEngine;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -37,6 +41,25 @@
     [prefs setObject:@"5898b706101991064817e2a187a6cefa1c5262fcc7e4835e0cabcc350160cca7"
               forKey:@"token"];
     [prefs synchronize];
+    
+    //NSString* const kBaseURL = @"http://automicsapi.wp.horizon.ac.uk";
+
+
+    //self.networkEngine = [[MKNetworkEngine alloc] initWithHostName:kBaseURL];
+    //[self.networkEngine useCache];
+    
+    NSMutableDictionary *headerFields = [NSMutableDictionary dictionary];
+    [headerFields setValue:@"application/json" forKey:@"Content-Type"];
+    //[self.request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    
+    //automicsEngine = [[AutomicsEngine alloc] initWithHostName:kBaseURL];
+    automicsEngine = [[AutomicsEngine alloc] initWithHostName:kHostName];
+    //automicsEngine = [[AutomicsEngine alloc] initWithHostName:kBaseURL customHeaderFields:headerFields];
+    [automicsEngine useCache];
+    
+
+    
 
     return YES;
 }

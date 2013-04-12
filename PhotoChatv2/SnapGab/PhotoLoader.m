@@ -11,6 +11,10 @@
 #import "APIWrapper.h"
 #import "PhotoJSONHandler.h"
 
+#import "MKNetworkEngine.h"
+#import "MKNetworkOperation.h"
+#import "AppDelegate.h"
+
 @interface PhotoLoader ()
 @property int photoRequestType;
 @end
@@ -19,6 +23,7 @@
 
 int const kPostPhoto = 1;
 int const kGetPhotosForGroup = 2;
+int const kGetPhoto = 3;
 
 @synthesize photoRequestType;
 @synthesize delegate;
@@ -28,7 +33,17 @@ int const kGetPhotosForGroup = 2;
     photoRequestType = kPostPhoto;
     NSURLRequest* urlRequest = [self preparePhotoRequestForPostPhoto:photo];
     [self submitPhotoRequest:urlRequest];
+}
 
+-(void)submitRequestGetPhotoWithId:(int)photoId{
+    /*
+     panelRequestType = kGetPanel;
+     NSURLRequest* urlRequest = [self preparePanelRequestForGetPanelWithId:panelId];
+     [self submitPanelRequest:urlRequest];
+     */
+    photoRequestType = kGetPhoto;
+    NSURLRequest* urlRequest = [self preparePhotoRequestForGetPhotoWithId:photoId];
+    [self submitPhotoRequest:urlRequest];
 }
 
 -(void)submitRequestGetPhotosForGroup:(NSString*)groupHashId{
@@ -37,8 +52,18 @@ int const kGetPhotosForGroup = 2;
     [self submitPhotoRequest:urlRequest];
 }
 
+-(NSURLRequest*)preparePhotoRequestForGetPhotoWithId:(int)photoId{
+    NSString* photoURL = [APIWrapper getURLForGetPhotoWithId:photoId];
+    NSString* authenticatedPhotoURL = [self authenticatedGetURL:photoURL];
+    NSURL* url = [NSURL URLWithString:authenticatedPhotoURL];
+    return [NSURLRequest requestWithURL:url];
+}
+
 -(NSURLRequest*)preparePhotoRequestForPostPhoto:(Photo*)photo{
     NSString *photoURL = [APIWrapper getURLForPostPhoto];
+    self.httpMethod = @"POST";
+    self.request = photoURL;
+    self.postRequestType = 0;
     NSURL* url = [NSURL URLWithString:photoURL];
     NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
     [urlRequest setHTTPMethod:@"POST"];
@@ -58,6 +83,7 @@ int const kGetPhotosForGroup = 2;
     NSDictionary* photodict = [PhotoJSONHandler convertPhotoIntoPhotoJSON:photo];
     photodict = [self authenticatedPostData:photodict];
     photodict = [PhotoJSONHandler wrapJSONDictWithDataTag:photodict];
+    self.dict = photodict;
     NSError *error;
     NSData* data = [NSJSONSerialization dataWithJSONObject:photodict options:NSJSONWritingPrettyPrinted error:&error];
    [urlRequest setHTTPBody:data];
@@ -79,6 +105,19 @@ int const kGetPhotosForGroup = 2;
         [self reportErrorToDelegate:error];
     }
 }
+
+-(void)handleGetPhotoWithId{
+    NSError* error;
+    NSDictionary* photodict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+    if (photodict != nil){
+        Photo *photo = [PhotoJSONHandler convertPhotoJSONIntoPhoto:photodict];
+        if ([self.delegate respondsToSelector:@selector(PhotoLoader:didLoadPhoto:)])
+            [self.delegate PhotoLoader:self didLoadPhoto:photo];
+    }else{
+        [self reportErrorToDelegate:error];
+    }
+}
+
 
 -(void)handleGetPhotosForGroup{
     NSError* error;
@@ -103,6 +142,7 @@ int const kGetPhotosForGroup = 2;
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
     [super connectionDidFinishLoading:connection];
+    //DLog(@"self.downloadedData.length=%i", self.downloadedData.length);
     if (self.downloadedData.length > 0){
         switch (photoRequestType){
             case kPostPhoto:
@@ -110,6 +150,9 @@ int const kGetPhotosForGroup = 2;
                 break;
             case kGetPhotosForGroup:
                 [self handleGetPhotosForGroup];
+                break;
+            case kGetPhoto:
+                [self handleGetPhotoWithId];
                 break;
         }
     }

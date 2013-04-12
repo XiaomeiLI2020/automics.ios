@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "ComicLoader.h"
+#import "MKNetworkOperation.h"
+#import "MKNetworkEngine.h"
 
 @interface ComicPosterViewController : UIViewController
-<ComicLoaderDelegate>
+<ComicLoaderDelegate, MKNetworkOperationDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, retain) IBOutlet UIImageView *imageView;
 @property (nonatomic, retain) IBOutlet UIProgressView *progressView;

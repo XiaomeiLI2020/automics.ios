@@ -7,6 +7,8 @@
 //
 
 #import "ComicPosterViewController.h"
+#import "MKNetworkEngine.h"
+#import "AppDelegate.h"
 
 @interface ComicPosterViewController ()
 
@@ -40,6 +42,8 @@
     comicLoader = [[ComicLoader alloc] init];
     comicLoader.delegate = self;
     
+    //MKNetworkOperation* operation = [[MKNetworkOperation alloc] init];
+    //operation.delegate = self;
 }
 
 - (void)viewDidUnload
@@ -90,18 +94,54 @@
         return;
     }
 
-    
     Comic* comic = [[Comic alloc] init];
     comic.name = @"new comic";
-    comic.description = @"description";
+    comic.description = @"description of comic";
     comic.panels = [[NSArray alloc] initWithArray:comicContents];
     
-    [comicLoader submitRequestPostComic:comic];
+
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    //appDelegate.automicsEngine.delegate = self;
+    NSURLRequest* urlRequest = [comicLoader prepareComicRequestForPostComic:comic];
+    MKNetworkOperation *operation = [appDelegate.automicsEngine postData:urlRequest
+                                                       completionHandler:^(id twitPicURL) {
+                                                           //DLog(@"complete.");
+                                                       }
+                                                        errorHandler:^(NSError* error)
+                                                        {
+                                                            //DLog(@"error.");
+                                                        }
+                                     ];
+
+    operation.postDataRequestType = 2;
+    operation.delegate = self;
+    [appDelegate.automicsEngine enqueueOperation:operation];
+    //self.dataFeedConnection = [operation urlConnection];
     
-       self.progressView.progress = 0.0f;
+    [operation onUploadProgressChanged:^(double progress) {
+        
+        //DLog(@"onUploadProgressChanged=%.2f", progress*100.0);
+        
+    }];
+
+    
+    //[comicLoader submitRequestPostComic:comic];
+    
+    self.progressView.progress = 0.0f;
     self.progressView.alpha = 1.0f;
 }
 
+/*
+-(void)MKNetworkEngine:(MKNetworkEngine*)automicsEngine didFreezeOperation:(NSString*)responseString{
+    UIAlertView *message = [[UIAlertView alloc]
+                            initWithTitle:@"Network Not Available."
+                            message:@"Your content will be uploaded when network is available."
+                            delegate:self
+                            cancelButtonTitle:@"OK"
+                            otherButtonTitles:nil];
+    [message show];
+}
+*/
 - (void)connection:(NSURLConnection*)connection didSendBodyData:(NSInteger)bytesWritten
  totalBytesWritten:(NSInteger)totalBytesWritten
 totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
@@ -112,24 +152,34 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle: @"Upload Successful"
-                          message: nil
-                          delegate: nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil];
-    //NSLog(@"photo uploaded");
-    [alert show];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    UIAlertView *message = [[UIAlertView alloc]
+                            initWithTitle:@"Upload Successful"
+                            message:nil
+                            delegate:self
+                            cancelButtonTitle:@"OK"
+                            otherButtonTitles:nil];
+    [message show];
+    //[self dismissViewControllerAnimated:YES completion:nil];
     
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    if([title isEqualToString:@"OK"])
+    {
+        [self performSegueWithIdentifier:@"postToComic" sender:self];
+        //[self dismissViewControllerAnimated:YES completion:nil];
+    }//end if
+}//end alertView
 
 - (void)connection:(NSURLConnection*) connection didFailWithError:(NSError *)error
 {
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Upload Failure"
                           message: @"Lost Connection"
-                          delegate: nil
+                          delegate: self
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
     [alert show];
@@ -161,19 +211,42 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-
+#pragma mark ComicLoader functions.
 -(void)ComicLoader:(ComicLoader*)loader didSaveComic:(NSString*)response{
     //NSLog(@"Comic saved. %@", response);
     
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Upload Successful"
                           message: nil
-                          delegate: nil
+                          delegate: self
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
     //NSLog(@"photo uploaded");
     [alert show];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    //[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark MKNetworkOperation functions.
+-(void)MKNetworkOperation:(MKNetworkOperation*)operation didUploadComic:(NSString*)response {
+    
+    UIAlertView *message = [[UIAlertView alloc]
+                            initWithTitle:@"Upload Successful"
+                            message:nil
+                            delegate:self
+                            cancelButtonTitle:@"OK"
+                            otherButtonTitles:nil];
+    [message show];
+}
+
+-(void)MKNetworkOperation:(MKNetworkOperation*)operation operationFailedWithError:(NSString*)responseString{
+    
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle: @"Upload Failure"
+                          message: @"Upload will resume when network connection is available."
+                          delegate: self
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    [alert show];
 }
 
 @end

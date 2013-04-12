@@ -22,7 +22,7 @@
 @synthesize image;
 @synthesize obj;
 
--(id)initWithImageURL:(NSString *)url{
+-(id)initWithImageURL:(NSString*)url{
     self = [super init];
     if (self){
         if (url != nil ){

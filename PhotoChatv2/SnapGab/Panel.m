@@ -15,4 +15,5 @@
 @synthesize placements;
 @synthesize annotations;
 @synthesize resources;
+@synthesize thumbnail;
 @end

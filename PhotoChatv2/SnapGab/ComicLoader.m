@@ -45,6 +45,12 @@ int const kPostComic = 2;
     [self submitComicRequest:urlRequest];
 }
 
+-(void)submitRequestPostComicCached:(Comic*)comic{
+    comicRequestType = kPostComic;
+    NSURLRequest* urlRequest = [self prepareComicRequestForPostComic:comic];
+    [self submitComicRequest:urlRequest];
+}
+
 -(void)submitComicRequest:(NSURLRequest*)urlRequest{
     [self initConnectionRequest];
     [self submitURLRequest:urlRequest];
@@ -67,6 +73,9 @@ int const kPostComic = 2;
 
 -(NSURLRequest*)prepareComicRequestForPostComic:(Comic*)comic{
     NSString *comicURL = [APIWrapper getURLForGetComics];
+    self.httpMethod = @"POST";
+    self.request = comicURL;
+    self.postRequestType = 2;
     NSURL* url = [NSURL URLWithString:comicURL];
     NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
     [urlRequest setHTTPMethod:@"POST"];
@@ -81,6 +90,7 @@ int const kPostComic = 2;
     NSDictionary* comicdict = [ComicJSONHandler convertComicIntoComicJSON:comic];
     comicdict = [self authenticatedPostData:comicdict];
     comicdict = [ComicJSONHandler wrapJSONDictWithDataTag:comicdict];
+    self.dict = comicdict;
     NSError *error;
     NSData* data = [NSJSONSerialization dataWithJSONObject:comicdict options:NSJSONWritingPrettyPrinted error:&error];
     
@@ -95,6 +105,7 @@ int const kPostComic = 2;
 #pragma mark NSURLConnectionDelegate functions.
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
     [super connectionDidFinishLoading:connection];
+    //NSLog(@"self.downloadedData.length=%i", self.downloadedData.length);
     if (self.downloadedData.length > 0){
         switch (comicRequestType){
             case kGetGroupComics:

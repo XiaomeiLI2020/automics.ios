@@ -22,6 +22,7 @@ extern int const kGetComic;
 -(void)submitRequestGetComicsForGroup:(int)groupId;
 -(void)submitRequestGetComicWithId:(int)comicId;
 -(void)submitRequestPostComic:(Comic*)comic;
+-(NSURLRequest*)prepareComicRequestForPostComic:(Comic*)comic;
 @end
 
 

@@ -8,7 +8,9 @@
 
 #import "APIConstant.h"
 
-NSString* const kBaseURL = @"http://automicsapi.wp.horizon.ac.uk";
+//NSString* const kBaseURL = @"http://automicsapi.wp.horizon.ac.uk";
+NSString* const kHostName = @"automicsii.cloudapp.net";
+NSString* const kBaseURL = @"http://automicsii.cloudapp.net";
 NSString* const kAPIURL = @"v1";
 NSString* const kPanelURL = @"panel";
 

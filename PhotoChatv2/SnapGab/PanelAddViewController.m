@@ -164,7 +164,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         {
             NSString* type = resource.type;
             
-            CGRect resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
+            CGRect resourceFrame;// = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
             if([type isEqual:@"d"])
             {
                 resourceFrame = CGRectMake(100, 100, decoratorWidth, decoratorHeight);
@@ -176,6 +176,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                 //resourceFrame = CGRectMake(0.0, 20.0, frameWidth, frameHeight);
             }
             
+            //NSLog(@"addResourceWithId.resourceFrame=%@", NSStringFromCGRect(resourceFrame));
             //ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:resource.imageURL andType:type andId:resource.resourceId];
             ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource andScale:1.0 andAngle:0.0];
             
@@ -513,6 +514,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     if([[segue identifier] isEqualToString:@"postNewPanel"]){
         PhotoPosterViewController *ppvc = (PhotoPosterViewController *)[segue destinationViewController];
         ppvc.image = self.imageView.image;
+        ppvc.editMode = NO;
+        //ppvc.editedPhoto=currentPanel.photo;
         
         for (UIView *subview in self.view.subviews)
         {
@@ -523,18 +526,41 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                 SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
                 new_sbv.userInteractionEnabled = NO;
                 [ppvc.view addSubview:new_sbv];
-            }
+            }//end if
             
             //upload resources with the photo
             if([subview isMemberOfClass:[ResourceView class]])
             {
+                /*
                 ResourceView* sbv =(ResourceView*)subview;
 
                 //ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andURL:sbv.urlImageString andType:sbv.type andId:sbv.resourceId];
                 ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
                 new_sbv.userInteractionEnabled = NO;
                 [ppvc.view addSubview:new_sbv];
-            }
+                */
+                
+                ResourceView* sbv =(ResourceView*)subview;
+                if(sbv.angle!=0.00)
+                    sbv.transform = CGAffineTransformMakeRotation(0.0);
+                
+                //NSLog(@"added pre-rotation resource.frame=%@", NSStringFromCGRect(sbv.frame));
+                //NSLog(@"added pre-rotation sbv.angle=%f", sbv.angle);
+                //CGRect originalRect = CGRectMake(sbv.originalOrigin.x, sbv.originalOrigin.y, sbv.bounds.size.width, sbv.bounds.size.height);
+                //ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:originalRect andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
+                ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
+                new_sbv.originalFrame = sbv.frame;
+                
+                if(sbv.angle!=0.00)
+                    sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
+                //new_sbv.transform = CGAffineTransformMakeRotation(0.0);
+                //NSLog(@"added post-rotation newresource.frame=%@", NSStringFromCGRect(new_sbv.frame));
+                //NSLog(@"added post-rotation newresource.bounds%@", NSStringFromCGRect(new_sbv.bounds));
+                
+                new_sbv.userInteractionEnabled = NO;
+                //new_sbv.alpha = 0;
+                [ppvc.view addSubview:new_sbv];
+            }//end if
         }//end for
     } //end if
 

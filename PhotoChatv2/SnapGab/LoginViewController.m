@@ -94,11 +94,12 @@ NSString* hashId=@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
     return YES;
 }
 
+/*
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-
+*/
 
 #pragma mark UserLoader methods
 -(void)UserLoader:(UserLoader*)loader didFailWithError:(NSError*)error{

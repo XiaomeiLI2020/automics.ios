@@ -67,6 +67,9 @@ int const kPostPanel = 2;
 -(NSURLRequest*)preparePanelRequestForPostPanel:(Panel*)panel{
     NSString *panelURL = [APIWrapper getURLForPostPanel];
     NSURL* url = [NSURL URLWithString:panelURL];
+    self.httpMethod = @"POST";
+    self.request = panelURL;
+    self.postRequestType = 1;
     NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
     [urlRequest setHTTPMethod:@"POST"];
     [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];

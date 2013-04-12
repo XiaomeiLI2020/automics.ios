@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AutomicsEngine.h"
+
+#define ApplicationDelegate ((AppDelegate *)[UIApplication sharedApplication].delegate)
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) AutomicsEngine *automicsEngine;
 
 @end

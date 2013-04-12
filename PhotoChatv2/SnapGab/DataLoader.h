@@ -13,6 +13,10 @@
     NSURLConnection *dataFeedConnection;
 }
 
+@property NSDictionary* dict;
+@property NSString* request;
+@property NSString* httpMethod;
+@property int postRequestType;
 @property NSMutableData *downloadedData;
 @property NSURLConnection *dataFeedConnection;
 -(NSString*)authenticatedGetURL:(NSString*)urlString;

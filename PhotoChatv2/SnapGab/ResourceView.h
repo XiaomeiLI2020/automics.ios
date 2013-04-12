@@ -28,7 +28,7 @@
 
 
 - (id)initWithFrame:(CGRect)frame andResource:(Resource*)resource andScale:(float)scale andAngle:(float)angle;
-
+- (id)initWithResourceView:(ResourceView*)resourceView;
 
 -(void)disappearControls;
 @end

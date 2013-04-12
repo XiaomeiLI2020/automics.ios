@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "PanelLoader.h"
 #import "PhotoLoader.h"
+#import "MKNetworkOperation.h"
 
 @interface PhotoPosterViewController : UIViewController
-<PanelLoaderDelegate, PhotoLoaderDelegate>
+<PanelLoaderDelegate, PhotoLoaderDelegate, MKNetworkOperationDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, retain) IBOutlet UIImageView *imageView;
 @property (nonatomic, retain) IBOutlet UIProgressView *progressView;
@@ -22,7 +23,8 @@
 
 @property PanelLoader* panelsLoader;
 @property PhotoLoader* photoLoader;
-
+@property BOOL editMode;
+@property Photo* editedPhoto;
 @property NSMutableArray* placementsArray;
 @property NSMutableArray* annotationsArray;
 

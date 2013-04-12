@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "Placement.h"
 #import "Photo.h"
+//#import "ThumbnailView.h"
+
 
 @interface Panel : NSObject
 @property NSInteger panelId;
@@ -16,4 +18,5 @@
 @property NSArray* placements;
 @property NSArray* annotations;
 @property NSMutableArray* resources;
+@property UIImage* thumbnail;
 @end

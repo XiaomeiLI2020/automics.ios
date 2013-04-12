@@ -16,7 +16,9 @@
 #import "Photo.h"
 #import "Annotation.h"
 #import "GUIConstant.h"
-
+#import "MKNetworkEngine.h"
+#import "AppDelegate.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface PhotoPosterViewController ()
 
@@ -31,9 +33,10 @@
 @synthesize imageURL;
 @synthesize panelsLoader;
 @synthesize photoLoader;
-
+@synthesize editMode;
 @synthesize placementsArray;
 @synthesize annotationsArray;
+@synthesize editedPhoto;
 
 BOOL panelUploaded;
 
@@ -50,7 +53,7 @@ BOOL panelUploaded;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    NSLog(@"Post.viewDidLoad.");
+    //NSLog(@"Post.viewDidLoad.");
     
     self.imageView.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelWidth, panelHeight);
     self.imageView.image = self.image;
@@ -63,6 +66,7 @@ BOOL panelUploaded;
     
     annotationsArray = [[NSMutableArray alloc] init];
     placementsArray = [[NSMutableArray alloc] init];
+
 }
 
 - (void)viewDidUnload
@@ -120,6 +124,7 @@ BOOL panelUploaded;
     Photo *photo = [[Photo alloc] init];
     photo.description = @"Photo description";
     photo.image = imageView.image;
+    //photo.image = [self imageFromView:self.view];
     photo.name = @"phototype.png";
     photo.width = 320;
     photo.height = 320;
@@ -148,22 +153,6 @@ BOOL panelUploaded;
 
             ResourceView* sbv =(ResourceView*)subview;
             
-            /*
-            NSLog(@"posted sbv.frame=%@", NSStringFromCGRect(sbv.frame));
-            NSLog(@"posted sbv.originalFrame=%@", NSStringFromCGRect(sbv.originalFrame));
-            NSLog(@"posted old_sbv.bounds%@", NSStringFromCGRect(sbv.bounds));
-            */
-             /*
-            sbv.transform = CGAffineTransformMakeRotation(0.0);
-            NSLog(@"posted pre-rotation old_sbv.frame=%@", NSStringFromCGRect(sbv.frame));
-            NSLog(@"posted pre-rotation old_sbv.bounds%@", NSStringFromCGRect(sbv.bounds));
-            CGPoint preRotationOrigin = sbv.frame.origin;
-            NSLog(@"preRotationOrigin=%f,%f", preRotationOrigin.x, preRotationOrigin.y);
-            //ResourceView *sbv = [[ResourceView alloc] initWithFrame:old_sbv.frame andResource:old_sbv.resource andScale:old_sbv.scale andAngle:old_sbv.angle];
-
-            sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
-            */
-            
             Placement *placement = [[Placement alloc] init];
             if(sbv.resource!=nil)
             {
@@ -173,28 +162,96 @@ BOOL panelUploaded;
                 }
                 
             }
+            //placement.xOffset = sbv.frame.origin.x;
+            //placement.yOffset = sbv.frame.origin.y;
             placement.xOffset = sbv.originalFrame.origin.x;
             placement.yOffset = sbv.originalFrame.origin.y;
+            //sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
             placement.scale = sbv.scale;
             placement.angle = sbv.angle;
             placement.zIndex = 1;
-
-            
             [placementsArray addObject:placement];
             //sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
-            NSLog(@"posted sbv.frame=%@", NSStringFromCGRect(sbv.frame));
-            NSLog(@"posted sbv.bounds%@", NSStringFromCGRect(sbv.bounds));
+            //NSLog(@"PhotoPostView.posted sbv.originalFrame=%@", NSStringFromCGRect(sbv.originalFrame));
+            //NSLog(@"PhotoPostView.posted placement:(xOffSet, yOffSet)=(%f, %f)", placement.xOffset, placement.yOffset);
+            //NSLog(@"PhotoPostView.posted sbv.frame=%@", NSStringFromCGRect(sbv.frame));
+            //NSLog(@"PhotoPostView.posted sbv.bounds%@", NSStringFromCGRect(sbv.bounds));
         }//end add resource data
        
     }//end for
     
-    [photoLoader submitRequestPostPhoto:photo];
+    //NSLog(@"editMode=%d", editMode);
+ 
+    if(editMode)
+    {
+        //Don't upload a new photo if panel is being edited
+        if(editedPhoto!=nil)
+        {
+            int photoId = editedPhoto.photoId;
+            
+            //NSLog(@"Photo editedPhoto.photoId=%i", photoId);
+            if(photoId > 0)
+            {
+                Panel *panel = [[Panel alloc] init];
+                panel.photo = editedPhoto;
+                panel.photo.photoId = editedPhoto.photoId;
+                panel.photo.imageURL = NULL;
+                
+                panel.placements = [[NSArray alloc] initWithArray:placementsArray];
+                panel.annotations = [[NSArray alloc] initWithArray:annotationsArray];
+                
+                NSURLRequest* urlRequest = [panelsLoader preparePanelRequestForPostPanel:panel];
+                [self startOperation:urlRequest postDataRequestType:1];
+                
+                //[panelsLoader submitRequestPostPanel:panel];
+            }//end if
+        }//end if
+        
+    }
+    else
+    {
+        //Upload a new photo if a new panel is being added
+        NSURLRequest* urlRequest = [photoLoader preparePhotoRequestForPostPhoto:photo];
+        [self startOperation:urlRequest postDataRequestType:0];
+        //[photoLoader submitRequestPostPhoto:photo];
+    }
+    
+    
+    //NSURLRequest* urlRequest = [photoLoader preparePhotoRequestForPostPhoto:photo];
+    //[self startOperation:urlRequest postDataRequestType:0];
     
     self.progressView.progress = 0.0f;
     self.progressView.alpha = 1.0f;
 
 }//end startUpload
 
+
+-(void)startOperation:(NSURLRequest*)urlRequest postDataRequestType:(int)postDataRequestType {
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    MKNetworkOperation *operation = [appDelegate.automicsEngine postData:urlRequest
+                                                       completionHandler:^(id twitPicURL) {
+                                                           //DLog(@"complete.");
+                                                       }
+                                                            errorHandler:^(NSError* error)
+                                                        {
+                                         //DLog(@"error.");
+                                         
+                                                        }
+                                     ];
+    
+    operation.postDataRequestType = postDataRequestType;
+    operation.delegate = self;
+    [appDelegate.automicsEngine enqueueOperation:operation];
+    //self.dataFeedConnection = [operation urlConnection];
+    /*
+    [operation onUploadProgressChanged:^(double progress) {
+        
+        DLog(@"onUploadProgressChanged=%.2f", progress*100.0);
+        
+    }];
+     */
+  }//end startOperation
 
 - (void)connection:(NSURLConnection*)connection didSendBodyData:(NSInteger)bytesWritten
  totalBytesWritten:(NSInteger)totalBytesWritten
@@ -228,6 +285,16 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    if([title isEqualToString:@"OK"])
+    {
+        [self performSegueWithIdentifier:@"postToView" sender:self];
+        //[self dismissViewControllerAnimated:YES completion:nil];
+    }//end if
+}//end alertView
 
 #pragma mark PanelLoader functions.
 -(void)PanelLoader:(PanelLoader *)loader didSavePanel:(NSString*)response{
@@ -236,11 +303,11 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Upload Successful"
                           message: nil
-                          delegate: nil
+                          delegate: self
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
     [alert show];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    //[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark PhotoLoader functions.
@@ -267,5 +334,93 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     }//end if
 }
 
+#pragma mark MKNetworkOperation functions.
+-(void)MKNetworkOperation:(MKNetworkOperation *)operation didUploadPhoto:(Photo*)photo{
+    //NSLog(@"Photo uploaded %@", photo);
+    
+    if(photo!=nil)
+    {
+        int photoId = photo.photoId;
+        
+        //NSLog(@"Photo uploaded.photoId=%i", photoId);
+        if(photoId > 0)
+        {
+            Panel *panel = [[Panel alloc] init];
+            panel.photo = photo;
+            panel.photo.photoId = photo.photoId;
+            panel.photo.imageURL = NULL;
+            
+            
+            panel.placements = [[NSArray alloc] initWithArray:placementsArray];
+            panel.annotations = [[NSArray alloc] initWithArray:annotationsArray];
+            
+            NSURLRequest* urlRequest = [panelsLoader preparePanelRequestForPostPanel:panel];
+            [self startOperation:urlRequest postDataRequestType:1];
+            //[panelsLoader submitRequestPostPanel:panel];
+        }//end if
+    }//end if
+}
+
+-(void)MKNetworkOperation:(MKNetworkOperation *)loader didUploadPanel:(NSString*)response{
+    //NSLog(@"Panel saved: %@", response);
+    
+    UIAlertView *message = [[UIAlertView alloc]
+                            initWithTitle:@"Upload Successful"
+                            message:nil
+                            delegate:self
+                            cancelButtonTitle:@"OK"
+                            otherButtonTitles:nil];
+    [message show];
+}
+
+-(void)MKNetworkOperation:(MKNetworkOperation*)operation operationFailedWithError:(NSString*)responseString{
+    
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle: @"Upload Failure"
+                          message: @"Upload will resume when network connection is available."
+                          delegate: self
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    [alert show];
+}
+
+#pragma rendering subviews into an image
+- (UIImage*)imageFromView:(UIView*)view
+{
+    // Create a graphics context with the target size
+    // On iOS 4 and later, use UIGraphicsBeginImageContextWithOptions to take the scale into consideration
+    // On iOS prior to 4, fall back to use UIGraphicsBeginImageContext
+    CGSize imageSize = [view bounds].size;
+    if (NULL != UIGraphicsBeginImageContextWithOptions)
+        UIGraphicsBeginImageContextWithOptions(imageSize, NO, 0);
+    else
+        UIGraphicsBeginImageContext(imageSize);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    // -renderInContext: renders in the coordinate space of the layer,
+    // so we must first apply the layer's geometry to the graphics context
+    CGContextSaveGState(context);
+    // Center the context around the view's anchor point
+    CGContextTranslateCTM(context, [view center].x, [view center].y);
+    // Apply the view's transform about the anchor point
+    CGContextConcatCTM(context, [view transform]);
+    // Offset by the portion of the bounds left of and above the anchor point
+    CGContextTranslateCTM(context, -[view bounds].size.width * [[view layer] anchorPoint].x,
+                          -[view bounds].size.height * [[view layer] anchorPoint].y);
+    
+    // Render the layer hierarchy to the current context
+    [[view layer] renderInContext:context];
+    
+    // Restore the context
+    CGContextRestoreGState(context);
+    
+    // Retrieve the screenshot image
+    UIImage *imageWhole = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return imageWhole;
+}
 
 @end

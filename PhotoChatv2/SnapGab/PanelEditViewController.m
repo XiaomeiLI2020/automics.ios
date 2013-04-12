@@ -252,7 +252,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
 
     [super viewDidLoad];
-    NSLog(@"Edit.viewDidLoad");
+    //NSLog(@"Edit.viewDidLoad");
     
     resourceCounter = 0;
     resourceList = [[NSMutableArray alloc] init];
@@ -496,7 +496,11 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
     if([[segue identifier] isEqualToString:@"panelPosterView"]){
         PhotoPosterViewController *ppvc = (PhotoPosterViewController *)[segue destinationViewController];
+        
         ppvc.image = self.imageView.image;
+        ppvc.editMode = YES;
+        ppvc.editedPhoto=currentPanel.photo;
+        //NSLog(@"currentPanel.photo.photoId=%i", currentPanel.photo.photoId);
         
         for (UIView *subview in self.view.subviews)
         {
@@ -515,23 +519,34 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             if([subview isMemberOfClass:[ResourceView class]])
             {
                 ResourceView* sbv =(ResourceView*)subview;
-                sbv.transform = CGAffineTransformMakeRotation(0.0);
+                //NSLog(@"posted pre-rotation.sbv.angle=%f", sbv.angle);
+                if(sbv.angle!=0.00)
+                {
+                    sbv.transform = CGAffineTransformMakeRotation(0.0);
+                }
+
                 //[sbv removeFromSuperview];
                 
                 /*
                 NSLog(@"posted pre-rotation.sbv.frame=%@", NSStringFromCGRect(sbv.frame));
                 NSLog(@"posted pre-rotation.sbv.bounds%@", NSStringFromCGRect(sbv.bounds));
                 */
+                
                 ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
+                //ResourceView *new_sbv = [[ResourceView alloc] initWithResourceView:sbv];
                 new_sbv.originalFrame = sbv.frame;
                 
-                sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
+                if(sbv.angle!=0.00)
+                {
+                    sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
+                }
                 /*
                 NSLog(@"posted new_sbv.originalFrame=%@", NSStringFromCGRect(new_sbv.originalFrame));
                 NSLog(@"posted after-rotation new_sbv.frame=%@", NSStringFromCGRect(new_sbv.frame));
                 NSLog(@"posted after-rotation new_sbv.bounds%@", NSStringFromCGRect(new_sbv.bounds));
                 NSLog(@"new_sbv.scale=%f", new_sbv.scale);
                 */
+                
                 new_sbv.userInteractionEnabled = NO;
                 [ppvc.view addSubview:new_sbv];
                 //NSLog(@"resource added for posting.");

@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Horizon. All rights reserved.
 //
 
+extern NSString* const kHostName;
 extern NSString* const kBaseURL;
 extern NSString* const kAPIURL;
 extern NSString* const kPanelURL;

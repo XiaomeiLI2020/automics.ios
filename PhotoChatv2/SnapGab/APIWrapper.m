@@ -29,6 +29,11 @@
     return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL,kAPIURL,kPhotoURL];
 }
 
++(NSString*)getURLForGetPhotoWithId:(int)photoId{
+    NSString* inputId = [NSString stringWithFormat:@"%d", photoId];
+    return [NSString stringWithFormat:@"%@/%@/%@/%@", kBaseURL,kAPIURL,kPhotoURL,inputId];
+}
+
 +(NSString*)getAbsoluteURLUsingImageRelativePath:(NSString*)imageURL{
     return [NSString stringWithFormat:@"%@%@", kBaseURL, imageURL];
 }

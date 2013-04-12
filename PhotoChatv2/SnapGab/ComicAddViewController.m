@@ -187,8 +187,8 @@ NSMutableArray* downloadedPanels;
         // add image to the panel scrollview
         [panelScrollView addSubview:imageView];
         
-        NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
-        [downloadedPanels addObject:panelDownloaded];
+        //NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
+        //[downloadedPanels addObject:panelDownloaded];
         
         //Add bubbles and resources to the new panel's view
         [panelsLoader submitRequestGetPanelWithId:panel.panelId];
@@ -794,8 +794,8 @@ NSMutableArray* downloadedPanels;
             // add images to the thumbnail scrollview
             [panelScrollView addSubview:imageView];
             
-            NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
-            [downloadedPanels addObject:panelDownloaded];
+            //NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
+            //[downloadedPanels addObject:panelDownloaded];
             /*
             CGRect rect1 = imageView.frame;
             rect1.size.height = panelScrollObjHeight;
@@ -931,6 +931,12 @@ NSMutableArray* downloadedPanels;
     
     if(numPanels>0)
     {
+        for (int i=0; i<numPanels;i++)
+        {
+            NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
+            [downloadedPanels addObject:panelDownloaded];
+        }
+        
         for (Panel *panel in panels)
         {
             if (panel.photo.photoId > 0)
@@ -997,20 +1003,21 @@ NSMutableArray* downloadedPanels;
             placementList = panel.placements;
             numPlacements = [panel.placements count];
             placementCounter = 0;
-
-
+            panel.resources = [[NSMutableArray alloc] init];
+            
             //Load placements of a panel
             if(numPlacements>0)
             {
-                panel.resources = [[NSMutableArray alloc] init];
-                currentPlacement = [panel.placements objectAtIndex:placementCounter];
-                if(currentPlacement!=nil)
+                if(placementCounter<numPlacements)
                 {
-                    int resourceId = currentPlacement.resourceId;
-                    if(resourceId>0)
-                        [resourceLoader submitRequestGetResourceWithResourceId:resourceId];
-                }
-                
+                    currentPlacement = [panel.placements objectAtIndex:placementCounter];
+                    if(currentPlacement!=nil)
+                    {
+                        int resourceId = currentPlacement.resourceId;
+                        if(resourceId>0)
+                            [resourceLoader submitRequestGetResourceWithResourceId:resourceId];
+                    }//end if
+                }//end if
             }//end if
             else{
                 
@@ -1035,59 +1042,62 @@ NSMutableArray* downloadedPanels;
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResource:(Resource*)resource
 {
     //NSLog(@"Resource downloaded %i", placementCounter);
-    
     if (resource != nil)
     {
-        //Add resource to the panel object's resources array.
-        [currentPanel.resources addObject:resource];
-        
-        NSString* type = resource.type;
-        float scale = 1.0;
-        float angle = 0.0;
-        
-        //NSString* urlImageString = resource.imageURL;
-        //NSLog(@"resource.imageURL=%@",resource.imageURL);
-        CGRect resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
-        if([type isEqual:@"d"])
+        if(currentPanel.resources!=nil)
         {
-            resourceFrame = CGRectMake(currentPlacement.xOffset, currentPlacement.yOffset, decoratorWidth, decoratorHeight);
-            scale = currentPlacement.scale;
-            angle = currentPlacement.angle;
-        }
-        if([type isEqual:@"f"])
-        {
-            resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
-            scale=1.0;
-            angle=0.0;
-        }
-        
-
-        ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource
-                                                      andScale:scale andAngle:angle];
-        rv.userInteractionEnabled = NO;
-        [self.view addSubview:rv];
-        
-        
-        if(placementCounter<(numPlacements-1))
-        {
-            placementCounter++;
-            currentPlacement = [currentPanel.placements objectAtIndex:placementCounter];
-            if(currentPlacement!=nil)
+            //Add resource to the panel object's resources array.
+            [currentPanel.resources addObject:resource];
+            
+            NSString* type = resource.type;
+            float scale = 1.0;
+            float angle = 0.0;
+            
+            //NSString* urlImageString = resource.imageURL;
+            //NSLog(@"resource.imageURL=%@",resource.imageURL);
+            CGRect resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
+            if([type isEqual:@"d"])
             {
-                int resourceId=currentPlacement.resourceId;
-                if(resourceId>0)
-                    [resourceLoader submitRequestGetResourceWithResourceId:resourceId];
+                resourceFrame = CGRectMake(currentPlacement.xOffset, currentPlacement.yOffset, decoratorWidth, decoratorHeight);
+                scale = currentPlacement.scale;
+                angle = currentPlacement.angle;
             }
-        }
-        else
-        {
-            //Declaring a panel downloaded after all placements are downloaded
-            //NSLog(@"all resources loaded.");
-            NSNumber* yesObj = [NSNumber numberWithBool:YES];
-            [downloadedPanels replaceObjectAtIndex:currentPage withObject:yesObj];
-            return;
-        }
-        
+            if([type isEqual:@"f"])
+            {
+                resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
+                scale=1.0;
+                angle=0.0;
+            }
+            
+            
+            ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource
+                                                          andScale:scale andAngle:angle];
+            rv.userInteractionEnabled = NO;
+            [self.view addSubview:rv];
+            
+            
+            if(placementCounter<(numPlacements-1))
+            {
+                placementCounter++;
+                currentPlacement = [currentPanel.placements objectAtIndex:placementCounter];
+                if(currentPlacement!=nil)
+                {
+                    int resourceId=currentPlacement.resourceId;
+                    if(resourceId>0)
+                        [resourceLoader submitRequestGetResourceWithResourceId:resourceId];
+                }
+            }
+            else
+            {
+                //Declaring a panel downloaded after all placements are downloaded
+                //NSLog(@"all resources loaded.");
+                NSNumber* yesObj = [NSNumber numberWithBool:YES];
+                [downloadedPanels replaceObjectAtIndex:currentPage withObject:yesObj];
+                return;
+            }
+
+        }//end if
+               
     }//end if
 }
 

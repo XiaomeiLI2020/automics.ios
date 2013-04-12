@@ -439,7 +439,7 @@ UILabel* clickLabel;
                 for(UIView* subView in panelScrollView.subviews)
                 {
                     if(subView.tag!=currentPage && subView.tag!=currentPage+1 && subView.tag!=currentPage-1)
-                        //if(subView.tag!=currentPage)
+                    //    if(subView.tag!=currentPage)
                     {
                         [subView removeFromSuperview];
                     }
@@ -677,7 +677,7 @@ UILabel* clickLabel;
 
     if([[segue identifier] isEqualToString:@"editPost"])
     {
-        NSLog(@"[comicPanelList count]=%i", [comicPanelList count]);
+        //NSLog(@"[comicPanelList count]=%i", [comicPanelList count]);
         if([comicPanelList count]>0)
         {
             ComicPosterViewController *cpvc = (ComicPosterViewController *)[segue destinationViewController];
@@ -736,8 +736,7 @@ UILabel* clickLabel;
                         if(currentPage>0)
                             currentPage--;
                         
-    
-                        
+
                         if([comicPanelList count]==0)
                         {
                             //NSLog(@"post-deletion [comicPanelList count] %i", [comicPanelList count]);
@@ -1069,14 +1068,14 @@ UILabel* clickLabel;
             placementList = currentPanel.placements;
             numPlacements = [currentPanel.placements count];
             placementCounter = 0;
-
+            currentPanel.resources = [[NSMutableArray alloc] init];
 
           
             //Load placements of a panel
             if(numPlacements>0)
             {
 
-                currentPanel.resources = [[NSMutableArray alloc] init];
+
                 
                 currentPlacement = [currentPanel.placements objectAtIndex:placementCounter];
                 if(currentPlacement!=nil)
@@ -1180,57 +1179,59 @@ UILabel* clickLabel;
             //Add resource to the panel object's resources array.
             //NSLog(@"added resource to to currentPanel.resources");
             [currentPanel.resources addObject:resource];
+            
+            NSString* type = resource.type;
+            float scale = 1.0;
+            float angle = 0.0;
+            
+            CGRect resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
+            if([type isEqual:@"d"])
+            {
+                resourceFrame = CGRectMake(currentPlacement.xOffset, currentPlacement.yOffset, decoratorWidth, decoratorHeight);
+                scale = currentPlacement.scale;
+                angle= currentPlacement.angle;
+            }
+            if([type isEqual:@"f"])
+            {
+                resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
+            }
+            
+            //ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:urlImageString andType:type];
+            //ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:resource.imageURL andType:resource.type andId:resource.resourceId];
+            ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource
+                                                          andScale:scale andAngle:angle];
+            
+            rv.userInteractionEnabled = NO;
+            [self.view addSubview:rv];
+            
+            if(placementCounter<(numPlacements-1))
+            {
+                placementCounter++;
+                currentPlacement = [currentPanel.placements objectAtIndex:placementCounter];
+                if(currentPlacement!=nil)
+                {
+                    int resourceId = currentPlacement.resourceId;
+                    //NSLog(@"next resourceId=%i", resourceId);
+                    [resourceLoader submitRequestGetResourceWithResourceId:resourceId];
+                    
+                }//end if(currentPlacement!=nil)
+                
+            }//end if(placementCounter<(numPlacements-1))
+            else
+            {
+                //NSLog(@"all resources loaded.");
+                NSNumber* yesObj = [NSNumber numberWithBool:YES];
+                [downloadedPanels replaceObjectAtIndex:currentPage withObject:yesObj];
+                return;
+            }
+
         }
         else{
             NSLog(@"currentPanel.resources is nil");
         }
 
         
-        NSString* type = resource.type;
-        float scale = 1.0;
-        float angle = 0.0;
-        
-        CGRect resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
-        if([type isEqual:@"d"])
-        {
-            resourceFrame = CGRectMake(currentPlacement.xOffset, currentPlacement.yOffset, decoratorWidth, decoratorHeight);
-            scale = currentPlacement.scale;
-            angle= currentPlacement.angle;
-        }
-        if([type isEqual:@"f"])
-        {
-            resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
-        }
-        
-        //ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:urlImageString andType:type];
-        //ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:resource.imageURL andType:resource.type andId:resource.resourceId];
-        ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource
-                                                      andScale:scale andAngle:angle];
-        
-        rv.userInteractionEnabled = NO;
-        [self.view addSubview:rv];
-
-        if(placementCounter<(numPlacements-1))
-        {
-            placementCounter++;
-            currentPlacement = [currentPanel.placements objectAtIndex:placementCounter];
-            if(currentPlacement!=nil)
-            {
-                int resourceId = currentPlacement.resourceId;
-                //NSLog(@"next resourceId=%i", resourceId);
-                [resourceLoader submitRequestGetResourceWithResourceId:resourceId];
-                
-            }//end if(currentPlacement!=nil)
-
-        }//end if(placementCounter<(numPlacements-1))
-        else
-        {
-            //NSLog(@"all resources loaded.");
-            NSNumber* yesObj = [NSNumber numberWithBool:YES];
-            [downloadedPanels replaceObjectAtIndex:currentPage withObject:yesObj];
-            return;
-        }
-        
+         
     }//end if
 }
 
