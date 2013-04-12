@@ -23,5 +23,6 @@ extern NSString* const kComicURL;
 extern NSString* const kLoginURL;
 extern NSString* const kGroupURL;
 extern NSString* const kGroupsURL;
+extern NSString* const kJoinGroupURL;
 extern NSString* const kMembershipURL;
 

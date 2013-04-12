@@ -94,7 +94,7 @@ NSString *kCellID = @"GROUP_CELL";
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     GroupCollectionViewCell* selectedGroupCell = (GroupCollectionViewCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
     Group *group = [selectedGroupCell getGroup];
-    NSString *url = [NSString stringWithFormat:@"%@/%@",[APIWrapper getURLForGetGroup],[group hashId]];
+    NSString *url = [APIWrapper getURLForJoinGroupWithHashId:[group hashId]];
     UIImage* qrcodeImage = [self generateQRCodeImageForURL:url];
     GroupQRView *qrView = [[[NSBundle mainBundle] loadNibNamed:@"GroupQRView" owner:self options:nil] objectAtIndex:0];
     qrView.qrImageView.image = qrcodeImage;
