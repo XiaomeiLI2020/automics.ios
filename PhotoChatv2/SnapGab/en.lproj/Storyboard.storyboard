@@ -709,11 +709,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="USc-bo-4yf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-<<<<<<< HEAD
+
             <point key="canvasLocation" x="687" y="-1321"/>
-=======
+
             <point key="canvasLocation" x="522" y="-1168"/>
->>>>>>> 7d1d359f9d0db604173f781c79b80f21b4dae6e2
+
         </scene>
         <!--PanelAddViewController-->
         <scene sceneID="g9P-Bn-dcV">
@@ -794,11 +794,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dbC-ZG-0e6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-<<<<<<< HEAD
+
             <point key="canvasLocation" x="348" y="-1321"/>
-=======
+
             <point key="canvasLocation" x="906" y="-1660"/>
->>>>>>> 7d1d359f9d0db604173f781c79b80f21b4dae6e2
+
         </scene>
         <!--PhotoPosterViewController-->
         <scene sceneID="XEW-r9-aVc">
@@ -826,11 +826,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0H2-gz-B1m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-<<<<<<< HEAD
+
             <point key="canvasLocation" x="1028" y="-1321"/>
-=======
+
             <point key="canvasLocation" x="1373" y="-1184"/>
->>>>>>> 7d1d359f9d0db604173f781c79b80f21b4dae6e2
+
         </scene>
         <!--ComicPosterViewController-->
         <scene sceneID="0Jt-XC-ADr">
@@ -872,11 +872,10 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sSP-bP-GIO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-<<<<<<< HEAD
+
             <point key="canvasLocation" x="-113" y="-43"/>
-=======
             <point key="canvasLocation" x="-402" y="81"/>
->>>>>>> 7d1d359f9d0db604173f781c79b80f21b4dae6e2
+
         </scene>
         <!--Groups Flow View Controller-->
         <scene sceneID="5lK-Yz-WEi">
@@ -975,8 +974,7 @@
         <image name="panel-edit.png" width="81" height="48"/>
         <image name="post-panel.png" width="91" height="74"/>
     </resources>
-<<<<<<< HEAD
-=======
+
     <classes>
         <class className="ComicAddViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicAddViewController.h"/>
@@ -1110,21 +1108,21 @@
             </relationships>
         </class>
     </classes>
->>>>>>> 7d1d359f9d0db604173f781c79b80f21b4dae6e2
+
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-<<<<<<< HEAD
+
         <segue reference="snA-Gb-6Qz"/>
         <segue reference="P1E-0g-8Qy"/>
         <segue reference="Qqf-pa-bVd"/>
         <segue reference="eqx-Lk-Ciz"/>
         <segue reference="lLZ-Tg-1fy"/>
         <segue reference="7K2-Cr-pvV"/>
-=======
+
         <segue reference="fjF-Bf-fik"/>
         <segue reference="P1E-0g-8Qy"/>
         <segue reference="7K2-Cr-pvV"/>
@@ -1133,6 +1131,6 @@
         <segue reference="scZ-oz-ppB"/>
         <segue reference="eqx-Lk-Ciz"/>
         <segue reference="vnI-2b-eqB"/>
->>>>>>> 7d1d359f9d0db604173f781c79b80f21b4dae6e2
+
     </inferredMetricsTieBreakers>
 </document>

@@ -604,6 +604,7 @@ UIActivityIndicatorView* aIndicator3;
         }//end if(index<[self.panels count])
     }//end for
     
+   
     //NSLog(@"thumbPage=%i", thumbPage);
     if(thumbPage<=currentPage)
     {
@@ -649,7 +650,7 @@ UIActivityIndicatorView* aIndicator3;
         }//end for
         
         
-        NSLog(@"displayPageInThumbnailScrollView.panel#%i displayed=%d.", page, displayed);
+        //NSLog(@"displayPageInThumbnailScrollView.panel#%i displayed=%d.", page, displayed);
         if(!displayed)
         {
             //NSLog(@"displayPageInThumbnailScrollView.objectAtIndex:page");
@@ -1019,6 +1020,8 @@ UIActivityIndicatorView* aIndicator3;
      
 }
 
+
+
 -(void)PanelLoader:(PanelLoader*)loader didLoadPanel:(Panel*)panel{
     
     if (panel!= nil)
@@ -1165,6 +1168,7 @@ UIActivityIndicatorView* aIndicator3;
  
 }
 
+
 #pragma mark ResourceLoader functions.
 -(void)ResourceLoader:(ResourceLoader*)loader didFailWithError:(NSError*)error{
     NSLog(@"resource failed to load.");
@@ -1193,7 +1197,7 @@ UIActivityIndicatorView* aIndicator3;
         }
         
         if(resourcePanel==nil){
-            NSLog(@"didLoadResource.resourcePanel is nil");
+            //NSLog(@"didLoadResource.resourcePanel is nil");
         }
         
         if(resourcePanel!=nil)

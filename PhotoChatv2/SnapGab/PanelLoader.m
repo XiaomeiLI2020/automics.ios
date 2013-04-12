@@ -107,8 +107,11 @@ int const kPostPanel = 2;
     NSDictionary* paneldict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (paneldict != nil){
         Panel *panel = [PanelJSONHandler convertPanelJSONDictIntoPanel:paneldict];
-        if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:forObject:)])
-            [self.delegate PanelLoader:self didLoadPanel:panel forObject:obj];
+        //NSLog(@"panel downloaded.=%i placements", [panel.placements count]);
+        //if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:forObject:)])
+        //    [self.delegate PanelLoader:self didLoadPanel:panel forObject:obj];
+        if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:)])
+            [self.delegate PanelLoader:self didLoadPanel:panel];
     }else{
         [self reportErrorToDelegate:error];
     }
@@ -159,6 +162,7 @@ int const kPostPanel = 2;
 #pragma mark NSURLConnectionDataDelegate methods
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
+
     [super connectionDidFinishLoading:connection];
     if (self.downloadedData.length > 0){
         switch (panelRequestType){

@@ -71,6 +71,7 @@ int numResources;
 
 -(NSURLRequest*)prepareResourceRequestForGetResourceWithId:(int)resourceId{
     NSString* resourceURL = [APIWrapper getURLForGetResourceWithId:resourceId];
+    NSLog(@"resourceURL=%@", resourceURL);
     NSURL* url = [NSURL URLWithString:resourceURL];
     return [NSURLRequest requestWithURL:url];
 }

@@ -55,9 +55,6 @@
 		48D58FEE1704A1E7002ACF3E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48D58FED1704A1E7002ACF3E /* QuartzCore.framework */; };
 		48D58FF31704A23D002ACF3E /* groupDecoration.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FEF1704A23D002ACF3E /* groupDecoration.png */; };
 		48D58FF41704A23D002ACF3E /* groupDecoration@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FF01704A23D002ACF3E /* groupDecoration@2x.png */; };
-		48D58FF51704A23D002ACF3E /* groupViewBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FF11704A23D002ACF3E /* groupViewBackground.png */; };
-		48D58FF61704A23D002ACF3E /* groupViewBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FF21704A23D002ACF3E /* groupViewBackground@2x.png */; };
-		48D58FFD1704A93B002ACF3E /* groupCellBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FFC1704A93B002ACF3E /* groupCellBackground.png */; };
 		48D933C216E0B6C000B8C68D /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D933C116E0B6C000B8C68D /* Photo.m */; };
 		48D933C816E0B6D600B8C68D /* PhotoJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D933C516E0B6D600B8C68D /* PhotoJSONHandler.m */; };
 		48D933C916E0B6D600B8C68D /* PhotoLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D933C716E0B6D600B8C68D /* PhotoLoader.m */; };
@@ -475,13 +472,10 @@
 		1D8D5085165FADC700C9817C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				D8B4A3981709C83E002E6D75 /* Security.framework */,
 				D8B4A3961709C835002E6D75 /* SystemConfiguration.framework */,
 				D8B4A3941709C822002E6D75 /* CFNetwork.framework */,
-=======
 				48D58FED1704A1E7002ACF3E /* QuartzCore.framework */,
->>>>>>> 7d1d359f9d0db604173f781c79b80f21b4dae6e2
 				1D92BFD41666330E00CB37B3 /* ImageIO.framework */,
 				1D92BFD71666332300CB37B3 /* MapKit.framework */,
 				1DA205B0166504BD003FF0B2 /* MobileCoreServices.framework */,
@@ -697,15 +691,12 @@
 		48D0EA8016CD4B8600FE11E2 /* images */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				D852C55317134A62004C408E /* thumb.png */,
-				48D58FFC1704A93B002ACF3E /* cellBackground.png */,
-=======
+				48D58FFC1704A93B002ACF3E /* groupCellBackground.png */,
 				4866F59F1712F62A0031330D /* menu.png */,
 				48E46D61170EE57100771C80 /* groupDefaultCellBackground.jpg */,
 				48278AC3170DD9E20083B46C /* comicCell.png */,
 				48D58FFC1704A93B002ACF3E /* groupCellBackground.png */,
->>>>>>> 7d1d359f9d0db604173f781c79b80f21b4dae6e2
 				48D58FEF1704A23D002ACF3E /* groupDecoration.png */,
 				48D58FF01704A23D002ACF3E /* groupDecoration@2x.png */,
 				48D58FF11704A23D002ACF3E /* groupViewBackground.png */,
@@ -987,19 +978,10 @@
 				48D58FE91704A119002ACF3E /* GroupQRView.xib in Resources */,
 				48D58FF31704A23D002ACF3E /* groupDecoration.png in Resources */,
 				48D58FF41704A23D002ACF3E /* groupDecoration@2x.png in Resources */,
-<<<<<<< HEAD
-				48D58FF51704A23D002ACF3E /* groupBackground.png in Resources */,
-				48D58FF61704A23D002ACF3E /* groupBackground@2x.png in Resources */,
-				48D58FFD1704A93B002ACF3E /* cellBackground.png in Resources */,
 				D852C55417134A62004C408E /* thumb.png in Resources */,
-=======
-				48D58FF51704A23D002ACF3E /* groupViewBackground.png in Resources */,
-				48D58FF61704A23D002ACF3E /* groupViewBackground@2x.png in Resources */,
-				48D58FFD1704A93B002ACF3E /* groupCellBackground.png in Resources */,
 				48278AC4170DD9E30083B46C /* comicCell.png in Resources */,
 				48E46D62170EE57100771C80 /* groupDefaultCellBackground.jpg in Resources */,
 				4866F5A01712F62A0031330D /* menu.png in Resources */,
->>>>>>> 7d1d359f9d0db604173f781c79b80f21b4dae6e2
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1081,7 +1063,6 @@
 				48D58FE41704A0E6002ACF3E /* GroupCollectionViewLayout.m in Sources */,
 				48D58FE81704A119002ACF3E /* GroupQRView.m in Sources */,
 				48D58FEC1704A145002ACF3E /* GroupDecorationView.m in Sources */,
-<<<<<<< HEAD
 				D8B4A3791709C3D6002E6D75 /* NSData+MKBase64.m in Sources */,
 				D8B4A37A1709C3D6002E6D75 /* NSDate+RFC1123.m in Sources */,
 				D8B4A37B1709C3D6002E6D75 /* NSDictionary+RequestEncoding.m in Sources */,
@@ -1093,11 +1074,9 @@
 				D8B4A39C1709C985002E6D75 /* Reachability.m in Sources */,
 				D8C64132170D7BE90008074E /* AutomicsEngine.m in Sources */,
 				D852C5581714BB79004C408E /* ThumbnailView.m in Sources */,
-=======
 				48278ACA170DDF3D0083B46C /* ComicCollectionViewCell.m in Sources */,
 				48E46D60170ED84400771C80 /* ComicCollectionViewController.m in Sources */,
 				48E46D65170F1FFE00771C80 /* ComicCollectionViewLayout.m in Sources */,
->>>>>>> 7d1d359f9d0db604173f781c79b80f21b4dae6e2
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
