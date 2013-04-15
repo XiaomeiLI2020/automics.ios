@@ -1170,7 +1170,7 @@
 		1D8D50A1165FADC700C9817C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SnapGab/PhotoChat-Prefix.pch";
@@ -1179,7 +1179,7 @@
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				PRODUCT_NAME = PhotoChat;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "90A8735E-9CA8-46A7-A527-E69F05FCACE4";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
@@ -1189,8 +1189,8 @@
 		1D8D50A2165FADC700C9817C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SnapGab/PhotoChat-Prefix.pch";
 				GENERATE_PROFILING_CODE = YES;

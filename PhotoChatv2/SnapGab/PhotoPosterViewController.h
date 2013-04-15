@@ -10,9 +10,10 @@
 #import "PanelLoader.h"
 #import "PhotoLoader.h"
 #import "MKNetworkOperation.h"
+#import "AutomicsEngine.h"
 
 @interface PhotoPosterViewController : UIViewController
-<PanelLoaderDelegate, PhotoLoaderDelegate, MKNetworkOperationDelegate, UIAlertViewDelegate>
+<PanelLoaderDelegate, PhotoLoaderDelegate, MKNetworkOperationDelegate, UIAlertViewDelegate, MKNetworkEngineDelegate>
 
 @property (nonatomic, retain) IBOutlet UIImageView *imageView;
 @property (nonatomic, retain) IBOutlet UIProgressView *progressView;

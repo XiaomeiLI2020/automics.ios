@@ -8,8 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Placement : NSObject
-
+@interface Placement : NSObject<NSCoding>
 @property int resourceId;
 @property CGFloat xOffset;
 @property CGFloat yOffset;

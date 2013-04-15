@@ -12,7 +12,7 @@
 //#import "ThumbnailView.h"
 
 
-@interface Panel : NSObject
+@interface Panel : NSObject //<NSCoding>
 @property NSInteger panelId;
 @property Photo *photo;
 @property NSArray* placements;

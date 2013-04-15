@@ -50,7 +50,8 @@ int placementCounter;
                 
                 __weak UIImageView* _imageView = imageView;
                 [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
-                              placeholderImage:[UIImage imageNamed:@"thumb.png"]
+                              //placeholderImage:[UIImage imageNamed:@"thumb.png"
+                            //placeholderImage:nil
                                        success:^(UIImage *imageDownloaded) {
                                             image = imageDownloaded;
                                            _imageView.frame = CGRectMake(0.0, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
@@ -260,12 +261,14 @@ int placementCounter;
                         if([type isEqual:@"d"])
                             rv.transform = CGAffineTransformScale(rv.transform, 0.5, 0.5);
                         [self addSubview:rv];
+                        
                         //NSLog(@"resource added.%i", placementCounter);
                     }//end if resource!=nil
                     
                 }//end for
-            }//end if
-        }//end if
+            }//end if(numPlacements>0)
+            //snapshot = [self imageWithView:self];
+        }//end if panel.placements!=nil
     }//end if panel!=null
 }
 

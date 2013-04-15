@@ -435,7 +435,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     //NSLog(@"didFinishPickingMediaWithInfo");
     NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
-    
+
     
     // NSString *mediaType = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
     
@@ -449,13 +449,12 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         [self removeAllBubbles];
         [self removeAllResources];
         
-        self.imageView.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelWidth, panelHeight);
-        
+        imageView.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelWidth, panelHeight);
         image= [self imageWithImage:image scaledToSize:CGSizeMake(panelWidth, panelHeight)];
         
+        //[imageView setContentMode:UIViewContentModeScaleAspectFit];
         imageView.image = image;
-
-        [imageView setBackgroundColor:[UIColor greenColor]];
+        [imageView setBackgroundColor:[UIColor grayColor]];
         
         //If newMedia, then save the new image to camera roll
         if (newMedia)
@@ -590,6 +589,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         imagePicker.delegate = self;
         
         imagePicker.allowsEditing = YES;
+        //imagePicker.allowsEditing = NO;
+        
         [self presentViewController:imagePicker animated:YES completion:nil];
         
         newMedia = YES;

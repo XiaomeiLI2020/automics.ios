@@ -9,7 +9,6 @@
 #import "LoginViewController.h"
 #import "APIWrapper.h"
 
-
 @interface LoginViewController ()
 
 @end
@@ -24,7 +23,6 @@
 @synthesize user;
 
 NSString* hashId=@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
-
 
 - (void)viewDidLoad
 {
@@ -94,12 +92,16 @@ NSString* hashId=@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
     return YES;
 }
 
-/*
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    //return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    if (interfaceOrientation == UIInterfaceOrientationPortrait) {    // Or whatever orientation it will be presented in.
+        return YES;
+    }
+    return NO;
 }
-*/
+
 
 #pragma mark UserLoader methods
 -(void)UserLoader:(UserLoader*)loader didFailWithError:(NSError*)error{

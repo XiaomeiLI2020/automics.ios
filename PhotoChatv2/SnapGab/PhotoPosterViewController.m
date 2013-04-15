@@ -16,7 +16,6 @@
 #import "Photo.h"
 #import "Annotation.h"
 #import "GUIConstant.h"
-#import "MKNetworkEngine.h"
 #import "AppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -39,6 +38,7 @@
 @synthesize editedPhoto;
 
 BOOL panelUploaded;
+bool alertShown;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -66,6 +66,8 @@ BOOL panelUploaded;
     
     annotationsArray = [[NSMutableArray alloc] init];
     placementsArray = [[NSMutableArray alloc] init];
+    
+    alertShown= false;
 
 }
 
@@ -126,8 +128,8 @@ BOOL panelUploaded;
     photo.image = imageView.image;
     //photo.image = [self imageFromView:self.view];
     photo.name = @"phototype.png";
-    photo.width = 320;
-    photo.height = 320;
+    photo.width = 320.0;
+    photo.height = 320.0;
     
     for (UIView *subview in self.view.subviews)
     {
@@ -202,6 +204,7 @@ BOOL panelUploaded;
                 
                 NSURLRequest* urlRequest = [panelsLoader preparePanelRequestForPostPanel:panel];
                 [self startOperation:urlRequest postDataRequestType:1];
+                //[self startPanelOperation:urlRequest panelPlacements:placementsArray panelAnnotations:annotationsArray postDataRequestType:1];
                 
                 //[panelsLoader submitRequestPostPanel:panel];
             }//end if
@@ -212,13 +215,10 @@ BOOL panelUploaded;
     {
         //Upload a new photo if a new panel is being added
         NSURLRequest* urlRequest = [photoLoader preparePhotoRequestForPostPhoto:photo];
-        [self startOperation:urlRequest postDataRequestType:0];
+        //[self startOperation:urlRequest postDataRequestType:0];
+        [self startPanelOperation:urlRequest panelPlacements:placementsArray panelAnnotations:annotationsArray postDataRequestType:0];
         //[photoLoader submitRequestPostPhoto:photo];
     }
-    
-    
-    //NSURLRequest* urlRequest = [photoLoader preparePhotoRequestForPostPhoto:photo];
-    //[self startOperation:urlRequest postDataRequestType:0];
     
     self.progressView.progress = 0.0f;
     self.progressView.alpha = 1.0f;
@@ -227,15 +227,17 @@ BOOL panelUploaded;
 
 
 -(void)startOperation:(NSURLRequest*)urlRequest postDataRequestType:(int)postDataRequestType {
+    //NSLog(@"startOperation");
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    appDelegate.automicsEngine.delegate = self;
     MKNetworkOperation *operation = [appDelegate.automicsEngine postData:urlRequest
                                                        completionHandler:^(id twitPicURL) {
-                                                           //DLog(@"complete.");
+                                                           DLog(@"complete.");
                                                        }
                                                             errorHandler:^(NSError* error)
                                                         {
-                                         //DLog(@"error.");
+                                         DLog(@"error.");
                                          
                                                         }
                                      ];
@@ -244,14 +246,49 @@ BOOL panelUploaded;
     operation.delegate = self;
     [appDelegate.automicsEngine enqueueOperation:operation];
     //self.dataFeedConnection = [operation urlConnection];
-    /*
+
     [operation onUploadProgressChanged:^(double progress) {
         
-        DLog(@"onUploadProgressChanged=%.2f", progress*100.0);
+        //DLog(@"onUploadProgressChanged=%.2f, progress=%f", progress*100.0, progress);
+        self.progressView.progress = (float)progress;
         
     }];
-     */
+
   }//end startOperation
+
+
+
+
+-(void)startPanelOperation:(NSURLRequest*)urlRequest panelPlacements:(NSArray*)placements
+          panelAnnotations:(NSArray*)annotations postDataRequestType:(int)postDataRequestType {
+    NSLog(@"PhotoPoster. startPanelOperation.");
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    appDelegate.automicsEngine.delegate = self;
+    MKNetworkOperation *operation = [appDelegate.automicsEngine postData:urlRequest
+                                                       panelPlacements:placements panelAnnotations:annotations
+                                                       completionHandler:^(id twitPicURL) {
+                                                           //DLog(@"complete.");
+                                                       }
+                                                            errorHandler:^(NSError* error)
+                                     {
+                                         //DLog(@"error.");
+                                         
+                                     }
+                                     ];
+    
+    operation.postDataRequestType = postDataRequestType;
+    operation.delegate = self;
+    [appDelegate.automicsEngine enqueueOperation:operation];
+    //self.dataFeedConnection = [operation urlConnection];
+    
+     [operation onUploadProgressChanged:^(double progress) {
+     
+     //DLog(@"onUploadProgressChanged=%.2f", progress*100.0);
+     self.progressView.progress = (float)progress;
+     }];
+    
+}//end startOperation
+
 
 - (void)connection:(NSURLConnection*)connection didSendBodyData:(NSInteger)bytesWritten
  totalBytesWritten:(NSInteger)totalBytesWritten
@@ -263,6 +300,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 - (IBAction)cancelPressed:(id)sender {
     
     //if(self.connection) [self.connection cancel];
+    //[self performSegueWithIdentifier:@"postToView" sender:self];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -280,6 +318,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     return self;
 }
 
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -291,6 +330,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     
     if([title isEqualToString:@"OK"])
     {
+        //alertShown = NO;
         [self performSegueWithIdentifier:@"postToView" sender:self];
         //[self dismissViewControllerAnimated:YES completion:nil];
     }//end if
@@ -308,6 +348,16 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
                           otherButtonTitles:nil];
     [alert show];
     //[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)PanelLoader:(PanelLoader*)loader didFailWithError:(NSError*)error{
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle: @"Upload Failure"
+                          message: @"Please upload when network connection is available."
+                          delegate:self
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark PhotoLoader functions.
@@ -332,6 +382,17 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
             [panelsLoader submitRequestPostPanel:panel];
         }//end if
     }//end if
+}
+
+-(void)PhotoLoader:(PhotoLoader*)photoLoader didFailWithError:(NSError*)error{
+    
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle: @"Upload Failure"
+                          message: @"Please upload when network connection is available."
+                          delegate:self
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark MKNetworkOperation functions.
@@ -362,8 +423,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 }
 
 -(void)MKNetworkOperation:(MKNetworkOperation *)loader didUploadPanel:(NSString*)response{
-    //NSLog(@"Panel saved: %@", response);
-    
+    NSLog(@"PhotoPosterView.Panel saved: %@", response);
     UIAlertView *message = [[UIAlertView alloc]
                             initWithTitle:@"Upload Successful"
                             message:nil
@@ -373,16 +433,38 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     [message show];
 }
 
--(void)MKNetworkOperation:(MKNetworkOperation*)operation operationFailedWithError:(NSString*)responseString{
-    
+-(void)MKNetworkOperation:(MKNetworkOperation*)operation operationFailed:(NSString*)responseString{
+    NSLog(@"PhotoPosterViewController.operationFailedWithError: %@", responseString);
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Upload Failure"
                           message: @"Upload will resume when network connection is available."
-                          delegate: self
+                          delegate:self
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    //if(!alertShown)
+    {
+        [alert show];
+        //alertShown = YES;
+    }
+
+}
+
+/*
+//-(void)MKNetworkEngine:(MKNetworkEngine*)automicsEngine didFreezeOperation:(NSString*)responseString;
+
+//-(void)MKNetworkEngine:(MKNetworkEngine*)automicsEngine didFreezeOperation:(NSString*)responseString
+-(void)MKNetworkEngine:(MKNetworkEngine*)automicsEngine didFreezeOperation:(NSString*)responseString
+{
+    NSLog(@"automicsEngine didFreezeOperation: %@", responseString);
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle: @"Upload Failure"
+                          message: @"Upload will resume when network connection is available."
+                          delegate:self
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
     [alert show];
 }
+*/
 
 #pragma rendering subviews into an image
 - (UIImage*)imageFromView:(UIView*)view

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Annotation : NSObject
+@interface Annotation : NSObject <NSCoding>
 @property int annotationId;
 @property NSString* text;
 @property int bubbleStyle;

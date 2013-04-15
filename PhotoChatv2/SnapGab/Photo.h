@@ -8,7 +8,7 @@
 
 #import "ImageDownloader.h"
 
-@interface Photo : NSObject
+@interface Photo : NSObject//<NSCoding>
 
 @property int photoId;
 @property NSString *description;
@@ -18,6 +18,6 @@
 @property UIImage *image;
 @property NSString *name;
 @property NSString *thumbURL;
-@property UIImage *thumb;
+
 
 @end

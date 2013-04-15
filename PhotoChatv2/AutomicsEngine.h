@@ -21,6 +21,13 @@ typedef void (^IDBlock)(id object);
                  completionHandler:(IDBlock) completionBlock
                       errorHandler:(MKNKErrorBlock) errorBlock;
 
+-(MKNetworkOperation*) postData:(NSURLRequest*)urlRequest
+                panelPlacements:(NSArray*)placements
+               panelAnnotations:(NSArray*)annotations
+              completionHandler:(IDBlock) completionBlock
+                   errorHandler:(MKNKErrorBlock) errorBlock;
+
+
 -(MKNetworkOperation*) uploadData:(NSString*)urlRequest
                             params:(NSDictionary*)dict
                  completionHandler:(IDBlock) completionBlock
@@ -33,5 +40,4 @@ typedef void (^IDBlock)(id object);
 @optional
 -(void)AutomicsEngine:(AutomicsEngine*)automicsEngine didFreezeOperation:(NSString*)responseString;
 @end
-
 */

@@ -587,7 +587,7 @@ CGRect originalBounds;
         CGFloat deltaH = changedPoint.y - self.prevPoint.y;
         CGFloat scaleX = (self.bounds.size.width+deltaW)/self.bounds.size.width;
         CGFloat scaleY = (self.bounds.size.width+deltaH)/self.bounds.size.height;
-        NSLog(@"deltaW=%f, delateH=%f", deltaW, deltaH);
+        //NSLog(@"deltaW=%f, delateH=%f", deltaW, deltaH);
         //CGFloat deltaNet = MAX(deltaH, deltaW);
         CGFloat scaleNet = MAX(scaleX, scaleY);
         if(self.bounds.size.width > self.bounds.size.height)
@@ -611,7 +611,7 @@ CGRect originalBounds;
         //deltaNet = MAX(sqrtf(deltaH*deltaH), sqrt(deltaW*deltaW));
 
         //self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width + deltaW, self.bounds.size.height + deltaH);
-        NSLog(@"scaleX=%f, scaleY=%f, scaleNet=%f", scaleX, scaleY, scaleNet);
+        //NSLog(@"scaleX=%f, scaleY=%f, scaleNet=%f", scaleX, scaleY, scaleNet);
 
         //NSLog(@"pre-scaling self.frame=%@", NSStringFromCGRect(self.frame));
         //NSLog(@"pre-scaling new self.bounds%@", NSStringFromCGRect(self.bounds));
@@ -669,8 +669,8 @@ CGRect originalBounds;
         
         //self.scale = _imageView.bounds.size.width/originalWidth;
         self.scale = newDiagonal/originalDiagonal;
-        NSLog(@"self.scaleX=%f, self.scaleY=%f, self.scaleDiagonal=%f", _imageView.bounds.size.width/originalWidth, _imageView.bounds.size.height/originalHeight, newDiagonal/originalDiagonal);
-        NSLog(@"self.scale=%f", self.scale);
+        //NSLog(@"self.scaleX=%f, self.scaleY=%f, self.scaleDiagonal=%f", _imageView.bounds.size.width/originalWidth, _imageView.bounds.size.height/originalHeight, newDiagonal/originalDiagonal);
+        //NSLog(@"self.scale=%f", self.scale);
     }
     else if ([gestureRecognizer state] == UIGestureRecognizerStateCancelled)
     {

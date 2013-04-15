@@ -39,6 +39,36 @@
     return op;
 }
 
+-(MKNetworkOperation*) postData:(NSURLRequest*)urlRequest
+                panelPlacements:(NSArray*)placements
+               panelAnnotations:(NSArray*)annotations
+              completionHandler:(IDBlock) completionBlock
+                   errorHandler:(MKNKErrorBlock) errorBlock
+{
+    //DLog(@"");
+    MKNetworkOperation *op = [self operationWithPanelUploadRequest:urlRequest panelPlacements:placements panelAnnotations:annotations httpMethod:@"post"];
+    // setFreezable uploads your images after connection is restored!
+    [op setFreezable:YES];
+    
+    [op addCompletionHandler:^(MKNetworkOperation* completedOperation) {
+        /*
+         NSString *xmlString = [completedOperation responseString];
+         
+         DLog(@"%@", xmlString);
+         completionBlock(xmlString);
+         */
+    }
+                errorHandler:^(MKNetworkOperation *errorOp, NSError* error) {
+                    
+                    //errorBlock(error);
+                }];
+    
+    //[self enqueueOperation:op];
+    
+    return op;
+}
+
+
 -(MKNetworkOperation*) uploadData:(NSString*)urlRequest
                  params:(NSDictionary*)dict
                  completionHandler:(IDBlock) completionBlock
