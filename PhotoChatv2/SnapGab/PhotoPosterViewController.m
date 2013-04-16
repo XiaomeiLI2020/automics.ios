@@ -36,6 +36,7 @@
 @synthesize placementsArray;
 @synthesize annotationsArray;
 @synthesize editedPhoto;
+@synthesize panelScrollView;
 
 BOOL panelUploaded;
 bool alertShown;
@@ -55,7 +56,18 @@ bool alertShown;
 	// Do any additional setup after loading the view.
     //NSLog(@"Post.viewDidLoad.");
     
-    self.imageView.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelWidth, panelHeight);
+    // Add panels scrollview
+    CGRect panelFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
+    CGSize panelSize = CGSizeMake(panelWidth, panelHeight);
+    //panelScrollView = [[MainScrollSelector alloc] initWithFrame:panelFrame andItemSize:panelSize andNumItems:numPanels];
+    panelScrollView = [[MainScrollSelector alloc] initWithFrame:panelFrame andItemSize:panelSize andNumItems:1];
+    panelScrollView.tag=0;
+    panelScrollView.delegate=self;
+    [self.view addSubview:panelScrollView];
+    [panelScrollView layoutItems];
+    [panelScrollView addSubview:imageView];
+    
+    self.imageView.frame = CGRectMake(panelScrollXOrigin, 0, panelWidth, panelHeight);
     self.imageView.image = self.image;
     
     panelsLoader = [[PanelLoader alloc] init];
@@ -285,6 +297,16 @@ bool alertShown;
      
      //DLog(@"onUploadProgressChanged=%.2f", progress*100.0);
      self.progressView.progress = (float)progress;
+         if(progress==1.0)
+         {
+             UIAlertView *alert = [[UIAlertView alloc]
+                                   initWithTitle: @"Upload Successful"
+                                   message: nil
+                                   delegate: self
+                                   cancelButtonTitle:@"OK"
+                                   otherButtonTitles:nil];
+             [alert show];
+         }
      }];
     
 }//end startOperation
@@ -397,7 +419,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 
 #pragma mark MKNetworkOperation functions.
 -(void)MKNetworkOperation:(MKNetworkOperation *)operation didUploadPhoto:(Photo*)photo{
-    //NSLog(@"Photo uploaded %@", photo);
+    NSLog(@"Photo uploaded %@", photo);
     
     if(photo!=nil)
     {
@@ -424,6 +446,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 
 -(void)MKNetworkOperation:(MKNetworkOperation *)loader didUploadPanel:(NSString*)response{
     NSLog(@"PhotoPosterView.Panel saved: %@", response);
+    /*
     UIAlertView *message = [[UIAlertView alloc]
                             initWithTitle:@"Upload Successful"
                             message:nil
@@ -431,6 +454,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
                             cancelButtonTitle:@"OK"
                             otherButtonTitles:nil];
     [message show];
+     */
 }
 
 -(void)MKNetworkOperation:(MKNetworkOperation*)operation operationFailed:(NSString*)responseString{

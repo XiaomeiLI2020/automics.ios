@@ -13,7 +13,7 @@
 #import "AutomicsEngine.h"
 
 @interface PhotoPosterViewController : UIViewController
-<PanelLoaderDelegate, PhotoLoaderDelegate, MKNetworkOperationDelegate, UIAlertViewDelegate, MKNetworkEngineDelegate>
+<PanelLoaderDelegate, UIScrollViewDelegate,  PhotoLoaderDelegate, MKNetworkOperationDelegate, UIAlertViewDelegate, MKNetworkEngineDelegate>
 
 @property (nonatomic, retain) IBOutlet UIImageView *imageView;
 @property (nonatomic, retain) IBOutlet UIProgressView *progressView;
@@ -29,6 +29,7 @@
 @property NSMutableArray* placementsArray;
 @property NSMutableArray* annotationsArray;
 
+@property MainScrollSelector *panelScrollView;
 
 - (IBAction)cancelPressed:(id)sender;
 

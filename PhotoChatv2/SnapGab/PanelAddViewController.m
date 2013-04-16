@@ -15,7 +15,6 @@
 #import "GUIConstant.h"
 #import "APIWrapper.h"
 
-
 #import "Resource.h"
 
 @interface PanelAddViewController ()
@@ -32,6 +31,7 @@
 
 @synthesize keyboardIsShown;
 @synthesize thumbnailScrollView;
+@synthesize panelScrollView;
 
 ResourceLoader *resourceLoader;
 
@@ -443,16 +443,33 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
         
         UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        UIImage *imageEdited = [info objectForKey:UIImagePickerControllerEditedImage];
+        //UIImage *imagePicked = [info objectForKey:UIImagePickerControllerOriginalImage];
         
+        /*
+        CGRect cropRect;
+        cropRect = [[info valueForKey:@"UIImagePickerControllerCropRect"] CGRectValue];
+        
+        NSLog(@"Original width = %f height= %f ",imagePicked.size.width, imagePicked.size.height);
+        //Original width = 1440.000000 height= 1920.000000
+        
+        NSLog(@"imageEdited width = %f height = %f",imageEdited.size.width, imageEdited.size.height);
+        //imageEdited width = 640.000000 height = 640.000000
+        
+        NSLog(@"corpRect %@", NSStringFromCGRect(cropRect));
+        */
         
         //[self loadImage:image];
         [self removeAllBubbles];
         [self removeAllResources];
         
-        imageView.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelWidth, panelHeight);
+        //imageView.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelWidth, panelHeight);
+        imageView.frame = CGRectMake(panelScrollXOrigin, 0, panelWidth, panelHeight);
         image= [self imageWithImage:image scaledToSize:CGSizeMake(panelWidth, panelHeight)];
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth);
         
-        //[imageView setContentMode:UIViewContentModeScaleAspectFit];
+        image = imageEdited;
         imageView.image = image;
         [imageView setBackgroundColor:[UIColor grayColor]];
         
@@ -470,7 +487,17 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 -(UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize
 {
-    UIGraphicsBeginImageContext(newSize);
+    //UIGraphicsBeginImageContext(newSize);
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+        if ([[UIScreen mainScreen] scale] == 2.0) {
+            UIGraphicsBeginImageContextWithOptions(newSize, YES, 2.0);
+        } else {
+            UIGraphicsBeginImageContext(newSize);
+        }
+    } else {
+        UIGraphicsBeginImageContext(newSize);
+    }
+    
     [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -498,6 +525,17 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 -(void)initiateScrollViews
 {
+  
+    // Add panels scrollview
+    CGRect panelFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
+    CGSize panelSize = CGSizeMake(panelWidth, panelHeight);
+    //panelScrollView = [[MainScrollSelector alloc] initWithFrame:panelFrame andItemSize:panelSize andNumItems:numPanels];
+    panelScrollView = [[MainScrollSelector alloc] initWithFrame:panelFrame andItemSize:panelSize andNumItems:1];
+    panelScrollView.tag=0;
+    panelScrollView.delegate=self;
+    [self.view addSubview:panelScrollView];
+    [panelScrollView layoutItems];
+    [panelScrollView addSubview:imageView];
     
     // Add thumbnails scrollview
     CGRect thumbFrame = CGRectMake(assetScrollXOrigin, assetScrollYOrigin, assetScrollObjWidth, assetScrollObjHeight);

@@ -120,7 +120,6 @@
 		D8B4A3971709C835002E6D75 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8B4A3961709C835002E6D75 /* SystemConfiguration.framework */; };
 		D8B4A3991709C83E002E6D75 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8B4A3981709C83E002E6D75 /* Security.framework */; };
 		D8B4A39C1709C985002E6D75 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B4A39B1709C985002E6D75 /* Reachability.m */; };
-		D8C02DA416FE424B0020F96E /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C02DA316FE424B0020F96E /* UIImage+Alpha.m */; };
 		D8C64132170D7BE90008074E /* AutomicsEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C64131170D7BE90008074E /* AutomicsEngine.m */; };
 		D8C73A9216C2D3C300C8D3E0 /* back-images.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C73A9116C2D3C300C8D3E0 /* back-images.png */; };
 		D8C73A9416C2D6E900C8D3E0 /* back-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C73A9316C2D6E900C8D3E0 /* back-menu.png */; };
@@ -141,8 +140,6 @@
 		D8E20E25168515F700584E54 /* resource13.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E20E1F168515F700584E54 /* resource13.png */; };
 		D8E20E26168515F700584E54 /* resource14.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E20E20168515F700584E54 /* resource14.png */; };
 		D8E20E27168515F700584E54 /* resource15.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E20E21168515F700584E54 /* resource15.png */; };
-		D8E8135516FE40AF000BA2CF /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E8135416FE40AF000BA2CF /* UIImage+Resize.m */; };
-		D8E8135816FE4153000BA2CF /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E8135716FE4152000BA2CF /* UIImage+RoundedCorner.m */; };
 		D8F30B1016C949E5001CF4B5 /* TextTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F30B0F16C949E5001CF4B5 /* TextTableCell.m */; };
 		D8F30B1216CA6C08001CF4B5 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F30B1116CA6C08001CF4B5 /* camera.png */; };
 		D8F30B1416CA6E05001CF4B5 /* gallery.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F30B1316CA6E05001CF4B5 /* gallery.png */; };
@@ -370,8 +367,6 @@
 		D8B4A3981709C83E002E6D75 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		D8B4A39A1709C985002E6D75 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = MKNetworkKit/Reachability/Reachability.h; sourceTree = "<group>"; };
 		D8B4A39B1709C985002E6D75 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = MKNetworkKit/Reachability/Reachability.m; sourceTree = "<group>"; };
-		D8C02DA216FE424B0020F96E /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
-		D8C02DA316FE424B0020F96E /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
 		D8C64130170D7BE80008074E /* AutomicsEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutomicsEngine.h; sourceTree = "<group>"; };
 		D8C64131170D7BE90008074E /* AutomicsEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutomicsEngine.m; sourceTree = "<group>"; };
 		D8C73A9116C2D3C300C8D3E0 /* back-images.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "back-images.png"; path = "SnapGab/back-images.png"; sourceTree = "<group>"; };
@@ -397,10 +392,6 @@
 		D8E20E1F168515F700584E54 /* resource13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resource13.png; sourceTree = "<group>"; };
 		D8E20E20168515F700584E54 /* resource14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resource14.png; sourceTree = "<group>"; };
 		D8E20E21168515F700584E54 /* resource15.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resource15.png; sourceTree = "<group>"; };
-		D8E8135316FE40AE000BA2CF /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
-		D8E8135416FE40AF000BA2CF /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
-		D8E8135616FE4151000BA2CF /* UIImage+RoundedCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RoundedCorner.h"; sourceTree = "<group>"; };
-		D8E8135716FE4152000BA2CF /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
 		D8F30B0E16C949E5001CF4B5 /* TextTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextTableCell.h; sourceTree = "<group>"; };
 		D8F30B0F16C949E5001CF4B5 /* TextTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextTableCell.m; sourceTree = "<group>"; };
 		D8F30B1116CA6C08001CF4B5 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera.png; path = SnapGab/camera.png; sourceTree = "<group>"; };
@@ -493,7 +484,6 @@
 				D8932C7B16D7ED7B007D97A9 /* GUIConstant.m */,
 				D852C5561714BB79004C408E /* ThumbnailView.h */,
 				D852C5571714BB79004C408E /* ThumbnailView.m */,
-				D8C02DA516FF05B80020F96E /* UIImageResize */,
 				D88FF66D16C9080400C0A2A8 /* Resource */,
 				D88FF66C16C907A200C0A2A8 /* Annotation */,
 				D8DDF9DE16BFEFA3006F31E7 /* MainScrollSelector */,
@@ -814,19 +804,6 @@
 			name = Reachability;
 			sourceTree = "<group>";
 		};
-		D8C02DA516FF05B80020F96E /* UIImageResize */ = {
-			isa = PBXGroup;
-			children = (
-				D8C02DA216FE424B0020F96E /* UIImage+Alpha.h */,
-				D8C02DA316FE424B0020F96E /* UIImage+Alpha.m */,
-				D8E8135316FE40AE000BA2CF /* UIImage+Resize.h */,
-				D8E8135416FE40AF000BA2CF /* UIImage+Resize.m */,
-				D8E8135616FE4151000BA2CF /* UIImage+RoundedCorner.h */,
-				D8E8135716FE4152000BA2CF /* UIImage+RoundedCorner.m */,
-			);
-			name = UIImageResize;
-			sourceTree = "<group>";
-		};
 		D8DDF9DE16BFEFA3006F31E7 /* MainScrollSelector */ = {
 			isa = PBXGroup;
 			children = (
@@ -1055,9 +1032,6 @@
 				48C71E9E16EF86BF009ACD6A /* JSONHandler.m in Sources */,
 				48C71EB216EF88A1009ACD6A /* Organisation.m in Sources */,
 				48C71EB316EF88A1009ACD6A /* Theme.m in Sources */,
-				D8E8135516FE40AF000BA2CF /* UIImage+Resize.m in Sources */,
-				D8E8135816FE4153000BA2CF /* UIImage+RoundedCorner.m in Sources */,
-				D8C02DA416FE424B0020F96E /* UIImage+Alpha.m in Sources */,
 				48D58FDE1704A07D002ACF3E /* GroupsFlowViewController.mm in Sources */,
 				48D58FE11704A0B2002ACF3E /* GroupCollectionViewCell.m in Sources */,
 				48D58FE41704A0E6002ACF3E /* GroupCollectionViewLayout.m in Sources */,

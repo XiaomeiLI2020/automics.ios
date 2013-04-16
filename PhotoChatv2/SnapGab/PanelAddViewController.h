@@ -33,6 +33,7 @@
 
 @property BOOL keyboardIsShown;
 
+@property MainScrollSelector *panelScrollView;
 @property MainScrollSelector *thumbnailScrollView;
 @property (retain) NSMutableArray* resourceList;
 

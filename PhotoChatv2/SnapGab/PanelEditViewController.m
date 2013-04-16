@@ -32,6 +32,7 @@
 @synthesize keyboardIsShown;
 @synthesize imageSize;
 @synthesize thumbnailScrollView;
+@synthesize panelScrollView;
 
 @synthesize resourceList;
 @synthesize currentPanel;
@@ -85,7 +86,9 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
     if(self.imageView.image) return; //If image already loaded - do not reload it (since load moved from viewDidLoad)
     
-    imageView.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
+    imageView.frame = CGRectMake(panelScrollXOrigin, 0, panelWidth, panelHeight);
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth);
     
     [self.imageView setImageWithURL:self.url
                    placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]
@@ -315,6 +318,16 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 -(void)initiateScrollViews
 {
+    
+    CGRect panelFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
+    CGSize panelSize = CGSizeMake(panelWidth, panelHeight);
+    //panelScrollView = [[MainScrollSelector alloc] initWithFrame:panelFrame andItemSize:panelSize andNumItems:numPanels];
+    panelScrollView = [[MainScrollSelector alloc] initWithFrame:panelFrame andItemSize:panelSize andNumItems:1];
+    panelScrollView.tag=0;
+    panelScrollView.delegate=self;
+    [self.view addSubview:panelScrollView];
+    [panelScrollView layoutItems];
+    [panelScrollView addSubview:imageView];
     
     // Add thumbnails scrollview
     CGRect thumbFrame = CGRectMake(assetScrollXOrigin, assetScrollYOrigin, assetScrollObjWidth, assetScrollObjHeight);

@@ -1495,14 +1495,14 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
 
 
 -(void)handlePostPanelResponse{
-    //DLog(@"")
+    DLog(@"")
     NSError* error;
     NSDictionary* paneldict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
     DLog(@"panelData: %@", responseString);
     if(paneldict != nil)
     {
-
+        DLog(@"PhotoPosterView.Panel didUploadPanel");
         if ([self.delegate respondsToSelector:@selector(MKNetworkOperation:didUploadPanel:)])
             [self.delegate MKNetworkOperation:self didUploadPanel:responseString];
 

@@ -18,7 +18,7 @@
 #import "ImageDownloader.h"
 #import "GUIConstant.h"
 #import "Annotation.h"
-#import "UIImage+Resize.h"
+
 #import <QuartzCore/QuartzCore.h>
 #import "ThumbnailView.h"
 
@@ -228,7 +228,7 @@ NSArray* photos;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    NSLog(@"viewDidLoad");
+    //NSLog(@"viewDidLoad");
     [self initiateDataSet];
     [self initiateScrollViews];
     
@@ -335,7 +335,9 @@ NSArray* photos;
             if(panel!=nil)
             {
                 UIImageView *imageView = [[UIImageView alloc] init];
-                [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
+                //[imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
+                [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
+                [imageView setContentMode:UIViewContentModeScaleAspectFill];
                 imageView.frame = CGRectMake(page*panelScrollObjWidth, 0, panelScrollObjWidth, panelScrollObjHeight);
                 imageView.tag = page;	// tag our images for later use when we place them in serial fashion
                 // add images to the panel scrollview
@@ -398,10 +400,11 @@ NSArray* photos;
                 if(!displayed)
                 {
                     UIImageView *imageView = [[UIImageView alloc] init];
-                    [imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
+                    [imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:nil];
                     imageView.frame = CGRectMake(currentPage*panelScrollObjWidth, 0, panelScrollObjWidth, panelScrollObjHeight);
                     imageView.tag = currentPage;	// tag our images for later use when we place them in serial fashion
                     
+                    [imageView setContentMode:UIViewContentModeScaleAspectFill];
                     //[activityIndicator stopAnimating];
                     // add images to the panel scrollview
                     [panelScrollView addSubview:imageView];
@@ -729,7 +732,7 @@ NSArray* photos;
                 
                 UIImageView *imageView = [[UIImageView alloc] init];
                 if(!photoDownloaded)
-                    [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
+                    [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
                 else
                     [imageView setImage:panel.thumbnail];
                 imageView.frame = CGRectMake(page*thumbnailWidth, 0, thumbnailWidth, thumbnailHeight);

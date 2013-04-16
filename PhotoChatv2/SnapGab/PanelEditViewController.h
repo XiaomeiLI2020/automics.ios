@@ -19,6 +19,7 @@
 
 
 @property MainScrollSelector *thumbnailScrollView;
+@property MainScrollSelector *panelScrollView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
