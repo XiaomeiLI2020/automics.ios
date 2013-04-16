@@ -550,8 +550,9 @@ NSString* urlImageString;
     
 }
 
-
--(void)PanelLoader:(PanelLoader *)loader didLoadPanel:(Panel *)panel{
+-(void)PanelLoader:(PanelLoader *)loader didLoadPanel:(Panel *)panel forObject:(id)obj
+//-(void)PanelLoader:(PanelLoader *)loader didLoadPanel:(Panel *)panel
+{
     if (panel != nil)
     {
         //NSLog(@"After comic loaded, didLoadPanel.Panel downloaded.%i", panel.panelId);

@@ -108,9 +108,9 @@ int const kPostPanel = 2;
     if (paneldict != nil){
         Panel *panel = [PanelJSONHandler convertPanelJSONDictIntoPanel:paneldict];
         //NSLog(@"panel downloaded.=%i placements", [panel.placements count]);
-        //if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:forObject:)])
-        //    [self.delegate PanelLoader:self didLoadPanel:panel forObject:obj];
-        if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:)])
+        if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:forObject:)])
+            [self.delegate PanelLoader:self didLoadPanel:panel forObject:obj];
+         if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:)])
             [self.delegate PanelLoader:self didLoadPanel:panel];
     }else{
         [self reportErrorToDelegate:error];

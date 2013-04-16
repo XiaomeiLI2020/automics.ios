@@ -15,6 +15,7 @@
 #import "UIImageView+WebCache.h"
 #import "Panel.h"
 #import <QuartzCore/QuartzCore.h>
+#import "APIWrapper.h"
 
 @implementation ThumbnailView
 @synthesize imageDownloader;
@@ -49,7 +50,9 @@ int placementCounter;
 */
                 
                 __weak UIImageView* _imageView = imageView;
-                [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
+                 [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
+                 //[imageView setImageWithURL:[NSURL URLWithString:[APIWrapper getAbsoluteURLUsingImageRelativePath:panel.photo.imageURL]]
+                 
                               //placeholderImage:[UIImage imageNamed:@"thumb.png"
                             //placeholderImage:nil
                                        success:^(UIImage *imageDownloaded) {
