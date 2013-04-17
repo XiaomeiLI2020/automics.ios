@@ -161,7 +161,8 @@ NSString *kCellID = @"GROUP_CELL";
     [photoLoadersInProgress removeObjectForKey:indexPath];
     if (photos.count > 0){
         Photo* photo = [photos objectAtIndex:arc4random_uniform(photos.count)];
-        ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[APIWrapper getAbsoluteURLUsingImageRelativePath:[photo imageURL]]];
+        //ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[APIWrapper getAbsoluteURLUsingImageRelativePath:[photo imageURL]]];
+        ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[photo imageURL]];
         imageDownloader.obj = indexPath;
         imageDownloader.delegate = self;
         if (imageDownloader.image == nil)
