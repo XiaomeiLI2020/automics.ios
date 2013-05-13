@@ -1469,6 +1469,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
                                                  }
                                                  ];
                 
+                operation.delegate = self.delegate;
                 operation.postDataRequestType = 1;
                 [appDelegate.automicsEngine enqueueOperation:operation];
                 //[panelsLoader submitRequestPostPanel:panel];

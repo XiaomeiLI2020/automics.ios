@@ -91,7 +91,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     imageView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth);
     
     [self.imageView setImageWithURL:self.url
-                   placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]
+                   placeholderImage:nil
                             success:^(UIImage *image) {
                                 
                                 for (UIView *subview in self.view.subviews)

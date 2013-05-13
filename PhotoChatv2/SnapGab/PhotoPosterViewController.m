@@ -297,6 +297,7 @@ bool alertShown;
      
      //DLog(@"onUploadProgressChanged=%.2f", progress*100.0);
      self.progressView.progress = (float)progress;
+         /*
          if(progress==1.0)
          {
              UIAlertView *alert = [[UIAlertView alloc]
@@ -307,6 +308,7 @@ bool alertShown;
                                    otherButtonTitles:nil];
              [alert show];
          }
+          */
      }];
     
 }//end startOperation
@@ -446,7 +448,6 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 
 -(void)MKNetworkOperation:(MKNetworkOperation *)loader didUploadPanel:(NSString*)response{
     NSLog(@"PhotoPosterView.Panel saved: %@", response);
-    /*
     UIAlertView *message = [[UIAlertView alloc]
                             initWithTitle:@"Upload Successful"
                             message:nil
@@ -454,7 +455,6 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
                             cancelButtonTitle:@"OK"
                             otherButtonTitles:nil];
     [message show];
-     */
 }
 
 -(void)MKNetworkOperation:(MKNetworkOperation*)operation operationFailed:(NSString*)responseString{

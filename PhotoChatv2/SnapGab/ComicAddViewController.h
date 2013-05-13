@@ -23,11 +23,13 @@
 @property int panelCounter;
 
 @property NSURL* url;
+@property int thumbPage;
 
 @property MainScrollSelector *panelScrollView;
 @property MainScrollSelector *thumbnailScrollView;
 
 @property NSMutableArray *panelArray;
+@property NSArray *panels;
 
 -(IBAction)deletePanel:(id*)sender;
 -(IBAction)comicsButtonCicked:(id)sender;

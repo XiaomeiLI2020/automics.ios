@@ -19,9 +19,12 @@
 @property MainScrollSelector *thumbnailScrollView;
 
 @property int currentPage;
+@property int thumbPage;
 @property NSArray* panelList;
 @property NSArray* comicPanelList;
+@property NSMutableArray* downloadedComicPanels;
 @property NSMutableArray* downloadedPanels;
+@property NSMutableArray* downloadedPhotos;
 @property NSArray *resourceList;
 @property NSArray *placementList;
 

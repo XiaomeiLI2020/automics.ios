@@ -129,9 +129,6 @@ NSArray* photos;
     //CGFloat pos = (CGFloat)self.thumbnailScrollView.contentOffset.x / thumbnailWidth;
     
     int page = round(ceilf(pos));
-    
-
-   
     if(currentPage!=page-1)
     {
         currentPage = page - 1;
@@ -580,18 +577,7 @@ NSArray* photos;
 
 -(void)displayThumbails
 {
-    /*
-    for(UIView* subView in self.view.subviews)
-    {
-        if([subView isMemberOfClass:[ UIActivityIndicatorView class]])
-        {
-            UIActivityIndicatorView* aIndicator = (UIActivityIndicatorView*) subView;
-            [aIndicator stopAnimating];
-            //[subView stopAnimating];
-            //[subView removeFromSuperview];
-        }//end if
-    }//end for
-*/
+
     for(int index=thumbPage; index<thumbPage+4; index++)
     {
         if(index<[self.panels count])
@@ -728,8 +714,6 @@ NSArray* photos;
             //NSLog(@"displayPageInPanelScrollView.page=%i,currentPage=%i, panelId=%i", page, currentPage, panel.panelId);
             if(panel!=nil)
             {
-
-                
                 UIImageView *imageView = [[UIImageView alloc] init];
                 if(!photoDownloaded)
                     [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
@@ -1234,7 +1218,7 @@ NSArray* photos;
                     }
                      */
                 }//end if thumbMode
-            }
+            }//end else
         }//end if
         else{
             //Declare a panel downloaded

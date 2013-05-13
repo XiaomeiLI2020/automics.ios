@@ -336,7 +336,7 @@ NSString* urlImageString;
                     else
                     {
                         UIImageView *imageView = [[UIImageView alloc] init];
-                        [imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
+                        [imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:nil];
                         imageView.frame = CGRectMake(currentPage*panelScrollObjWidth, 0, panelScrollObjWidth, panelScrollObjHeight);
                         imageView.tag = currentPage;	// tag our images for later use when we place them in serial fashion
                         
@@ -418,7 +418,7 @@ NSString* urlImageString;
         {
             UIImageView *imageView = [[UIImageView alloc] init];
             [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
-                      placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
+                      placeholderImage:nil];
             imageView.frame = CGRectMake(currentPage*panelWidth, 0, panelScrollObjWidth, panelScrollObjHeight);
             imageView.tag = currentPage;
 
