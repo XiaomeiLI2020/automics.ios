@@ -27,6 +27,9 @@
 #import "MKNetworkOperation.h"
 #import "PhotoJSONHandler.h"
 #import "AppDelegate.h"
+#import "PanelJSONHandler.h"
+#import "ComicJSONHandler.h"
+#import "ComicLoader.h"
 
 #ifdef __OBJC_GC__
 #error MKNetworkKit does not support Objective-C Garbage Collection
@@ -88,6 +91,8 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
 @property (strong, nonatomic) NSMutableArray* panelPlacements;
 @property (strong, nonatomic) NSMutableArray* panelAnnotations;
 
+
+
 #if TARGET_OS_IPHONE
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTaskId;
 #endif
@@ -123,6 +128,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
 
 
 @implementation MKNetworkOperation
+
 
 
 @dynamic freezable;
@@ -1453,7 +1459,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
                 panel.placements = self.panelPlacements;
                 panel.annotations = self.panelAnnotations;
                 
-                PanelLoader *panelsLoader = [[PanelLoader alloc] init];
+                PanelLoader* panelsLoader = [[PanelLoader alloc] init];
                 panelsLoader.delegate = self;
                 
                 NSURLRequest* urlRequest = [panelsLoader preparePanelRequestForPostPanel:panel];
@@ -1501,9 +1507,33 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
     NSDictionary* paneldict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
     DLog(@"panelData: %@", responseString);
+    
+    /*
+     if(paneldict != nil)
+     {
+     Panel *panel = [PanelJSONHandler convertPanelJSONDictIntoPanel:paneldict];
+     NSMutableArray* panels = [[NSMutableArray alloc] init];
+     [panels addObject:panel];
+     [self submitSQLRequestSavePanels:panels];
+     //[self submitSQLRequestSaveAssetsForPanel:panel.panelId andPlacements:panel.placements andAnnotations:panel.annotations];
+     
+     if ([self.delegate respondsToSelector:@selector(PanelLoader:didSavePanel:)])
+     [self.delegate PanelLoader:self didSavePanel:responseString];
+     }
+
+     */
     if(paneldict != nil)
     {
-        DLog(@"PhotoPosterView.Panel didUploadPanel");
+ 
+        Panel *panel = [PanelJSONHandler convertPanelJSONDictIntoPanel:paneldict];
+        NSMutableArray* panels = [[NSMutableArray alloc] init];
+        [panels addObject:panel];
+        
+        //Upload panel to the SQlite database
+        PanelLoader *panelLoader = [[PanelLoader alloc] init];
+        [panelLoader submitSQLRequestSavePanels:panels];
+
+        //DLog(@"PhotoPosterView.Panel didUploadPanel");
         if ([self.delegate respondsToSelector:@selector(MKNetworkOperation:didUploadPanel:)])
             [self.delegate MKNetworkOperation:self didUploadPanel:responseString];
 
@@ -1525,7 +1555,12 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
     NSDictionary* comicdict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     
     if (comicdict != nil){
-        //Comic *comic = [ComicJSONHandler convertComicJSONDictIntoComic:comicdict];
+        Comic *comic = [ComicJSONHandler convertComicJSONDictIntoComic:comicdict];
+        NSMutableArray* comics = [[NSMutableArray alloc] init];
+        [comics addObject:comic];
+        ComicLoader *comicLoader = [[ComicLoader alloc] init];
+        [comicLoader submitSQLRequestSaveComics:comics];
+
         NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
         //NSLog(@"comicData=%@", responseString);
         

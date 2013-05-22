@@ -168,7 +168,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             CGRect resourceFrame;// = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
             if([type isEqual:@"d"])
             {
-                resourceFrame = CGRectMake(100, 100, decoratorWidth, decoratorHeight);
+                resourceFrame = CGRectMake(100.0, 100.0, decoratorWidth, decoratorHeight);
                 
             }
             if([type isEqual:@"f"])
@@ -580,14 +580,15 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                 
                 ResourceView* sbv =(ResourceView*)subview;
                 if(sbv.angle!=0.00)
-                    sbv.transform = CGAffineTransformMakeRotation(0.0);
+                    sbv.transform = CGAffineTransformMakeRotation(0.00);
                 
                 //NSLog(@"added pre-rotation resource.frame=%@", NSStringFromCGRect(sbv.frame));
                 //NSLog(@"added pre-rotation sbv.angle=%f", sbv.angle);
                 //CGRect originalRect = CGRectMake(sbv.originalOrigin.x, sbv.originalOrigin.y, sbv.bounds.size.width, sbv.bounds.size.height);
                 //ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:originalRect andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
                 ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
-                new_sbv.originalFrame = sbv.frame;
+                //new_sbv.originalFrame = sbv.frame;
+                new_sbv.originalFrame = CGRectMake(sbv.frame.origin.x, sbv.frame.origin.y, sbv.frame.size.width, sbv.frame.size.height);
                 
                 if(sbv.angle!=0.00)
                     sbv.transform = CGAffineTransformMakeRotation(sbv.angle);

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Theme.h"
 
 @interface Resource : NSObject
 
@@ -15,5 +16,6 @@
 @property NSString* imageURL;
 @property NSString* thumbURL;
 @property NSString* text;
+@property Theme* theme;
 
 @end

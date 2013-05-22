@@ -12,7 +12,6 @@
 #import "PanelJSONHandler.h"
 #import "APIWrapper.h"
 
-
 @interface PanelLoader ()
 @property int panelRequestType;
 @end
@@ -29,15 +28,64 @@ int const kPostPanel = 2;
 
 
 -(void)submitRequestGetPanelsForGroup:(int)groupId{
-    panelRequestType = kGetGroupPanels;
-    NSURLRequest* urlRequest = [self preparePanelRequestForGroup:groupId];
-    [self submitPanelRequest:urlRequest];
+    
+    //NSLog(@"[self submitSQLRequestCountPanelsForGroup:groupId]=%i", [self submitSQLRequestCountPanelsForGroup:groupId]);
+    if([self submitSQLRequestCountPanelsForGroup:groupId]==0)
+    {
+        panelRequestType = kGetGroupPanels;
+        NSURLRequest* urlRequest = [self preparePanelRequestForGroup:groupId];
+        [self submitPanelRequest:urlRequest];
+    }
+    else
+    {
+        //NSLog(@"[self submitSQLRequestCountPanelsForGroup:groupId]=%i", [self submitSQLRequestCountPanelsForGroup:groupId]);
+        NSArray* panels = [self convertPanelsSQLIntoPanels:groupId];
+        if([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanels:)])
+            [self.delegate PanelLoader:self didLoadPanels:panels];
+    }
 }
 
 -(void)submitRequestGetPanelWithId:(int)panelId{
+    //If the panel is not in SQLite database, download it
+    if([self submitSQLRequestCheckPanelExists:panelId]==0)
+    {
+        panelRequestType = kGetPanel;
+        NSURLRequest* urlRequest = [self preparePanelRequestForGetPanelWithId:panelId];
+        [self submitPanelRequest:urlRequest];
+    }
+    //If the panel exists in SQLite database, download it
+    else if([self submitSQLRequestCheckPanelExists:panelId]>0)
+    {
+        
+        //Download panel if numplacements and numannotations values in panels table are -1, means panels and annotations not downloaded yet, and the internet is accessible
+        if([self submitSQLRequestGetAssetsForPanel:panelId]==0 && [self isReachable])
+        {
+            //NSLog(@"Panel#%i has annotations & placements to download.", panelId);
+            panelRequestType = kGetPanel;
+            NSURLRequest* urlRequest = [self preparePanelRequestForGetPanelWithId:panelId];
+            [self submitPanelRequest:urlRequest];
+        }
+        //If panels and annotations are already downloadeded, or if the internet is not accessible
+        else if([self submitSQLRequestGetAssetsForPanel:panelId]>0 || !([self isReachable]))
+        {
+            //NSLog(@"Panel#%i has assets already downloaded, or the app is offline", panelId);
+            NSArray* panelsLocal = [self convertPanelSQLIntoPanel:panelId];
+            if(panelsLocal!=nil)
+            {
+                Panel* panel = [panelsLocal objectAtIndex:0];
+                if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:forObject:)])
+                    [self.delegate PanelLoader:self didLoadPanel:panel forObject:obj];
+                if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:)])
+                    [self.delegate PanelLoader:self didLoadPanel:panel];
+                
+            }
+        }
+    }//end else
+    /*
     panelRequestType = kGetPanel;
     NSURLRequest* urlRequest = [self preparePanelRequestForGetPanelWithId:panelId];
     [self submitPanelRequest:urlRequest];
+    */
 }
 
 -(void)submitRequestPostPanel:(Panel*)panel{
@@ -95,6 +143,7 @@ int const kPostPanel = 2;
     NSArray* jsonArray = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (jsonArray != nil){
         NSArray* panels = [PanelJSONHandler convertPanelsJSONIntoPanels:jsonArray];
+        [self submitSQLRequestSavePanels:panels];
         if([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanels:)])
             [self.delegate PanelLoader:self didLoadPanels:panels];
     }else{
@@ -107,11 +156,19 @@ int const kPostPanel = 2;
     NSDictionary* paneldict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (paneldict != nil){
         Panel *panel = [PanelJSONHandler convertPanelJSONDictIntoPanel:paneldict];
-        //NSLog(@"panel downloaded.=%i placements", [panel.placements count]);
-        if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:forObject:)])
-            [self.delegate PanelLoader:self didLoadPanel:panel forObject:obj];
-         if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:)])
-            [self.delegate PanelLoader:self didLoadPanel:panel];
+        if(panel!=nil){
+            
+            //[self submitSQLRequestSaveAssetsForPanel:panel.panelId andNumPlacements:[panel.placements count] andNumAnnotations:[panel.annotations count]];
+            [self submitSQLRequestSaveAssetsForPanel:panel.panelId andPlacements:panel.placements andAnnotations:panel.annotations];
+            //NSLog(@"panel downloaded.=%i placements", [panel.placements count]);
+            if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:forObject:)])
+                [self.delegate PanelLoader:self didLoadPanel:panel forObject:obj];
+            if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:)])
+                [self.delegate PanelLoader:self didLoadPanel:panel];
+        }//end if panel!=nil
+
+        
+
     }else{
         [self reportErrorToDelegate:error];
     }
@@ -120,12 +177,15 @@ int const kPostPanel = 2;
 -(void)handlePostPanel{
     NSError* error;
     NSDictionary* paneldict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
-    
-    
     NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
     //NSLog(@"panelData: %@", responseString);
     if(paneldict != nil)
     {
+        Panel *panel = [PanelJSONHandler convertPanelJSONDictIntoPanel:paneldict];
+        NSMutableArray* panels = [[NSMutableArray alloc] init];
+        [panels addObject:panel];
+        [self submitSQLRequestSavePanels:panels];
+        //[self submitSQLRequestSaveAssetsForPanel:panel.panelId andPlacements:panel.placements andAnnotations:panel.annotations];
         
         if ([self.delegate respondsToSelector:@selector(PanelLoader:didSavePanel:)])
             [self.delegate PanelLoader:self didSavePanel:responseString];

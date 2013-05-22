@@ -31,6 +31,7 @@ int const kGetGroups = 0;
 -(NSURLRequest*)prepareRequestForGetGroups{
     NSString* groupURL = [APIWrapper getURLForGetGroups];
     NSString* authenticatedGroupURL = [self authenticatedGetURL:groupURL];
+    //NSLog(@"authenticatedGroupURL=%@", authenticatedGroupURL);
     NSURL* url = [NSURL URLWithString:authenticatedGroupURL];
     return [NSURLRequest requestWithURL:url];
 }

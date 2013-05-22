@@ -65,10 +65,13 @@ bool alertShown;
     panelScrollView.delegate=self;
     [self.view addSubview:panelScrollView];
     [panelScrollView layoutItems];
-    [panelScrollView addSubview:imageView];
+
     
-    self.imageView.frame = CGRectMake(panelScrollXOrigin, 0, panelWidth, panelHeight);
+    self.imageView.frame = CGRectMake(0.0, 0.0, panelWidth, panelHeight);
     self.imageView.image = self.image;
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth);
+    [panelScrollView addSubview:imageView];
     
     panelsLoader = [[PanelLoader alloc] init];
     panelsLoader.delegate = self;
@@ -176,8 +179,7 @@ bool alertShown;
                 }
                 
             }
-            //placement.xOffset = sbv.frame.origin.x;
-            //placement.yOffset = sbv.frame.origin.y;
+
             placement.xOffset = sbv.originalFrame.origin.x;
             placement.yOffset = sbv.originalFrame.origin.y;
             //sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
@@ -186,10 +188,13 @@ bool alertShown;
             placement.zIndex = 1;
             [placementsArray addObject:placement];
             //sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
-            //NSLog(@"PhotoPostView.posted sbv.originalFrame=%@", NSStringFromCGRect(sbv.originalFrame));
-            //NSLog(@"PhotoPostView.posted placement:(xOffSet, yOffSet)=(%f, %f)", placement.xOffset, placement.yOffset);
-            //NSLog(@"PhotoPostView.posted sbv.frame=%@", NSStringFromCGRect(sbv.frame));
-            //NSLog(@"PhotoPostView.posted sbv.bounds%@", NSStringFromCGRect(sbv.bounds));
+            
+            /*
+            NSLog(@"PhotoPostView.posted sbv.originalFrame=%@", NSStringFromCGRect(sbv.originalFrame));
+            NSLog(@"PhotoPostView.posted placement:(xOffSet, yOffSet)=(%f, %f)", placement.xOffset, placement.yOffset);
+            NSLog(@"PhotoPostView.posted sbv.frame=%@", NSStringFromCGRect(sbv.frame));
+            NSLog(@"PhotoPostView.posted sbv.bounds%@", NSStringFromCGRect(sbv.bounds));
+            */
         }//end add resource data
        
     }//end for
@@ -231,10 +236,9 @@ bool alertShown;
         [self startPanelOperation:urlRequest panelPlacements:placementsArray panelAnnotations:annotationsArray postDataRequestType:0];
         //[photoLoader submitRequestPostPhoto:photo];
     }
-    
+     
     self.progressView.progress = 0.0f;
     self.progressView.alpha = 1.0f;
-
 }//end startUpload
 
 
@@ -269,11 +273,9 @@ bool alertShown;
   }//end startOperation
 
 
-
-
 -(void)startPanelOperation:(NSURLRequest*)urlRequest panelPlacements:(NSArray*)placements
           panelAnnotations:(NSArray*)annotations postDataRequestType:(int)postDataRequestType {
-    NSLog(@"PhotoPoster. startPanelOperation.");
+    //NSLog(@"PhotoPoster. startPanelOperation.");
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     appDelegate.automicsEngine.delegate = self;
     MKNetworkOperation *operation = [appDelegate.automicsEngine postData:urlRequest
@@ -421,7 +423,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 
 #pragma mark MKNetworkOperation functions.
 -(void)MKNetworkOperation:(MKNetworkOperation *)operation didUploadPhoto:(Photo*)photo{
-    NSLog(@"Photo uploaded %@", photo);
+    //NSLog(@"Photo uploaded %@", photo);
     
     if(photo!=nil)
     {
@@ -447,7 +449,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 }
 
 -(void)MKNetworkOperation:(MKNetworkOperation *)loader didUploadPanel:(NSString*)response{
-    NSLog(@"PhotoPosterView.Panel saved: %@", response);
+    //NSLog(@"PhotoPosterView.Panel saved: %@", response);
     UIAlertView *message = [[UIAlertView alloc]
                             initWithTitle:@"Upload Successful"
                             message:nil

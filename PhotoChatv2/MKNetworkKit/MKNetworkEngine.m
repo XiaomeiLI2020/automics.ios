@@ -208,6 +208,7 @@ static NSOperationQueue *_sharedNetworkQueue;
   }
   else if([self.reachability currentReachabilityStatus] == NotReachable)
   {
+    //[DataLoader changeReachability];
     DLog(@"Server [%@] is not reachable", self.hostName);
     [self freezeOperations];
   }
@@ -551,6 +552,7 @@ static NSOperationQueue *_sharedNetworkQueue;
       
     if([self.reachability currentReachabilityStatus] == NotReachable)
     {
+
       [self freezeOperations];
       //NSString *responseString = @"Operation has been freezed.";
       //DLog(@"after freezeOperations, responseString=%@", responseString);

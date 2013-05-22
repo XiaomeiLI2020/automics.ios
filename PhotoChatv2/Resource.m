@@ -15,6 +15,7 @@
 @synthesize imageURL;
 @synthesize thumbURL;
 @synthesize text;
+@synthesize theme;
 
 
 @end

@@ -11,6 +11,7 @@
 #import "UserLoader.h"
 #import "User.h"
 
+
 @interface LoginViewController : UIViewController
 <UITextFieldDelegate, UserLoaderDelegate>
 
@@ -28,5 +29,6 @@
 
 @property UserLoader* userLoader;
 @property User* user;
+
 
 @end

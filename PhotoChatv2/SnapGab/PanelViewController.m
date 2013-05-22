@@ -225,11 +225,11 @@ NSArray* photos;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    //NSLog(@"viewDidLoad");
+    //NSLog(@"PanelViewController.viewDidLoad");
     [self initiateDataSet];
     [self initiateScrollViews];
     
-    
+
     activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	activityIndicator.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
 	activityIndicator.center = self.view.center;
@@ -237,6 +237,7 @@ NSArray* photos;
     [activityIndicator startAnimating];
     
     [panelsLoader submitRequestGetPanelsForGroup:1];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -380,7 +381,8 @@ NSArray* photos;
         {
             //Load new panel after scrolling
             //NSLog(@"alignPageInPhotoTableView. objectAtIndex:currentPage, currentPage=%i, [self.panels count]=%i", currentPage, [self.panels count]);
-            currentPanel = [self.panels objectAtIndex:(currentPage)];
+            
+            currentPanel = [self.panels objectAtIndex:currentPage];
             //NSLog(@"alignPageInPhotoTableView.page=%i,currentPage=%i, panelId=%i", page, currentPage, currentPanel.panelId);
             if(currentPanel!=nil)
             {
@@ -397,7 +399,28 @@ NSArray* photos;
                 if(!displayed)
                 {
                     UIImageView *imageView = [[UIImageView alloc] init];
-                    [imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:nil];
+                    
+                    
+                    [imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL]
+                               placeholderImage:nil
+                                        success:^(UIImage *imageDownloaded) {
+                                            
+                                            //UIImageWriteToSavedPhotosAlbum(imageDownloaded, nil, nil, nil);
+                                        }
+                                       failure:^(NSError *error) {
+                                           UIAlertView *alert = [[UIAlertView alloc]
+                                                                 initWithTitle: @"Load failed"
+                                                                 message: @"Failed to load image"
+                                                                 delegate: nil
+                                                                 cancelButtonTitle:@"OK"
+                                                                 otherButtonTitles:nil];
+                                           [alert show];
+                                       }];
+
+                     
+                    
+                    
+                    //[imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:nil];
                     imageView.frame = CGRectMake(currentPage*panelScrollObjWidth, 0, panelScrollObjWidth, panelScrollObjHeight);
                     imageView.tag = currentPage;	// tag our images for later use when we place them in serial fashion
                     
@@ -405,6 +428,9 @@ NSArray* photos;
                     //[activityIndicator stopAnimating];
                     // add images to the panel scrollview
                     [panelScrollView addSubview:imageView];
+                    
+ 
+                    
                 }//end if(!displayed)
                 
 
@@ -416,6 +442,7 @@ NSArray* photos;
                 BOOL panelDownloaded = [[downloadedPanels objectAtIndex:currentPage] boolValue];
                 //NSLog(@"alignPageInPanelScrollView.thumbMode=%d. Panel#%i downloaded=%d.", thumbMode, currentPage, panelDownloaded);
                 if(!panelDownloaded)
+                //if(currentPanel.placements==nil&&currentPanel.annotations==nil)
                 {
                     //NSLog(@"alignPageInPanelScrollView. Panel#%i download called.", currentPage);
                     //Download annotations and placements of the panel
@@ -428,7 +455,7 @@ NSArray* photos;
                     //NSLog(@"placements already downloaded.");
                     [self loadPlacements:currentPanel];
                 }//end else
-
+                
                 if(currentPage==[self.panels count]-1)
                 {
                     [self displayPageInPanelScrollView:currentPage-1];
@@ -453,12 +480,13 @@ NSArray* photos;
                     }//end for
                     
                 }//end if([panels count]>3)
-
+                 
             }//if currentPanel!=nil
 
             // Scroll to the current page's thumbnail in thumbnail scrollview
             //[thumbnailScrollView scrollItemToVisible:(currentPage)];
             //[self alignPageInThumbnailScrollView];
+            
 
         }//end if currentPage>=0 && currentPage<[self.panels count]
         
@@ -764,7 +792,7 @@ NSArray* photos;
 
 -(void)newImageNotification
 {
-    NSLog(@"newImageNotification.");
+    //NSLog(@"newImageNotification.");
     //[self removeAllBubbles];
     //[self removeAllResources];
     /*
@@ -1077,8 +1105,17 @@ NSArray* photos;
     panels= panelsLocal;
     numPanels = [panelsLocal count];
     
-    //NSLog(@"numPanels=%i", numPanels);
+    //NSLog(@"didLoadPanels.numPanels=%i", numPanels);
     //[photoLoader submitRequestGetPhotosForGroup:@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12"];
+    //NSLog(@"didLoadPanels.numPanels=%i", numPanels);
+    //initialzed array to boolean NO. No panel downloaded yet.
+    for (int i=0; i<numPanels;i++)
+    {
+        NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
+        [downloadedPanels addObject:panelDownloaded];
+        [downloadedPhotos addObject:panelDownloaded];
+    }
+    
     
     if(!initialized)
     {
@@ -1088,15 +1125,32 @@ NSArray* photos;
         
     }
  
-    //NSLog(@"didLoadPanels.numPanels=%i", numPanels);
-    //initialzed array to boolean NO. No panel downloaded yet.
+
+     
+}
+
+-(void)PanelLoader:(PanelLoader*)loader didLoadPanelsLocal:(NSArray*)panelsLocal{
+    
+    panels= panelsLocal;
+    numPanels = [panelsLocal count];
+    
+    NSLog(@"didLoadPanelsLocal.numPanels=%i", numPanels);
+    //[photoLoader submitRequestGetPhotosForGroup:@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12"];
     for (int i=0; i<numPanels;i++)
     {
         NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
         [downloadedPanels addObject:panelDownloaded];
         [downloadedPhotos addObject:panelDownloaded];
     }
-     
+
+    if(!initialized)
+    {
+        initialized = YES;
+        [self loadPanelsToScrollViews];
+        [activityIndicator stopAnimating];
+        
+    }
+    
 }
 
 

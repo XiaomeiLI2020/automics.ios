@@ -7,8 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <sqlite3.h>
+#import "GroupLoader.h"
 
-@interface WelcomeViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+BOOL initialized = false;
+
+@interface WelcomeViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, GroupLoaderDelegate>
 
 {
     NSArray *groupNames;
@@ -31,7 +35,7 @@
 @property NSString *groupName;
 @property NSString *organisationName;
 @property NSString *themeName;
-
+@property GroupLoader *groupLoader;
 
 - (IBAction)logoutPressed:(id)sender;
 - (IBAction)makeGroup:(id)sender;

@@ -26,6 +26,17 @@
 @property CGSize originalImageSize;
 @property CGRect originalFrame;
 
+@property float MAX_SCALE;
+@property float MIN_SCALE;
+@property float MAX_SIZE;
+@property float MIN_SIZE;
+@property BOOL alertShown;
+
+@property CGFloat originalDiagonal;
+@property CGFloat originalWidth;
+@property CGFloat originalHeight;
+@property CGRect originalBounds;
+
 
 - (id)initWithFrame:(CGRect)frame andResource:(Resource*)resource andScale:(float)scale andAngle:(float)angle;
 - (id)initWithResourceView:(ResourceView*)resourceView;

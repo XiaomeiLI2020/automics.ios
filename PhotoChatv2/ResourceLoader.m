@@ -24,6 +24,7 @@ int const kGetThemeResources = 0;
 int const kGetResource = 1;
 int numResources;
 //int numPanels;
+BOOL resourcesLoaded = NO;
 
 
 @synthesize delegate;
@@ -32,9 +33,21 @@ int numResources;
 
 
 -(void)submitRequestGetResourcesForTheme:(int)themeId{
-    resourceRequestType = kGetThemeResources;
-    NSURLRequest* urlRequest = [self prepareResourceRequestForTheme:themeId];
-    [self submitResourceRequest:urlRequest];
+    //NSLog(@"resourcesLoaded=%d", resourcesLoaded);
+    if(!resourcesLoaded)
+    {
+        resourceRequestType = kGetThemeResources;
+        NSURLRequest* urlRequest = [self prepareResourceRequestForTheme:themeId];
+        [self submitResourceRequest:urlRequest];
+        resourcesLoaded = YES;
+    }
+    else{
+        //NSLog(@"Resources downloaded from the database.");
+        NSArray* resources = [self convertResourcesSQLIntoResources:themeId];
+        if([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:)])
+            [self.delegate ResourceLoader:self didLoadResources:resources];
+    }
+
 }
 
 -(void)submitRequestGetResourceWithId:(int)resourceId{
@@ -47,9 +60,33 @@ int numResources;
 
 -(void)submitRequestGetResourceWithResourceId:(int)resourceId{
     //NSLog(@"submitRequestGetResourceWithId");
+    //If the resource is not in SQLite database, download it
+    if([self submitSQLRequestCheckResourceExists:resourceId]==0)
+    {
+        //NSLog(@"Resource is not in the database yet.");
+        resourceRequestType = kGetResource;
+        NSURLRequest* urlRequest = [self prepareResourceRequestForGetResourceWithResourceId:resourceId];
+        [self submitResourceRequest:urlRequest];
+    }
+    //If the resource is downloadeded
+    else if([self submitSQLRequestCheckResourceExists:resourceId]>0)
+    {
+        //NSLog(@"Resource downloaded from the database.");
+        NSArray* resources = [self convertResourceSQLIntoResource:resourceId];
+        if(resources!=nil)
+        {
+            Resource* resource = [resources objectAtIndex:0];
+            if(resource!=nil){
+                if ([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResource:)])
+                    [self.delegate ResourceLoader:self didLoadResource:resource];
+            }//end if(resource!=nil)
+        }//end if(resources!=nil)
+    }
+    /*
     resourceRequestType = kGetResource;
     NSURLRequest* urlRequest = [self prepareResourceRequestForGetResourceWithResourceId:resourceId];
     [self submitResourceRequest:urlRequest];
+     */
 }
 
 
@@ -109,6 +146,7 @@ int numResources;
         numResources = [jsonArray count];
         
         NSArray* resources = [ResourceJSONHandler getResourcesFromResourcesJSON:jsonArray];
+        [self submitSQLRequestSaveResources:resources];
         //NSLog(@"#of resources =%i", [resources count]);
         if([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:)])
             [self.delegate ResourceLoader:self didLoadResources:resources];
@@ -124,6 +162,8 @@ int numResources;
     //NSLog(@"resourcedict=%i", [resourcedict count]);
     if (resourcedict != nil){
         Resource *resource = [ResourceJSONHandler getResourceFromResourceJSON:resourcedict];
+        [self submitSQLRequestSaveResource:resource.resourceId andThemeId:1 andType:resource.type andImageURL:resource.imageURL andThumbURL:resource.thumbURL];
+        
         if ([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResource:)])
             [self.delegate ResourceLoader:self didLoadResource:resource];
 
@@ -131,7 +171,6 @@ int numResources;
         [self reportErrorToDelegate:error];
     }
 }
-
 
 
 -(void)reportErrorToDelegate:(NSError*)error{

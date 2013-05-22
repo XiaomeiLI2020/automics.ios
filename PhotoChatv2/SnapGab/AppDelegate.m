@@ -16,8 +16,10 @@
 @synthesize window = _window;
 @synthesize automicsEngine;
 
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    //NSLog(@"didFinishLaunchingWithOptions");
     /*
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
@@ -36,36 +38,26 @@
     
     //Shakir - UNCOMMENT THIS FOR SIMULATOR | COMMENT FOR iPHONE DEPLOYMENT
     //Shakir - FYI: This is a token taken from my own phone (for debugging)
-  
+    /*
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs setObject:@"5898b706101991064817e2a187a6cefa1c5262fcc7e4835e0cabcc350160cca7"
-              forKey:@"token"];
+    [prefs setObject:@"5898b706101991064817e2a187a6cefa1c5262fcc7e4835e0cabcc350160cca7" forKey:@"token"];
     [prefs synchronize];
+    */
     
-    //NSString* const kBaseURL = @"http://automicsapi.wp.horizon.ac.uk";
-
-
-    //self.networkEngine = [[MKNetworkEngine alloc] initWithHostName:kBaseURL];
-    //[self.networkEngine useCache];
     
     NSMutableDictionary *headerFields = [NSMutableDictionary dictionary];
     [headerFields setValue:@"application/json" forKey:@"Content-Type"];
-    //[self.request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    
-    
     //automicsEngine = [[AutomicsEngine alloc] initWithHostName:kBaseURL];
     automicsEngine = [[AutomicsEngine alloc] initWithHostName:kHostName];
     //automicsEngine = [[AutomicsEngine alloc] initWithHostName:kBaseURL customHeaderFields:headerFields];
     [automicsEngine useCache];
     
-
-    
-
     return YES;
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
+    //NSLog(@"didReceiveRemoteNotification");
     /* 	 UIAlertView *alert = [[UIAlertView alloc]
      initWithTitle: @"PhotoChat"
      message: @"Image Received"
@@ -106,6 +98,7 @@
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    //NSLog(@"applicationWillResignActive");
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -121,11 +114,13 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+        //NSLog(@"applicationDidBecomeActive");
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+    //NSLog(@"applicationWillTerminate");
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 

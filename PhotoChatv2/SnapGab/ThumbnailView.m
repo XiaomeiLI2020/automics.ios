@@ -64,8 +64,8 @@ int placementCounter;
                                        }
                                        failure:^(NSError *error) {
                                            UIAlertView *alert = [[UIAlertView alloc]
-                                                                 initWithTitle: @"Load failed"
-                                                                 message: @"Failed to load image"
+                                                                 initWithTitle: @"Load failed."
+                                                                 message: @"Failed to load thumbnail image"
                                                                  delegate: nil
                                                                  cancelButtonTitle:@"OK"
                                                                  otherButtonTitles:nil];

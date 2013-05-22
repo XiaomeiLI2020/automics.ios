@@ -86,7 +86,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
     if(self.imageView.image) return; //If image already loaded - do not reload it (since load moved from viewDidLoad)
     
-    imageView.frame = CGRectMake(panelScrollXOrigin, 0, panelWidth, panelHeight);
+    imageView.frame = CGRectMake(0.0, 0.0, panelWidth, panelHeight);
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth);
     
@@ -511,6 +511,10 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         PhotoPosterViewController *ppvc = (PhotoPosterViewController *)[segue destinationViewController];
         
         ppvc.image = self.imageView.image;
+        /*
+         imageView.contentMode = UIViewContentModeScaleAspectFill;
+         imageView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth);
+         */
         ppvc.editMode = YES;
         ppvc.editedPhoto=currentPanel.photo;
         //NSLog(@"currentPanel.photo.photoId=%i", currentPanel.photo.photoId);
@@ -535,7 +539,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                 //NSLog(@"posted pre-rotation.sbv.angle=%f", sbv.angle);
                 if(sbv.angle!=0.00)
                 {
-                    sbv.transform = CGAffineTransformMakeRotation(0.0);
+                    sbv.transform = CGAffineTransformMakeRotation(0.00);
                 }
 
                 //[sbv removeFromSuperview];

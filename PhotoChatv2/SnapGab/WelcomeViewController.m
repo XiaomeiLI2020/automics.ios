@@ -8,6 +8,8 @@
 
 #import "WelcomeViewController.h"
 #import "TextTableCell.h"
+#import "DataLoader.h"
+
 
 @interface WelcomeViewController ()
 
@@ -26,6 +28,9 @@
 @synthesize groupTableView;
 @synthesize organisationTableView;
 @synthesize themeTableView;
+@synthesize groupLoader;
+
+DataLoader* dataLoader;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,8 +47,14 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [self getGroups];
-    [self getOrganisations];
+    dataLoader = [[DataLoader alloc] init];
+    groupLoader = [[GroupLoader alloc] init];
+    groupLoader.delegate = self;
+    [groupLoader submitRequestGetGroups];
+    
+    //sQLiteLoader = [[SQLiteLoader alloc] init];
+    //[self getGroups];
+    //[self getOrganisations];
    // [self getResources];
 
 }
@@ -72,9 +83,12 @@
             
             //NSString* hashid = [resource objectForKey:@"hashid"];
             NSString* groupName1 = [resource objectForKey:@"name"];
+            //int groupId = [[resource objectForKey:@"id"] integerValue];
             self.groupLabel.text = groupName1;
+            
             //NSLog(@"hashid= %@", hashid);
             //NSLog(@"groupName= %@", groupName);
+            //NSLog(@"groupId= %i", groupId);
         }//end for
         
     }//end if
@@ -179,6 +193,30 @@
     cell.label.text = [self.groupNames objectAtIndex: [indexPath row]];
     
     return cell;
+}
+
+
+#pragma mark GroupLoader functions.
+-(void)GroupLoader:(GroupLoader*)groupLoader didLoadGroups:(NSArray*)groups{
+    if(groups!=nil)
+    {
+        Group* group = [groups objectAtIndex:0];
+        if(group!=nil)
+        {
+            //NSLog(@"group.name=%@", group.name);
+            //NSLog(@"group.groupId=%i", group.groupId);
+            //NSLog(@"initialized before=%d", initialized);
+            if(!initialized)
+            {
+                [dataLoader submitSQLRequestCreateTablesForGroup:group.groupId];
+                initialized = YES;
+            }
+            //NSLog(@"initialized after=%d", initialized);
+        }
+    }
+}
+-(void)GroupLoader:(GroupLoader*)groupLoader didFailWithError:(NSError*)errors{
+    NSLog(@"Groups failed to load");
 }
 
 @end

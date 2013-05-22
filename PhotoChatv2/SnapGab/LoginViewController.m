@@ -22,6 +22,7 @@
 @synthesize userLoader;
 @synthesize user;
 
+
 NSString* hashId=@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
 
 - (void)viewDidLoad
@@ -33,7 +34,7 @@ NSString* hashId=@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
     userLoader.delegate = self;
     
     user = [[User alloc] init];
-    
+
 }
 
 - (void)viewDidUnload

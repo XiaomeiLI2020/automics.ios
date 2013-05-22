@@ -88,6 +88,7 @@
 		D8585C69167A58490003B0BD /* placeholder-542x542.png in Resources */ = {isa = PBXBuildFile; fileRef = D8585C68167A58490003B0BD /* placeholder-542x542.png */; };
 		D85D7EAC16E67A2B00BB864A /* UserLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D85D7EAB16E67A2B00BB864A /* UserLoader.m */; };
 		D85D7EAF16E67BCE00BB864A /* UserJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D85D7EAE16E67BCD00BB864A /* UserJSONHandler.m */; };
+		D88ABBE21743937B00141A81 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D88ABBE11743937B00141A81 /* libsqlite3.dylib */; };
 		D88FF66916C556F000C0A2A8 /* post-panel.png in Resources */ = {isa = PBXBuildFile; fileRef = D88FF66816C556F000C0A2A8 /* post-panel.png */; };
 		D88FF66B16C5597D00C0A2A8 /* panel-edit.png in Resources */ = {isa = PBXBuildFile; fileRef = D88FF66A16C5597D00C0A2A8 /* panel-edit.png */; };
 		D892740916E61C200061FA14 /* GroupLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D892740816E61C200061FA14 /* GroupLoader.m */; };
@@ -124,6 +125,7 @@
 		D8C73A9216C2D3C300C8D3E0 /* back-images.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C73A9116C2D3C300C8D3E0 /* back-images.png */; };
 		D8C73A9416C2D6E900C8D3E0 /* back-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C73A9316C2D6E900C8D3E0 /* back-menu.png */; };
 		D8C73A9616C2D7FC00C8D3E0 /* add-image.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C73A9516C2D7FB00C8D3E0 /* add-image.png */; };
+		D8DBE7AD1744B62E005CCB8B /* SQLiteLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DBE7AC1744B62E005CCB8B /* SQLiteLoader.m */; };
 		D8DDF9DA16BFEF61006F31E7 /* MainScrollSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DDF9D916BFEF61006F31E7 /* MainScrollSelector.m */; };
 		D8E0E7D2168345640003FE14 /* resource3.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E0E7D1168345640003FE14 /* resource3.png */; };
 		D8E0E7D5168346190003FE14 /* resource4.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E0E7D4168346190003FE14 /* resource4.png */; };
@@ -305,6 +307,7 @@
 		D85D7EAD16E67BCD00BB864A /* UserJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserJSONHandler.h; path = SnapGab/UserJSONHandler.h; sourceTree = "<group>"; };
 		D85D7EAE16E67BCD00BB864A /* UserJSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserJSONHandler.m; path = SnapGab/UserJSONHandler.m; sourceTree = "<group>"; };
 		D85D7EB316E8D40100BB864A /* PanelJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PanelJSONHandler.h; path = SnapGab/PanelJSONHandler.h; sourceTree = "<group>"; };
+		D88ABBE11743937B00141A81 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		D88FF66816C556F000C0A2A8 /* post-panel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "post-panel.png"; path = "SnapGab/post-panel.png"; sourceTree = "<group>"; };
 		D88FF66A16C5597D00C0A2A8 /* panel-edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "panel-edit.png"; path = "SnapGab/panel-edit.png"; sourceTree = "<group>"; };
 		D892740716E61C1F0061FA14 /* GroupLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupLoader.h; sourceTree = "<group>"; };
@@ -373,6 +376,8 @@
 		D8C73A9316C2D6E900C8D3E0 /* back-menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "back-menu.png"; path = "SnapGab/back-menu.png"; sourceTree = "<group>"; };
 		D8C73A9516C2D7FB00C8D3E0 /* add-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-image.png"; path = "SnapGab/add-image.png"; sourceTree = "<group>"; };
 		D8CFE5061677788700225EA3 /* ImageScaleCatagory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageScaleCatagory.h; sourceTree = "<group>"; };
+		D8DBE7AB1744B62E005CCB8B /* SQLiteLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLiteLoader.h; sourceTree = "<group>"; };
+		D8DBE7AC1744B62E005CCB8B /* SQLiteLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteLoader.m; sourceTree = "<group>"; };
 		D8DDF9D816BFEF61006F31E7 /* MainScrollSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScrollSelector.h; sourceTree = "<group>"; };
 		D8DDF9D916BFEF61006F31E7 /* MainScrollSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainScrollSelector.m; sourceTree = "<group>"; };
 		D8E0E7D1168345640003FE14 /* resource3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resource3.png; sourceTree = "<group>"; };
@@ -418,6 +423,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D88ABBE21743937B00141A81 /* libsqlite3.dylib in Frameworks */,
 				D8B4A3991709C83E002E6D75 /* Security.framework in Frameworks */,
 				D8B4A3971709C835002E6D75 /* SystemConfiguration.framework in Frameworks */,
 				D8B4A3951709C822002E6D75 /* CFNetwork.framework in Frameworks */,
@@ -438,6 +444,7 @@
 		1D8D5077165FADC600C9817C = {
 			isa = PBXGroup;
 			children = (
+				D88ABBE11743937B00141A81 /* libsqlite3.dylib */,
 				48C8C25816F31D820010FB13 /* QRCodeEncoderObjectiveCAtGithub.xcodeproj */,
 				D8F30B1A16CA8487001CF4B5 /* Comic */,
 				48C8C21416F319640010FB13 /* Group */,
@@ -626,6 +633,8 @@
 				D804611A16E124A200F80CAB /* ResourceJSONHandler.m */,
 				D892741316E631690061FA14 /* SessionJSONHandler.h */,
 				D892741416E6316A0061FA14 /* SessionJSONHandler.m */,
+				D8DBE7AB1744B62E005CCB8B /* SQLiteLoader.h */,
+				D8DBE7AC1744B62E005CCB8B /* SQLiteLoader.m */,
 				D85D7EAA16E67A2B00BB864A /* UserLoader.h */,
 				D85D7EAB16E67A2B00BB864A /* UserLoader.m */,
 				D85D7EAD16E67BCD00BB864A /* UserJSONHandler.h */,
@@ -1051,6 +1060,7 @@
 				48278ACA170DDF3D0083B46C /* ComicCollectionViewCell.m in Sources */,
 				48E46D60170ED84400771C80 /* ComicCollectionViewController.m in Sources */,
 				48E46D65170F1FFE00771C80 /* ComicCollectionViewLayout.m in Sources */,
+				D8DBE7AD1744B62E005CCB8B /* SQLiteLoader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

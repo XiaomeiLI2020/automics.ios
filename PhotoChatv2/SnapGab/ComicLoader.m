@@ -27,15 +27,44 @@ int const kPostComic = 2;
 
 
 -(void)submitRequestGetComicsForGroup:(int)groupId{
-    comicRequestType = kGetGroupComics;
-    NSURLRequest* urlRequest = [self prepareComicRequestForGroup:groupId];
-    [self submitComicRequest:urlRequest];
+
+    if([self submitSQLRequestCountComicsForGroup:groupId]==0)
+    {
+        comicRequestType = kGetGroupComics;
+        NSURLRequest* urlRequest = [self prepareComicRequestForGroup:groupId];
+        [self submitComicRequest:urlRequest];
+    }
+    else
+    {
+        //NSLog(@"[self submitSQLRequestCountComicsForGroup:groupId]=%i", [self submitSQLRequestCountComicsForGroup:groupId]);
+        NSLog(@"comics downloaded from the database");
+        NSArray* comics = [self convertComicsSQLIntoComics:groupId];
+        if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComics:)])
+            [self.delegate ComicLoader:self didLoadComics:comics];
+    }
 }
 
 -(void)submitRequestGetComicWithId:(int)comicId{
-    comicRequestType = kGetComic;
-    NSURLRequest* urlRequest = [self prepareComicRequestForGetComicWithId:comicId];
-    [self submitComicRequest:urlRequest];
+    
+    if([self submitSQLRequestCheckComicExists:comicId]==0)
+    {
+        comicRequestType = kGetComic;
+        NSURLRequest* urlRequest = [self prepareComicRequestForGetComicWithId:comicId];
+        [self submitComicRequest:urlRequest];
+    }
+    else{
+        
+        //NSLog(@"[self submitSQLRequestCheckComicExists:comicId]=%i", [self submitSQLRequestCheckComicExists:comicId]);
+        NSArray* comics= [self convertComicSQLIntoComic:comicId];
+        if(comics!=nil)
+        {
+            Comic* comic = [comics objectAtIndex:0];
+            if(comic!=nil){
+                if ([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComic:)])
+                    [self.delegate ComicLoader:self didLoadComic:comic];
+            }//end if
+        }//end if
+    }
 }
 
 
@@ -94,11 +123,8 @@ int const kPostComic = 2;
     NSData* data = [NSJSONSerialization dataWithJSONObject:comicdict options:NSJSONWritingPrettyPrinted error:&error];
     
     // NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    // NSLog(@"panelData: %@", responseString);
-    
-    
+    // NSLog(@"panelData: %@", responseString)
     [urlRequest setHTTPBody:data];
-
 }
 
 #pragma mark NSURLConnectionDelegate functions.
@@ -125,6 +151,7 @@ int const kPostComic = 2;
     NSArray* jsonArray = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (jsonArray != nil){
         NSArray* comics = [ComicJSONHandler convertComicsJSONArrayIntoComics:jsonArray];
+        [self submitSQLRequestSaveComics:comics];
         if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComics:)])
             [self.delegate ComicLoader:self didLoadComics:comics];
     }else{
@@ -149,11 +176,16 @@ int const kPostComic = 2;
     NSDictionary* comicdict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     
     if (comicdict != nil){
-        //Comic *comic = [ComicJSONHandler convertComicJSONDictIntoComic:comicdict];
+        Comic *comic = [ComicJSONHandler convertComicJSONDictIntoComic:comicdict];
+        NSMutableArray* comics = [[NSMutableArray alloc] init];
+        [comics addObject:comic];
+        [self submitSQLRequestSaveComics:comics];
         
         NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
-        //NSLog(@"panelData: %@", responseString);
-         
+        NSLog(@"ComicData: %@", responseString);
+        
+
+        
         if ([self.delegate respondsToSelector:@selector(ComicLoader:didSaveComic:)])
             [self.delegate ComicLoader:self didSaveComic:responseString];
     }else{
