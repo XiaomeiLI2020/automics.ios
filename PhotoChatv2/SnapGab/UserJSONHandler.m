@@ -37,6 +37,8 @@
         NSString* groupHashId = [DataValidator checkKeyValueForNull:[userJSON valueForKey:@"group_hash"]];
         if (groupHashId != nil)
             user.groupHashId = groupHashId;
+            user.currentGroup = [[Group alloc] init];
+            user.currentGroup.hashId = groupHashId;
     }
     
     if ([userJSON valueForKey:@"session"] != nil){
@@ -70,8 +72,15 @@
         if (user.currentSession != nil)
             [userdict setValue:user.currentSession.token forKey:@"session"];
         
-        if (user.groupHashId != nil)
-            [userdict setValue:user.groupHashId forKey:@"group_hash"];
+        if(user.currentGroup!=nil)
+        {
+            if(user.currentGroup.hashId!=nil)
+            {
+                [userdict setValue:user.currentGroup.hashId forKey:@"group_hash"];
+            }
+        }
+        //if (user.groupHashId != nil)
+        //    [userdict setValue:user.groupHashId forKey:@"group_hash"];
         
         if (user.userId > 0)
             [userdict setValue:[[NSNumber alloc] initWithInt:user.userId] forKey:@"user_id"];

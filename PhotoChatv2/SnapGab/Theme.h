@@ -7,8 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Organisation.h"
 
 @interface Theme : NSObject
+
 @property int themeId;
 @property NSString *name;
+@property Organisation* organisation;
+@property NSArray* resources;
+
 @end

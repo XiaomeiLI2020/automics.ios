@@ -10,4 +10,9 @@
 
 @implementation Theme
 
+@synthesize themeId;
+@synthesize name;
+@synthesize organisation;
+@synthesize resources;
+
 @end

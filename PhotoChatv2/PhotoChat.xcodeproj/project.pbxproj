@@ -121,6 +121,7 @@
 		D8B4A3971709C835002E6D75 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8B4A3961709C835002E6D75 /* SystemConfiguration.framework */; };
 		D8B4A3991709C83E002E6D75 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8B4A3981709C83E002E6D75 /* Security.framework */; };
 		D8B4A39C1709C985002E6D75 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B4A39B1709C985002E6D75 /* Reachability.m */; };
+		D8BF848E1757BC87007F642E /* ThemePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8BF848D1757BC86007F642E /* ThemePreviewViewController.m */; };
 		D8C64132170D7BE90008074E /* AutomicsEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C64131170D7BE90008074E /* AutomicsEngine.m */; };
 		D8C73A9216C2D3C300C8D3E0 /* back-images.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C73A9116C2D3C300C8D3E0 /* back-images.png */; };
 		D8C73A9416C2D6E900C8D3E0 /* back-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C73A9316C2D6E900C8D3E0 /* back-menu.png */; };
@@ -154,6 +155,13 @@
 		D8F30B2A16CEAB68001CF4B5 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = D8F30B2916CEAB68001CF4B5 /* delete.png */; };
 		D8F30B3016D03A60001CF4B5 /* ComicTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F30B2F16D03A5F001CF4B5 /* ComicTableCell.m */; };
 		D8F30B6116D27B81001CF4B5 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8F30B5F16D27B80001CF4B5 /* Storyboard.storyboard */; };
+		D8F4BE0A174F8FC700C4E93A /* GroupAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F4BE09174F8FC700C4E93A /* GroupAddViewController.m */; };
+		D8F4BE0D174FEBB900C4E93A /* ThemeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F4BE0C174FEBB900C4E93A /* ThemeViewController.m */; };
+		D8F4BE10174FFD0100C4E93A /* OrganisationLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F4BE0F174FFD0000C4E93A /* OrganisationLoader.m */; };
+		D8F4BE1317500D4900C4E93A /* OrganisationJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F4BE1217500D4800C4E93A /* OrganisationJSONHandler.m */; };
+		D8F4BE161753837D00C4E93A /* ThemeJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F4BE151753837B00C4E93A /* ThemeJSONHandler.m */; };
+		D8F4BE191755283300C4E93A /* GroupMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F4BE181755283200C4E93A /* GroupMainViewController.m */; };
+		D8F4BE1C1755303A00C4E93A /* GroupJoinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8F4BE1B1755303900C4E93A /* GroupJoinViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -370,6 +378,8 @@
 		D8B4A3981709C83E002E6D75 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		D8B4A39A1709C985002E6D75 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = MKNetworkKit/Reachability/Reachability.h; sourceTree = "<group>"; };
 		D8B4A39B1709C985002E6D75 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = MKNetworkKit/Reachability/Reachability.m; sourceTree = "<group>"; };
+		D8BF848C1757BC85007F642E /* ThemePreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemePreviewViewController.h; sourceTree = "<group>"; };
+		D8BF848D1757BC86007F642E /* ThemePreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemePreviewViewController.m; sourceTree = "<group>"; };
 		D8C64130170D7BE80008074E /* AutomicsEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutomicsEngine.h; sourceTree = "<group>"; };
 		D8C64131170D7BE90008074E /* AutomicsEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutomicsEngine.m; sourceTree = "<group>"; };
 		D8C73A9116C2D3C300C8D3E0 /* back-images.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "back-images.png"; path = "SnapGab/back-images.png"; sourceTree = "<group>"; };
@@ -416,6 +426,20 @@
 		D8F30B2E16D03A5D001CF4B5 /* ComicTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComicTableCell.h; sourceTree = "<group>"; };
 		D8F30B2F16D03A5F001CF4B5 /* ComicTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComicTableCell.m; sourceTree = "<group>"; };
 		D8F30B6016D27B81001CF4B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = SnapGab/en.lproj/Storyboard.storyboard; sourceTree = "<group>"; };
+		D8F4BE08174F8FC700C4E93A /* GroupAddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupAddViewController.h; sourceTree = "<group>"; };
+		D8F4BE09174F8FC700C4E93A /* GroupAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupAddViewController.m; sourceTree = "<group>"; };
+		D8F4BE0B174FEBB900C4E93A /* ThemeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeViewController.h; sourceTree = "<group>"; };
+		D8F4BE0C174FEBB900C4E93A /* ThemeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeViewController.m; sourceTree = "<group>"; };
+		D8F4BE0E174FFD0000C4E93A /* OrganisationLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrganisationLoader.h; sourceTree = "<group>"; };
+		D8F4BE0F174FFD0000C4E93A /* OrganisationLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrganisationLoader.m; sourceTree = "<group>"; };
+		D8F4BE1117500D4800C4E93A /* OrganisationJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrganisationJSONHandler.h; sourceTree = "<group>"; };
+		D8F4BE1217500D4800C4E93A /* OrganisationJSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrganisationJSONHandler.m; sourceTree = "<group>"; };
+		D8F4BE141753837900C4E93A /* ThemeJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeJSONHandler.h; sourceTree = "<group>"; };
+		D8F4BE151753837B00C4E93A /* ThemeJSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeJSONHandler.m; sourceTree = "<group>"; };
+		D8F4BE171755283100C4E93A /* GroupMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupMainViewController.h; sourceTree = "<group>"; };
+		D8F4BE181755283200C4E93A /* GroupMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupMainViewController.m; sourceTree = "<group>"; };
+		D8F4BE1A1755303800C4E93A /* GroupJoinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupJoinViewController.h; sourceTree = "<group>"; };
+		D8F4BE1B1755303900C4E93A /* GroupJoinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupJoinViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -565,8 +589,12 @@
 		48C8C21416F319640010FB13 /* Group */ = {
 			isa = PBXGroup;
 			children = (
+				D8F4BE08174F8FC700C4E93A /* GroupAddViewController.h */,
+				D8F4BE09174F8FC700C4E93A /* GroupAddViewController.m */,
 				48D58FEA1704A145002ACF3E /* GroupDecorationView.h */,
 				48D58FEB1704A145002ACF3E /* GroupDecorationView.m */,
+				D8F4BE1A1755303800C4E93A /* GroupJoinViewController.h */,
+				D8F4BE1B1755303900C4E93A /* GroupJoinViewController.m */,
 				48D58FE51704A119002ACF3E /* GroupQRView.h */,
 				48D58FE61704A119002ACF3E /* GroupQRView.m */,
 				48D58FE71704A119002ACF3E /* GroupQRView.xib */,
@@ -574,8 +602,14 @@
 				48D58FE31704A0E6002ACF3E /* GroupCollectionViewLayout.m */,
 				48D58FDF1704A0B2002ACF3E /* GroupCollectionViewCell.h */,
 				48D58FE01704A0B2002ACF3E /* GroupCollectionViewCell.m */,
+				D8F4BE171755283100C4E93A /* GroupMainViewController.h */,
+				D8F4BE181755283200C4E93A /* GroupMainViewController.m */,
 				48D58FDC1704A07D002ACF3E /* GroupsFlowViewController.h */,
 				48D58FDD1704A07D002ACF3E /* GroupsFlowViewController.mm */,
+				D8F4BE0B174FEBB900C4E93A /* ThemeViewController.h */,
+				D8F4BE0C174FEBB900C4E93A /* ThemeViewController.m */,
+				D8BF848C1757BC85007F642E /* ThemePreviewViewController.h */,
+				D8BF848D1757BC86007F642E /* ThemePreviewViewController.m */,
 			);
 			name = Group;
 			sourceTree = "<group>";
@@ -599,8 +633,8 @@
 				48CAFD3116CE943800D8EB4C /* APIConstant.m */,
 				48CAFD3E16CEA7E600D8EB4C /* APIWrapper.h */,
 				48CAFD3F16CEA7E600D8EB4C /* APIWrapper.m */,
-				D804612316E125BE00F80CAB /* ComicJSONHandler.m */,
 				D804612216E125BD00F80CAB /* ComicJSONHandler.h */,
+				D804612316E125BE00F80CAB /* ComicJSONHandler.m */,
 				D804612416E125BE00F80CAB /* ComicLoader.h */,
 				D804612516E125BE00F80CAB /* ComicLoader.m */,
 				48F6277616D6440A0034A5A7 /* DataValidator.h */,
@@ -613,6 +647,10 @@
 				D892740816E61C200061FA14 /* GroupLoader.m */,
 				48D0806C16D4EC6800346465 /* ImageDownloader.h */,
 				48D0806D16D4EC6800346465 /* ImageDownloader.m */,
+				D8F4BE0E174FFD0000C4E93A /* OrganisationLoader.h */,
+				D8F4BE0F174FFD0000C4E93A /* OrganisationLoader.m */,
+				D8F4BE1117500D4800C4E93A /* OrganisationJSONHandler.h */,
+				D8F4BE1217500D4800C4E93A /* OrganisationJSONHandler.m */,
 				D85D7EB316E8D40100BB864A /* PanelJSONHandler.h */,
 				48F6277916D6440A0034A5A7 /* PanelJSONHandler.m */,
 				48D0806E16D4EC6800346465 /* PanelLoader.h */,
@@ -635,6 +673,8 @@
 				D892741416E6316A0061FA14 /* SessionJSONHandler.m */,
 				D8DBE7AB1744B62E005CCB8B /* SQLiteLoader.h */,
 				D8DBE7AC1744B62E005CCB8B /* SQLiteLoader.m */,
+				D8F4BE141753837900C4E93A /* ThemeJSONHandler.h */,
+				D8F4BE151753837B00C4E93A /* ThemeJSONHandler.m */,
 				D85D7EAA16E67A2B00BB864A /* UserLoader.h */,
 				D85D7EAB16E67A2B00BB864A /* UserLoader.m */,
 				D85D7EAD16E67BCD00BB864A /* UserJSONHandler.h */,
@@ -663,8 +703,6 @@
 			children = (
 				48C71EB416EF88E5009ACD6A /* Organisation.h */,
 				48C71EAF16EF88A1009ACD6A /* Organisation.m */,
-				48C71EB016EF88A1009ACD6A /* Theme.h */,
-				48C71EB116EF88A1009ACD6A /* Theme.m */,
 				48F6276E16D643E60034A5A7 /* Annotation.h */,
 				48F6276F16D643E60034A5A7 /* Annotation.m */,
 				D804611F16E1250000F80CAB /* Comic.h */,
@@ -681,6 +719,8 @@
 				D804611716E1247400F80CAB /* Resource.m */,
 				D892741016E624E40061FA14 /* Session.h */,
 				D892741116E624E40061FA14 /* Session.m */,
+				48C71EB016EF88A1009ACD6A /* Theme.h */,
+				48C71EB116EF88A1009ACD6A /* Theme.m */,
 				D892741616E658260061FA14 /* User.h */,
 				D892741716E658260061FA14 /* User.m */,
 			);
@@ -1061,6 +1101,14 @@
 				48E46D60170ED84400771C80 /* ComicCollectionViewController.m in Sources */,
 				48E46D65170F1FFE00771C80 /* ComicCollectionViewLayout.m in Sources */,
 				D8DBE7AD1744B62E005CCB8B /* SQLiteLoader.m in Sources */,
+				D8F4BE0A174F8FC700C4E93A /* GroupAddViewController.m in Sources */,
+				D8F4BE0D174FEBB900C4E93A /* ThemeViewController.m in Sources */,
+				D8F4BE10174FFD0100C4E93A /* OrganisationLoader.m in Sources */,
+				D8F4BE1317500D4900C4E93A /* OrganisationJSONHandler.m in Sources */,
+				D8F4BE161753837D00C4E93A /* ThemeJSONHandler.m in Sources */,
+				D8F4BE191755283300C4E93A /* GroupMainViewController.m in Sources */,
+				D8F4BE1C1755303A00C4E93A /* GroupJoinViewController.m in Sources */,
+				D8BF848E1757BC87007F642E /* ThemePreviewViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1173,8 +1221,8 @@
 		1D8D50A2165FADC700C9817C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Umar Rashid";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Umar Rashid";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SnapGab/PhotoChat-Prefix.pch";
 				GENERATE_PROFILING_CODE = YES;
@@ -1182,8 +1230,8 @@
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				PRODUCT_NAME = PhotoChat;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "1EB18FAB-4B6E-414D-A1B5-1A4A095F4FB8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1EB18FAB-4B6E-414D-A1B5-1A4A095F4FB8";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};

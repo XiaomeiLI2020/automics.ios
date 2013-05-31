@@ -10,7 +10,6 @@
 
 @implementation Comic
 
-
 @synthesize name;
 @synthesize comicId;
 @synthesize description;

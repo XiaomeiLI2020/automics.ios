@@ -21,8 +21,9 @@
 
 @implementation UserLoader
 
-int const kPostGenerateSession = 0;
-int const kPostJoinGroup = 1;
+int const kPostRegister = 0;
+int const kPostGenerateSession = 1;
+int const kPostJoinGroup = 2;
 
 @synthesize delegate;
 @synthesize userRequestType;
@@ -75,31 +76,40 @@ int const kPostJoinGroup = 1;
     if(user!=nil)
     {
         userRequestType = kPostGenerateSession;
-        
         NSString *loginURL = [APIWrapper getURLForPostLogin];
         NSURL* url = [NSURL URLWithString:loginURL];
-        
-        
         NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
         [urlRequest setHTTPMethod:@"POST"];
         [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
         [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        
-        [self setGenerateSessionPostData:user InURLRequest:urlRequest];
-        
+        [self setGenerateSessionPostData:user InURLRequest:urlRequest];        
         [self submitUserRequest:urlRequest];
         
-    }//end if
+    }//end if(user!=nil)
  
+}
+
+-(void)submitRequestPostRegister:(User*)user
+{
+    if(user!=nil)
+    {
+        userRequestType = kPostRegister;
+        NSString *loginURL = [APIWrapper getURLForPostRegister];
+        NSURL* url = [NSURL URLWithString:loginURL];
+        NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
+        [urlRequest setHTTPMethod:@"POST"];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [self setGenerateSessionPostData:user InURLRequest:urlRequest];
+        [self submitUserRequest:urlRequest];
+        
+    }//end if(user!=nil)
+    
 }
 
 -(void)setGenerateSessionPostData:(User*)user InURLRequest:(NSMutableURLRequest*)urlRequest
 {
-    
-    //NSLog(@"setJoinGroupPostData. email=%@ and password=%@", email, password);
-    
     NSError *requestError;
-    
     NSArray *objects = [NSArray arrayWithObjects:user.email, user.password, nil];
     NSArray *keys = [NSArray arrayWithObjects:@"login",@"password", nil];
     NSDictionary *questionDict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
@@ -109,7 +119,6 @@ int const kPostJoinGroup = 1;
     
     // setting the body of the post to the reqeust
     [urlRequest setHTTPBody:jsonRequestData];
-    
 }
 
 
@@ -134,6 +143,8 @@ int const kPostJoinGroup = 1;
     if(self.downloadedData.length > 0)
     {
         NSDictionary* userdict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+        NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
+        NSLog(@"handlePostForJoinGroupResponse.joinGroupData=%@", responseString);
         if (userdict != nil)
         {
             User *user = [UserJSONHandler getUserFromUserJSON:userdict];
@@ -152,7 +163,6 @@ int const kPostJoinGroup = 1;
 
 -(void)handlePostForGenerateSessionResponse
 {
-    
     NSError* error;
     NSDictionary* sessiondict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (sessiondict != nil)
@@ -164,12 +174,33 @@ int const kPostJoinGroup = 1;
         
         if(sessionToken!=nil)
         {
-            //NSLog(@"sessionToken=%@", self.sessionToken);
+            //NSLog(@"handlePostForGenerateSessionResponse.sessionToken=%@", self.sessionToken);
         }
         
         if ([self.delegate respondsToSelector:@selector(UserLoader:didGenerateSession:)])
             [self.delegate UserLoader:self didGenerateSession:session];
         
+    }
+    else{
+        [self reportErrorToDelegate:error];
+    }
+    
+    
+}
+
+-(void)handlePostForRegisterResponse
+{
+    
+    NSError* error;
+    NSDictionary* sessiondict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+    if (sessiondict != nil)
+    {
+        NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
+        NSLog(@"registerData=%@", responseString);
+        /*
+        if ([self.delegate respondsToSelector:@selector(UserLoader:didGenerateSession:)])
+            [self.delegate UserLoader:self didGenerateSession:session];
+        */
     }
     else{
         [self reportErrorToDelegate:error];
@@ -184,10 +215,15 @@ int const kPostJoinGroup = 1;
     [super connectionDidFinishLoading:connection];
     if (self.downloadedData.length > 0){
         switch (userRequestType){
+            case kPostRegister:
+                [self handlePostForRegisterResponse];
+                break;
             case kPostGenerateSession:
                 [self handlePostForGenerateSessionResponse];
+                break;
             case kPostJoinGroup:
                 [self handlePostForJoinGroupResponse];
+                break;
                 
         }
     }

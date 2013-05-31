@@ -12,7 +12,7 @@
 
 BOOL initialized = false;
 
-@interface WelcomeViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, GroupLoaderDelegate>
+@interface WelcomeViewController:UIViewController <UITableViewDataSource, UITableViewDelegate, GroupLoaderDelegate>
 
 {
     NSArray *groupNames;
@@ -27,6 +27,10 @@ BOOL initialized = false;
 @property IBOutlet UILabel *groupLabel;
 @property IBOutlet UILabel *organisationLabel;
 @property IBOutlet UILabel *themeLabel;
+
+@property (weak, nonatomic) IBOutlet UIButton *imageButton;
+@property (weak, nonatomic) IBOutlet UIButton *comicButton;
+@property (weak, nonatomic) IBOutlet UIButton *comicCollectionButton;
 
 @property (strong, nonatomic) NSArray *groupNames;
 @property (strong, nonatomic) NSArray *organisationNames;

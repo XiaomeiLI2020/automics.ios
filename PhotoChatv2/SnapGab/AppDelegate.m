@@ -32,7 +32,7 @@
     
     //Shakir - COMMENT THIS FOR SIMULATOR | UNCOMMENT FOR IPHONE DEPLOYMENT
 	// Let the device know we want to receive push notifications
-	//[[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound];
+	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeBadge];
 
 
     
@@ -76,8 +76,7 @@
                         componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<> "]]
                        componentsJoinedByString:@"" ];
     
-    //NSLog(@"My token is: %@", token);
-    
+    NSLog(@"My token is: %@", token);
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     [prefs setObject:token forKey:@"token"];
     [prefs synchronize];

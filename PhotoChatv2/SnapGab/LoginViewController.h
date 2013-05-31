@@ -13,22 +13,20 @@
 
 
 @interface LoginViewController : UIViewController
-<UITextFieldDelegate, UserLoaderDelegate>
-
-
+<UITextFieldDelegate, UserLoaderDelegate, GroupLoaderDelegate>
 
 @property NSString* sessionToken;
 
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
-
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+
+- (IBAction)registerPressed:(id)sender;
 
 @property NSString *userEmail;
 @property NSString *userPassword;
-
-
 @property UserLoader* userLoader;
 @property User* user;
+@property GroupLoader *groupLoader;
 
 
 @end

@@ -10,4 +10,9 @@
 
 @implementation Organisation
 
+@synthesize organisationId;
+@synthesize name;
+@synthesize themes;
+
+
 @end

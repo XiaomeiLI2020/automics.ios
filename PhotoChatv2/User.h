@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Session.h"
+#import "Group.h"
 
 @interface User : NSObject
 
@@ -16,5 +17,6 @@
 @property NSString* password;
 @property Session* currentSession;
 @property NSString* groupHashId;
+@property Group* currentGroup;
 
 @end

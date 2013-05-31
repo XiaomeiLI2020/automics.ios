@@ -9,7 +9,7 @@
 #import "WelcomeViewController.h"
 #import "TextTableCell.h"
 #import "DataLoader.h"
-
+#import "User.h"
 
 @interface WelcomeViewController ()
 
@@ -30,7 +30,12 @@
 @synthesize themeTableView;
 @synthesize groupLoader;
 
+@synthesize imageButton;
+@synthesize comicButton;
+@synthesize comicCollectionButton;
+
 DataLoader* dataLoader;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -50,111 +55,37 @@ DataLoader* dataLoader;
     dataLoader = [[DataLoader alloc] init];
     groupLoader = [[GroupLoader alloc] init];
     groupLoader.delegate = self;
-    [groupLoader submitRequestGetGroups];
     
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSString* groupHashId= [prefs objectForKey:@"current_group_hash"];
+    //NSString* userId= [prefs objectForKey:@"user_id"];
+    //NSLog(@"WelcomeViewController.groupHashId=%@, userId=%@", groupHashId, userId);
+    if(groupHashId==nil)
+    {
+        //NSLog(@"groupHashId=%@", groupHashId);
+        imageButton.enabled = NO;
+        imageButton.alpha = 0.4;
+        
+        comicButton.enabled = NO;
+        comicButton.alpha = 0.4;
+        
+        comicCollectionButton.enabled = NO;
+        comicCollectionButton.alpha = 0.4;
+    }
+    else{
+        imageButton.enabled = YES;
+        //imageButton.alpha = 0;
+        
+        comicButton.enabled = YES;
+        //comicButton.alpha = 0;
+        
+        comicCollectionButton.enabled = YES;
+        //comicCollectionButton.alpha = 0;
+    }
+    //NSString* sessionToken = [prefs objectForKey:@"user.currentGroup"];
+    //[groupLoader submitRequestGetGroups];
     //sQLiteLoader = [[SQLiteLoader alloc] init];
-    //[self getGroups];
-    //[self getOrganisations];
-   // [self getResources];
-
 }
-
-
-
-- (void)getGroups
-{
-    NSString* urlResourceString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/group"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlResourceString]
-                                                           cachePolicy:NSURLRequestReturnCacheDataElseLoad
-                                                       timeoutInterval:10];
-    
-    [request setHTTPMethod: @"GET"];
-    
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
-    
-    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
-    if(response)
-    {
-        NSError *parseError = nil;
-        id jsonObject = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingAllowFragments error:&parseError];
-        for(NSDictionary* resource in jsonObject)
-        {
-            
-            //NSString* hashid = [resource objectForKey:@"hashid"];
-            NSString* groupName1 = [resource objectForKey:@"name"];
-            //int groupId = [[resource objectForKey:@"id"] integerValue];
-            self.groupLabel.text = groupName1;
-            
-            //NSLog(@"hashid= %@", hashid);
-            //NSLog(@"groupName= %@", groupName);
-            //NSLog(@"groupId= %i", groupId);
-        }//end for
-        
-    }//end if
-}
-
-- (void)getOrganisations
-{
-    NSString* urlResourceString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/organisation"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlResourceString]
-                                                           cachePolicy:NSURLRequestReturnCacheDataElseLoad
-                                                       timeoutInterval:10];
-    
-    [request setHTTPMethod: @"GET"];
-    
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
-    
-    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
-    if(response)
-    {
-        NSError *parseError = nil;
-        id jsonObject = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingAllowFragments error:&parseError];
-        for(NSDictionary* resource in jsonObject)
-        {
-            
-            NSString* id = [resource objectForKey:@"id"];
-            NSString* organisation = [resource objectForKey:@"name"];
-            self.organisationLabel.text = organisation;
-            //NSLog(@"id= %@", id);
-            //NSLog(@"organisationName= %@", organisationName);
-            [self getThemesOfOrganisation:id];
-        }//end for
-        
-    }//end if
-}
-
-- (void)getThemesOfOrganisation:(id)organisationId
-{
-    NSString* urlResourceString = [NSString stringWithFormat:@"http://automicsapi.wp.horizon.ac.uk/v1/organisation/%@/theme", organisationId];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlResourceString]
-                                                           cachePolicy:NSURLRequestReturnCacheDataElseLoad
-                                                       timeoutInterval:10];
-    
-    [request setHTTPMethod: @"GET"];
-    
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
-    
-    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
-    if(response)
-    {
-        NSError *parseError = nil;
-        id jsonObject = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingAllowFragments error:&parseError];
-        for(NSDictionary* resource in jsonObject)
-        {
-            
-            //NSString* id = [resource objectForKey:@"id"];
-            NSString* themeName1 = [resource objectForKey:@"name"];
-            //NSLog(@"id= %@", id);
-            //NSLog(@"themeName= %@", themeName);
-            self.themeLabel.text = themeName1;
-        }//end for
-        
-    }//end if
-}
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -164,11 +95,31 @@ DataLoader* dataLoader;
 
 - (IBAction)logoutPressed:(id)sender {
     //[self performSegueWithIdentifier:@"logout" sender:self];
+    /*
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:nil forKey:@"session"];
+    [userDefaults setObject:nil forKey:@"group"];
+    [userDefaults setObject:nil forKey:@"user_id"];
+    [userDefaults synchronize];
+     */
  }
 
 - (IBAction)makeGroup:(id)sender {
     
     //[self performSegueWithIdentifier:@"creategroup" sender:self];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([[segue identifier] isEqualToString:@"logout"])
+    {
+        NSLog(@"LOGOUT CALLED");
+
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:nil forKey:@"session"];
+        [userDefaults setObject:nil forKey:@"current_group_hash"];
+        [userDefaults setObject:nil forKey:@"user_id"];
+        [userDefaults synchronize];
+    }//end if
 }
 
 

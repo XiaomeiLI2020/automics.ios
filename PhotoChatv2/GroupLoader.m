@@ -17,6 +17,10 @@
 @implementation GroupLoader
 
 int const kGetGroups = 0;
+int const kGetGroup = 1;
+int const kPostGroup = 2;
+int const kPostThemeForGroup = 3;
+int const kPostMembershipForGroup = 4;
 
 @synthesize groupRequestType;
 @synthesize delegate;
@@ -28,6 +32,94 @@ int const kGetGroups = 0;
     
 }
 
+
+-(void)submitRequestPostGroup:(Group*)group{
+    groupRequestType = kPostGroup;
+    NSURLRequest* urlRequest = [self prepareRequestForPostGroup:group];
+    [self submitGroupRequest:urlRequest];
+}
+
+-(void)submitRequestPostMembershipForGroup:(Group*)group{
+    groupRequestType = kPostMembershipForGroup;
+    NSURLRequest* urlRequest = [self prepareRequestPostMemberShipForGroup:group];
+    [self submitGroupRequest:urlRequest];
+}
+
+-(void)submitRequestPostThemeForGroup:(NSString*)groupHashId andThemeId:(int)themeId{
+    groupRequestType = kPostThemeForGroup;
+    NSURLRequest* urlRequest = [self prepareRequestForPostThemeForGroup:groupHashId andThemeId:themeId];
+    [self submitGroupRequest:urlRequest];
+}
+
+-(NSURLRequest*)prepareRequestForPostThemeForGroup:(NSString*)groupHashId andThemeId:(int)themeId{
+    Group* group=[[Group alloc] init];
+    //Theme* theme = [[Theme alloc] init];
+    //theme.themeId = themeId;
+    //group.theme = theme;
+    group.name=@"new name";
+    
+    NSString* groupURL = [APIWrapper getURLForGetGroup:groupHashId];
+    //NSString* authenticatedGroupURL = [self authenticatedGetURL:groupURL];
+    //NSLog(@"authenticatedGroupURL=%@", authenticatedGroupURL);
+    NSLog(@"prepareRequestForPostThemeForGroup.groupHashId=%@, themeId=%i, groupURL=%@", groupHashId, themeId, groupURL);
+    self.httpMethod = @"POST";
+    self.request = groupURL;
+    self.postRequestType = kPostThemeForGroup;
+    NSURL* url = [NSURL URLWithString:groupURL];
+    //return [NSURLRequest requestWithURL:url];
+    NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
+    [urlRequest setHTTPMethod:@"POST"];
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    //[self setGroupPostData:group InURLRequest:urlRequest];
+    
+    NSString* groupName= @"newgroup1";
+    
+    NSArray *objects = [NSArray arrayWithObjects:groupName, nil];
+    NSArray *keys = [NSArray arrayWithObjects:@"name", nil];
+    NSDictionary *questionDict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    NSDictionary *jsonDict = [NSDictionary dictionaryWithObject:questionDict forKey:@"data"];
+    
+    /*
+     NSDictionary* groupdict = [GroupJSONHandler convertGroupIntoGroupJSON:group];
+     //comicdict = [self authenticatedPostData:comicdict];
+     groupdict = [GroupJSONHandler wrapJSONDictWithDataTag:groupdict];
+     self.dict = groupdict;
+     */
+    self.dict = jsonDict;
+    NSError *error;
+    NSData* data = [NSJSONSerialization dataWithJSONObject:jsonDict options:NSJSONWritingPrettyPrinted error:&error];
+    
+    NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"groupPostData: %@", responseString);
+    [urlRequest setHTTPBody:data];
+    
+
+    
+    
+    return urlRequest;
+}
+
+-(void)setGroupPostData:(Group*)group InURLRequest:(NSMutableURLRequest*)urlRequest{
+    
+    NSDictionary* groupdict = [GroupJSONHandler convertGroupIntoGroupJSON:group];
+    //comicdict = [self authenticatedPostData:comicdict];
+    groupdict = [GroupJSONHandler wrapJSONDictWithDataTag:groupdict];
+    self.dict = groupdict;
+    NSError *error;
+    NSData* data = [NSJSONSerialization dataWithJSONObject:groupdict options:NSJSONWritingPrettyPrinted error:&error];
+    
+    NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"groupPostData: %@", responseString);
+    [urlRequest setHTTPBody:data];
+}
+
+
+-(void)submitRequestGetGroupForHashId:(NSString*)groupHashId{
+    groupRequestType = kGetGroup;
+    NSURLRequest* urlRequest = [self prepareRequestForGetGroup:groupHashId];
+    [self submitGroupRequest:urlRequest];
+}
+
 -(NSURLRequest*)prepareRequestForGetGroups{
     NSString* groupURL = [APIWrapper getURLForGetGroups];
     NSString* authenticatedGroupURL = [self authenticatedGetURL:groupURL];
@@ -35,6 +127,76 @@ int const kGetGroups = 0;
     NSURL* url = [NSURL URLWithString:authenticatedGroupURL];
     return [NSURLRequest requestWithURL:url];
 }
+
+-(NSURLRequest*)prepareRequestForGetGroup:(NSString*)groupHashId{
+    NSString* groupURL = [APIWrapper getURLForGetGroups];
+    NSString* authenticatedGroupURL = [self authenticatedGetURL:groupURL];
+    //NSLog(@"authenticatedGroupURL=%@", authenticatedGroupURL);
+    NSURL* url = [NSURL URLWithString:authenticatedGroupURL];
+    return [NSURLRequest requestWithURL:url];
+}
+
+
+-(NSURLRequest*)prepareRequestForPostGroup:(Group*)group
+{
+    NSString* groupURL = [APIWrapper getURLForGetGroups];
+    //NSString* authenticatedGroupURL = [self authenticatedGetURL:groupURL];
+    //NSLog(@"authenticatedGroupURL=%@", authenticatedGroupURL);
+    self.httpMethod = @"POST";
+    self.request = groupURL;
+    self.postRequestType = kPostGroup;
+    NSURL* url = [NSURL URLWithString:groupURL];
+    //return [NSURLRequest requestWithURL:url];
+    NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
+    [urlRequest setHTTPMethod:@"POST"];
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [self setGroupPostData:group InURLRequest:urlRequest];
+    return urlRequest;
+}
+
+-(NSURLRequest*)prepareRequestPostMemberShipForGroup:(Group*)group
+{
+    NSString* groupURL = [APIWrapper getURLForPostGroupMembership];
+    //NSString* authenticatedGroupURL = [self authenticatedGetURL:groupURL];
+    //NSLog(@"authenticatedGroupURL=%@", authenticatedGroupURL);
+    self.httpMethod = @"POST";
+    self.request = groupURL;
+    self.postRequestType = kPostGroup;
+    NSURL* url = [NSURL URLWithString:groupURL];
+    //return [NSURLRequest requestWithURL:url];
+    NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
+    [urlRequest setHTTPMethod:@"POST"];
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    Group* newGroup = [[Group alloc] init];
+    newGroup.hashId = group.hashId;
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSString* sessionToken = [prefs objectForKey:@"session"];
+    
+    NSArray *objects = [NSArray arrayWithObjects:group.hashId, sessionToken, nil];
+    NSArray *keys = [NSArray arrayWithObjects:@"group",@"session", nil];
+    NSDictionary *questionDict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    NSDictionary *jsonDict = [NSDictionary dictionaryWithObject:questionDict forKey:@"data"];
+    
+    /*
+    NSDictionary* groupdict = [GroupJSONHandler convertGroupIntoGroupJSON:group];
+    //comicdict = [self authenticatedPostData:comicdict];
+    groupdict = [GroupJSONHandler wrapJSONDictWithDataTag:groupdict];
+    self.dict = groupdict;
+    */
+    self.dict = jsonDict;
+    NSError *error;
+    NSData* data = [NSJSONSerialization dataWithJSONObject:jsonDict options:NSJSONWritingPrettyPrinted error:&error];
+
+    NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"groupPostData: %@", responseString);
+    [urlRequest setHTTPBody:data];
+    
+    //[self setGroupPostData:group InURLRequest:urlRequest];
+    return urlRequest;
+}
+
 
 -(void)submitGroupRequest:(NSURLRequest*)urlRequest{
     [self initConnectionRequest];
@@ -52,6 +214,90 @@ int const kGetGroups = 0;
     
 }
 
+-(void)handleGetGroupResponse{
+    NSError* error;
+    NSDictionary* groupJSON = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+    if (groupJSON != nil){
+        Group* group = [GroupJSONHandler convertGroupJSONIntoGroup:groupJSON];
+        if(group!=nil){
+            if ([self.delegate respondsToSelector:@selector(GroupLoader:didLoadGroup:)])
+                [self.delegate GroupLoader:self didLoadGroup:group];
+        }
+    }
+    
+}
+
+-(void)handlePostGroupResponse{
+   
+    NSError* error;
+    NSDictionary* groupdict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+    
+    NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
+    NSLog(@"handlePostGroupResponse.groupPostData: %@", responseString);
+    
+    if (groupdict != nil){
+        NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
+        NSLog(@"GroupData: %@", responseString);
+        Group* group = [GroupJSONHandler convertGroupJSONIntoGroup:groupdict];
+        if(group!=nil)
+        {
+            NSLog(@"group.name=%@, hashId=%@, id=%i", group.name, group.hashId, group.groupId);
+            if ([self.delegate respondsToSelector:@selector(GroupLoader:didSaveGroup:)])
+                [self.delegate GroupLoader:self didSaveGroup:group];
+        }//end if
+        
+    }else{
+        [self reportErrorToDelegate:error];
+    }
+
+    
+    /*
+    NSError* error;
+    NSArray* groupJSON = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+    if (groupJSON != nil){
+        NSArray* groups = [GroupJSONHandler convertGroupsJSONIntoGroups:groupJSON];
+        if ([self.delegate respondsToSelector:@selector(GroupLoader:didLoadGroups:)])
+            [self.delegate GroupLoader:self didLoadGroups:groups];
+    }
+    */
+}
+
+-(void)handlePostGroupMembershipResponse{
+    
+    NSError* error;
+    NSDictionary* groupdict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+    NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
+    NSLog(@"handlePostGroupMembershipResponse.groupPostData: %@", responseString);
+    
+    if (groupdict != nil){
+        NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
+        NSLog(@"GroupData: %@", responseString);
+        Group* group = [GroupJSONHandler convertGroupJSONIntoGroup:groupdict];
+        if(group!=nil)
+        {
+            NSLog(@"group.name=%@, hashId=%@, id=%i", group.name, group.hashId, group.groupId);
+            if ([self.delegate respondsToSelector:@selector(GroupLoader:didJoinGroup:)])
+                [self.delegate GroupLoader:self didJoinGroup:group];
+        }//end if
+        
+    }else{
+        [self reportErrorToDelegate:error];
+    }
+    
+    
+    /*
+     NSError* error;
+     NSArray* groupJSON = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+     if (groupJSON != nil){
+     NSArray* groups = [GroupJSONHandler convertGroupsJSONIntoGroups:groupJSON];
+     if ([self.delegate respondsToSelector:@selector(GroupLoader:didLoadGroups:)])
+     [self.delegate GroupLoader:self didLoadGroups:groups];
+     }
+     */
+}
+
+
+
 -(void)reportErrorToDelegate:(NSError*)error{
     if ([self.delegate respondsToSelector:@selector(GroupLoader:didFailWithError:)])
         [delegate GroupLoader:self didFailWithError:error];
@@ -65,6 +311,18 @@ int const kGetGroups = 0;
         switch (groupRequestType){
             case kGetGroups:
                 [self handleGetGroupsResponse];
+                break;
+            case kGetGroup:
+                [self handleGetGroupResponse];
+                break;
+            case kPostGroup:
+                [self handlePostGroupResponse];
+                break;
+            case kPostThemeForGroup:
+                [self handlePostGroupResponse];
+                break;
+            case kPostMembershipForGroup:
+                [self handlePostGroupMembershipResponse];
                 break;
         }
     }

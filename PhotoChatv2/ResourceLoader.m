@@ -29,7 +29,7 @@ BOOL resourcesLoaded = NO;
 
 @synthesize delegate;
 @synthesize resourceRequestType;
-
+@synthesize obj;
 
 
 -(void)submitRequestGetResourcesForTheme:(int)themeId{
@@ -41,11 +41,15 @@ BOOL resourcesLoaded = NO;
         [self submitResourceRequest:urlRequest];
         resourcesLoaded = YES;
     }
+    
     else{
         //NSLog(@"Resources downloaded from the database.");
         NSArray* resources = [self convertResourcesSQLIntoResources:themeId];
+        //NSLog(@"RESOurces.count=%i", [resources count]);
         if([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:)])
             [self.delegate ResourceLoader:self didLoadResources:resources];
+        if ([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:forObject:)])
+            [self.delegate ResourceLoader:self didLoadResources:resources forObject:obj];
     }
 
 }
@@ -124,7 +128,7 @@ BOOL resourcesLoaded = NO;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
     [super connectionDidFinishLoading:connection];
     
-    if (self.downloadedData.length > 0){
+    if(self.downloadedData.length > 0){
         switch (resourceRequestType){
             case kGetThemeResources:
                 [self handleGetResourcesForThemeResponse];
@@ -133,8 +137,8 @@ BOOL resourcesLoaded = NO;
                 [self handleGetResourceWithIdResponse];
                 break;
                 
-        }
-    }
+        }//end switch
+    }//end if(self.downloadedData.length > 0)
 }
 
 -(void)handleGetResourcesForThemeResponse{
@@ -144,12 +148,13 @@ BOOL resourcesLoaded = NO;
         
         //Update numPanels
         numResources = [jsonArray count];
-        
         NSArray* resources = [ResourceJSONHandler getResourcesFromResourcesJSON:jsonArray];
         [self submitSQLRequestSaveResources:resources];
         //NSLog(@"#of resources =%i", [resources count]);
         if([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:)])
             [self.delegate ResourceLoader:self didLoadResources:resources];
+        if ([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:forObject:)])
+            [self.delegate ResourceLoader:self didLoadResources:resources forObject:obj];
     }else{
         [self reportErrorToDelegate:error];
     }

@@ -10,4 +10,12 @@
 
 @implementation Group
 
+@synthesize groupId;
+@synthesize name;
+@synthesize hashId;
+@synthesize createdAt;
+@synthesize updatedAt;
+@synthesize organisation;
+@synthesize theme;
+
 @end

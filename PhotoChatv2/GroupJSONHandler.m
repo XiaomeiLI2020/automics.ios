@@ -46,13 +46,17 @@ NSString *UPDATED_AT = @"updated_at";
     if ([groupdict valueForKey:THEME_ID] != nil){
         NSNumber *themeId = [DataValidator checkKeyValueForNull:[groupdict valueForKey:THEME_ID]];
         if (themeId != nil){
-            group.themeId = [themeId intValue];
+            Theme* theme = [[Theme alloc] init];
+            theme.themeId = [themeId intValue];
+            group.theme = theme;
+            //group.themeId = [themeId intValue];
         }
     }
     if ([groupdict valueForKey:ORGANISATION_ID] != nil){
         NSNumber *organisationId = [DataValidator checkKeyValueForNull:[groupdict valueForKey:ORGANISATION_ID]];
         if (organisationId != nil)
-            group.organisationId = [organisationId intValue];
+            group.organisation = [[Organisation alloc] init];
+            group.organisation.organisationId = [organisationId intValue];
     }
     if ([groupdict valueForKey:CREATED_AT] != nil){
         NSString *createdAtString = [DataValidator checkKeyValueForNull:[groupdict valueForKey:CREATED_AT]];
@@ -67,6 +71,34 @@ NSString *UPDATED_AT = @"updated_at";
         }
     }
     return group;
+}
+
+
++(NSDictionary*)convertGroupIntoGroupJSON:(Group*)group{
+    NSMutableDictionary* groupdict = [[NSMutableDictionary alloc] init];
+    
+    if(group.groupId > 0)
+      [groupdict setValue:[[NSNumber alloc] initWithInt:group.groupId] forKey:GROUP_ID];
+    
+    if(group.hashId != nil)
+    {
+        [groupdict setValue:group.hashId forKey:HASH_ID];
+    }
+    
+    if(group.name != nil)
+    {
+        [groupdict setValue:group.name forKey:@"name"];
+    }
+    
+    if(group.theme!=nil)
+    {
+        int themeId=group.theme.themeId;
+        if(themeId>0)
+            [groupdict setValue:[[NSNumber alloc] initWithInt:themeId] forKey:THEME_ID];
+    }
+    
+    
+    return groupdict;
 }
 
 /*

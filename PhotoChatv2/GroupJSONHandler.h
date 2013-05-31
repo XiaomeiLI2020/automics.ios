@@ -14,5 +14,6 @@
 
 +(NSArray*)convertGroupsJSONIntoGroups:(NSArray*)groupsJSON;
 +(Group*)convertGroupJSONIntoGroup:(NSDictionary*)groupJSON;
++(NSDictionary*)convertGroupIntoGroupJSON:(Group*)group;
 
 @end

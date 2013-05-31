@@ -12,7 +12,7 @@
 @protocol ResourceLoaderDelegate;
 
 @interface ResourceLoader : DataLoader
-
+@property id obj;
 extern int const kGetThemeResources;
 extern int const kGetResource;
 
@@ -31,6 +31,7 @@ extern int numResources;
 @protocol ResourceLoaderDelegate<NSObject>
 @optional
 -(void)ResourceLoader:(ResourceLoader*)loader didFailWithError:(NSError*)error;
--(void)ResourceLoader:(ResourceLoader *)loader didLoadResources:(NSArray*)resources;
--(void)ResourceLoader:(ResourceLoader *)loader didLoadResource:(Resource*)resource;
+-(void)ResourceLoader:(ResourceLoader*)loader didLoadResources:(NSArray*)resources;
+-(void)ResourceLoader:(ResourceLoader*)loader didLoadResources:(NSArray*)resources forObject:(NSObject*)obj;
+-(void)ResourceLoader:(ResourceLoader*)loader didLoadResource:(Resource*)resource;
 @end

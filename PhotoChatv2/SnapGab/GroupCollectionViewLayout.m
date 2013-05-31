@@ -24,6 +24,15 @@
         self.sectionInset = UIEdgeInsetsMake(4, 10, 14, 10);
         self.minimumInteritemSpacing = 10;
         self.minimumLineSpacing = 10;
+
+        /*
+         self.itemInsets = UIEdgeInsetsMake(22.0f, 22.0f, 13.0f, 22.0f);
+         self.itemSize = CGSizeMake(125.0f, 125.0f);
+         self.interItemSpacingY = 12.0f;
+         self.numberOfColumns = 2;
+         
+         */
+        
         [self registerClass:[GroupDecorationView class] forDecorationViewOfKind:[GroupDecorationView kind]];
     }
     return self;

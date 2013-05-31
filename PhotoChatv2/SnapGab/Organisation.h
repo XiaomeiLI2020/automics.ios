@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface Organisation : NSObject
-@property int oragnisationId;
+@property int organisationId;
 @property NSString* name;
+@property NSArray* themes;
 @end

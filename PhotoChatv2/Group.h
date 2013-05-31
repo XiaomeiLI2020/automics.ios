@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Theme.h"
+#import "Organisation.h"
 
 @interface Group : NSObject
 
@@ -16,7 +17,7 @@
 @property NSString* hashId;
 @property NSDate *createdAt;
 @property NSDate *updatedAt;
-@property int organisationId;
-@property int themeId;
+@property Organisation* organisation;
+@property Theme* theme;
 
 @end

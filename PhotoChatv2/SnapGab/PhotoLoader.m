@@ -24,6 +24,7 @@
 int const kPostPhoto = 1;
 int const kGetPhotosForGroup = 2;
 int const kGetPhoto = 3;
+int const kGetPhotosForTheme = 4;
 
 @synthesize photoRequestType;
 @synthesize delegate;
@@ -52,6 +53,12 @@ int const kGetPhoto = 3;
     [self submitPhotoRequest:urlRequest];
 }
 
+-(void)submitRequestGetPhotosForTheme:(int)themeId{
+    photoRequestType = kGetPhotosForTheme;
+    NSURLRequest *urlRequest = [self prepareRequestForGetPhotosForTheme:themeId];
+    [self submitPhotoRequest:urlRequest];
+}
+
 -(NSURLRequest*)preparePhotoRequestForGetPhotoWithId:(int)photoId{
     NSString* photoURL = [APIWrapper getURLForGetPhotoWithId:photoId];
     NSString* authenticatedPhotoURL = [self authenticatedGetURL:photoURL];
@@ -75,6 +82,15 @@ int const kGetPhoto = 3;
 -(NSURLRequest*)prepareRequestForGetPhotosForGroup:(NSString*)groupHashId{
     NSString *photoURL = [APIWrapper getURLForGetPhotosForGroup:groupHashId];
     photoURL = [self authenticatedGetURL:photoURL];
+    NSLog(@"photoURL=%@", photoURL);
+    NSURL* url = [NSURL URLWithString:photoURL];
+    return [NSURLRequest requestWithURL:url];
+}
+
+-(NSURLRequest*)prepareRequestForGetPhotosForTheme:(int)themeId{
+    NSString *photoURL = [APIWrapper getURLForGetPhotosForTheme:themeId];
+    photoURL = [self authenticatedGetURL:photoURL];
+    NSLog(@"photoURL=%@", photoURL);
     NSURL* url = [NSURL URLWithString:photoURL];
     return [NSURLRequest requestWithURL:url];
 }

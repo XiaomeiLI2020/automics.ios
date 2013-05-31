@@ -18,7 +18,7 @@
 @property (weak) id<UserLoaderDelegate> delegate;
 -(void)submitRequestPostJoinGroup:(NSString*)sessionToken andGroupHashId:(NSString*)groupHashId;
 -(void)submitRequestPostGenerateSessionToken:(User*)user;
-
+-(void)submitRequestPostRegister:(User*)user;
 
 @end
 

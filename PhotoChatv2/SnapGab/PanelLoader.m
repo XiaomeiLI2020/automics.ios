@@ -133,7 +133,6 @@ int const kPostPanel = 2;
     paneldict = [PanelJSONHandler wrapJSONDictWithDataTag:paneldict];
     NSError *error;
     NSData* data = [NSJSONSerialization dataWithJSONObject:paneldict options:NSJSONWritingPrettyPrinted error:&error];
-    
     [urlRequest setHTTPBody:data];
 }
 
@@ -166,9 +165,6 @@ int const kPostPanel = 2;
             if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:)])
                 [self.delegate PanelLoader:self didLoadPanel:panel];
         }//end if panel!=nil
-
-        
-
     }else{
         [self reportErrorToDelegate:error];
     }
@@ -193,10 +189,7 @@ int const kPostPanel = 2;
     
     /*
     if (paneldict != nil){
-        
         //Panel *panel = [PanelJSONHandler convertPanelJSONDictIntoPanel:paneldict];
-
-        
         if ([self.delegate respondsToSelector:@selector(PanelLoader:didSavePanel:)])
             [self.delegate PanelLoader:self didSavePanel:panel];
     }

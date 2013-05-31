@@ -24,5 +24,5 @@
 @protocol ImageDownloaderDelegate <NSObject>
 @optional
 -(void)imageDownloader:(ImageDownloader*)imageDownloader didLoadImage:(UIImage*)image forObject:(NSObject*)obj;
--(void)imageDownloader:(ImageDownloader *)imageDownloader didFailWithError:(NSError*)error;
+-(void)imageDownloader:(ImageDownloader*)imageDownloader didFailWithError:(NSError*)error;
 @end

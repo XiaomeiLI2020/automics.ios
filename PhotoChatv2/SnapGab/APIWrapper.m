@@ -84,6 +84,10 @@
     return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL, kAPIURL, kGroupURL];
 }
 
++(NSString*)getURLForGetGroup:(NSString*)hashId{
+    return [NSString stringWithFormat:@"%@/%@/%@/%@", kBaseURL, kAPIURL, kGroupURL, hashId];
+}
+
 +(NSString*)getURLForJoinGroupWithHashId:(NSString*)hashId{
     return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL, kJoinGroupURL, hashId];
 }
@@ -96,5 +100,26 @@
     return [NSString stringWithFormat:@"%@/%@/%@",[self getURLForGetGroup], groupHashId, kPhotoURL];
 }
 
++(NSString*)getURLForGetPhotosForTheme:(int)themeId{
+        return [NSString stringWithFormat:@"%@/%i/%@",[self getURLForGetGroup], themeId, kPhotoURL];
+}
+
++(NSString*)getURLForGetOrganisations{
+        return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL, kAPIURL, kOrganisationURL];
+}
+
++(NSString*)getURLForGetOrganisation:(int)organisationId{
+    //NSString* inputId = [NSString stringWithFormat:@"%d", organisationId];
+    return [NSString stringWithFormat:@"%@/%@/%@/%i", kBaseURL, kAPIURL, kOrganisationURL, organisationId];
+}
+
++(NSString*)getURLForGetThemesForOrganisation:(int)organisationId{
+    //NSString* inputId = [NSString stringWithFormat:@"%d", organisationId];
+    return [NSString stringWithFormat:@"%@/%@/%@/%i/%@", kBaseURL, kAPIURL, kOrganisationURL, organisationId, kThemeURL];
+}
+
++(NSString*)getURLForPostRegister{
+    return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL, kAPIURL, kRegisterURL];
+}
 
 @end

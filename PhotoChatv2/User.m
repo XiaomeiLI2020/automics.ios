@@ -15,5 +15,6 @@
 @synthesize password;
 @synthesize currentSession;
 @synthesize groupHashId;
+@synthesize currentGroup;
 
 @end

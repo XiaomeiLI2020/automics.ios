@@ -28,5 +28,25 @@
     return group;
 }
 
+-(void)setTheme:(Theme *)newTheme{
+    theme = newTheme;
+    _label.text = theme.name;
+}
+
+-(Theme*)getTheme{
+    return theme;
+}
+
+
+-(void)setResource:(Resource*)newResource{
+    resource = newResource;
+    _label.text = @" ";
+}
+
+-(Resource*)getResource{
+    return resource;
+}
+
+
 
 @end

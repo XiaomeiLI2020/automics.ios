@@ -23,7 +23,7 @@
 @synthesize user;
 
 
-NSString* hashId=@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
+//NSString* hashId=@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
 
 - (void)viewDidLoad
 {
@@ -32,9 +32,7 @@ NSString* hashId=@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
 
     userLoader = [[UserLoader alloc] init];
     userLoader.delegate = self;
-    
     user = [[User alloc] init];
-
 }
 
 - (void)viewDidUnload
@@ -73,7 +71,7 @@ NSString* hashId=@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
         
         user.email = userEmail;
         user.password = userPassword;
-        user.groupHashId = hashId;
+        //user.groupHashId = hashId;
     
         [userLoader submitRequestPostGenerateSessionToken:user];
 
@@ -123,14 +121,28 @@ NSString* hashId=@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
     //NSLog(@"Session token generated.");
     if(session!=nil)
     {
-        //NSLog(@"session=%@", session.token);
+        NSLog(@"didGenerateSession.session=%@", session.token);
         self.sessionToken = session.token;
 
         if(self.sessionToken!=nil)
         {
             user.currentSession = [[Session alloc] init];
             user.currentSession.token = self.sessionToken;
-            [userLoader submitRequestPostJoinGroup:sessionToken andGroupHashId:hashId];
+            
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            //[userDefaults setObject:user forKey:@"user"];
+            [userDefaults setObject:nil forKey:@"current_group_hash"];
+            [userDefaults setObject:user.currentSession.token forKey:@"session"];
+            [userDefaults setObject:[NSNumber numberWithInt:user.email] forKey:@"email"];
+            [userDefaults setObject:[NSNumber numberWithInt:user.password] forKey:@"password"];
+            [userDefaults synchronize];
+            
+            if(user.currentGroup==nil)
+            {
+                
+            }
+            
+            //[userLoader submitRequestPostJoinGroup:sessionToken andGroupHashId:hashId];
         }
     }
 }
@@ -161,4 +173,19 @@ NSString* hashId=@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
 }
 
 
+- (IBAction)registerPressed:(id)sender {
+    
+    userEmail = self.emailTextField.text;
+    userPassword = self.passwordTextField.text;
+    
+    if(userEmail!=nil && ![userEmail isEqualToString:@""] && userPassword!=nil)
+    {
+        
+        user.email = userEmail;
+        user.password = userPassword;
+        
+        [userLoader submitRequestPostRegister:user];
+    }
+    
+}
 @end

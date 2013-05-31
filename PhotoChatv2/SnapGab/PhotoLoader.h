@@ -16,6 +16,7 @@
 @property (weak) id<PhotoLoaderDelegate> delegate;
 -(void)submitRequestPostPhoto:(Photo*)photo;
 -(void)submitRequestGetPhotosForGroup:(NSString*)groupHashId;
+-(void)submitRequestGetPhotosForTheme:(int)themeId;
 -(void)submitRequestGetPhotoWithId:(int)photoId;
 -(NSURLRequest*)preparePhotoRequestForPostPhoto:(Photo*)photo;
 @end
