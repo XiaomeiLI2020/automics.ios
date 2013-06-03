@@ -11,6 +11,7 @@
 #import "GroupCollectionViewCell.h"
 #import "APIWrapper.h"
 #import "GroupCollectionViewLayout.h"
+#import "UIImageView+WebCache.h"
 
 @interface ThemePreviewViewController ()
 
@@ -22,6 +23,7 @@
 
 @implementation ThemePreviewViewController
 
+@synthesize theme;
 @synthesize themeId;
 @synthesize photoLoadersInProgress;
 @synthesize imageDownloadersInProgress;
@@ -35,6 +37,8 @@ ResourceLoader* resourceLoader;
 @synthesize resources;
 @synthesize themes;
 
+
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -47,25 +51,33 @@ ResourceLoader* resourceLoader;
 
 - (void)viewDidLoad
 {
-    NSLog(@"ThemePreviewViewController.viewDidLoad");
+    //NSLog(@"ThemePreviewViewController.viewDidLoad. theme.themeId=%i", theme.themeId);
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     themes = [[NSMutableArray alloc] init];
     resources = [[NSMutableArray alloc] init];
     resourceLoader = [[ResourceLoader alloc] init];
     resourceLoader.delegate=self;
-    [resourceLoader submitRequestGetResourcesForTheme:1];
+    [resourceLoader submitRequestGetResourcesForTheme:theme.themeId];
     
     alertShown = NO;
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     groupHashId= [prefs objectForKey:@"current_group_hash"];
     //NSLog(@"ThemeViewController.groupHashId=%@", groupHashId);
     
-    self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+   
+    //self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
     photoLoadersInProgress = [[NSMutableDictionary alloc] init];
     imageDownloadersInProgress = [[NSMutableDictionary alloc] init];
     themeImages = [[NSMutableDictionary alloc] init];
     [self.collectionView setCollectionViewLayout:[[GroupCollectionViewLayout alloc] init]];
+    
+    //[self.collectionView reloadData];
+    
+    //[resourceLoader submitRequestGetResourcesForTheme:theme.themeId];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -74,13 +86,21 @@ ResourceLoader* resourceLoader;
     // Dispose of any resources that can be recreated.
 }
 
+/*
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.collectionView reloadData];
+    //[resourceLoader submitRequestGetResourcesForTheme:theme.themeId];
+}
+*/
+/*
 -(void)viewDidDisappear:(BOOL)animated{
     [self cancelPhotoLoadRequests];
     [self cancelImageDownloadRequests];
     [themeImages removeAllObjects];
     [super viewDidDisappear:animated];
 }
-
+*/
 
 -(void)loadPhotoForResource:(Resource*)resource atIndexPath:(NSIndexPath*)indexPath{
     /*
@@ -90,6 +110,16 @@ ResourceLoader* resourceLoader;
     [resourceLoader submitRequestGetResourcesForTheme:theme.themeId];
     [photoLoadersInProgress setObject:resourceLoader forKey:indexPath];
      */
+
+    //if(resource==nil)
+   
+    //NSLog(@"loadPhotoForResource.atIndexPath.resource.resourceId=%i", resource.resourceId);
+    /*
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    NSLog(@"loadPhotoForResource.atIndexPath (section, row)=(%i, %i)", section, row);
+    */
+    //resource = [self.resources objectAtIndex:row];
     [photoLoadersInProgress setObject:resource forKey:indexPath];
 }
 
@@ -101,17 +131,27 @@ ResourceLoader* resourceLoader;
 }
 
 -(void)cancelPhotoLoadRequestForIndexPath:(NSIndexPath*)indexPath{
-    //PhotoLoader *photoLoader = [photoLoadersInProgress objectForKey:indexPath];
+    /*
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    NSLog(@"cancelPhotoLoadRequestForIndexPath.indexPath (section, row)=(%i, %i)", section, row);
+    */
+     //PhotoLoader *photoLoader = [photoLoadersInProgress objectForKey:indexPath];
     //[photoLoader cancelRequest];
-    //ResourceLoader *rLoader = [photoLoadersInProgress objectForKey:indexPath];
-    //[rLoader cancelRequest];
-    [photoLoadersInProgress removeObjectForKey:indexPath];
+    //[photoLoadersInProgress removeObjectForKey:indexPath];
 }
 
 -(void)cancelImageDownloadRequestForIndexPath:(NSIndexPath*)indexPath{
+    /*
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    NSLog(@"cancelImageDownloadRequestForIndexPath.indexPath (section, row)=(%i, %i)", section, row);
+    */
+    /*
     ImageDownloader *imageDownloader = [imageDownloadersInProgress objectForKey:indexPath];
     [imageDownloader cancelRequest];
     [imageDownloadersInProgress removeObjectForKey:indexPath];
+     */
 }
 
 -(void)cancelImageDownloadRequests{
@@ -123,8 +163,26 @@ ResourceLoader* resourceLoader;
 -(void)setDefaultImageForIndexPath:(NSIndexPath*)indexPath{
     UIImage *image = [UIImage imageNamed:@"groupDefaultCellBackground.jpg"];
     [themeImages setObject:image forKey:indexPath];
+    
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    NSLog(@"setDefaultImageForIndexPath.indexPath (section, row)=(%i, %i)", section, row);
 }
 
+- (IBAction)selectThemePressed:(id)sender {
+    
+    if(!alertShown)
+    {
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle: @"Select theme"
+                              message: [NSString stringWithFormat:@"You selected theme %@", theme.name]
+                              delegate: self
+                              cancelButtonTitle:@"Confirm"
+                              otherButtonTitles:@"Cancel", nil];
+        [alert show];
+        alertShown = YES;
+    }//end if
+}
 
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -132,6 +190,13 @@ ResourceLoader* resourceLoader;
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
     if([title isEqualToString:@"Confirm"])
     {
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        NSString* groupHashId= [prefs objectForKey:@"new_group_hash"];
+        //NSLog(@"groupHashId=%@", groupHashId);
+        
+        GroupLoader* groupLoader = [[GroupLoader alloc] init];
+        groupLoader.delegate = self;
+        [groupLoader submitRequestPostThemeForGroup:groupHashId andThemeId:themeId];
         alertShown = NO;
         return;
     }//end if
@@ -142,10 +207,10 @@ ResourceLoader* resourceLoader;
     }//end if
 }//end alertView
 
+
 #pragma mark - UICollectionViewDelegate
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     //GroupCollectionViewCell* selectedGroupCell = (GroupCollectionViewCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
-    //Theme* theme = [selectedGroupCell getTheme];
     //Resource* resource = [selectedGroupCell getResource];
     /*
     if(theme!=nil)
@@ -182,6 +247,7 @@ ResourceLoader* resourceLoader;
 
 
 -(void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
+    //NSLog(@"collectionView didEndDisplayingCell");
     [self cancelPhotoLoadRequestForIndexPath:indexPath];
     [self cancelImageDownloadRequestForIndexPath:indexPath];
     [themeImages removeObjectForKey:indexPath];
@@ -190,6 +256,7 @@ ResourceLoader* resourceLoader;
 
 #pragma mark - UICollectionViewDataSourceDelegate
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    //NSLog(@"ThemePreviewViewController.collectionView numberOfItemsInSection=%i", [resources count]);
     if (resources != nil)
         return [resources count];
     else
@@ -197,11 +264,29 @@ ResourceLoader* resourceLoader;
 }
 
 -(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    //NSLog(@"ThemePreviewViewController.cellForItemAtIndexPath");
     GroupCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:nCellID forIndexPath:indexPath];
     Resource* resource = [resources objectAtIndex:indexPath.item];
     [cell setResource:resource];
     
-    //cell.label.text = group.name;
+    /*
+    //ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[APIWrapper getAbsoluteURLUsingImageRelativePath:[photo imageURL]]];
+    ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[resource imageURL]];
+    //NSNumber *n =resource.resourceId;
+    imageDownloader.obj = [NSNumber numberWithInt:resource.resourceId];
+    imageDownloader.delegate = self;
+    if (imageDownloader.image == nil)
+        [imageDownloadersInProgress setObject:imageDownloader forKey:indexPath];
+    */
+    //cell.imageView.image = imageDownloader.image;
+    //[cell.activityIndicator stopAnimating];
+    
+    [cell.imageView setImageWithURL:[NSURL URLWithString:resource.imageURL] placeholderImage:nil];
+    //cell.imageView.image = [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];;
+    //[cell.activityIndicator stopAnimating];
+    
+    //cell.label.text = resource.description;
+    /*
     if ([themeImages objectForKey:indexPath] != nil){
         cell.imageView.image = [themeImages objectForKey:indexPath];
         [cell.activityIndicator stopAnimating];
@@ -212,7 +297,7 @@ ResourceLoader* resourceLoader;
             [cell.activityIndicator startAnimating];
         }
     }
-    
+    */
     return cell;
 }
 
@@ -267,10 +352,9 @@ ResourceLoader* resourceLoader;
 */
 
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResources:(NSArray*)resourcesLocal{
-    NSLog(@"ThemePreviewViewController.resources loaded.");
     NSMutableArray* mutableResources = [[NSMutableArray alloc] initWithArray:resourcesLocal];
     resources = mutableResources;
-    
+    //NSLog(@"ThemePreviewViewController.resources loaded.=resources=%i, resourcesLocal=%i", [resources count], [resourcesLocal count]);
     [self.collectionView reloadData];
 
     /*
@@ -297,8 +381,10 @@ ResourceLoader* resourceLoader;
     //NSLog(@"Resource downloaded");
 }
 
-
-
+#pragma mark - GroupLoaderDelegate
+-(void)GroupLoader:(GroupLoader*)groupLoader didSaveGroup:(Group*)group{
+    NSLog(@"Group saved=%@ ", group.hashId);
+}
 
 
 @end

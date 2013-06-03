@@ -72,6 +72,12 @@
         user.email = userEmail;
         user.password = userPassword;
         //user.groupHashId = hashId;
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:nil forKey:@"current_group_hash"];
+        [userDefaults setObject:user.email forKey:@"email"];
+        [userDefaults setObject:user.password forKey:@"password"];
+        [userDefaults synchronize];
     
         [userLoader submitRequestPostGenerateSessionToken:user];
 
@@ -130,11 +136,7 @@
             user.currentSession.token = self.sessionToken;
             
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-            //[userDefaults setObject:user forKey:@"user"];
-            [userDefaults setObject:nil forKey:@"current_group_hash"];
             [userDefaults setObject:user.currentSession.token forKey:@"session"];
-            [userDefaults setObject:[NSNumber numberWithInt:user.email] forKey:@"email"];
-            [userDefaults setObject:[NSNumber numberWithInt:user.password] forKey:@"password"];
             [userDefaults synchronize];
             
             if(user.currentGroup==nil)

@@ -34,7 +34,7 @@
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSString* groupHashId= [prefs objectForKey:@"current_group_hash"];
-    NSLog(@"GroupMainViewController.groupHashId=%@", groupHashId);
+    NSLog(@"GroupMainViewController.current_group_hash=%@", groupHashId);
     if(groupHashId==nil)
     {
 

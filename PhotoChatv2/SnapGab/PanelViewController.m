@@ -650,6 +650,9 @@ NSArray* photos;
                     ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:thumbnailPanel];
                     thumbnailPanel.thumbnail=thumbnailView.snapshot;
                     //NSLog(@"thumbnail#%i generated",index);
+                    
+                    NSNumber* yesObj = [NSNumber numberWithBool:YES];
+                    [downloadedPhotos replaceObjectAtIndex:index withObject:yesObj];
                 }
 
                 UIImageView *imageView = [[UIImageView alloc] init];
@@ -824,7 +827,6 @@ NSArray* photos;
             if(panel!=nil)
             {
                 PanelEditViewController *pevc = (PanelEditViewController *)[segue destinationViewController];
-                
                 pevc.url = [NSURL URLWithString:panel.photo.imageURL];
                 pevc.currentPanel = panel;
                 

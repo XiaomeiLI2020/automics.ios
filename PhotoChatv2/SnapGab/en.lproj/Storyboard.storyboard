@@ -220,7 +220,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S5s-fK-zpW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-916" y="-1733"/>
+            <point key="canvasLocation" x="-1260" y="-1037"/>
         </scene>
         <!--GroupViewController-->
         <scene sceneID="kTn-A1-IPd">
@@ -313,7 +313,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hmu-jt-D12" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-454" y="-1801"/>
+            <point key="canvasLocation" x="-252" y="-1797"/>
         </scene>
         <!--GroupJoinViewController-->
         <scene sceneID="D6l-BR-yAB">
@@ -763,6 +763,7 @@
                                         </state>
                                         <connections>
                                             <action selector="menuButtonAction:" destination="j9X-cF-RKP" eventType="touchDown" id="JgY-RP-t5e"/>
+                                            <segue destination="Y5y-GU-y3Z" kind="modal" identifier="comicstomenu1" id="bvK-IM-JEd"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -777,7 +778,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Stk-cj-JUb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="348" y="63"/>
+            <point key="canvasLocation" x="-702" y="-928"/>
         </scene>
         <!--GroupAddViewController-->
         <scene sceneID="4FE-z2-g3h">
@@ -815,7 +816,6 @@
                                 </state>
                                 <connections>
                                     <action selector="selectTheme:" destination="hm6-36-FWL" eventType="touchUpInside" id="vNi-1N-PyN"/>
-                                    <segue destination="YHP-t6-eB2" kind="modal" identifier="selectTheme" id="7Ya-HH-kme"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="iIY-cm-BeT">
@@ -859,7 +859,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4qb-pS-1ca" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="348" y="-1279"/>
+            <point key="canvasLocation" x="449" y="-1284"/>
         </scene>
         <!--PanelViewController-->
         <scene sceneID="NU1-xg-px1">
@@ -994,11 +994,11 @@
             </objects>
             <point key="canvasLocation" x="935" y="-1240"/>
         </scene>
-        <!--Theme View Controller-->
+        <!--ThemeViewController-->
         <scene sceneID="pLZ-pQ-83B">
             <objects>
-                <viewController id="YHP-t6-eB2" customClass="ThemeViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="PXp-no-b92">
+                <viewController storyboardIdentifier="ThemeViewController" id="YHP-t6-eB2" userLabel="ThemeViewController" customClass="ThemeViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="PXp-no-b92" userLabel="ThemeView">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -1076,12 +1076,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pMt-WB-Xbp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-617" y="-1157"/>
+            <point key="canvasLocation" x="-682" y="-1162"/>
         </scene>
         <!--ThemePreviewViewController-->
         <scene sceneID="4Xl-FB-nr8">
             <objects>
-                <viewController id="pdh-hy-8P0" userLabel="ThemePreviewViewController" customClass="ThemePreviewViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ThemePreviewViewController" id="pdh-hy-8P0" userLabel="ThemePreviewViewController" customClass="ThemePreviewViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7h0-Yr-HRl">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1098,7 +1098,11 @@
                                                 <segue destination="YHP-t6-eB2" kind="modal" id="bhg-Cl-FT4"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" title="Select Theme" id="rSI-tr-nfV"/>
+                                        <barButtonItem key="rightBarButtonItem" title="Select Theme" id="rSI-tr-nfV">
+                                            <connections>
+                                                <action selector="selectThemePressed:" destination="pdh-hy-8P0" id="ahS-pB-1Cv"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -1161,7 +1165,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r05-LR-eLl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="55" y="-1343"/>
+            <point key="canvasLocation" x="-227" y="-1205"/>
         </scene>
         <!--PanelAddViewController-->
         <scene sceneID="g9P-Bn-dcV">
@@ -1440,16 +1444,16 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="j7a-6V-AnY"/>
-        <segue reference="mP9-wY-8qV"/>
-        <segue reference="lbd-Gx-frY"/>
-        <segue reference="woI-Op-NZA"/>
+        <segue reference="9PL-ZN-yjP"/>
+        <segue reference="bvK-IM-JEd"/>
         <segue reference="scZ-oz-ppB"/>
         <segue reference="T94-jC-2l0"/>
         <segue reference="eqx-Lk-Ciz"/>
+        <segue reference="j7a-6V-AnY"/>
+        <segue reference="Uj4-hX-Jix"/>
         <segue reference="lLZ-Tg-1fy"/>
-        <segue reference="AYd-J9-ZQu"/>
-        <segue reference="2ae-nG-hzI"/>
+        <segue reference="Q3d-Fe-clA"/>
+        <segue reference="woI-Op-NZA"/>
         <segue reference="bhg-Cl-FT4"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -103,7 +103,8 @@ NSString *mCellID = @"GROUP_CELL";
     [groupImages setObject:image forKey:indexPath];
 }
 
-#pragma mark - UIAlertViewDelegate
+#pragma mark - UserLoaderDelegate
+/*
 -(void)UserLoader:(UserLoader*)loader didJoinGroup:(User*)currentUser{
     
     //NSLog(@"Group join request approved.");
@@ -121,13 +122,44 @@ NSString *mCellID = @"GROUP_CELL";
         [userDefaults setObject:[NSNumber numberWithInt:currentUser.userId] forKey:@"user_id"];
         [userDefaults synchronize];
         
-        //NSLog(@"user.session=%@", user.currentSession.token);
+    }
+    
+}
+*/
+
+-(void)UserLoader:(UserLoader*)loader didGenerateSession:(Session*)session{
+    
+    NSLog(@"GroupJoinViewController.session token generated.");
+    if(session!=nil)
+    {
+        
+        NSLog(@"GroupJoinViewController.didGenerateSession.session=%@, current_group_hash=%@", session.token, groupHashId);
+        if(session.token!=nil)
+        {
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setObject:groupHashId forKey:@"current_group_hash"];
+            [userDefaults setObject:session.token forKey:@"session"];
+            [userDefaults synchronize];
+            [userLoader submitRequestPostJoinGroup:session.token andGroupHashId:groupHashId];
+            
+        }//end if(session.token!=nil)
+    }//end if(session!=nil)
+}
+-(void)UserLoader:(UserLoader*)loader didJoinGroup:(User*)currentUser{
+    
+    //NSLog(@"Group join request approved.");
+    if(currentUser!=nil)
+    {
         /*
-         NSLog(@"user.userId=%i", user.userId);
-         NSLog(@"user.group_hash=%@", user.groupHashId);
+         user.userId = currentUser.userId;
+         user.groupHashId = currentUser.groupHashId;
          
-         NSLog(@"user.email=%@", user.email);
-         */
+         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+         [userDefaults setObject:user.currentSession.token forKey:@"session"];
+         [userDefaults setObject:user.groupHashId forKey:@"group"];
+         [userDefaults setObject:[NSNumber numberWithInt:user.userId] forKey:@"user_id"];
+         [userDefaults synchronize];
+*/
     }
     
 }
@@ -140,8 +172,18 @@ NSString *mCellID = @"GROUP_CELL";
     {
         alertShown = NO;
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        NSString* sessionToken = [prefs objectForKey:@"session"];
-        [userLoader submitRequestPostJoinGroup:sessionToken andGroupHashId:groupHashId];
+        //NSString* sessionToken = [prefs objectForKey:@"session"];
+        NSString* email = [prefs objectForKey:@"email"];
+        NSString* password = [prefs objectForKey:@"password"];
+        
+        User* user = [[User alloc] init];
+        user.email = email;
+        user.password = password;
+        
+        NSLog(@"email=%@, password=%@", user.email, user.password);
+        [userLoader submitRequestPostGenerateSessionToken:user];
+        
+        //[userLoader submitRequestPostJoinGroup:sessionToken andGroupHashId:groupHashId];
         //[self performSegueWithIdentifier:@"toGroupMain" sender:self];
         //[self dismissViewControllerAnimated:YES completion:nil];
         return;
@@ -163,24 +205,22 @@ NSString *mCellID = @"GROUP_CELL";
     
     if(groupHashId!=nil && [groupHashId isEqualToString:group.hashId])
     {
-        NSLog(@"Already a member of this group");
-        //if(!alertShown)
-        {
-            UIAlertView *alert = [[UIAlertView alloc]
-                                  initWithTitle: @"Already a group member"
-                                  message: [NSString stringWithFormat:@"Please select a different group"]
-                                  delegate: nil
-                                  cancelButtonTitle:@"OK"
-                                  otherButtonTitles:nil];
-            [alert show];
-            //alertShown = YES;
-        }
 
-    }
+            NSLog(@"Already a member of this group");
+            //if(!alertShown)
+            {
+                UIAlertView *alert = [[UIAlertView alloc]
+                                      initWithTitle: @"Already a group member"
+                                      message: [NSString stringWithFormat:@"Please select a different group"]
+                                      delegate: nil
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:nil];
+                [alert show];
+                //alertShown = YES;
+            }
+    }//end if(groupHashId!=nil && [groupHashId isEqualToString:group.hashId])
     else{
-        //Create database for that group
-        [dataLoader submitSQLRequestCreateTablesForGroup:group.groupId];
-
+        
         if(!alertShown)
         {
             groupHashId = group.hashId;
@@ -192,20 +232,51 @@ NSString *mCellID = @"GROUP_CELL";
                                   otherButtonTitles:@"Cancel", nil];
             [alert show];
             alertShown = YES;
-        }
-        
-
-    }
-     
-    //UIImage* qrcodeImage = [self generateQRCodeImageForURL:url];
+        }//end if(!alertShown)
+    }//end else
+    
     /*
-    GroupQRView *qrView = [[[NSBundle mainBundle] loadNibNamed:@"GroupQRView" owner:self options:nil] objectAtIndex:0];
-    qrView.qrImageView.image = qrcodeImage;
-    qrView.label.text = group.name;
-    CGSize size = qrView.frame.size;
-    qrView.frame = CGRectMake(abs(self.collectionView.frame.size.width / 2.0 - size.width/2.0), abs(self.collectionView.frame.size.height / 2.0 - size.height/2.0), size.width, size.height);
-    [self.view addSubview:qrView];
-     */
+    if(groupHashId!=nil && [groupHashId isEqualToString:@""])
+    {
+        if([groupHashId isEqualToString:group.hashId])
+        {
+            NSLog(@"Already a member of this group");
+            //if(!alertShown)
+            {
+                UIAlertView *alert = [[UIAlertView alloc]
+                                      initWithTitle: @"Already a group member"
+                                      message: [NSString stringWithFormat:@"Please select a different group"]
+                                      delegate: nil
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:nil];
+                [alert show];
+                //alertShown = YES;
+            }
+            
+        }//end if([groupHashId isEqualToString:group.hashId])
+        
+        if(![groupHashId isEqualToString:group.hashId])
+        {
+            //Create database for that group
+            //[dataLoader submitSQLRequestCreateTablesForGroup:group.groupId];
+            
+            if(!alertShown)
+            {
+                groupHashId = group.hashId;
+                UIAlertView *alert = [[UIAlertView alloc]
+                                      initWithTitle: @"Join Group"
+                                      message: [NSString stringWithFormat:@"You will join %@", group.name]
+                                      delegate: self
+                                      cancelButtonTitle:@"Confirm"
+                                      otherButtonTitles:@"Cancel", nil];
+                [alert show];
+                alertShown = YES;
+            }//end if(!alertShown)
+        }//end if(![groupHashId isEqualToString:group.hashId])
+        
+    }//end if(groupHashId!=nil && [groupHashId isEqualToString:@""])
+
+    */
 }
 
 /*
@@ -310,5 +381,11 @@ NSString *mCellID = @"GROUP_CELL";
     GroupCollectionViewCell* selectedGroupCell = (GroupCollectionViewCell*)[self.collectionView cellForItemAtIndexPath:shareGestureCellPath];
     NSLog(@"Selected group %@", [[selectedGroupCell getGroup] name]);
 }
+
+
+
+
+
+
 
 @end

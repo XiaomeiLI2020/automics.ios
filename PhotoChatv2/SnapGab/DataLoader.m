@@ -77,7 +77,7 @@
     NSError *err;
     NSString *docsDir;
     NSArray *dirPaths;
-    NSString* groupName = [NSString stringWithFormat: @"group.sql"];
+    NSString* groupName = [NSString stringWithFormat: @"automics.sql"];
     
     // Get the documents directory
     dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -106,7 +106,8 @@
         if (sqlite3_open(dbpath, &database) == SQLITE_OK)
         {
             char *errMsg;
-            const char *panels_stmt = "CREATE TABLE IF NOT EXISTS PANELS (PANELID INTEGER PRIMARY KEY, PHOTOID INTEGER, PHOTOURL TEXT, NUMPLACEMENTS REAL, NUMANNOTATIONS REAL)";
+            const char *panels_stmt = "CREATE TABLE IF NOT EXISTS PANELS (PANELID INTEGER, GROUPID INTEGER,  PHOTOID INTEGER, PHOTOURL TEXT, NUMPLACEMENTS REAL, NUMANNOTATIONS REAL, PRIMARY KEY(PANELID, GROUPID))";
+            //            const char *panels_stmt = "CREATE TABLE IF NOT EXISTS PANELS (PANELID INTEGER PRIMARY KEY, PHOTOID INTEGER, PHOTOURL TEXT, NUMPLACEMENTS REAL, NUMANNOTATIONS REAL)";
             const char *photos_stmt = "CREATE TABLE IF NOT EXISTS PHOTOS (PHOTOID INTEGER PRIMARY KEY, PHOTOURL TEXT, THUMBURL TEXT, DESCRIPTION TEXT, WIDTH REAL, HEIGHT REAL)";
             const char *resources_stmt = "CREATE TABLE IF NOT EXISTS RESOURCES (RESOURCEID INTEGER NOT NULL PRIMARY KEY, THEMEID INTEGER NOT NULL, NAME TEXT, TYPE TEXT, PHOTOURL TEXT, THUMBURL TEXT)";
             //const char *placements_stmt = "CREATE TABLE PLACEMENTS (PLACEMENTID INTEGER NOT NULL AUTOINCREMENT, PANELID INTEGER NOT NULL, RESOURCEID INTEGER, XOFF REAL, YOFF REAL, SCALE REAL, ANGLE REAL, ZINDEX INT, PRIMARY KEY(PLACEMENTID, PANELID))";
@@ -173,6 +174,107 @@
     }//end if
     
 }
+
+-(void)submitSQLRequestCreateTablesForApp{
+    NSError *err;
+    NSString *docsDir;
+    NSArray *dirPaths;
+    NSString* groupName = [NSString stringWithFormat: @"automics.sql"];
+    
+    // Get the documents directory
+    dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    docsDir = [dirPaths objectAtIndex:0];
+    // Build the path to the database file
+    databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent:groupName]];
+    //databasePathStatic = databasePath;
+    //NSLog(@"databasePath=%@, databasePathStatic=%@ ", databasePath, databasePathStatic);
+    NSFileManager *filemgr = [NSFileManager defaultManager];
+    
+    //Deleteing the previous version of the database file
+    [filemgr removeItemAtPath:databasePath error:&err];
+    if(err)
+    {
+        NSLog(@"File Manager: %@ %d %@", [err domain], [err code], [[err userInfo] description]);
+    }
+    else
+    {
+        //NSLog(@"File %@ deleted.", groupName);
+    }
+
+    
+    if ([filemgr fileExistsAtPath: databasePath ] == NO)
+    {
+		const char *dbpath = [databasePath UTF8String];
+        if (sqlite3_open(dbpath, &database) == SQLITE_OK)
+        {
+            char *errMsg;
+            const char *panels_stmt = "CREATE TABLE IF NOT EXISTS PANELS (PANELID INTEGER, GROUPID INTEGER,  PHOTOID INTEGER, PHOTOURL TEXT, NUMPLACEMENTS REAL, NUMANNOTATIONS REAL, PRIMARY KEY(PANELID, GROUPID))";
+            const char *photos_stmt = "CREATE TABLE IF NOT EXISTS PHOTOS (PHOTOID INTEGER, GROUPID INTEGER, PHOTOURL TEXT, THUMBURL TEXT, DESCRIPTION TEXT, WIDTH REAL, HEIGHT REAL)";
+            const char *resources_stmt = "CREATE TABLE IF NOT EXISTS RESOURCES (RESOURCEID INTEGER, THEMEID INTEGER, NAME TEXT, TYPE TEXT, PHOTOURL TEXT, THUMBURL TEXT, PRIMARY KEY(RESOURCEID, THEMEID))";
+            const char *placements_stmt = "CREATE TABLE PLACEMENTS (PLACEMENTID INTEGER, PANELID INTEGER, GROUPID INTEGER, RESOURCEID INTEGER, XOFF REAL, YOFF REAL, SCALE REAL, ANGLE REAL, ZINDEX INTEGER, PRIMARY KEY(PLACEMENTID, PANELID, GROUPID))";
+            const char *annotations_stmt = "CREATE TABLE IF NOT EXISTS ANNOTATIONS (ANNOTATIONID INTEGER, PANELID INTEGER, GROUPID INTEGER, TXT TEXT, XOFF REAL, YOFF REAL, BUBBLESTYLE INTEGER, FOPTIONS TEXT, PRIMARY KEY(ANNOTATIONID, PANELID, GROUPID))";
+            const char *comics_stmt = "CREATE TABLE IF NOT EXISTS COMICS (COMICID INTEGER, GROUPID INTEGER, NAME TEXT, DESCRIPTION TEXT, NUMPANELS INTEGER, PRIMARY KEY(COMICID, GROUPID))";
+            const char *comicpanels_stmt = "CREATE TABLE IF NOT EXISTS COMICPANELS (ID INTEGER PRIMARY KEY, COMICID INTEGER, GROUPID INTEGER, PANELID INTEGER, PANELPOSITION INTEGER)";
+            
+            if (sqlite3_exec(database, panels_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
+            {
+                NSLog(@"Panel table failed to create.");
+            }
+            /*
+             else
+             NSLog(@"Panel table created.");
+             */
+            
+            if (sqlite3_exec(database, photos_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
+            {
+                NSLog(@"Photo table failed to create.");
+            }
+            /*
+             else
+             NSLog(@"Photo table created.");
+             */
+            if (sqlite3_exec(database, placements_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
+            {
+                NSLog(@"Placement table failed to create.");
+            }
+            /*
+             else
+             NSLog(@"Placement table created.");
+             */
+            if (sqlite3_exec(database, resources_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
+            {
+                NSLog(@"Resource table failed to create.");
+            }
+            /*
+             else
+             NSLog(@"Resource table created.");
+             */
+            if (sqlite3_exec(database, annotations_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
+            {
+                NSLog(@"Annotation table failed to create.");
+            }
+            /*
+             else
+             NSLog(@"Annotation table created.");
+             */
+            if (sqlite3_exec(database, comics_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
+            {
+                NSLog(@"Comic table failed to create.");
+            }
+            if (sqlite3_exec(database, comicpanels_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
+            {
+                NSLog(@"Comicpanel table failed to create.");
+            }
+            sqlite3_close(database);
+            
+        }
+        else {
+            NSLog(@"Failed to open/create database");
+        }
+    }//end if
+    
+}
+
 
 
 -(int)submitSQLRequestCheckResourceExists:(int)resourceId
@@ -439,7 +541,11 @@
     int rowCount=0;
     if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
     {
-        const char* sqlStatement = "SELECT COUNT(*) FROM PANELS";
+        
+        NSString *insertSQL = [NSString stringWithFormat: @"SELECT COUNT(*) FROM PANELS where groupId=%i", groupId];
+        //NSLog(@"insertSQL=%@", insertSQL);
+        const char* sqlStatement = [insertSQL UTF8String];
+        //const char* sqlStatement = "SELECT COUNT(*) FROM PANELS";
         sqlite3_stmt *statement;
         
         if( sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK )
@@ -683,6 +789,37 @@
         }//end if(panel!=nil)
     }//end for
 }
+
+-(void)submitSQLRequestSavePanelsForGroup:(NSArray *)panels andGroupId:(int)groupId{
+    
+    for(int i=0; i<[panels count]; i++)
+    {
+        Panel* panel = [panels objectAtIndex:i];
+        if(panel!=nil)
+        {
+            sqlite3_stmt    *statement;
+            const char *dbpath = [databasePathStatic UTF8String];
+            if (sqlite3_open(dbpath, &database) == SQLITE_OK)
+            {
+                NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO PANELS (panelId, groupId, photoId, photourl, numplacements, numannotations) VALUES (\"%i\",\"%i\",\"%i\",\"%@\", \"%f\", \"%f\")", panel.panelId, groupId, panel.photo.photoId, panel.photo.imageURL, -1.0, -1.0];
+                
+                const char *insert_stmt = [insertSQL UTF8String];
+                
+                sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
+                if (sqlite3_step(statement) == SQLITE_DONE)
+                {
+                    //NSLog(@"Panel added");
+                    
+                } else {
+                    //NSLog(@"Failed to add panel");
+                }
+                sqlite3_finalize(statement);
+                sqlite3_close(database);
+            }
+        }//end if(panel!=nil)
+    }//end for
+}
+
 
 -(void)submitSQLRequestSaveComics:(NSArray*)comics{
     

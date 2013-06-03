@@ -14,6 +14,7 @@
 NSString *GROUP_ID = @"id";
 NSString *GROUP_NAME = @"name";
 NSString *HASH_ID = @"hashid";
+NSString *CURRENT_HASH_ID = @"current_hash_id";
 NSString *THEME_ID = @"current_theme_id";
 NSString *ORGANISATION_ID = @"organisation_id";
 NSString *CREATED_AT = @"created_at";

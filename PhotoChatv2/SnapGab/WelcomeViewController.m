@@ -52,9 +52,15 @@ DataLoader* dataLoader;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+
+    //Create databse for the app
     dataLoader = [[DataLoader alloc] init];
+    [dataLoader submitSQLRequestCreateTablesForGroup:1];
+    //[dataLoader submitSQLRequestCreateTablesForApp];
+    /*
     groupLoader = [[GroupLoader alloc] init];
     groupLoader.delegate = self;
+    */
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSString* groupHashId= [prefs objectForKey:@"current_group_hash"];
@@ -112,7 +118,7 @@ DataLoader* dataLoader;
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if([[segue identifier] isEqualToString:@"logout"])
     {
-        NSLog(@"LOGOUT CALLED");
+        NSLog(@"Logout Called.");
 
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:nil forKey:@"session"];

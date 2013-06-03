@@ -41,11 +41,11 @@ BOOL resourcesLoaded = NO;
         [self submitResourceRequest:urlRequest];
         resourcesLoaded = YES;
     }
-    
+
     else{
-        //NSLog(@"Resources downloaded from the database.");
+        //NSLog(@"submitRequestGetResourcesForTheme.Resources downloaded from the database.themeId=%i", themeId);
         NSArray* resources = [self convertResourcesSQLIntoResources:themeId];
-        //NSLog(@"RESOurces.count=%i", [resources count]);
+        //NSLog(@"submitRequestGetResourcesForTheme.[resources count]=%i", [resources count]);
         if([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:)])
             [self.delegate ResourceLoader:self didLoadResources:resources];
         if ([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:forObject:)])
@@ -150,7 +150,7 @@ BOOL resourcesLoaded = NO;
         numResources = [jsonArray count];
         NSArray* resources = [ResourceJSONHandler getResourcesFromResourcesJSON:jsonArray];
         [self submitSQLRequestSaveResources:resources];
-        //NSLog(@"#of resources =%i", [resources count]);
+        //NSLog(@"handleGetResourcesForThemeResponse.#of resources =%i", [resources count]);
         if([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:)])
             [self.delegate ResourceLoader:self didLoadResources:resources];
         if ([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:forObject:)])

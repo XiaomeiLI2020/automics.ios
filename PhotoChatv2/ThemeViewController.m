@@ -31,7 +31,7 @@ BOOL alertShown;
 NSString* groupHashId;
 NSString *iCellID = @"GROUP_CELL";
 int selectedThemeId;
-
+Theme* selectedTheme;
 
 @synthesize organisations;
 @synthesize themes;
@@ -54,16 +54,7 @@ float themeScrollViewHeight = 80.0;
     return self;
 }
 
-/*
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-   
-    if([[segue identifier] isEqualToString:@"themepreview"])
-    {
-        ThemePreviewViewController *tpvc = (ThemePreviewViewController*)[segue destinationViewController];
-        tpvc.themeId =1;
-    }
-}
-*/
+
 
 - (void)viewDidLoad
 {
@@ -71,8 +62,8 @@ float themeScrollViewHeight = 80.0;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    DataLoader* dataLoader = [[DataLoader alloc] init];
-    [dataLoader submitSQLRequestCreateTablesForGroup:1];
+    //DataLoader* dataLoader = [[DataLoader alloc] init];
+    //[dataLoader submitSQLRequestCreateTablesForGroup:1];
     
     organisationCounter=0;
     organisations = [[NSArray alloc] init];
@@ -124,6 +115,7 @@ float themeScrollViewHeight = 80.0;
 
 -(void)loadThemes
 {
+    //NSLog(@"ThemeViewController.loadThemes.");
 
     [self.collectionView reloadData];
     /*
@@ -207,6 +199,19 @@ float themeScrollViewHeight = 80.0;
 }
 
 
+/*
+ -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+ 
+ if([[segue identifier] isEqualToString:@"preview"])
+ {
+     ThemePreviewViewController *tpvc = (ThemePreviewViewController*)[segue destinationViewController];
+     tpvc.theme = selectedTheme;
+     tpvc.themeId = selectedThemeId;
+     
+ }
+ }
+*/
+
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -237,14 +242,14 @@ float themeScrollViewHeight = 80.0;
     if(theme!=nil)
     {
         selectedThemeId = theme.themeId;
-        NSLog(@"theme got");
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Select theme"
-                              message: [NSString stringWithFormat:@"You selected theme %@", theme.name]
-                              delegate: self
-                              cancelButtonTitle:@"Confirm"
-                              otherButtonTitles:@"Cancel", nil];
-        [alert show];
+        selectedTheme = theme;
+        //NSLog(@"ThemeViewController.Get preview of theme: id=%i, selectedThemeId=%i", selectedTheme.themeId, selectedThemeId);
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
+        ThemePreviewViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ThemePreviewViewController"];
+        viewController.theme = selectedTheme;
+        viewController.themeId = selectedThemeId;
+        [self presentViewController:viewController animated:YES completion:nil];
     }
     /*
         NSLog(@"Already a member of this group");
@@ -356,7 +361,7 @@ float themeScrollViewHeight = 80.0;
         for(int i=0; i<[organisation.themes count];i++)
         {
             Theme* theme = [organisation.themes objectAtIndex:i];
-            NSLog(@"theme.id=%i, theme.name=%@", theme.themeId, theme.name);
+            //NSLog(@"theme.id=%i, theme.name=%@", theme.themeId, theme.name);
             [self.themes addObject:theme];
         }
         
@@ -371,7 +376,7 @@ float themeScrollViewHeight = 80.0;
 
         if(organisationCounter==[self.organisations count])
         {
-            NSLog(@"All organisations loaded");
+            //NSLog(@"ThemeViewController.All organisations loaded");
             [self loadThemes];
         }//end if
 
@@ -381,7 +386,7 @@ float themeScrollViewHeight = 80.0;
 
 #pragma mark ResourceLoader functions.
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResources:(NSArray*)resources forObject:(NSObject *)obj{
-    NSLog(@"resources loaded.");
+    //NSLog(@"ThemeViewController.resources loaded.");
     NSIndexPath *indexPath = (NSIndexPath*)obj;
     [photoLoadersInProgress removeObjectForKey:indexPath];
     if (resources.count > 0){

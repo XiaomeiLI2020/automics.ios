@@ -20,7 +20,7 @@
     organisation.name = [DataValidator checkKeyValueForNull:name];
     
     if ([organisationJSON valueForKey:@"themes"] != nil){
-        NSLog(@"convertOrganisationJSONDictIntoOrganisation.THEMES");
+        //NSLog(@"convertOrganisationJSONDictIntoOrganisation.themes");
         NSArray* themesArray = [organisationJSON valueForKey:@"themes"];
         if (![themesArray isEqual:[NSNull null]]){
             NSArray *themes = [ThemeJSONHandler getThemesFromThemesJSON:themesArray];

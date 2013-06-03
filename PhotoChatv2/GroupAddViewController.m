@@ -7,6 +7,7 @@
 //
 
 #import "GroupAddViewController.h"
+#import "ThemeViewController.h"
 
 @interface GroupAddViewController ()
 
@@ -44,24 +45,32 @@
 - (IBAction)selectTheme:(id)sender {
     
     groupName = self.groupTextField.text;
-    
-    if(groupName!=nil)
+    if(groupName!=nil && ![groupName isEqualToString:@""])
     {
+
+        //Create a new group
+        Group* group = [[Group alloc] init];
+        group.name = groupName;
+        [groupLoader submitRequestPostGroup:group];
         
-        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
+        ThemeViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ThemeViewController"];
+        [self presentViewController:viewController animated:YES completion:nil];
     }
 }
 
 - (IBAction)cancelPressed:(id)sender {
     
     groupName = self.groupTextField.text;
-    
     //if(groupName!=nil && ![groupName isEqualToString:@""])
     {
-        
-       //[self performSegueWithIdentifier:@"selectTheme" sender:self];
-        
-        //[[self navigationController] pushViewController:[self destinationViewController] animated:NO];
+        self.groupTextField.text = nil;
+
+        /*
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
+        ThemeViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ThemeViewController"];
+        [self presentViewController:viewController animated:YES completion:nil];
+       */
     }
 
 }
@@ -75,10 +84,14 @@
     return YES;
 }
 
+/*
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
 
+    if(groupName!=nil && ![groupName isEqualToString:@""])
+    {
     if([[segue identifier] isEqualToString:@"selectTheme"])
     {
+
         groupName = self.groupTextField.text;
         if(groupName!=nil && ![groupName isEqualToString:@""])
         {
@@ -86,11 +99,11 @@
             group.name = groupName;
             [groupLoader submitRequestPostGroup:group];
         }
-
         
     }//end if
+    }
 }
-
+*/
 #pragma mark - GroupLoaderDelegate
 -(void)GroupLoader:(GroupLoader*)groupLoader didSaveGroup:(Group*)group{
     NSLog(@"Group saved=%@ ", group.hashId);
@@ -108,22 +121,6 @@
 -(void)GroupLoader:(GroupLoader*)groupLoader didJoinGroup:(Group*)group{
     NSLog(@"Became group member");
 }
-/*
- 
- -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
- 
- 
- if([[segue identifier] isEqualToString:@"editPanel"])
- {
- if([self.panels count]>0 && [self.panels count]>currentPage)
- {
- //NSLog(@"editPanel.currentPage=%i", currentPage);
- Panel *panel = [self.panels objectAtIndex:(currentPage)];
- if(panel!=nil)
- {
- PanelEditViewController *pevc = (PanelEditViewController *)[segue destinationViewController];
- 
- 
- */
+
 
 @end

@@ -29,9 +29,7 @@ int const kPostMembershipForGroup = 4;
     groupRequestType = kGetGroups;
     NSURLRequest* urlRequest = [self prepareRequestForGetGroups];
     [self submitGroupRequest:urlRequest];
-    
 }
-
 
 -(void)submitRequestPostGroup:(Group*)group{
     groupRequestType = kPostGroup;
@@ -92,10 +90,7 @@ int const kPostMembershipForGroup = 4;
     NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     NSLog(@"groupPostData: %@", responseString);
     [urlRequest setHTTPBody:data];
-    
 
-    
-    
     return urlRequest;
 }
 

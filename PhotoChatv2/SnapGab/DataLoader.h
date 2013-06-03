@@ -41,11 +41,13 @@ NSString *databasePathStatic;
 
 //Tables
 -(void)submitSQLRequestCreateTablesForGroup:(int)groupId;
+-(void)submitSQLRequestCreateTablesForApp;
 
 //Panels
 -(int)submitSQLRequestCountPanelsForGroup:(int)groupId;
 -(void)submitSQLRequestGetPanelsForGroup:(int)groupId;
 -(void)submitSQLRequestSavePanels:(NSArray*)panels;
+-(void)submitSQLRequestSavePanelsForGroup:(NSArray*)panels andGroupId:(int)groupId;
 -(NSArray*)convertPanelsSQLIntoPanels:(int)groupId;
 -(NSArray*)convertPanelSQLIntoPanel:(int)panelId;
 -(void)submitSQLRequestGetPanelForId:(int)panelId;

@@ -16,8 +16,11 @@
 @interface ThemePreviewViewController : UIViewController
 <UICollectionViewDelegate, UICollectionViewDataSource, GroupLoaderDelegate, PhotoLoaderDelegate, ImageDownloaderDelegate, UIAlertViewDelegate, UserLoaderDelegate, ResourceLoaderDelegate>
 
+- (IBAction)selectThemePressed:(id)sender;
+
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property int themeId;
+@property Theme* theme;
 
 @property NSMutableArray* themes;
 @property NSMutableArray* resources;

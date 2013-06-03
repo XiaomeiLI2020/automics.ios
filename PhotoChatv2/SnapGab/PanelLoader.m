@@ -102,6 +102,7 @@ int const kPostPanel = 2;
 -(NSURLRequest*)preparePanelRequestForGroup:(int)groupId{
     NSString *panelURL = [APIWrapper getURLForGetPanels];
     NSString* authenticatedPanelURL = [self authenticatedGetURL:panelURL];
+    NSLog(@"authenticatedPanelURL=%@", authenticatedPanelURL);
     NSURL* url = [NSURL URLWithString:authenticatedPanelURL];
     return [NSURLRequest requestWithURL:url];
 }
