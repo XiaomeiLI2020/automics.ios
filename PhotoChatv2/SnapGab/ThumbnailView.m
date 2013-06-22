@@ -60,9 +60,10 @@ int placementCounter;
                                            _imageView.frame = CGRectMake(0.0, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
                                            [self addSubview:_imageView];
                                            //NSLog(@"image added to screenshot.");
-                                           
                                        }
                                        failure:^(NSError *error) {
+                                           NSLog(@"ThumnailView.Failed to load thumbnail image. panelId=%i", panel.panelId);
+                                           /*
                                            UIAlertView *alert = [[UIAlertView alloc]
                                                                  initWithTitle: @"Load failed."
                                                                  message: @"Failed to load thumbnail image"
@@ -70,6 +71,7 @@ int placementCounter;
                                                                  cancelButtonTitle:@"OK"
                                                                  otherButtonTitles:nil];
                                            [alert show];
+                                            */
                                        }];
                 
                  
@@ -78,6 +80,8 @@ int placementCounter;
                     //NSLog(@"panelId=%i.annotations already downloaded are added.", panel.panelId);
                     [self loadPlacements:panel];
                     snapshot = [self imageWithView:self];
+
+
             
         }//end if panel!=nil
 
@@ -117,13 +121,22 @@ int placementCounter;
 }
 
 
--(UIImage *) imageWithView:(UIView *)view
+-(UIImage*)imageWithView:(UIView*)view
 {
     //NSLog(@"ThumbnailView.imageWithView called");
     //UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, [[UIScreen mainScreen] scale]);
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, 0);
+    //UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, 0);
+    
+    CGSize imageSize = [view bounds].size;
+    if (NULL != UIGraphicsBeginImageContextWithOptions)
+        UIGraphicsBeginImageContextWithOptions(imageSize, NO, 0);
+    else
+        UIGraphicsBeginImageContext(imageSize);
+    
+
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage * img = UIGraphicsGetImageFromCurrentImageContext();
+    //[self setNeedsDisplay];
     UIGraphicsEndImageContext();
     return img;
 }
@@ -224,7 +237,7 @@ int placementCounter;
             numPlacements = [panel.resources count];
             int placementCounter = 0;
             
-            //NSLog(@"numPlacements=%i, numResources=%i", [panel.placements count], [panel.resources count]);
+            //NSLog(@"Thumbnailview. panelId=%i, numPlacements=%i, numResources=%i", panel.panelId, [panel.placements count], [panel.resources count]);
             
             if(numPlacements > 0)
             {
@@ -258,13 +271,14 @@ int placementCounter;
                             resourceFrame = CGRectMake(0, 0, thumbnailWidth, thumbnailScrollObjHeight);
                         }
                         
-                        
+                        //NSLog(@"resourceFrame=%@", NSStringFromCGRect(resourceFrame));
                         ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource andScale:defaultScale andAngle:defaultAngle];
                         rv.userInteractionEnabled = NO;
-                        if([type isEqual:@"d"])
-                            rv.transform = CGAffineTransformScale(rv.transform, 0.5, 0.5);
+                        //if([type isEqual:@"d"])
+                        //    rv.transform = CGAffineTransformScale(rv.transform, 0.5, 0.5);
                         [self addSubview:rv];
                         
+                        //NSLog(@"Thumbnailview. panelId=%i, resource added =%@", panel.panelId, resource.imageURL);
                         //NSLog(@"resource added.%i", placementCounter);
                     }//end if resource!=nil
                     
@@ -272,6 +286,8 @@ int placementCounter;
             }//end if(numPlacements>0)
             //snapshot = [self imageWithView:self];
         }//end if panel.placements!=nil
+        
+        //snapshot = [self imageWithView:self];
     }//end if panel!=null
 }
 

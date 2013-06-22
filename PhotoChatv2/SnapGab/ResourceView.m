@@ -232,6 +232,8 @@ CGRect originalBounds;
                                         
                                     }
                                     failure:^(NSError *error) {
+                                        NSLog(@"Failed to load image");
+                                        /*
                                         UIAlertView *alert = [[UIAlertView alloc]
                                                               initWithTitle: @"Load failed"
                                                               message: @"Failed to load image"
@@ -239,6 +241,7 @@ CGRect originalBounds;
                                                               cancelButtonTitle:@"OK"
                                                               otherButtonTitles:nil];
                                         [alert show];
+                                         */
                                     }];
             
         }//end if resource!=nil

@@ -30,7 +30,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.scrollFrame = frame;
+        //self.scrollFrame = frame;
+        self.scrollFrame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
         self.scrollObjWidth = frame.size.width;
         self.scrollObjHeight = frame.size.height;
         

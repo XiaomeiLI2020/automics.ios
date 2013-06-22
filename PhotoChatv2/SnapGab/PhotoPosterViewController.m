@@ -243,7 +243,7 @@ bool alertShown;
 
 
 -(void)startOperation:(NSURLRequest*)urlRequest postDataRequestType:(int)postDataRequestType {
-    //NSLog(@"startOperation");
+    //NSLog(@"PhotoPosterView.startOperation. new photo+plus uploading");
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     appDelegate.automicsEngine.delegate = self;
@@ -262,13 +262,28 @@ bool alertShown;
     operation.delegate = self;
     [appDelegate.automicsEngine enqueueOperation:operation];
     //self.dataFeedConnection = [operation urlConnection];
+    NSLog(@"PhotoPosterView. startOperation. reachable=%d", [panelsLoader isReachable]);
+    
+    if(![panelsLoader isReachable])
+    {
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle: @"Upload Failure"
+                              message: @"Please upload when network connection is available."
+                              delegate:self
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
+        [alert show];
+    }//end if
+    else if([panelsLoader isReachable])
+    {
+        [operation onUploadProgressChanged:^(double progress) {
+            
+            //DLog(@"onUploadProgressChanged=%.2f, progress=%f", progress*100.0, progress);
+            self.progressView.progress = (float)progress;
+            
+        }];
+    }//end else
 
-    [operation onUploadProgressChanged:^(double progress) {
-        
-        //DLog(@"onUploadProgressChanged=%.2f, progress=%f", progress*100.0, progress);
-        self.progressView.progress = (float)progress;
-        
-    }];
 
   }//end startOperation
 
@@ -295,24 +310,41 @@ bool alertShown;
     [appDelegate.automicsEngine enqueueOperation:operation];
     //self.dataFeedConnection = [operation urlConnection];
     
-     [operation onUploadProgressChanged:^(double progress) {
-     
-     //DLog(@"onUploadProgressChanged=%.2f", progress*100.0);
-     self.progressView.progress = (float)progress;
-         /*
-         if(progress==1.0)
-         {
-             UIAlertView *alert = [[UIAlertView alloc]
-                                   initWithTitle: @"Upload Successful"
-                                   message: nil
-                                   delegate: self
-                                   cancelButtonTitle:@"OK"
-                                   otherButtonTitles:nil];
-             [alert show];
-         }
-          */
-     }];
+    NSLog(@"PhotoPosterView. startPanelOperation. reachable=%d", [panelsLoader isReachable]);
     
+    if(![panelsLoader isReachable])
+    {
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle: @"Upload Failure"
+                              message: @"Please upload when network connection is available."
+                              delegate:self
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
+        [alert show];
+    }//end if
+    else if([panelsLoader isReachable]){
+        [operation onUploadProgressChanged:^(double progress) {
+            
+            //NSLog(@"PhotoPosterView. startPanelOperation. reachable=%d", [panelsLoader isReachable]);
+            //DLog(@"onUploadProgressChanged=%.2f", progress*100.0);
+            self.progressView.progress = (float)progress;
+            /*
+             if(progress==1.0)
+             {
+             UIAlertView *alert = [[UIAlertView alloc]
+             initWithTitle: @"Upload Successful"
+             message: nil
+             delegate: self
+             cancelButtonTitle:@"OK"
+             otherButtonTitles:nil];
+             [alert show];
+             }
+             */
+        }];
+
+    }
+    
+
 }//end startOperation
 
 
@@ -423,7 +455,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 
 #pragma mark MKNetworkOperation functions.
 -(void)MKNetworkOperation:(MKNetworkOperation *)operation didUploadPhoto:(Photo*)photo{
-    //NSLog(@"Photo uploaded %@", photo);
+    NSLog(@"PhotoPosterView.MKNetworkOperation.didUploadPhotoPhoto uploaded %@", photo);
     
     if(photo!=nil)
     {
@@ -449,7 +481,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 }
 
 -(void)MKNetworkOperation:(MKNetworkOperation *)loader didUploadPanel:(NSString*)response{
-    //NSLog(@"PhotoPosterView.Panel saved: %@", response);
+    NSLog(@"PhotoPosterView.MKNetworkOperation.didUploadPanel.Panel saved: %@", response);
     UIAlertView *message = [[UIAlertView alloc]
                             initWithTitle:@"Upload Successful"
                             message:nil
@@ -460,7 +492,8 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 }
 
 -(void)MKNetworkOperation:(MKNetworkOperation*)operation operationFailed:(NSString*)responseString{
-    NSLog(@"PhotoPosterViewController.operationFailedWithError: %@", responseString);
+    NSLog(@"PhotoPosterView.MKNetworkOperation.PhotoPosterViewController.operationFailedWithError: %@", responseString);
+    /*
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Upload Failure"
                           message: @"Upload will resume when network connection is available."
@@ -472,6 +505,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
         [alert show];
         //alertShown = YES;
     }
+     */
 
 }
 

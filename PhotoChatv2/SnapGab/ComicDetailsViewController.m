@@ -397,13 +397,9 @@ NSString* urlImageString;
     
         if([[segue identifier] isEqualToString:@"detailToEdit"])
         {
-
             ComicEditViewController *cpvc = (ComicEditViewController *)[segue destinationViewController];
             cpvc.comicId = self.comicId;
-            
-            
         }
-    
 }
 
 

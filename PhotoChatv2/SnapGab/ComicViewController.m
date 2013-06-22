@@ -99,9 +99,7 @@ NSArray* comicList;
     comicList = [[NSArray alloc] init];
     comicLoader = [[ComicLoader alloc] init];
     comicLoader.delegate = self;
-    [comicLoader submitRequestGetComicsForGroup:1];
- 
-    
+    [comicLoader submitRequestGetComicsForGroup];
 
 }
 

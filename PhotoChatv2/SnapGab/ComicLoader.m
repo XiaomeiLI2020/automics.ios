@@ -11,52 +11,106 @@
 #import "ComicJSONHandler.h"
 
 @interface ComicLoader ()
-
 @end
 
 @implementation ComicLoader
-
-
 int const kGetGroupComics = 0;
 int const kGetComic = 1;
 int const kPostComic = 2;
-
+BOOL comicsDownloaded = NO;
+dispatch_queue_t backgroundQueue;
 @synthesize delegate;
 @synthesize comicRequestType;
 
 
 
 -(void)submitRequestGetComicsForGroup:(int)groupId{
-
-    if([self submitSQLRequestCountComicsForGroup:groupId]==0)
+/*
+    //if([self submitSQLRequestCountComicsForGroup:groupId]==0)
+    //if(!comicsDownloaded)
     {
         comicRequestType = kGetGroupComics;
+        comicsDownloaded = YES;
         NSURLRequest* urlRequest = [self prepareComicRequestForGroup:groupId];
         [self submitComicRequest:urlRequest];
     }
+   
+    
     else
     {
         //NSLog(@"[self submitSQLRequestCountComicsForGroup:groupId]=%i", [self submitSQLRequestCountComicsForGroup:groupId]);
-        NSLog(@"comics downloaded from the database");
+
         NSArray* comics = [self convertComicsSQLIntoComics:groupId];
+        NSLog(@"comics downloaded from the database =%i.", [comics count]);
         if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComics:)])
             [self.delegate ComicLoader:self didLoadComics:comics];
     }
+     */
+ 
+}
+
+-(void)submitRequestGetComicsForGroup{
+    /*
+     //if([self submitSQLRequestCountComicsForGroup:groupId]==0)
+     //if(!comicsDownloaded)
+     {
+     comicRequestType = kGetGroupComics;
+     comicsDownloaded = YES;
+     NSURLRequest* urlRequest = [self prepareComicRequestForGroup:groupId];
+     [self submitComicRequest:urlRequest];
+     }
+     
+     
+     else
+     {
+     //NSLog(@"[self submitSQLRequestCountComicsForGroup:groupId]=%i", [self submitSQLRequestCountComicsForGroup:groupId]);
+     
+     NSArray* comics = [self convertComicsSQLIntoComics:groupId];
+     NSLog(@"comics downloaded from the database =%i.", [comics count]);
+     if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComics:)])
+     [self.delegate ComicLoader:self didLoadComics:comics];
+     }
+     */
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+    
+    //int groupExists = [self submitSQLRequestCheckGroupExists:currentGroupHashId];
+    //NSLog(@"groupExists =%i", groupExists);
+    //NSLog(@"currentGroupHashId =%@", currentGroupHashId);
+    int comicsDownloaded = [self submitSQLRequestCheckComicsDownloadedForGroup:currentGroupHashId];
+    NSLog(@"comicsDownloaded =%i", comicsDownloaded);
+    if(comicsDownloaded==0)
+    {
+        comicRequestType = kGetGroupComics;
+        comicsDownloaded = YES;
+        NSURLRequest* urlRequest = [self prepareComicRequestForGroup];
+        [self submitComicRequest:urlRequest];
+    }
+    else if(comicsDownloaded==1)
+    {
+        NSArray* comics = [self convertComicsSQLIntoComics:currentGroupHashId];
+        NSLog(@"comics downloaded from the database =%i.", [comics count]);
+        if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComics:)])
+            [self.delegate ComicLoader:self didLoadComics:comics];
+    }
+    
 }
 
 -(void)submitRequestGetComicWithId:(int)comicId{
     
-    if([self submitSQLRequestCheckComicExists:comicId]==0)
+    int comicExists = [self submitSQLRequestCheckComicExists:comicId];
+    if(comicExists==0)
     {
         comicRequestType = kGetComic;
         NSURLRequest* urlRequest = [self prepareComicRequestForGetComicWithId:comicId];
         [self submitComicRequest:urlRequest];
     }
-    else{
-        
+    else if(comicExists==1)
+    {
         //NSLog(@"[self submitSQLRequestCheckComicExists:comicId]=%i", [self submitSQLRequestCheckComicExists:comicId]);
         NSArray* comics= [self convertComicSQLIntoComic:comicId];
-        if(comics!=nil)
+        if(comics!=nil && [comics count]>0)
         {
             Comic* comic = [comics objectAtIndex:0];
             if(comic!=nil){
@@ -85,7 +139,8 @@ int const kPostComic = 2;
     [self submitURLRequest:urlRequest];
 }
 
--(NSURLRequest*)prepareComicRequestForGroup:(int)groupId{
+//-(NSURLRequest*)prepareComicRequestForGroup:(int)groupId{
+-(NSURLRequest*)prepareComicRequestForGroup{
     NSString *comicURL = [APIWrapper getURLForGetComics];
     NSString* authenticatedComicURL = [self authenticatedGetURL:comicURL];
     NSURL* url = [NSURL URLWithString:authenticatedComicURL];
@@ -151,9 +206,21 @@ int const kPostComic = 2;
     NSArray* jsonArray = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (jsonArray != nil){
         NSArray* comics = [ComicJSONHandler convertComicsJSONArrayIntoComics:jsonArray];
-        [self submitSQLRequestSaveComics:comics];
+        //[self submitSQLRequestSaveComics:comics];
+  
+        //backgroundQueue = dispatch_queue_create("com.razeware.imagegrabber.bgqueue", NULL);
+        //dispatch_async(backgroundQueue, ^(void) {
+        //    [self submitSQLRequestSaveComics:comics];
+        //});
+   
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+        
+        [self submitSQLRequestSaveComicsForGroup:comics andGroupHashId:currentGroupHashId];
+        
         if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComics:)])
             [self.delegate ComicLoader:self didLoadComics:comics];
+
     }else{
         [self reportErrorToDelegate:error];
     }
@@ -179,7 +246,10 @@ int const kPostComic = 2;
         Comic *comic = [ComicJSONHandler convertComicJSONDictIntoComic:comicdict];
         NSMutableArray* comics = [[NSMutableArray alloc] init];
         [comics addObject:comic];
-        [self submitSQLRequestSaveComics:comics];
+        
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+        [self submitSQLRequestSaveComicsForGroup:comics andGroupHashId:currentGroupHashId];
         
         NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
         NSLog(@"ComicData: %@", responseString);

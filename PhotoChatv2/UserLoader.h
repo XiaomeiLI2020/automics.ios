@@ -16,7 +16,10 @@
 @interface UserLoader : DataLoader
 
 @property (weak) id<UserLoaderDelegate> delegate;
+-(void)submitRequestGetUser:(int)userId;
 -(void)submitRequestPostJoinGroup:(NSString*)sessionToken andGroupHashId:(NSString*)groupHashId;
+-(void)submitRequestPostChangeGroup:(int)userId andNewGroupHashId:(NSString*)groupHashId;
+-(void)submitRequestDeleteFromGroup:(NSString*)groupHashId;
 //-(void)submitRequestPostJoinGroup:(NSString*)sessionToken andGroupHashId:(NSString*)groupHashId;
 -(void)submitRequestPostGenerateSessionToken:(User*)user;
 -(void)submitRequestPostRegister:(User*)user;
@@ -29,5 +32,8 @@
 
 -(void)UserLoader:(UserLoader*)loader didFailWithError:(NSError*)error;
 -(void)UserLoader:(UserLoader*)loader didGenerateSession:(Session*)session;
+-(void)UserLoader:(UserLoader*)loader didLoginUser:(User*)user;
 -(void)UserLoader:(UserLoader*)loader didJoinGroup:(User*)user;
+-(void)UserLoader:(UserLoader*)loader didChangeGroup:(User*)user;
+-(void)UserLoader:(UserLoader*)loader didLoadUser:(User*)user;
 @end

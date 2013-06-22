@@ -264,22 +264,18 @@ BOOL thumbMode;
 	[self.view addSubview: activityIndicator];
     
     //Load panels in thumbnailscrollViews
-    [panelsLoader submitRequestGetPanelsForGroup:1];
+    //[panelsLoader submitRequestGetPanelsForGroup:1];
+    [panelsLoader submitRequestGetPanelsForGroup];
     
 }
-
 
 - (void)viewDidAppear:(BOOL)animated
 {
     //NSLog(@"viewDidAppear");
-    
-    
     //_bubblesAdded = NO;
     //_resourcesAdded = NO;
-
     //[self updateScrollViews];
 }
-
 
 -(void)initiateScrollViews
 {
@@ -300,9 +296,6 @@ BOOL thumbMode;
     thumbnailScrollView.tag=1;
     [self.view addSubview:thumbnailScrollView];
 }
-
-
-
 
 - (void)updateScrollViews
 {
@@ -985,84 +978,83 @@ BOOL thumbMode;
 
 -(void)displayThumbails
 {
-    /*
-     for(UIView* subView in self.view.subviews)
-     {
-     if([subView isMemberOfClass:[ UIActivityIndicatorView class]])
-     {
-     UIActivityIndicatorView* aIndicator = (UIActivityIndicatorView*) subView;
-     [aIndicator stopAnimating];
-     //[subView stopAnimating];
-     //[subView removeFromSuperview];
-     }//end if
-     }//end for
-     */
     //NSLog(@"displayThumbails.thumbMode=%d, thumbPage=%i, thumbnailIndex=%i", thumbMode, thumbPage, thumbnailIndex);
     for(int index=thumbPage; index<thumbPage+4; index++)
     {
         if(index<[self.panels count])
         {
             
-            /*
-             UIActivityIndicatorView* aIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-             aIndicator.frame = CGRectMake((index-thumbPage)*thumbnailWidth, thumbnailScrollYOrigin, thumbnailWidth, thumbnailScrollObjHeight);
-             aIndicator.center = CGPointMake(aIndicator.frame.origin.x+(thumbnailWidth/2), thumbnailScrollYOrigin+(thumbnailScrollObjHeight/2));
-             [aIndicator startAnimating];
-             [self.view addSubview:aIndicator];
-            */ 
-            /*
-             BOOL displayed= NO;
-             
-             for(UIView* subView in thumbnailScrollView.subviews)
-             {
-             if(subView.tag==index)
-             {
-             displayed=YES;
-             [subView removeFromSuperview];
-             break;
-             }//end if
-             }//end for
-             */
+            BOOL indicatorExists = NO;
+            UIActivityIndicatorView* aIndicator;
+            
+            for(UIView* subView in thumbnailScrollView.subviews)
+            {
+                if([subView isMemberOfClass:[UIActivityIndicatorView class]] && subView.tag==index)
+                {
+                    indicatorExists = YES;
+                    break;
+                }
+            }
+            NSLog(@"indicatorExists[%i]=%d", index, indicatorExists);
+            
+            if(!indicatorExists)
+            {
+                aIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                //aIndicator.frame = CGRectMake((index-thumbPage)*thumbnailWidth, thumbnailScrollYOrigin, thumbnailWidth, thumbnailScrollObjHeight);
+                aIndicator.frame = CGRectMake(index*thumbnailWidth, 0, thumbnailWidth, thumbnailScrollObjHeight);
+                //aIndicator.center = CGPointMake(aIndicator.frame.origin.x+(thumbnailWidth/2), thumbnailScrollYOrigin+(thumbnailScrollObjHeight/2));
+                aIndicator.center = CGPointMake(aIndicator.frame.origin.x+(thumbnailWidth/2), 0+(thumbnailScrollObjHeight/2));
+                aIndicator.tag=index;
+                [aIndicator startAnimating];
+                //[self.view addSubview:aIndicator];
+                [thumbnailScrollView addSubview:aIndicator];
+            }
             //NSLog(@"displayThumbails. self.panels objectAtIndex:currentPage.currentPage=%i, index=%i, [self.panels count]=%i", currentPage, index, [self.panels count]);
             Panel* thumbnailPanel = [self.panels objectAtIndex:index];
-            //BOOL panelDownloaded = [[downloadedPanels objectAtIndex:index] boolValue];
+            BOOL panelDownloaded = [[downloadedPanels objectAtIndex:index] boolValue];
             //NSLog(@"displayThumbnails. PanelIndex=%i is downloaded=%d has placements=%i", index, panelDownloaded, [thumbnailPanel.placements count]);
-            //if(thumbnailPanel!=nil && panelDownloaded)
-            if(thumbnailPanel!=nil)
+            if(thumbnailPanel!=nil && panelDownloaded)
+            //if(thumbnailPanel!=nil)
             {
                 //NSLog(@"displayThumbnails. PanelIndex=%i is downloaded=%d has placements=%i", index, panelDownloaded, [thumbnailPanel.placements count]);
                 
-                //BOOL photoDownloaded = [[downloadedPhotos objectAtIndex:index] boolValue];
+                BOOL photoDownloaded = [[downloadedPhotos objectAtIndex:index] boolValue];
                 //NSLog(@"downloadedPhotos objectAtIndex:[%i]=%d", index, photoDownloaded);
-                //if(!photoDownloaded)
+                if(!photoDownloaded)
                 {
                     CGRect thumbFrame= CGRectMake(index*thumbnailWidth, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
                     ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:thumbnailPanel];
                     thumbnailPanel.thumbnail=thumbnailView.snapshot;
                     //NSLog(@"thumbnail#%i generated",index);
+                    
+                    NSNumber* yesObj = [NSNumber numberWithBool:YES];
+                    if(index<[downloadedPhotos count])
+                        [downloadedPhotos replaceObjectAtIndex:index withObject:yesObj];
                 }
                 
                 
                 UIImageView *imageView = [[UIImageView alloc] init];
                 imageView.frame = CGRectMake(index*thumbnailWidth, 0, thumbnailWidth, thumbnailHeight);
-                [imageView setImage:thumbnailPanel.thumbnail];
-                //[imageView setImageWithURL:[NSURL URLWithString:thumbnailPanel.photo.imageURL] placeholderImage:nil];
+                //[imageView setImage:thumbnailPanel.thumbnail];
+                if(!photoDownloaded)
+                    [imageView setImageWithURL:[NSURL URLWithString:thumbnailPanel.photo.imageURL] placeholderImage:nil];
+                else
+                    [imageView setImage:thumbnailPanel.thumbnail];
                 imageView.tag = index;
                 [thumbnailScrollView addSubview:imageView];
                 //NSLog(@"thumbnail#%i displayed",index);
                 
-                /*
-                 for(UIView* subView in self.view.subviews)
-                 {
-                     if([subView isMemberOfClass:[ UIActivityIndicatorView class]] && subView.tag==index)
-                     {
-                         UIActivityIndicatorView* aIndicator = (UIActivityIndicatorView*) subView;
-                         [aIndicator stopAnimating];
-                         [aIndicator removeFromSuperview];
-                         break;
-                     }//end if
-                 }//end for
-                */ 
+                for(UIView* subView in thumbnailScrollView.subviews)
+                {
+                    if([subView isMemberOfClass:[UIActivityIndicatorView class]] && subView.tag==index)
+                    {
+                        UIActivityIndicatorView* aIndicator = (UIActivityIndicatorView*) subView;
+                        [aIndicator stopAnimating];
+                        //[aIndicator removeFromSuperview];
+                        NSLog(@"displayThumbnails.indicator#%i stopped", index);
+                        break;
+                    }//end if
+                }//end for
             }//end if(thumbnailPanel!=nil && panelDownloaded)
             
         }//end if(index<[self.panels count])

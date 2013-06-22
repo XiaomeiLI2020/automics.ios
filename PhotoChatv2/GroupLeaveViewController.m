@@ -1,28 +1,28 @@
 //
-//  GroupJoinViewController.m
+//  GroupLeaveViewController.m
 //  PhotoChat
 //
-//  Created by Umar Rashid on 28/05/2013.
+//  Created by Umar Rashid on 10/06/2013.
 //  Copyright (c) 2013 Umar Rashid. All rights reserved.
 //
 
-#import "GroupJoinViewController.h"
+#import "GroupLeaveViewController.h"
 #import "GroupCollectionViewCell.h"
 #import "APIWrapper.h"
 #import "GroupCollectionViewLayout.h"
 #import "DataLoader.h"
 #import "UIImageView+WebCache.h"
-//#import "QREncoder.h"
-//#import "GroupQRView.h"
 
-@interface GroupJoinViewController ()
+@interface GroupLeaveViewController ()
+
 @property NSArray* groups;
 @property NSMutableDictionary *groupImages;
 @property NSMutableDictionary* photoLoadersInProgress;
 @property NSMutableDictionary* imageDownloadersInProgress;
+
 @end
 
-@implementation GroupJoinViewController
+@implementation GroupLeaveViewController
 
 @synthesize photoLoadersInProgress;
 @synthesize imageDownloadersInProgress;
@@ -32,7 +32,7 @@
 BOOL alertShown;
 NSString* groupHashId;
 DataLoader* dataLoader;
-NSString *mCellID = @"GROUP_CELL";
+NSString *pCellID = @"GROUP_CELL";
 
 - (void)viewDidLoad
 {
@@ -45,7 +45,7 @@ NSString *mCellID = @"GROUP_CELL";
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     groupHashId= [prefs objectForKey:@"current_group_hash"];
     NSLog(@"GroupJoinViewController.groupHashId=%@", groupHashId);
-
+    
     [self loadGroups];
     self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
     photoLoadersInProgress = [[NSMutableDictionary alloc] init];
@@ -106,27 +106,27 @@ NSString *mCellID = @"GROUP_CELL";
 
 #pragma mark - UserLoaderDelegate
 /*
--(void)UserLoader:(UserLoader*)loader didJoinGroup:(User*)currentUser{
-    
-    //NSLog(@"Group join request approved.");
-    if(currentUser!=nil)
-    {
-        NSLog(@"currentUser.userId=%i", currentUser.userId);
-        NSLog(@"currentUser.email=%@", currentUser.email);
-        
-        Group* currentGroup = currentUser.currentGroup;
-        NSLog(@"currentGroup.hashId=%@", currentGroup.hashId);
-        
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        //[userDefaults setObject:user.currentSession.token forKey:@"session"];
-        [userDefaults setObject:currentGroup.hashId forKey:@"current_group_hash"];
-        [userDefaults setObject:[NSNumber numberWithInt:currentUser.userId] forKey:@"user_id"];
-        [userDefaults synchronize];
-        
-    }
-    
-}
-*/
+ -(void)UserLoader:(UserLoader*)loader didJoinGroup:(User*)currentUser{
+ 
+ //NSLog(@"Group join request approved.");
+ if(currentUser!=nil)
+ {
+ NSLog(@"currentUser.userId=%i", currentUser.userId);
+ NSLog(@"currentUser.email=%@", currentUser.email);
+ 
+ Group* currentGroup = currentUser.currentGroup;
+ NSLog(@"currentGroup.hashId=%@", currentGroup.hashId);
+ 
+ NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+ //[userDefaults setObject:user.currentSession.token forKey:@"session"];
+ [userDefaults setObject:currentGroup.hashId forKey:@"current_group_hash"];
+ [userDefaults setObject:[NSNumber numberWithInt:currentUser.userId] forKey:@"user_id"];
+ [userDefaults synchronize];
+ 
+ }
+ 
+ }
+ */
 
 -(void)UserLoader:(UserLoader*)loader didGenerateSession:(Session*)session{
     
@@ -148,17 +148,19 @@ NSString *mCellID = @"GROUP_CELL";
 }
 -(void)UserLoader:(UserLoader*)loader didJoinGroup:(User*)currentUser{
     
-
+    //NSLog(@"Group join request approved.");
     if(currentUser!=nil)
     {
-        NSLog(@"didJoinGroup.currentUser.userId=%i", currentUser.userId);
-        NSLog(@"didJoinGroup.currentUser.groupHashId=%@", currentUser.groupHashId);
+        /*
+         user.userId = currentUser.userId;
+         user.groupHashId = currentUser.groupHashId;
          
          NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-         [userDefaults setObject:currentUser.groupHashId forKey:@"current_group_hash"];
-         [userDefaults setObject:[NSNumber numberWithInt:currentUser.userId] forKey:@"user_id"];
+         [userDefaults setObject:user.currentSession.token forKey:@"session"];
+         [userDefaults setObject:user.groupHashId forKey:@"group"];
+         [userDefaults setObject:[NSNumber numberWithInt:user.userId] forKey:@"user_id"];
          [userDefaults synchronize];
-
+         */
     }
     
 }
@@ -174,28 +176,19 @@ NSString *mCellID = @"GROUP_CELL";
         //NSString* sessionToken = [prefs objectForKey:@"session"];
         NSString* email = [prefs objectForKey:@"email"];
         NSString* password = [prefs objectForKey:@"password"];
-        NSString* sessionToken = [prefs objectForKey:@"session"];
-        NSString* currentGroupHash = [prefs objectForKey:@"current_group_hash"];
-        
-        //[NSNumber numberWithInt:currentUser.userId]
-        int userId = [[prefs objectForKey:@"user_id"] intValue];
+        NSString* groupHashId = [prefs objectForKey:@"current_group_hash"];
         
         User* user = [[User alloc] init];
         user.email = email;
         user.password = password;
-  
-        NSLog(@"sessionToken=%@, newgroupHashId=%@, currentGroupHash=%@, userId=%i", sessionToken, groupHashId, currentGroupHash, userId);
+        
         //NSLog(@"email=%@, password=%@", user.email, user.password);
+        [userLoader submitRequestDeleteFromGroup:groupHashId];
         //[userLoader submitRequestPostGenerateSessionToken:user];
-        
-        if(currentGroupHash==NULL)
-            [userLoader submitRequestPostJoinGroup:sessionToken andGroupHashId:groupHashId];
-        else{
-            
-            if(userId!=0)
-                [userLoader submitRequestPostChangeGroup:userId andNewGroupHashId:groupHashId];
-        }
-        
+
+        //[userLoader submitRequestPostJoinGroup:sessionToken andGroupHashId:groupHashId];
+        //[self performSegueWithIdentifier:@"toGroupMain" sender:self];
+        //[self dismissViewControllerAnimated:YES completion:nil];
         return;
     }//end if
     if([title isEqualToString:@"Cancel"])
@@ -212,22 +205,35 @@ NSString *mCellID = @"GROUP_CELL";
     GroupCollectionViewCell* selectedGroupCell = (GroupCollectionViewCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
     Group *group = [selectedGroupCell getGroup];
     
+    if(!alertShown)
+    {
+        groupHashId = group.hashId;
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle: @"Leave Group"
+                              message: [NSString stringWithFormat:@"You will leave %@", group.name]
+                              delegate: self
+                              cancelButtonTitle:@"Confirm"
+                              otherButtonTitles:@"Cancel", nil];
+        [alert show];
+        alertShown = YES;
+    }//end if(!alertShown)
     
+    /*
     if(groupHashId!=nil && [groupHashId isEqualToString:group.hashId])
     {
-
-            NSLog(@"Already selected this group.");
-            //if(!alertShown)
-            {
-                UIAlertView *alert = [[UIAlertView alloc]
-                                      initWithTitle: @"This is your current group"
-                                      message: [NSString stringWithFormat:@"Please select a different group"]
-                                      delegate: nil
-                                      cancelButtonTitle:@"OK"
-                                      otherButtonTitles:nil];
-                [alert show];
-                //alertShown = YES;
-            }
+        
+        NSLog(@"Already a member of this group");
+        //if(!alertShown)
+        {
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle: @"Already a group member"
+                                  message: [NSString stringWithFormat:@"Please select a different group"]
+                                  delegate: nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
+            [alert show];
+            //alertShown = YES;
+        }
     }//end if(groupHashId!=nil && [groupHashId isEqualToString:group.hashId])
     else{
         
@@ -235,8 +241,8 @@ NSString *mCellID = @"GROUP_CELL";
         {
             groupHashId = group.hashId;
             UIAlertView *alert = [[UIAlertView alloc]
-                                  initWithTitle: @"Select Group"
-                                  message: [NSString stringWithFormat:@"You have selected %@", group.name]
+                                  initWithTitle: @"Join Group"
+                                  message: [NSString stringWithFormat:@"You will join %@", group.name]
                                   delegate: self
                                   cancelButtonTitle:@"Confirm"
                                   otherButtonTitles:@"Cancel", nil];
@@ -244,57 +250,57 @@ NSString *mCellID = @"GROUP_CELL";
             alertShown = YES;
         }//end if(!alertShown)
     }//end else
-    
-    /*
-    if(groupHashId!=nil && [groupHashId isEqualToString:@""])
-    {
-        if([groupHashId isEqualToString:group.hashId])
-        {
-            NSLog(@"Already a member of this group");
-            //if(!alertShown)
-            {
-                UIAlertView *alert = [[UIAlertView alloc]
-                                      initWithTitle: @"Already a group member"
-                                      message: [NSString stringWithFormat:@"Please select a different group"]
-                                      delegate: nil
-                                      cancelButtonTitle:@"OK"
-                                      otherButtonTitles:nil];
-                [alert show];
-                //alertShown = YES;
-            }
-            
-        }//end if([groupHashId isEqualToString:group.hashId])
-        
-        if(![groupHashId isEqualToString:group.hashId])
-        {
-            //Create database for that group
-            //[dataLoader submitSQLRequestCreateTablesForGroup:group.groupId];
-            
-            if(!alertShown)
-            {
-                groupHashId = group.hashId;
-                UIAlertView *alert = [[UIAlertView alloc]
-                                      initWithTitle: @"Join Group"
-                                      message: [NSString stringWithFormat:@"You will join %@", group.name]
-                                      delegate: self
-                                      cancelButtonTitle:@"Confirm"
-                                      otherButtonTitles:@"Cancel", nil];
-                [alert show];
-                alertShown = YES;
-            }//end if(!alertShown)
-        }//end if(![groupHashId isEqualToString:group.hashId])
-        
-    }//end if(groupHashId!=nil && [groupHashId isEqualToString:@""])
-
     */
+    /*
+     if(groupHashId!=nil && [groupHashId isEqualToString:@""])
+     {
+     if([groupHashId isEqualToString:group.hashId])
+     {
+     NSLog(@"Already a member of this group");
+     //if(!alertShown)
+     {
+     UIAlertView *alert = [[UIAlertView alloc]
+     initWithTitle: @"Already a group member"
+     message: [NSString stringWithFormat:@"Please select a different group"]
+     delegate: nil
+     cancelButtonTitle:@"OK"
+     otherButtonTitles:nil];
+     [alert show];
+     //alertShown = YES;
+     }
+     
+     }//end if([groupHashId isEqualToString:group.hashId])
+     
+     if(![groupHashId isEqualToString:group.hashId])
+     {
+     //Create database for that group
+     //[dataLoader submitSQLRequestCreateTablesForGroup:group.groupId];
+     
+     if(!alertShown)
+     {
+     groupHashId = group.hashId;
+     UIAlertView *alert = [[UIAlertView alloc]
+     initWithTitle: @"Join Group"
+     message: [NSString stringWithFormat:@"You will join %@", group.name]
+     delegate: self
+     cancelButtonTitle:@"Confirm"
+     otherButtonTitles:@"Cancel", nil];
+     [alert show];
+     alertShown = YES;
+     }//end if(!alertShown)
+     }//end if(![groupHashId isEqualToString:group.hashId])
+     
+     }//end if(groupHashId!=nil && [groupHashId isEqualToString:@""])
+     
+     */
 }
 
 /*
--(UIImage*)generateQRCodeImageForURL:(NSString*)url{
-    DataMatrix *qrMatrix = [QREncoder encodeWithECLevel:QR_ECLEVEL_AUTO version:QR_VERSION_AUTO string:url];
-    UIImage* qrcodeImage = [QREncoder renderDataMatrix:qrMatrix imageDimension:250];
-    return qrcodeImage;
-}
+ -(UIImage*)generateQRCodeImageForURL:(NSString*)url{
+ DataMatrix *qrMatrix = [QREncoder encodeWithECLevel:QR_ECLEVEL_AUTO version:QR_VERSION_AUTO string:url];
+ UIImage* qrcodeImage = [QREncoder renderDataMatrix:qrMatrix imageDimension:250];
+ return qrcodeImage;
+ }
  */
 
 -(void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -312,26 +318,8 @@ NSString *mCellID = @"GROUP_CELL";
         return 0;
 }
 
-/*
- 
- [_imageView setImageWithURL:[NSURL URLWithString:resource.imageURL] placeholderImage:nil success:^(UIImage *imageDownloaded) {
-
-}
-failure:^(NSError *error) {
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle: @"Load failed"
-                          message: @"Failed to load image"
-                          delegate: nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil];
-    [alert show];
-}];
-
-
-*/
-
 -(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    GroupCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:mCellID forIndexPath:indexPath];
+    GroupCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:pCellID forIndexPath:indexPath];
     Group *group = [_groups objectAtIndex:indexPath.item];
     [cell setGroup:group];
     //cell.label.text = group.name;
@@ -349,42 +337,20 @@ failure:^(NSError *error) {
         {
             [cell.imageView setImageWithURL:[NSURL URLWithString:object] placeholderImage:nil];
         }
-
+        
         [cell.activityIndicator stopAnimating];
     }else{
         // load the image for this cell
         if ([photoLoadersInProgress objectForKey:indexPath] == nil && [imageDownloadersInProgress objectForKey:indexPath] == nil)
-        //if ([photoLoadersInProgress objectForKey:indexPath] == nil)
+            //if ([photoLoadersInProgress objectForKey:indexPath] == nil)
         {
             [self loadPhotosForGroup:group atIndexPath:indexPath];
             [cell.activityIndicator startAnimating];
         }
     }
+
     return cell;
 }
-
-
-#pragma mark- UserLoaderDelegate
--(void)UserLoader:(UserLoader*)userLoader didChangeGroup:(User*)currentUser{
-    if(currentUser!=nil)
-    {
-        NSLog(@"GroupJoinViewController.currentUser.userId=%i", currentUser.userId);
-        if(currentUser.currentGroup!=nil)
-        {
-            NSLog(@"GroupJoinViewController.currentUser.currentGroup.hashId=%@", currentUser.currentGroup.hashId);
-            if(currentUser.currentGroup.hashId!=nil)
-            {
-                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                [userDefaults setObject:currentUser.currentGroup.hashId forKey:@"current_group_hash"];
-                [userDefaults synchronize];
-                
-            }
-        }
-    }
-}
-
-
-
 
 #pragma mark- GroupLoaderDelegate
 -(void)GroupLoader:(GroupLoader *)groupLoader didLoadGroups:(NSArray *)groups{
@@ -406,16 +372,10 @@ failure:^(NSError *error) {
     if (photos.count > 0){
         //Photo* photo = [photos objectAtIndex:arc4random_uniform(photos.count)];
         Photo* photo = [photos objectAtIndex:0];
-        
-        //NSLog(@"photo.imageURL=%@", photo.imageURL)
         [groupImages setObject:photo.imageURL forKey:indexPath];
         [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-        
-        //[groupImages setObject:image forKey:indexPath];
-        //[self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-        
-        //ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[APIWrapper getAbsoluteURLUsingImageRelativePath:[photo imageURL]]];
         /*
+        //ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[APIWrapper getAbsoluteURLUsingImageRelativePath:[photo imageURL]]];
         ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[photo imageURL]];
         imageDownloader.obj = indexPath;
         imageDownloader.delegate = self;
@@ -435,7 +395,6 @@ failure:^(NSError *error) {
 
 #pragma mark - ImageDownloaderDelegate
 -(void)imageDownloader:(ImageDownloader *)imageDownloader didLoadImage:(UIImage *)image forObject:(NSObject *)obj{
-    NSLog(@"didLoadImage");
     NSIndexPath *indexPath = (NSIndexPath*)obj;
     [imageDownloadersInProgress removeObjectForKey:indexPath];
     [groupImages setObject:image forKey:indexPath];
@@ -459,11 +418,5 @@ failure:^(NSError *error) {
     GroupCollectionViewCell* selectedGroupCell = (GroupCollectionViewCell*)[self.collectionView cellForItemAtIndexPath:shareGestureCellPath];
     NSLog(@"Selected group %@", [[selectedGroupCell getGroup] name]);
 }
-
-
-
-
-
-
 
 @end

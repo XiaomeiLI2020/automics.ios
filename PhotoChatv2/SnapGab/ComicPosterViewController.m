@@ -118,6 +118,29 @@
     [appDelegate.automicsEngine enqueueOperation:operation];
     //self.dataFeedConnection = [operation urlConnection];
     
+    
+    NSLog(@"ComicPosterView. startOperation. reachable=%d", [comicLoader isReachable]);
+    
+    if(![comicLoader isReachable])
+    {
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle: @"Upload Failure"
+                              message: @"Please upload when network connection is available."
+                              delegate:self
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
+        [alert show];
+    }//end if
+    else if([comicLoader isReachable])
+    {
+        [operation onUploadProgressChanged:^(double progress) {
+            
+            //DLog(@"onUploadProgressChanged=%.2f, progress=%f", progress*100.0, progress);
+            self.progressView.progress = (float)progress;
+            
+        }];
+    }//end else
+    
     [operation onUploadProgressChanged:^(double progress) {
         
         //DLog(@"onUploadProgressChanged=%.2f", progress*100.0);
@@ -239,7 +262,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 }
 
 -(void)MKNetworkOperation:(MKNetworkOperation*)operation operationFailedWithError:(NSString*)responseString{
-    
+    /*
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Upload Failure"
                           message: @"Upload will resume when network connection is available."
@@ -247,6 +270,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
     [alert show];
+     */
 }
 
 @end

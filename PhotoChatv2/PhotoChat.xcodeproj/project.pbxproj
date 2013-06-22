@@ -97,6 +97,7 @@
 		D892741216E624E40061FA14 /* Session.m in Sources */ = {isa = PBXBuildFile; fileRef = D892741116E624E40061FA14 /* Session.m */; };
 		D892741516E6316B0061FA14 /* SessionJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D892741416E6316A0061FA14 /* SessionJSONHandler.m */; };
 		D892741816E658260061FA14 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = D892741716E658260061FA14 /* User.m */; };
+		D89317801765C78B00CC6A39 /* GroupLeaveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D893177F1765C78B00CC6A39 /* GroupLeaveViewController.m */; };
 		D8932C7C16D7ED7B007D97A9 /* GUIConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = D8932C7B16D7ED7B007D97A9 /* GUIConstant.m */; };
 		D8A098A8167F497100762DB0 /* ResourceView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A098A7167F497100762DB0 /* ResourceView.m */; };
 		D8A098AB167F4B5600762DB0 /* resource1.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A098A9167F4B5500762DB0 /* resource1.png */; };
@@ -126,6 +127,7 @@
 		D8C73A9216C2D3C300C8D3E0 /* back-images.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C73A9116C2D3C300C8D3E0 /* back-images.png */; };
 		D8C73A9416C2D6E900C8D3E0 /* back-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C73A9316C2D6E900C8D3E0 /* back-menu.png */; };
 		D8C73A9616C2D7FC00C8D3E0 /* add-image.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C73A9516C2D7FB00C8D3E0 /* add-image.png */; };
+		D8D0C32917722FDE00D99EF3 /* groupCellBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FFC1704A93B002ACF3E /* groupCellBackground.png */; };
 		D8DBE7AD1744B62E005CCB8B /* SQLiteLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DBE7AC1744B62E005CCB8B /* SQLiteLoader.m */; };
 		D8DDF9DA16BFEF61006F31E7 /* MainScrollSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DDF9D916BFEF61006F31E7 /* MainScrollSelector.m */; };
 		D8E0E7D2168345640003FE14 /* resource3.png in Resources */ = {isa = PBXBuildFile; fileRef = D8E0E7D1168345640003FE14 /* resource3.png */; };
@@ -330,6 +332,8 @@
 		D892741416E6316A0061FA14 /* SessionJSONHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionJSONHandler.m; sourceTree = "<group>"; };
 		D892741616E658260061FA14 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		D892741716E658260061FA14 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		D893177E1765C78B00CC6A39 /* GroupLeaveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupLeaveViewController.h; sourceTree = "<group>"; };
+		D893177F1765C78B00CC6A39 /* GroupLeaveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupLeaveViewController.m; sourceTree = "<group>"; };
 		D8932C7A16D7ED7B007D97A9 /* GUIConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GUIConstant.h; path = ../GUIConstant.h; sourceTree = "<group>"; };
 		D8932C7B16D7ED7B007D97A9 /* GUIConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GUIConstant.m; path = ../GUIConstant.m; sourceTree = "<group>"; };
 		D8A098A6167F497100762DB0 /* ResourceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceView.h; sourceTree = "<group>"; };
@@ -591,21 +595,23 @@
 			children = (
 				D8F4BE08174F8FC700C4E93A /* GroupAddViewController.h */,
 				D8F4BE09174F8FC700C4E93A /* GroupAddViewController.m */,
-				48D58FEA1704A145002ACF3E /* GroupDecorationView.h */,
-				48D58FEB1704A145002ACF3E /* GroupDecorationView.m */,
-				D8F4BE1A1755303800C4E93A /* GroupJoinViewController.h */,
-				D8F4BE1B1755303900C4E93A /* GroupJoinViewController.m */,
-				48D58FE51704A119002ACF3E /* GroupQRView.h */,
-				48D58FE61704A119002ACF3E /* GroupQRView.m */,
-				48D58FE71704A119002ACF3E /* GroupQRView.xib */,
 				48D58FE21704A0E6002ACF3E /* GroupCollectionViewLayout.h */,
 				48D58FE31704A0E6002ACF3E /* GroupCollectionViewLayout.m */,
 				48D58FDF1704A0B2002ACF3E /* GroupCollectionViewCell.h */,
 				48D58FE01704A0B2002ACF3E /* GroupCollectionViewCell.m */,
+				48D58FEA1704A145002ACF3E /* GroupDecorationView.h */,
+				48D58FEB1704A145002ACF3E /* GroupDecorationView.m */,
+				D8F4BE1A1755303800C4E93A /* GroupJoinViewController.h */,
+				D8F4BE1B1755303900C4E93A /* GroupJoinViewController.m */,
+				D893177E1765C78B00CC6A39 /* GroupLeaveViewController.h */,
+				D893177F1765C78B00CC6A39 /* GroupLeaveViewController.m */,
 				D8F4BE171755283100C4E93A /* GroupMainViewController.h */,
 				D8F4BE181755283200C4E93A /* GroupMainViewController.m */,
 				48D58FDC1704A07D002ACF3E /* GroupsFlowViewController.h */,
 				48D58FDD1704A07D002ACF3E /* GroupsFlowViewController.mm */,
+				48D58FE51704A119002ACF3E /* GroupQRView.h */,
+				48D58FE61704A119002ACF3E /* GroupQRView.m */,
+				48D58FE71704A119002ACF3E /* GroupQRView.xib */,
 				D8F4BE0B174FEBB900C4E93A /* ThemeViewController.h */,
 				D8F4BE0C174FEBB900C4E93A /* ThemeViewController.m */,
 				D8BF848C1757BC85007F642E /* ThemePreviewViewController.h */,
@@ -956,6 +962,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8D0C32917722FDE00D99EF3 /* groupCellBackground.png in Resources */,
 				1D8D5091165FADC700C9817C /* InfoPlist.strings in Resources */,
 				1D8D5099165FADC700C9817C /* Default.png in Resources */,
 				1D8D509B165FADC700C9817C /* Default@2x.png in Resources */,
@@ -1109,6 +1116,7 @@
 				D8F4BE191755283300C4E93A /* GroupMainViewController.m in Sources */,
 				D8F4BE1C1755303A00C4E93A /* GroupJoinViewController.m in Sources */,
 				D8BF848E1757BC87007F642E /* ThemePreviewViewController.m in Sources */,
+				D89317801765C78B00CC6A39 /* GroupLeaveViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

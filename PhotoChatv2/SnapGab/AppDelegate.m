@@ -9,13 +9,14 @@
 #import "AppDelegate.h"
 #import "APIConstant.h"
 #import "Reachability.h"
+//#import "DataLoader.h"
 
 
 @implementation AppDelegate
 
 @synthesize window = _window;
 @synthesize automicsEngine;
-
+@synthesize databaseQueue;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -51,6 +52,8 @@
     automicsEngine = [[AutomicsEngine alloc] initWithHostName:kHostName];
     //automicsEngine = [[AutomicsEngine alloc] initWithHostName:kBaseURL customHeaderFields:headerFields];
     [automicsEngine useCache];
+    
+    databaseQueue = dispatch_queue_create("automics.database", NULL);
     
     return YES;
 }
@@ -120,6 +123,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     //NSLog(@"applicationWillTerminate");
+    [DataLoader closeDatabase];
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 

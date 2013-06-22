@@ -35,5 +35,7 @@
 +(NSString*)getURLForGetOrganisation:(int)organisationId;
 +(NSString*)getURLForGetThemesForOrganisation:(int)organisationId;
 +(NSString*)getURLForPostRegister;
++(NSString*)getURLForPostUser;
++(NSString*)getURLForPostUserWithId:(int)userId;
 
 @end

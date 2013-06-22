@@ -21,12 +21,24 @@
             user.userId = [userId integerValue];
     }
     
-    if ([userJSON valueForKey:@"email"] != nil){
-        NSString* email = [DataValidator checkKeyValueForNull:[userJSON valueForKey:@"email"]];
+    if ([userJSON valueForKey:@"id"] != nil){
+        NSString* userId = [DataValidator checkKeyValueForNull:[userJSON valueForKey:@"id"]];
+        if (userId != nil)
+            user.userId = [userId integerValue];
+    }
+    
+    if ([userJSON valueForKey:@"user_login"] != nil){
+        NSString* email = [DataValidator checkKeyValueForNull:[userJSON valueForKey:@"user_login"]];
         if (email != nil)
             user.email = email;
     }
 
+    if ([userJSON valueForKey:@"login"] != nil){
+        NSString* email = [DataValidator checkKeyValueForNull:[userJSON valueForKey:@"login"]];
+        if (email != nil)
+            user.email = email;
+    }
+    
     if ([userJSON valueForKey:@"password"] != nil){
         NSString* password = [DataValidator checkKeyValueForNull:[userJSON valueForKey:@"password"]];
         if (password != nil)
@@ -39,6 +51,14 @@
             user.groupHashId = groupHashId;
             user.currentGroup = [[Group alloc] init];
             user.currentGroup.hashId = groupHashId;
+    }
+    
+    if ([userJSON valueForKey:@"current_group_hash"] != nil){
+        NSString* groupHashId = [DataValidator checkKeyValueForNull:[userJSON valueForKey:@"current_group_hash"]];
+        if (groupHashId != nil)
+            user.groupHashId = groupHashId;
+        user.currentGroup = [[Group alloc] init];
+        user.currentGroup.hashId = groupHashId;
     }
     
     if ([userJSON valueForKey:@"session"] != nil){
@@ -63,8 +83,10 @@
         userdict = [[NSMutableDictionary alloc] init];
         
         if (user.email != nil)
+        {
             [userdict setValue:user.email forKey:@"login"];
-        
+            [userdict setValue:user.email forKey:@"user_login"];
+        }
         
         if (user.password != nil)
             [userdict setValue:user.password forKey:@"password"];
@@ -77,13 +99,17 @@
             if(user.currentGroup.hashId!=nil)
             {
                 [userdict setValue:user.currentGroup.hashId forKey:@"group_hash"];
+                [userdict setValue:user.currentGroup.hashId forKey:@"current_group_hash"];
             }
         }
         //if (user.groupHashId != nil)
         //    [userdict setValue:user.groupHashId forKey:@"group_hash"];
         
         if (user.userId > 0)
+        {
             [userdict setValue:[[NSNumber alloc] initWithInt:user.userId] forKey:@"user_id"];
+            [userdict setValue:[[NSNumber alloc] initWithInt:user.userId] forKey:@"id"];
+        }
 
     }
     return userdict;

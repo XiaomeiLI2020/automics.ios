@@ -22,13 +22,30 @@ int const kPostGroup = 2;
 int const kPostThemeForGroup = 3;
 int const kPostMembershipForGroup = 4;
 
+BOOL groupsDownloaded = NO;
+
 @synthesize groupRequestType;
 @synthesize delegate;
 
 -(void)submitRequestGetGroups{
-    groupRequestType = kGetGroups;
-    NSURLRequest* urlRequest = [self prepareRequestForGetGroups];
-    [self submitGroupRequest:urlRequest];
+    if(!groupsDownloaded)
+    {
+        groupRequestType = kGetGroups;
+        groupsDownloaded = YES;
+        NSURLRequest* urlRequest = [self prepareRequestForGetGroups];
+        [self submitGroupRequest:urlRequest];
+    }
+    else
+    {
+        NSLog(@"Groups downloaded from the database.");
+        NSArray* groups= [self convertGroupsSQLIntoGroups];
+        if(groups!=nil && [groups count]>0)
+        {
+            if ([self.delegate respondsToSelector:@selector(GroupLoader:didLoadGroups:)])
+                [self.delegate GroupLoader:self didLoadGroups:groups];
+        }//end if(groups!=nil && [groups count]>0)
+
+    }//end else
 }
 
 -(void)submitRequestPostGroup:(Group*)group{
@@ -108,11 +125,29 @@ int const kPostMembershipForGroup = 4;
     [urlRequest setHTTPBody:data];
 }
 
-
 -(void)submitRequestGetGroupForHashId:(NSString*)groupHashId{
-    groupRequestType = kGetGroup;
-    NSURLRequest* urlRequest = [self prepareRequestForGetGroup:groupHashId];
-    [self submitGroupRequest:urlRequest];
+    int groupExists = [self submitSQLRequestCheckGroupExists:groupHashId];
+    //NSLog(@"Grouploader.submitRequestGetGroupForHashId.groupExists=%i", groupExists);
+    if(groupExists==0)
+    {
+        groupRequestType = kGetGroup;
+        NSURLRequest* urlRequest = [self prepareRequestForGetGroup:groupHashId];
+        [self submitGroupRequest:urlRequest];
+    }
+
+    else
+    {
+
+        NSArray* groups = [self convertGroupSQLIntoGroup:groupHashId];
+        if(groups!=nil){
+            Group* group = [groups objectAtIndex:0];
+            if(group!=nil){
+                //NSLog(@"Group %@ downloaded from the database.", group.name);
+                if ([self.delegate respondsToSelector:@selector(GroupLoader:didLoadGroup:)])
+                    [self.delegate GroupLoader:self didLoadGroup:group];
+            }//end if(group!=nil)
+        }//end if(groups!=nil)
+    }//end else
 }
 
 -(NSURLRequest*)prepareRequestForGetGroups{
@@ -124,7 +159,7 @@ int const kPostMembershipForGroup = 4;
 }
 
 -(NSURLRequest*)prepareRequestForGetGroup:(NSString*)groupHashId{
-    NSString* groupURL = [APIWrapper getURLForGetGroups];
+    NSString* groupURL = [APIWrapper getURLForGetGroup:groupHashId];
     NSString* authenticatedGroupURL = [self authenticatedGetURL:groupURL];
     //NSLog(@"authenticatedGroupURL=%@", authenticatedGroupURL);
     NSURL* url = [NSURL URLWithString:authenticatedGroupURL];
@@ -203,8 +238,12 @@ int const kPostMembershipForGroup = 4;
     NSArray* groupJSON = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (groupJSON != nil){
         NSArray* groups = [GroupJSONHandler convertGroupsJSONIntoGroups:groupJSON];
-        if ([self.delegate respondsToSelector:@selector(GroupLoader:didLoadGroups:)])
-            [self.delegate GroupLoader:self didLoadGroups:groups];
+        if(groups!=nil && [groups count]>0)
+        {
+            [self submitSQLRequestSaveGroups:groups];
+            if ([self.delegate respondsToSelector:@selector(GroupLoader:didLoadGroups:)])
+                [self.delegate GroupLoader:self didLoadGroups:groups];
+        }
     }
     
 }
@@ -214,7 +253,12 @@ int const kPostMembershipForGroup = 4;
     NSDictionary* groupJSON = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (groupJSON != nil){
         Group* group = [GroupJSONHandler convertGroupJSONIntoGroup:groupJSON];
+        //NSLog(@"handleGetGroupResponse. group.name=%@", group.name);
         if(group!=nil){
+            NSMutableArray* groups = [[NSMutableArray alloc] init];
+            [groups addObject:group];
+            [self submitSQLRequestSaveGroups:groups];
+            
             if ([self.delegate respondsToSelector:@selector(GroupLoader:didLoadGroup:)])
                 [self.delegate GroupLoader:self didLoadGroup:group];
         }

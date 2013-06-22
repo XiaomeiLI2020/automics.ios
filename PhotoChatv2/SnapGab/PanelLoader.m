@@ -21,21 +21,86 @@
 int const kGetGroupPanels = 0;
 int const kGetPanel = 1;
 int const kPostPanel = 2;
+BOOL panelsDownloaded = NO;
 
 @synthesize delegate;
 @synthesize panelRequestType;
 @synthesize obj;
 
-
+/*
 -(void)submitRequestGetPanelsForGroup:(int)groupId{
     
+    //dispatch_queue_t panelQueue = dispatch_queue_create("automics.database", NULL);
+    //dispatch_async(panelQueue, ^(void) {
+
     //NSLog(@"[self submitSQLRequestCountPanelsForGroup:groupId]=%i", [self submitSQLRequestCountPanelsForGroup:groupId]);
-    if([self submitSQLRequestCountPanelsForGroup:groupId]==0)
+    //if([self submitSQLRequestCountPanelsForGroup:groupId]==0)
+    if(!panelsDownloaded)
+    {
+
+        panelRequestType = kGetGroupPanels;
+        panelsDownloaded = YES;
+        NSURLRequest* urlRequest = [self preparePanelRequestForGroup:groupId];
+        [self submitPanelRequest:urlRequest];
+
+    }
+
+    //});
+    else
+    {
+
+        //NSLog(@"[self submitSQLRequestCountPanelsForGroup:groupId]=%i", [self submitSQLRequestCountPanelsForGroup:groupId]);
+        NSArray* panels = [self convertPanelsSQLIntoPanels:groupId];
+        if([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanels:)])
+            [self.delegate PanelLoader:self didLoadPanels:panels];
+
+    }
+}
+*/
+
+-(void)submitRequestGetPanelsForGroup{
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+    
+    //int groupExists = [self submitSQLRequestCheckGroupExists:currentGroupHashId];
+    //NSLog(@"groupExists =%i", groupExists);
+    
+    //NSLog(@"currentGroupHashId =%@", currentGroupHashId);
+    int panelsDownloaded = [self submitSQLRequestCheckPanelsDownloadedForGroup:currentGroupHashId];
+    NSLog(@"PanelLoader.submitRequestGetPanelsForGroup.panelsDownloaded=%i", panelsDownloaded);
+    
+    if(panelsDownloaded==0)
     {
         panelRequestType = kGetGroupPanels;
+        panelsDownloaded = YES;
+        NSURLRequest* urlRequest = [self preparePanelRequestForGroup];
+        [self submitPanelRequest:urlRequest];
+    }
+    
+    //});
+    else
+    {
+        NSLog(@"PanelLoader. Panels downloaded from the database.");
+        //NSLog(@"[self submitSQLRequestCountPanelsForGroup:groupId]=%i", [self submitSQLRequestCountPanelsForGroup:groupId]);
+        NSArray* panels = [self convertPanelsSQLIntoPanels:currentGroupHashId];
+        if(panels!=nil && [panels count]>0)
+        {
+            if([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanels:)])
+                [self.delegate PanelLoader:self didLoadPanels:panels];
+        }//end if(panels!=nil && [panels count>0])
+
+    }
+    /*
+    if(!panelsDownloaded)
+    {
+        panelRequestType = kGetGroupPanels;
+        panelsDownloaded = YES;
         NSURLRequest* urlRequest = [self preparePanelRequestForGroup:groupId];
         [self submitPanelRequest:urlRequest];
     }
+    
+    //});
     else
     {
         //NSLog(@"[self submitSQLRequestCountPanelsForGroup:groupId]=%i", [self submitSQLRequestCountPanelsForGroup:groupId]);
@@ -43,49 +108,41 @@ int const kPostPanel = 2;
         if([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanels:)])
             [self.delegate PanelLoader:self didLoadPanels:panels];
     }
+     */
 }
 
 -(void)submitRequestGetPanelWithId:(int)panelId{
     //If the panel is not in SQLite database, download it
-    if([self submitSQLRequestCheckPanelExists:panelId]==0)
+    int panelExists = [self submitSQLRequestCheckPanelExists:panelId];
+    int assestsExist =  [self submitSQLRequestGetAssetsForPanel:panelId];
+    NSLog(@"PanelLoader.submitRequestGetPanelWithId. panelId=%i, panelExists=%i, assestsExist=%i", panelId, panelExists, assestsExist);
+    
+    //Download panel if numplacements and numannotations values in panels table are -1, means panels and annotations not downloaded yet, and the internet is accessible
+    if((panelExists==0 || assestsExist==0) && [self isReachable])
     {
+        NSLog(@"Panel#%i downloading from the server", panelId);
         panelRequestType = kGetPanel;
         NSURLRequest* urlRequest = [self preparePanelRequestForGetPanelWithId:panelId];
         [self submitPanelRequest:urlRequest];
     }
-    //If the panel exists in SQLite database, download it
-    else if([self submitSQLRequestCheckPanelExists:panelId]>0)
+    //If panels and assets are already downloadeded, or if the internet is not accessible but the panel without assets has been downloaded earlier
+    else if(assestsExist>0 || (panelExists>0 && ![self isReachable]))
+    //else if(panelExists>0)
     {
-        
-        //Download panel if numplacements and numannotations values in panels table are -1, means panels and annotations not downloaded yet, and the internet is accessible
-        if([self submitSQLRequestGetAssetsForPanel:panelId]==0 && [self isReachable])
+        NSLog(@"Panel#%i has assets already downloaded, or the app is offline", panelId);
+        NSArray* panelsLocal = [self convertPanelSQLIntoPanel:panelId];
+        if(panelsLocal!=nil && [panelsLocal count]>0)
         {
-            //NSLog(@"Panel#%i has annotations & placements to download.", panelId);
-            panelRequestType = kGetPanel;
-            NSURLRequest* urlRequest = [self preparePanelRequestForGetPanelWithId:panelId];
-            [self submitPanelRequest:urlRequest];
-        }
-        //If panels and annotations are already downloadeded, or if the internet is not accessible
-        else if([self submitSQLRequestGetAssetsForPanel:panelId]>0 || !([self isReachable]))
-        {
-            //NSLog(@"Panel#%i has assets already downloaded, or the app is offline", panelId);
-            NSArray* panelsLocal = [self convertPanelSQLIntoPanel:panelId];
-            if(panelsLocal!=nil)
+            Panel* panel = [panelsLocal objectAtIndex:0];
+            if(panel!=nil)
             {
-                Panel* panel = [panelsLocal objectAtIndex:0];
                 if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:forObject:)])
                     [self.delegate PanelLoader:self didLoadPanel:panel forObject:obj];
                 if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:)])
                     [self.delegate PanelLoader:self didLoadPanel:panel];
-                
-            }
-        }
-    }//end else
-    /*
-    panelRequestType = kGetPanel;
-    NSURLRequest* urlRequest = [self preparePanelRequestForGetPanelWithId:panelId];
-    [self submitPanelRequest:urlRequest];
-    */
+            }//end if(panel!=nil)
+        }//end if(panelsLocal!=nil)
+    }//end else if(assestsExist>0 || (panelExists>0 && ![self isReachable]))
 }
 
 -(void)submitRequestPostPanel:(Panel*)panel{
@@ -99,10 +156,20 @@ int const kPostPanel = 2;
     [self submitURLRequest:urlRequest];
 }
 
+/*
 -(NSURLRequest*)preparePanelRequestForGroup:(int)groupId{
     NSString *panelURL = [APIWrapper getURLForGetPanels];
     NSString* authenticatedPanelURL = [self authenticatedGetURL:panelURL];
     NSLog(@"authenticatedPanelURL=%@", authenticatedPanelURL);
+    NSURL* url = [NSURL URLWithString:authenticatedPanelURL];
+    return [NSURLRequest requestWithURL:url];
+}
+*/
+
+-(NSURLRequest*)preparePanelRequestForGroup{
+    NSString *panelURL = [APIWrapper getURLForGetPanels];
+    NSString* authenticatedPanelURL = [self authenticatedGetURL:panelURL];
+    //NSLog(@"preparePanelRequestForGroup.authenticatedPanelURL=%@", authenticatedPanelURL);
     NSURL* url = [NSURL URLWithString:authenticatedPanelURL];
     return [NSURLRequest requestWithURL:url];
 }
@@ -143,7 +210,17 @@ int const kPostPanel = 2;
     NSArray* jsonArray = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (jsonArray != nil){
         NSArray* panels = [PanelJSONHandler convertPanelsJSONIntoPanels:jsonArray];
-        [self submitSQLRequestSavePanels:panels];
+        
+        //[self submitSQLRequestSavePanels:panels];
+        //dispatch_queue_t panelQueue = dispatch_queue_create("automics.database", NULL);
+        //dispatch_async([self dispatchQueue], ^(void) {
+            //[self submitSQLRequestSavePanels:panels];
+        //});
+        //NSLog(@"handleGetPanelsForGroupResponse. [panels count]=%i", [panels count]);
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+        
+        [self submitSQLRequestSavePanelsForGroup:panels andGroupHashId:currentGroupHashId];
         if([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanels:)])
             [self.delegate PanelLoader:self didLoadPanels:panels];
     }else{
@@ -159,8 +236,17 @@ int const kPostPanel = 2;
         if(panel!=nil){
             
             //[self submitSQLRequestSaveAssetsForPanel:panel.panelId andNumPlacements:[panel.placements count] andNumAnnotations:[panel.annotations count]];
-            [self submitSQLRequestSaveAssetsForPanel:panel.panelId andPlacements:panel.placements andAnnotations:panel.annotations];
-            //NSLog(@"panel downloaded.=%i placements", [panel.placements count]);
+            NSMutableArray* panels = [[NSMutableArray alloc] init];
+            [panels addObject:panel];
+
+            
+            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+            NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+            
+            //[self submitSQLRequestSavePanelsForGroup:panels andGroupHashId:currentGroupHashId];
+            NSLog(@"handleGetPanelWithIdResponse.submitSQLRequestSaveAssetsForPanel.panelId=%i", panel.panelId);
+            [self submitSQLRequestSaveAssetsForPanel:panel.panelId andGroupHashId:currentGroupHashId andPlacements:panel.placements andAnnotations:panel.annotations];
+            //NSLog(@"handleGetPanelWithIdResponse. panelId=%i  has %i placements, %i annotations", panel.panelId, [panel.placements count], [panel.annotations count]);
             if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:forObject:)])
                 [self.delegate PanelLoader:self didLoadPanel:panel forObject:obj];
             if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:)])
@@ -181,7 +267,11 @@ int const kPostPanel = 2;
         Panel *panel = [PanelJSONHandler convertPanelJSONDictIntoPanel:paneldict];
         NSMutableArray* panels = [[NSMutableArray alloc] init];
         [panels addObject:panel];
-        [self submitSQLRequestSavePanels:panels];
+        //[self submitSQLRequestSavePanels:panels];
+        
+        //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        //NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+        //[self submitSQLRequestSavePanelsForGroup:panels andGroupHashId:currentGroupHashId];
         //[self submitSQLRequestSaveAssetsForPanel:panel.panelId andPlacements:panel.placements andAnnotations:panel.annotations];
         
         if ([self.delegate respondsToSelector:@selector(PanelLoader:didSavePanel:)])

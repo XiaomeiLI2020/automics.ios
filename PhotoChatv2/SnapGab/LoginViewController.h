@@ -7,26 +7,26 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GroupLoader.h"
 #import "UserLoader.h"
 #import "User.h"
-
+//@class WelcomeViewController;
+//#import "WelcomeViewController.h"
 
 @interface LoginViewController : UIViewController
-<UITextFieldDelegate, UserLoaderDelegate, GroupLoaderDelegate>
+<UITextFieldDelegate, UserLoaderDelegate>
 
 @property NSString* sessionToken;
 
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 
-- (IBAction)registerPressed:(id)sender;
+- (IBAction)loginPressed:(id)sender;
+
 
 @property NSString *userEmail;
 @property NSString *userPassword;
 @property UserLoader* userLoader;
 @property User* user;
-@property GroupLoader *groupLoader;
-
+@property DataLoader* dataLoader;
 
 @end

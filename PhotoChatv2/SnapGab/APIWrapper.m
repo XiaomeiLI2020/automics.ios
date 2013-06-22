@@ -122,4 +122,13 @@
     return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL, kAPIURL, kRegisterURL];
 }
 
++(NSString*)getURLForPostUser{
+    return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL, kAPIURL, kUserURL];
+}
+
++(NSString*)getURLForPostUserWithId:(int)userId{
+        return [NSString stringWithFormat:@"%@/%@/%@/%i", kBaseURL, kAPIURL, kUserURL, userId];
+}
+
+
 @end

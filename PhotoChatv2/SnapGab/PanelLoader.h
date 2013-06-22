@@ -15,7 +15,8 @@
 @interface PanelLoader : DataLoader
 @property id obj;
 @property (weak) id<PanelLoaderDelegate> delegate;
--(void)submitRequestGetPanelsForGroup:(int)groupId;
+//-(void)submitRequestGetPanelsForGroup:(int)groupId;
+-(void)submitRequestGetPanelsForGroup;
 -(void)submitRequestGetPanelWithId:(int)panelId;
 -(void)submitRequestPostPanel:(Panel*)panel;
 -(NSURLRequest*)preparePanelRequestForPostPanel:(Panel*)panel;

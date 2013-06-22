@@ -15,5 +15,6 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) AutomicsEngine *automicsEngine;
+@property (strong, nonatomic) dispatch_queue_t databaseQueue;
 
 @end

@@ -44,7 +44,7 @@
         leaveButton.enabled = NO;
         leaveButton.alpha = 0.4;
         
-        [joinGroup setTitle:@"Join Group" forState:UIControlStateNormal];
+        [joinGroup setTitle:@"Select Group" forState:UIControlStateNormal];
 
     }
     else{

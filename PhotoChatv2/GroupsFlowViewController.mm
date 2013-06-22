@@ -12,6 +12,7 @@
 #import "GroupCollectionViewLayout.h"
 #import "QREncoder.h"
 #import "GroupQRView.h"
+#import "UIImageView+WebCache.h"
 
 @interface GroupsFlowViewController ()
 @property NSArray* groups;
@@ -130,6 +131,7 @@ NSString *kCellID = @"GROUP_CELL";
     Group *group = [_groups objectAtIndex:indexPath.item];
     [cell setGroup:group];
     //cell.label.text = group.name;
+    /*
     if ([groupImages objectForKey:indexPath] != nil){
         cell.imageView.image = [groupImages objectForKey:indexPath];
         [cell.activityIndicator stopAnimating];
@@ -140,6 +142,32 @@ NSString *kCellID = @"GROUP_CELL";
             [cell.activityIndicator startAnimating];
         }
     }
+     */
+    if ([groupImages objectForKey:indexPath] != nil)
+    {
+        
+        id object= [groupImages objectForKey:indexPath];
+        if([object isKindOfClass:[UIImage class]])
+        {
+            
+            cell.imageView.image = [groupImages objectForKey:indexPath];
+        }
+        if([object isKindOfClass:[NSString class]])
+        {
+            [cell.imageView setImageWithURL:[NSURL URLWithString:object] placeholderImage:nil];
+        }
+        
+        [cell.activityIndicator stopAnimating];
+    }else{
+        // load the image for this cell
+        if ([photoLoadersInProgress objectForKey:indexPath] == nil && [imageDownloadersInProgress objectForKey:indexPath] == nil)
+            //if ([photoLoadersInProgress objectForKey:indexPath] == nil)
+        {
+            [self loadPhotosForGroup:group atIndexPath:indexPath];
+            [cell.activityIndicator startAnimating];
+        }
+    }
+
     return cell;
 }
 
@@ -160,13 +188,19 @@ NSString *kCellID = @"GROUP_CELL";
     NSIndexPath *indexPath = (NSIndexPath*)obj;
     [photoLoadersInProgress removeObjectForKey:indexPath];
     if (photos.count > 0){
-        Photo* photo = [photos objectAtIndex:arc4random_uniform(photos.count)];
+        //Photo* photo = [photos objectAtIndex:arc4random_uniform(photos.count)];
+        Photo* photo = [photos objectAtIndex:0];
+        [groupImages setObject:photo.imageURL forKey:indexPath];
+        [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+        /*
         //ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[APIWrapper getAbsoluteURLUsingImageRelativePath:[photo imageURL]]];
         ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[photo imageURL]];
         imageDownloader.obj = indexPath;
         imageDownloader.delegate = self;
         if (imageDownloader.image == nil)
             [imageDownloadersInProgress setObject:imageDownloader forKey:indexPath];
+         */
+        
     }else{
         //set default image.
         [self setDefaultImageForIndexPath:indexPath];

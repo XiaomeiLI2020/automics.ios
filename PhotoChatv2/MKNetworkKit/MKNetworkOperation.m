@@ -244,7 +244,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
   return _freezable;
 }
 
--(NSString*) url {
+-(NSString*)url {
   
   return [[self.request URL] absoluteString];
 }
@@ -1065,7 +1065,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
 #endif
   DLog(@"self.isCancelled=%d", self.isCancelled)
   if(!self.isCancelled) {
-    
+      DLog(@"Operation got stuck");
       /*
     if (([self.request.HTTPMethod isEqualToString:@"POST"] ||
          [self.request.HTTPMethod isEqualToString:@"PUT"] ||
@@ -1531,8 +1531,12 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
         
         //Upload panel to the SQlite database
         PanelLoader *panelLoader = [[PanelLoader alloc] init];
-        [panelLoader submitSQLRequestSavePanels:panels];
+        //[panelLoader submitSQLRequestSavePanels:panels];
 
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+        [panelLoader submitSQLRequestSavePanelsForGroup:panels andGroupHashId:currentGroupHashId];
+        
         //DLog(@"PhotoPosterView.Panel didUploadPanel");
         if ([self.delegate respondsToSelector:@selector(MKNetworkOperation:didUploadPanel:)])
             [self.delegate MKNetworkOperation:self didUploadPanel:responseString];
@@ -1544,7 +1548,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
         DLog(@"%@", responseString);
         if([self.delegate respondsToSelector:@selector(MKNetworkOperation:operationFailed:)])
             [self.delegate MKNetworkOperation:self operationFailed:responseString];
-         
+        
     }
     
     
@@ -1559,7 +1563,11 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
         NSMutableArray* comics = [[NSMutableArray alloc] init];
         [comics addObject:comic];
         ComicLoader *comicLoader = [[ComicLoader alloc] init];
-        [comicLoader submitSQLRequestSaveComics:comics];
+        //[comicLoader submitSQLRequestSaveComics:comics];
+        
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+        [comicLoader submitSQLRequestSaveComicsForGroup:comics andGroupHashId:currentGroupHashId];
 
         NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
         //NSLog(@"comicData=%@", responseString);

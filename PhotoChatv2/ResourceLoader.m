@@ -40,17 +40,20 @@ BOOL resourcesLoaded = NO;
         NSURLRequest* urlRequest = [self prepareResourceRequestForTheme:themeId];
         [self submitResourceRequest:urlRequest];
         resourcesLoaded = YES;
-    }
-
-    else{
+    }//end if(!resourcesLoaded)
+    else if(resourcesLoaded)
+    {
         //NSLog(@"submitRequestGetResourcesForTheme.Resources downloaded from the database.themeId=%i", themeId);
         NSArray* resources = [self convertResourcesSQLIntoResources:themeId];
-        //NSLog(@"submitRequestGetResourcesForTheme.[resources count]=%i", [resources count]);
-        if([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:)])
-            [self.delegate ResourceLoader:self didLoadResources:resources];
-        if ([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:forObject:)])
-            [self.delegate ResourceLoader:self didLoadResources:resources forObject:obj];
-    }
+        if(resources!=nil && [resources count]>0)
+        {
+            //NSLog(@"submitRequestGetResourcesForTheme.[resources count]=%i", [resources count]);
+            if([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:)])
+                [self.delegate ResourceLoader:self didLoadResources:resources];
+            if ([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:forObject:)])
+                [self.delegate ResourceLoader:self didLoadResources:resources forObject:obj];
+        }//end if(resources!=nil && [resources count]>0)
+    }//end else if(resourcesLoaded)
 
 }
 
@@ -65,7 +68,9 @@ BOOL resourcesLoaded = NO;
 -(void)submitRequestGetResourceWithResourceId:(int)resourceId{
     //NSLog(@"submitRequestGetResourceWithId");
     //If the resource is not in SQLite database, download it
-    if([self submitSQLRequestCheckResourceExists:resourceId]==0)
+    int resourceExists = [self submitSQLRequestCheckResourceExists:resourceId];
+    NSLog(@"ResourceLoader.submitRequestGetResourceWithResourceId. Resource#%i resourceExists=%i", resourceId, resourceExists);
+    if(resourceExists==0)
     {
         //NSLog(@"Resource is not in the database yet.");
         resourceRequestType = kGetResource;
@@ -73,11 +78,11 @@ BOOL resourcesLoaded = NO;
         [self submitResourceRequest:urlRequest];
     }
     //If the resource is downloadeded
-    else if([self submitSQLRequestCheckResourceExists:resourceId]>0)
+    else if(resourceExists>0)
     {
-        //NSLog(@"Resource downloaded from the database.");
+        NSLog(@"ResourceLoader.submitRequestGetResourceWithResourceId.Resource downloaded from the database.");
         NSArray* resources = [self convertResourceSQLIntoResource:resourceId];
-        if(resources!=nil)
+        if(resources!=nil && [resources count]>0)
         {
             Resource* resource = [resources objectAtIndex:0];
             if(resource!=nil){

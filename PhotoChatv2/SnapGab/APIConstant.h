@@ -24,3 +24,4 @@ extern NSString* const kGroupsURL;
 extern NSString* const kJoinGroupURL;
 extern NSString* const kMembershipURL;
 extern NSString* const kRegisterURL;
+extern NSString* const kUserURL;

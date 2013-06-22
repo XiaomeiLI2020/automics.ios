@@ -26,9 +26,13 @@ int const kGetPhotosForGroup = 2;
 int const kGetPhoto = 3;
 int const kGetPhotosForTheme = 4;
 
+bool photosDownloaded = NO;
+//NSString* currentGroupHashId;
+
 @synthesize photoRequestType;
 @synthesize delegate;
 @synthesize obj;
+@synthesize currentGroupHashId;
 
 -(void)submitRequestPostPhoto:(Photo*)photo{
     photoRequestType = kPostPhoto;
@@ -48,9 +52,26 @@ int const kGetPhotosForTheme = 4;
 }
 
 -(void)submitRequestGetPhotosForGroup:(NSString*)groupHashId{
-    photoRequestType = kGetPhotosForGroup;
-    NSURLRequest *urlRequest = [self prepareRequestForGetPhotosForGroup:groupHashId];
-    [self submitPhotoRequest:urlRequest];
+    currentGroupHashId = groupHashId;
+    int photosDownloaded = [self submitSQLRequestCheckPhotosDownloadedForGroup:groupHashId];
+    //NSLog(@"PhotoLoader.submitRequestGetPhotosForGroup. groupHashId=%@, photosDownloaded=%i", groupHashId, photosDownloaded);
+    
+    if(photosDownloaded==0 && [self isReachable])
+    {
+        photosDownloaded = YES;
+        photoRequestType = kGetPhotosForGroup;
+        NSURLRequest *urlRequest = [self prepareRequestForGetPhotosForGroup:groupHashId];
+        [self submitPhotoRequest:urlRequest];
+    }
+    else{
+        NSLog(@"PhotoLoader.Photos downloaded from the database.");
+        NSArray *photos = [self convertPhotosSQLIntoPhotos:groupHashId];
+        if(photos!=nil)
+        {
+            if ([self.delegate respondsToSelector:@selector(PhotoLoader:didLoadPhotos:forObject:)])
+                [self.delegate PhotoLoader:self didLoadPhotos:photos forObject:obj];
+        }
+    }
 }
 
 -(void)submitRequestGetPhotosForTheme:(int)themeId{
@@ -82,7 +103,7 @@ int const kGetPhotosForTheme = 4;
 -(NSURLRequest*)prepareRequestForGetPhotosForGroup:(NSString*)groupHashId{
     NSString *photoURL = [APIWrapper getURLForGetPhotosForGroup:groupHashId];
     photoURL = [self authenticatedGetURL:photoURL];
-    NSLog(@"photoURL=%@", photoURL);
+    //NSLog(@"prepareRequestForGetPhotosForGroup.photoURL=%@", photoURL);
     NSURL* url = [NSURL URLWithString:photoURL];
     return [NSURLRequest requestWithURL:url];
 }
@@ -90,7 +111,7 @@ int const kGetPhotosForTheme = 4;
 -(NSURLRequest*)prepareRequestForGetPhotosForTheme:(int)themeId{
     NSString *photoURL = [APIWrapper getURLForGetPhotosForTheme:themeId];
     photoURL = [self authenticatedGetURL:photoURL];
-    NSLog(@"photoURL=%@", photoURL);
+    //NSLog(@"photoURL=%@", photoURL);
     NSURL* url = [NSURL URLWithString:photoURL];
     return [NSURLRequest requestWithURL:url];
 }
@@ -140,6 +161,8 @@ int const kGetPhotosForTheme = 4;
     NSArray* photosJSON = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (photosJSON != nil){
         NSArray *photos = [PhotoJSONHandler convertPhotosJSONArrayIntoPhotos:photosJSON];
+        //NSLog(@"handleGetPhotosForGroup.currentGroupHashId=%@", currentGroupHashId);
+        [self submitSQLRequestSavePhotos:photos andGroupHashId:currentGroupHashId];
         if ([self.delegate respondsToSelector:@selector(PhotoLoader:didLoadPhotos:forObject:)])
                 [self.delegate PhotoLoader:self didLoadPhotos:photos forObject:obj];
         else{
