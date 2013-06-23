@@ -130,7 +130,7 @@ int thumbnailsCompleted;
     //CGFloat pos = (CGFloat)self.thumbnailScrollView.contentOffset.x / thumbnailWidth;
     
     int page = round(ceilf(pos));
-    //if(currentPage!=page-1)
+    if(currentPage!=page-1)
     {
         currentPage = page - 1;
         NSLog(@"currentPage=%i, page=%i", currentPage, page);
