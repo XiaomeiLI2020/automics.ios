@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="yR9-Y8-Uir">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="Ffm-6v-tdY">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -7,9 +7,9 @@
         <!--LoginViewController-->
         <scene sceneID="inU-sa-Q5A">
             <objects>
-                <viewController id="yR9-Y8-Uir" userLabel="LoginViewController" customClass="LoginViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="yR9-Y8-Uir" userLabel="LoginViewController" customClass="LoginViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="buk-RD-VL7">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="fJ0-og-Z13">
@@ -66,6 +66,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" id="bMz-5g-oMB"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="emailTextField" destination="ylb-r6-4IE" id="quB-ML-qiF"/>
@@ -74,7 +75,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KQg-1X-OdM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1507" y="-1857"/>
+            <point key="canvasLocation" x="-1285" y="-1908"/>
         </scene>
         <!--WelcomeViewController-->
         <scene sceneID="qhr-TX-Nf2">
@@ -102,7 +103,7 @@
                                 </state>
                                 <connections>
                                     <action selector="logoutPressed:" destination="Y5y-GU-y3Z" eventType="touchUpInside" id="XRu-IO-MHb"/>
-                                    <segue destination="yR9-Y8-Uir" kind="modal" identifier="logout" id="WWj-q9-83g"/>
+                                    <segue destination="yR9-Y8-Uir" kind="custom" identifier="logout" customClass="CustomSegue" id="aIZ-Hp-dv9"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="vmW-dd-9YL">
@@ -117,7 +118,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="xKX-9l-Tt1" kind="modal" id="9PL-ZN-yjP"/>
+                                    <segue destination="xKX-9l-Tt1" kind="custom" customClass="CustomSegue" id="9PL-ZN-yjP"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Wkt-W9-Euj">
@@ -132,7 +133,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="j9X-cF-RKP" kind="modal" id="NBx-gM-Yb4"/>
+                                    <segue destination="j9X-cF-RKP" kind="custom" customClass="CustomSegue" id="jBs-q8-pBL"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="TPq-Sj-AuT">
@@ -147,12 +148,14 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="W4t-y8-2nd" kind="modal" identifier="menuToGroups" id="Uj4-hX-Jix"/>
+                                    <action selector="groupsPressed:" destination="Y5y-GU-y3Z" eventType="touchUpInside" id="Y9L-1b-xEt"/>
+                                    <segue destination="W4t-y8-2nd" kind="custom" customClass="CustomSegue" id="bAh-In-1Hp"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" id="7VG-Te-Teu"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="comicCollectionButton" destination="Wkt-W9-Euj" id="cPS-l2-ITy"/>
@@ -161,7 +164,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S5s-fK-zpW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1150" y="-1067"/>
+            <point key="canvasLocation" x="-100" y="-976"/>
         </scene>
         <!--GroupViewController-->
         <scene sceneID="kTn-A1-IPd">
@@ -180,7 +183,7 @@
                                         <barButtonItem key="leftBarButtonItem" title="Menu" id="xTp-wi-oQR">
                                             <connections>
                                                 <action selector="backButtonClick:" destination="baH-GS-9Zg" id="LJD-vw-D26"/>
-                                                <segue destination="Y5y-GU-y3Z" kind="modal" identifier="groupsToMenu" id="84b-hy-GGr"/>
+                                                <segue destination="Y5y-GU-y3Z" kind="custom" customClass="CustomSegue" id="jRh-s1-3eS"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -198,7 +201,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="hm6-36-FWL" kind="modal" identifier="createGroup" id="Q3d-Fe-clA"/>
+                                    <segue destination="hm6-36-FWL" kind="custom" identifier="createGroup" customClass="CustomSegue" id="Q3d-Fe-clA"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Wcq-3A-ldR">
@@ -213,7 +216,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="baH-GS-9Zg" kind="modal" identifier="invite" modalTransitionStyle="crossDissolve" id="cDg-OT-x0f"/>
+                                    <segue destination="baH-GS-9Zg" kind="custom" identifier="invite" customClass="CustomSegue" id="cDg-OT-x0f"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="eqB-TQ-uiW">
@@ -228,7 +231,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="GQX-6k-f2q" kind="modal" identifier="groupLeaveView" id="oIu-CE-8nb"/>
+                                    <segue destination="GQX-6k-f2q" kind="custom" identifier="groupLeaveView" customClass="CustomSegue" id="oIu-CE-8nb"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Lbg-S4-4JX">
@@ -243,12 +246,13 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="wkZ-6a-B0S" kind="modal" identifier="mainToJoin" id="bdw-Ip-If8"/>
+                                    <segue destination="wkZ-6a-B0S" kind="custom" identifier="mainToJoin" customClass="CustomSegue" id="bdw-Ip-If8"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" id="mr5-eA-S5b"/>
                     <connections>
                         <outlet property="inviteButton" destination="Wcq-3A-ldR" id="G32-yh-oTp"/>
                         <outlet property="joinGroup" destination="Lbg-S4-4JX" id="F4K-LN-X9L"/>
@@ -257,7 +261,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hmu-jt-D12" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-252" y="-1797"/>
+            <point key="canvasLocation" x="-26" y="-1771"/>
         </scene>
         <!--GroupJoinViewController-->
         <scene sceneID="D6l-BR-yAB">
@@ -276,7 +280,7 @@
                                         <barButtonItem key="leftBarButtonItem" title="Groups" id="X9Q-JT-ltu">
                                             <connections>
                                                 <action selector="backButtonClick:" destination="baH-GS-9Zg" id="PM0-6A-BVW"/>
-                                                <segue destination="W4t-y8-2nd" kind="modal" identifier="toGroupMain" id="cdL-Nw-nCo"/>
+                                                <segue destination="W4t-y8-2nd" kind="custom" customClass="CustomSegue" id="wEz-tR-Suf"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -335,13 +339,14 @@
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" id="xjL-io-JxV"/>
                     <connections>
                         <outlet property="collectionView" destination="G3B-vv-3YM" id="8CC-d7-cDe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xJN-qs-NDD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="98" y="-1874"/>
+            <point key="canvasLocation" x="1338" y="-1542"/>
         </scene>
         <!--ComicDetailsViewController-->
         <scene sceneID="O6h-Sc-0O7">
@@ -364,6 +369,7 @@
                                 </state>
                                 <connections>
                                     <action selector="comicsButtonCicked:" destination="mOw-fD-4Tm" eventType="touchDown" id="F9Y-uU-qMA"/>
+                                    <segue destination="j9X-cF-RKP" kind="custom" customClass="CustomSegue" id="5i4-Kp-FDj"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ydg-60-tfz">
@@ -378,7 +384,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="HQA-Ky-Csc" kind="modal" identifier="detailToEdit" id="vnI-2b-eqB"/>
+                                    <segue destination="HQA-Ky-Csc" kind="custom" identifier="detailToEdit" customClass="CustomSegue" id="vnI-2b-eqB"/>
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Comic" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rp0-mu-EHD">
@@ -398,93 +404,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lpc-Xa-vNH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1002" y="304"/>
-        </scene>
-        <!--ComicViewController-->
-        <scene sceneID="gNP-G4-Wie">
-            <objects>
-                <viewController id="hWB-mI-fkD" userLabel="ComicViewController" customClass="ComicViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="KaQ-v7-Ttg">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Pjt-oW-6W1">
-                                <rect key="frame" x="3" y="2" width="70" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" image="back-icon.png">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="Y5y-GU-y3Z" kind="modal" identifier="comicToMenu" id="7K2-Cr-pvV"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="pH9-bN-Jmr">
-                                <rect key="frame" x="266" y="0.0" width="48" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="add-image.png">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="Yee-0B-mIQ" kind="modal" identifier="addComic" id="oam-df-dQx"/>
-                                </connections>
-                            </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="62" sectionHeaderHeight="22" sectionFooterHeight="22" id="mI1-I2-4sR">
-                                <rect key="frame" x="0.0" y="40" width="320" height="412"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="TextCell" rowHeight="62" id="GUr-qQ-9IH" userLabel="ComicTableCell" customClass="ComicTableCell">
-                                        <rect key="frame" x="0.0" y="22" width="320" height="62"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="12t-Lb-vx2">
-                                                    <rect key="frame" x="8" y="11" width="70" height="31"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal">
-                                                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <state key="highlighted">
-                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
-                                        <connections>
-                                            <outlet property="comicButton" destination="12t-Lb-vx2" id="GZX-9H-lcr"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-                    <connections>
-                        <outlet property="comicTableView" destination="mI1-I2-4sR" id="7xQ-19-iZ2"/>
-                        <segue destination="mOw-fD-4Tm" kind="modal" identifier="comicDetails" id="gJV-Bn-dQg"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="a1M-w8-laa" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-164" y="-633"/>
+            <point key="canvasLocation" x="-1358" y="704"/>
         </scene>
         <!--ComicEditViewController-->
         <scene sceneID="NEd-p3-Ij7">
@@ -506,7 +426,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="j9X-cF-RKP" kind="modal" identifier="comiceditback2" modalTransitionStyle="crossDissolve" id="W6X-Sm-gnZ"/>
+                                    <segue destination="j9X-cF-RKP" kind="custom" customClass="CustomSegue" id="FLK-nH-OGJ"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="AdM-q5-Isj">
@@ -536,7 +456,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="YTa-38-WW0" kind="modal" identifier="editPost" id="kZ1-sQ-Xvc"/>
+                                    <segue destination="YTa-38-WW0" kind="custom" identifier="editPost" customClass="CustomSegue" id="kZ1-sQ-Xvc"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -549,7 +469,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DrR-EZ-pSa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1542" y="-866"/>
+            <point key="canvasLocation" x="-1968" y="-860"/>
         </scene>
         <!--ComicAddViewController-->
         <scene sceneID="TA9-4J-CzE">
@@ -572,6 +492,7 @@
                                 </state>
                                 <connections>
                                     <action selector="comicsButtonCicked:" destination="Yee-0B-mIQ" eventType="touchDown" id="A8x-Zq-H0W"/>
+                                    <segue destination="j9X-cF-RKP" kind="custom" customClass="CustomSegue" id="4Lp-9r-ZKY"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="QeJ-hM-gcD">
@@ -586,7 +507,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="YTa-38-WW0" kind="modal" identifier="comicPosterView" id="eqx-Lk-Ciz"/>
+                                    <segue destination="YTa-38-WW0" kind="custom" identifier="comicPosterView" customClass="CustomSegue" id="eqx-Lk-Ciz"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="IHw-JT-54N">
@@ -614,7 +535,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KqT-iu-3Z7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="438" y="-557"/>
+            <point key="canvasLocation" x="-640" y="215"/>
         </scene>
         <!--Comic Collection View Controller-->
         <scene sceneID="r1p-oa-RBE">
@@ -664,7 +585,7 @@
                                             <outlet property="activityView" destination="Ada-vj-QGW" id="EwX-iK-UsR"/>
                                             <outlet property="imageView" destination="y3P-Cr-fQg" id="hFS-R4-TsX"/>
                                             <outlet property="label" destination="enR-jN-p0I" id="p2F-RZ-Nw4"/>
-                                            <segue destination="mOw-fD-4Tm" kind="modal" identifier="COMIC_DETAIL" id="scZ-oz-ppB"/>
+                                            <segue destination="mOw-fD-4Tm" kind="custom" identifier="COMIC_DETAIL" customClass="CustomSegue" id="scZ-oz-ppB"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -690,7 +611,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <connections>
-                                            <segue destination="Yee-0B-mIQ" kind="modal" identifier="comicAdd1" id="T94-jC-2l0"/>
+                                            <segue destination="Yee-0B-mIQ" kind="custom" identifier="comicAdd1" customClass="CustomSegue" id="T94-jC-2l0"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="DZZ-PY-KAd">
@@ -705,7 +626,7 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="Y5y-GU-y3Z" kind="modal" identifier="comicstomenu1" id="YSW-az-BL4"/>
+                                            <segue destination="Y5y-GU-y3Z" kind="custom" customClass="CustomSegue" id="08I-Ip-Xo0"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -714,13 +635,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="Sep-Ww-hw6"/>
                     <connections>
                         <outlet property="collectionView" destination="52S-g1-jAi" id="taq-FO-EAo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Stk-cj-JUb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2055" y="-934"/>
+            <point key="canvasLocation" x="-2412" y="-760"/>
         </scene>
         <!--GroupAddViewController-->
         <scene sceneID="4FE-z2-g3h">
@@ -739,7 +661,7 @@
                                         <barButtonItem key="leftBarButtonItem" title="Groups" id="THa-gL-EtU">
                                             <connections>
                                                 <action selector="backButtonClick:" destination="baH-GS-9Zg" id="aym-60-Zf8"/>
-                                                <segue destination="W4t-y8-2nd" kind="modal" identifier="groupmenu2" id="AYd-J9-ZQu"/>
+                                                <segue destination="W4t-y8-2nd" kind="custom" customClass="CustomSegue" id="6zG-tL-ydW"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -794,14 +716,15 @@
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" id="kdF-p4-KP3"/>
                     <connections>
                         <outlet property="groupTextField" destination="dua-Oe-SMn" id="aQP-d2-LKI"/>
-                        <segue destination="YHP-t6-eB2" kind="modal" id="rdz-9E-0C6"/>
+                        <segue destination="YHP-t6-eB2" kind="custom" customClass="CustomSegue" id="rdz-9E-0C6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4qb-pS-1ca" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="449" y="-1284"/>
+            <point key="canvasLocation" x="850" y="-2233"/>
         </scene>
         <!--PanelViewController-->
         <scene sceneID="NU1-xg-px1">
@@ -823,7 +746,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="Y5y-GU-y3Z" kind="modal" identifier="panelsToMenu" id="mP9-wY-8qV"/>
+                                    <segue destination="Y5y-GU-y3Z" kind="custom" customClass="CustomSegue" id="MWk-cz-y72"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Uby-hF-3kl">
@@ -838,7 +761,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="Kqi-7j-Tke" kind="modal" identifier="editPanel" modalTransitionStyle="crossDissolve" id="cbF-ky-Fhx"/>
+                                    <segue destination="Kqi-7j-Tke" kind="custom" identifier="editPanel" customClass="CustomSegue" id="cbF-ky-Fhx"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="HYk-RT-LGP">
@@ -853,7 +776,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="sz3-Ry-XZA" kind="modal" identifier="addPanelView" id="joj-gg-4ob"/>
+                                    <segue destination="sz3-Ry-XZA" kind="custom" identifier="addPanelView" customClass="CustomSegue" id="joj-gg-4ob"/>
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Images" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qep-iS-tJd">
@@ -866,6 +789,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" id="tGF-zr-Mir"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="editButton" destination="Uby-hF-3kl" id="zJR-mQ-qA6"/>
@@ -873,7 +797,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gjl-RX-7QA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-37" y="-861"/>
+            <point key="canvasLocation" x="3007" y="-1816"/>
         </scene>
         <!--PanelEditViewController-->
         <scene sceneID="OGm-P4-cX4">
@@ -895,7 +819,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="xKX-9l-Tt1" kind="modal" identifier="panelView" id="fjF-Bf-fik"/>
+                                    <segue destination="xKX-9l-Tt1" kind="custom" identifier="panelView" customClass="CustomSegue" id="oWI-Zy-sTF"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" id="Sxs-cu-8kg">
@@ -914,7 +838,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="1sZ-ET-6h0" kind="modal" identifier="panelPosterView" modalTransitionStyle="crossDissolve" id="P1E-0g-8Qy"/>
+                                    <segue destination="1sZ-ET-6h0" kind="custom" identifier="panelPosterView" customClass="CustomSegue" id="P1E-0g-8Qy"/>
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Image" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Fu0-Ds-UbM">
@@ -934,7 +858,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="USc-bo-4yf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="935" y="-1240"/>
+            <point key="canvasLocation" x="3608" y="-1908"/>
         </scene>
         <!--ThemeViewController-->
         <scene sceneID="pLZ-pQ-83B">
@@ -953,7 +877,7 @@
                                         <barButtonItem key="leftBarButtonItem" title="Group" id="5xp-yv-NWt">
                                             <connections>
                                                 <action selector="backButtonClick:" destination="baH-GS-9Zg" id="q6g-n3-ytl"/>
-                                                <segue destination="hm6-36-FWL" kind="modal" identifier="groupName" id="2ae-nG-hzI"/>
+                                                <segue destination="hm6-36-FWL" kind="custom" identifier="groupName" customClass="CustomSegue" id="2ae-nG-hzI"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -1012,13 +936,14 @@
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" id="4vG-Sr-vdl"/>
                     <connections>
                         <outlet property="collectionView" destination="nEL-kd-Tg7" id="tzg-RT-8BV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pMt-WB-Xbp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-682" y="-1162"/>
+            <point key="canvasLocation" x="2736" y="-1030"/>
         </scene>
         <!--ThemePreviewViewController-->
         <scene sceneID="4Xl-FB-nr8">
@@ -1037,7 +962,7 @@
                                         <barButtonItem key="leftBarButtonItem" title="Themes" id="kQI-RI-0b7">
                                             <connections>
                                                 <action selector="backButtonClick:" destination="baH-GS-9Zg" id="4dy-f4-3Uo"/>
-                                                <segue destination="YHP-t6-eB2" kind="modal" id="bhg-Cl-FT4"/>
+                                                <segue destination="YHP-t6-eB2" kind="custom" customClass="CustomSegue" id="bhg-Cl-FT4"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" title="Select Theme" id="rSI-tr-nfV">
@@ -1107,7 +1032,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r05-LR-eLl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-227" y="-1205"/>
+            <point key="canvasLocation" x="2929" y="-1205"/>
         </scene>
         <!--PanelAddViewController-->
         <scene sceneID="g9P-Bn-dcV">
@@ -1160,7 +1085,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="xKX-9l-Tt1" kind="modal" identifier="backImages" modalTransitionStyle="crossDissolve" id="lbd-Gx-frY"/>
+                                    <segue destination="xKX-9l-Tt1" kind="custom" identifier="backImages" customClass="CustomSegue" id="lbd-Gx-frY"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ULz-3m-jMF">
@@ -1175,7 +1100,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="1sZ-ET-6h0" kind="modal" identifier="postNewPanel" modalTransitionStyle="crossDissolve" id="woI-Op-NZA"/>
+                                    <segue destination="1sZ-ET-6h0" kind="custom" identifier="postNewPanel" customClass="CustomSegue" id="woI-Op-NZA"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1188,7 +1113,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dbC-ZG-0e6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="929" y="-1372"/>
+            <point key="canvasLocation" x="3939" y="-1286"/>
         </scene>
         <!--PhotoPosterViewController-->
         <scene sceneID="XEW-r9-aVc">
@@ -1233,12 +1158,12 @@
                     <connections>
                         <outlet property="imageView" destination="Cje-XN-8KM" id="jAm-e4-ZZF"/>
                         <outlet property="progressView" destination="kLa-ex-Sov" id="lnF-qm-3DA"/>
-                        <segue destination="xKX-9l-Tt1" kind="modal" identifier="postToView" id="snA-Gb-6Qz"/>
+                        <segue destination="xKX-9l-Tt1" kind="custom" identifier="postToView" customClass="CustomSegue" id="snA-Gb-6Qz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0H2-gz-B1m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1192" y="-1661"/>
+            <point key="canvasLocation" x="4328" y="-1947"/>
         </scene>
         <!--ComicPosterViewController-->
         <scene sceneID="0Jt-XC-ADr">
@@ -1275,13 +1200,12 @@
                     <connections>
                         <outlet property="imageView" destination="QlY-Kb-7Jg" id="9d3-qZ-099"/>
                         <outlet property="progressView" destination="HfP-HS-Esg" id="fOg-ns-zrb"/>
-                        <segue destination="hWB-mI-fkD" kind="modal" identifier="postToComic1" modalTransitionStyle="crossDissolve" id="Qqf-pa-bVd"/>
-                        <segue destination="j9X-cF-RKP" kind="modal" identifier="postToComic" id="I9g-ag-GQA"/>
+                        <segue destination="j9X-cF-RKP" kind="custom" identifier="postToComic" customClass="CustomSegue" id="zmL-BG-VQi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sSP-bP-GIO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-574" y="-480"/>
+            <point key="canvasLocation" x="-2359" y="-101"/>
         </scene>
         <!--Groups Flow View Controller-->
         <scene sceneID="5lK-Yz-WEi">
@@ -1350,7 +1274,7 @@
                                         <barButtonItem key="leftBarButtonItem" title="Groups" id="vLS-M3-s0r">
                                             <connections>
                                                 <action selector="backButtonClick:" destination="baH-GS-9Zg" id="1md-Tp-RHv"/>
-                                                <segue destination="W4t-y8-2nd" kind="modal" identifier="mengroups1" id="tQI-wF-h3u"/>
+                                                <segue destination="W4t-y8-2nd" kind="custom" identifier="backgroupsmenu" customClass="CustomSegue" id="qhc-Tl-amR"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -1359,13 +1283,14 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="lFA-hh-5jk"/>
                     <connections>
                         <outlet property="collectionView" destination="ab3-Ba-e3i" id="Agb-b1-CKf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sot-EH-n2e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="455" y="-1874"/>
+            <point key="canvasLocation" x="2249" y="-1400"/>
         </scene>
         <!--GroupLeaveViewController-->
         <scene sceneID="tkv-RG-33B">
@@ -1384,7 +1309,7 @@
                                         <barButtonItem key="leftBarButtonItem" title="Groups" id="VUu-cw-J1D">
                                             <connections>
                                                 <action selector="backButtonClick:" destination="baH-GS-9Zg" id="5JS-Pt-fr0"/>
-                                                <segue destination="W4t-y8-2nd" kind="modal" identifier="leaveGroupMenu" id="VdT-iD-cCg"/>
+                                                <segue destination="W4t-y8-2nd" kind="custom" customClass="CustomSegue" id="Bsr-ag-bgE"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -1443,13 +1368,33 @@
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" id="iVp-tH-ZDa"/>
                     <connections>
                         <outlet property="collectionView" destination="grX-mh-crh" id="vWC-fR-jl7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YwC-T1-0ZX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-693" y="-1874"/>
+            <point key="canvasLocation" x="385" y="-2178"/>
+        </scene>
+        <!--MainNavigationController-->
+        <scene sceneID="l7E-uP-SR9">
+            <objects>
+                <navigationController id="Ffm-6v-tdY" userLabel="MainNavigationController" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="Ky1-f4-yik"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="CQE-yO-7lM">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="yR9-Y8-Uir" kind="relationship" relationship="rootViewController" id="hwV-2V-vMm"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZON-5J-lGL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1657" y="-1908"/>
         </scene>
     </scenes>
     <resources>
@@ -1465,21 +1410,178 @@
         <image name="panel-edit.png" width="81" height="48"/>
         <image name="post-panel.png" width="91" height="74"/>
     </resources>
+    <classes>
+        <class className="ComicAddViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicAddViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="comicsButtonCicked:"/>
+                <relationship kind="outlet" name="postButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="ComicCollectionViewCell" superclassName="UICollectionViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicCollectionViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="activityView" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="label" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="ComicCollectionViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicCollectionViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
+            </relationships>
+        </class>
+        <class className="ComicCollectionViewLayout" superclassName="UICollectionViewFlowLayout">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicCollectionViewLayout.h"/>
+        </class>
+        <class className="ComicDetailsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicDetailsViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="comicsButtonCicked:"/>
+                <relationship kind="outlet" name="editPressed" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="ComicEditViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicEditViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="deletePanel:"/>
+                <relationship kind="outlet" name="postButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="ComicPosterViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicPosterViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancelPressed:"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="progressView" candidateClass="UIProgressView"/>
+            </relationships>
+        </class>
+        <class className="GroupAddViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupAddViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancelPressed:"/>
+                <relationship kind="action" name="selectTheme:"/>
+                <relationship kind="outlet" name="groupTextField" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="GroupCollectionViewCell" superclassName="UICollectionViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupCollectionViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="label" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="GroupJoinViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupJoinViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
+            </relationships>
+        </class>
+        <class className="GroupLeaveViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupLeaveViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
+            </relationships>
+        </class>
+        <class className="GroupMainViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupMainViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="inviteButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="joinGroup" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="leaveButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="GroupsFlowViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupsFlowViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="backButtonClick:"/>
+                <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
+            </relationships>
+        </class>
+        <class className="LoginViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="loginPressed:"/>
+                <relationship kind="outlet" name="emailTextField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="passwordTextField" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="PanelAddViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PanelAddViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="showPhotos:"/>
+                <relationship kind="action" name="takeSnap:"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+            </relationships>
+        </class>
+        <class className="PanelEditViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PanelEditViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+            </relationships>
+        </class>
+        <class className="PanelViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PanelViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="editButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="PhotoPosterViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PhotoPosterViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancelPressed:"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="progressView" candidateClass="UIProgressView"/>
+            </relationships>
+        </class>
+        <class className="ThemePreviewViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ThemePreviewViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="selectThemePressed:"/>
+                <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
+            </relationships>
+        </class>
+        <class className="ThemeViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ThemeViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
+            </relationships>
+        </class>
+        <class className="UICollectionReusableView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionReusableView.h"/>
+        </class>
+        <class className="UICollectionViewCell" superclassName="UICollectionReusableView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewCell.h"/>
+        </class>
+        <class className="UICollectionViewFlowLayout" superclassName="UICollectionViewLayout">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewFlowLayout.h"/>
+        </class>
+        <class className="WelcomeViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WelcomeViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="groupsPressed:"/>
+                <relationship kind="action" name="logoutPressed:"/>
+                <relationship kind="outlet" name="comicCollectionButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="imageButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="YSW-az-BL4"/>
-        <segue reference="NBx-gM-Yb4"/>
-        <segue reference="T94-jC-2l0"/>
-        <segue reference="scZ-oz-ppB"/>
-        <segue reference="kZ1-sQ-Xvc"/>
-        <segue reference="Uj4-hX-Jix"/>
-        <segue reference="9PL-ZN-yjP"/>
-        <segue reference="Q3d-Fe-clA"/>
-        <segue reference="rdz-9E-0C6"/>
+        <segue reference="snA-Gb-6Qz"/>
         <segue reference="woI-Op-NZA"/>
+        <segue reference="MWk-cz-y72"/>
+        <segue reference="zmL-BG-VQi"/>
+        <segue reference="eqx-Lk-Ciz"/>
+        <segue reference="hwV-2V-vMm"/>
+        <segue reference="Bsr-ag-bgE"/>
+        <segue reference="2ae-nG-hzI"/>
+        <segue reference="bhg-Cl-FT4"/>
     </inferredMetricsTieBreakers>
 </document>

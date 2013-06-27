@@ -388,6 +388,9 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     
     if([title isEqualToString:@"OK"])
     {
+        NSDictionary *dataDict = [NSDictionary dictionaryWithObject:@"New panel uploaded" forKey:@"panelnotification"];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"newPanelNotification" object:nil userInfo:dataDict];
         //alertShown = NO;
         [self performSegueWithIdentifier:@"postToView" sender:self];
         //[self dismissViewControllerAnimated:YES completion:nil];

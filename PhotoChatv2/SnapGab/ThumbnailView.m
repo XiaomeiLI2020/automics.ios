@@ -50,11 +50,45 @@ int placementCounter;
 */
                 
                 __weak UIImageView* _imageView = imageView;
+            
+            NSFileManager* fileMgr = [NSFileManager defaultManager];
+            //NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+            NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+            //NSString* imageName = [NSString stringWithFormat:@"%i.png", page];
+            NSString* imageName = [NSString stringWithFormat:@"panelPhoto%i.png", panel.photo.photoId];
+            NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+            BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
+            //NSLog(@"displayPageinPanelScrollView. Panel[%i].[%@] File exists=%d", panel.panelId, imageName, fileExists);
+            if(!fileExists)
+            {
+                
+                [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
+                          placeholderImage:nil
+                                   success:^(UIImage *imageDownloaded) {
+
+                                       image = imageDownloaded;
+                                       _imageView.frame = CGRectMake(0.0, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
+                                       [self addSubview:_imageView];
+                                       
+                                       NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                       [data1 writeToFile:currentFile atomically:YES];
+                                       
+                                   }
+                                   failure:^(NSError *error) {
+                                       NSLog(@"displayPageinPanelScrollView.Failed to load image");
+                                   }];
+            }//end if(!fileExists)
+            else if(fileExists)
+            {
+                
+                //NSLog(@"displayPageinPanelScrollView. Loading image from file=%@", imageName);
+                //NSError* err;
+                //[fileMgr removeItemAtPath:currentFile error:&err];
+                [imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+                //[imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
+            }//end if(fileExists)
+            /*
                  [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
-                 //[imageView setImageWithURL:[NSURL URLWithString:[APIWrapper getAbsoluteURLUsingImageRelativePath:panel.photo.imageURL]]
-                 
-                              //placeholderImage:[UIImage imageNamed:@"thumb.png"
-                            //placeholderImage:nil
                                        success:^(UIImage *imageDownloaded) {
                                             image = imageDownloaded;
                                            _imageView.frame = CGRectMake(0.0, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
@@ -63,18 +97,9 @@ int placementCounter;
                                        }
                                        failure:^(NSError *error) {
                                            NSLog(@"ThumnailView.Failed to load thumbnail image. panelId=%i", panel.panelId);
-                                           /*
-                                           UIAlertView *alert = [[UIAlertView alloc]
-                                                                 initWithTitle: @"Load failed."
-                                                                 message: @"Failed to load thumbnail image"
-                                                                 delegate: nil
-                                                                 cancelButtonTitle:@"OK"
-                                                                 otherButtonTitles:nil];
-                                           [alert show];
-                                            */
                                        }];
                 
-                 
+            */
 
                     [self loadAnnotations:panel];
                     //NSLog(@"panelId=%i.annotations already downloaded are added.", panel.panelId);

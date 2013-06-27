@@ -96,6 +96,14 @@ GroupLoader* groupLoader;
     }
     
 }
+
+/*
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+*/
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -103,6 +111,8 @@ GroupLoader* groupLoader;
 }
 
 - (IBAction)logoutPressed:(id)sender {
+    //[self.navigationController popViewControllerAnimated:YES];
+    
     //[self performSegueWithIdentifier:@"logout" sender:self];
     /*
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -113,8 +123,13 @@ GroupLoader* groupLoader;
      */
  }
 
+- (IBAction)groupsPressed:(id)sender {
+    
+}
+
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+
     if([[segue identifier] isEqualToString:@"logout"])
     {
         //NSLog(@"Logout Called.");
@@ -125,6 +140,7 @@ GroupLoader* groupLoader;
         [userDefaults setObject:nil forKey:@"user_id"];
         [userDefaults synchronize];
     }//end if
+
 }
 
 /*

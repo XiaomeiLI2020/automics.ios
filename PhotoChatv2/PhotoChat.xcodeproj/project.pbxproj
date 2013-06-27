@@ -99,6 +99,7 @@
 		D892741816E658260061FA14 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = D892741716E658260061FA14 /* User.m */; };
 		D89317801765C78B00CC6A39 /* GroupLeaveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D893177F1765C78B00CC6A39 /* GroupLeaveViewController.m */; };
 		D8932C7C16D7ED7B007D97A9 /* GUIConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = D8932C7B16D7ED7B007D97A9 /* GUIConstant.m */; };
+		D894C179177AE505001805EF /* CustomSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D894C178177AE505001805EF /* CustomSegue.m */; };
 		D8A098A8167F497100762DB0 /* ResourceView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A098A7167F497100762DB0 /* ResourceView.m */; };
 		D8A098AB167F4B5600762DB0 /* resource1.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A098A9167F4B5500762DB0 /* resource1.png */; };
 		D8A098AC167F4B5600762DB0 /* resource2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A098AA167F4B5600762DB0 /* resource2.png */; };
@@ -336,6 +337,8 @@
 		D893177F1765C78B00CC6A39 /* GroupLeaveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupLeaveViewController.m; sourceTree = "<group>"; };
 		D8932C7A16D7ED7B007D97A9 /* GUIConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GUIConstant.h; path = ../GUIConstant.h; sourceTree = "<group>"; };
 		D8932C7B16D7ED7B007D97A9 /* GUIConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GUIConstant.m; path = ../GUIConstant.m; sourceTree = "<group>"; };
+		D894C177177AE505001805EF /* CustomSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSegue.h; sourceTree = "<group>"; };
+		D894C178177AE505001805EF /* CustomSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSegue.m; sourceTree = "<group>"; };
 		D8A098A6167F497100762DB0 /* ResourceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceView.h; sourceTree = "<group>"; };
 		D8A098A7167F497100762DB0 /* ResourceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceView.m; sourceTree = "<group>"; };
 		D8A098A9167F4B5500762DB0 /* resource1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resource1.png; sourceTree = "<group>"; };
@@ -517,6 +520,8 @@
 			children = (
 				D8932C7A16D7ED7B007D97A9 /* GUIConstant.h */,
 				D8932C7B16D7ED7B007D97A9 /* GUIConstant.m */,
+				D894C177177AE505001805EF /* CustomSegue.h */,
+				D894C178177AE505001805EF /* CustomSegue.m */,
 				D852C5561714BB79004C408E /* ThumbnailView.h */,
 				D852C5571714BB79004C408E /* ThumbnailView.m */,
 				D88FF66D16C9080400C0A2A8 /* Resource */,
@@ -1117,6 +1122,7 @@
 				D8F4BE1C1755303A00C4E93A /* GroupJoinViewController.m in Sources */,
 				D8BF848E1757BC87007F642E /* ThemePreviewViewController.m in Sources */,
 				D89317801765C78B00CC6A39 /* GroupLeaveViewController.m in Sources */,
+				D894C179177AE505001805EF /* CustomSegue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1191,8 +1197,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1211,7 +1217,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SnapGab/PhotoChat-Prefix.pch";
 				GENERATE_PROFILING_CODE = YES;
@@ -1219,8 +1225,8 @@
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				PRODUCT_NAME = PhotoChat;
-				PROVISIONING_PROFILE = "90A8735E-9CA8-46A7-A527-E69F05FCACE4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0763B4CF-8348-45EA-BCC4-78A37DC17FA0";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1238,8 +1244,8 @@
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				PRODUCT_NAME = PhotoChat;
-				PROVISIONING_PROFILE = "1EB18FAB-4B6E-414D-A1B5-1A4A095F4FB8";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1EB18FAB-4B6E-414D-A1B5-1A4A095F4FB8";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};

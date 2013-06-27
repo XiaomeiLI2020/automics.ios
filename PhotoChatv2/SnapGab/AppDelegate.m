@@ -55,6 +55,15 @@
     
     databaseQueue = dispatch_queue_create("automics.database", NULL);
     
+    /*
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
+    UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
+    
+    UINavigationController *navCtrlr = [[UINavigationController alloc]initWithRootViewController:viewController];
+    [self.window setRootViewController:navCtrlr];
+    //navCtrlr.delegate = self;
+    navCtrlr.navigationBarHidden = YES;
+    */
     return YES;
 }
 

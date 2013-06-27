@@ -145,7 +145,7 @@ sqlite3* database;
             
             //const char *panels_stmt = "CREATE TABLE IF NOT EXISTS PANELS (PANELID INTEGER PRIMARY KEY, GROUPHASHID TEXT,  PHOTOID INTEGER, PHOTOURL TEXT, NUMPLACEMENTS REAL, NUMANNOTATIONS REAL)";
             
-            const char *photos_stmt = "CREATE TABLE IF NOT EXISTS PHOTOS (PHOTOID INTEGER, GROUPHASHID TEXT, PHOTOURL TEXT, THUMBURL TEXT, DESCRIPTION TEXT, WIDTH REAL, HEIGHT REAL, PRIMARY KEY(PhotoID, GROUPHASHID))";
+            const char *photos_stmt = "CREATE TABLE IF NOT EXISTS PHOTOS (PHOTOID INTEGER, GROUPHASHID TEXT, PHOTOURL TEXT, THUMBURL TEXT, DESCRIPTION TEXT, WIDTH REAL, HEIGHT REAL, PhotoData BLOB, PRIMARY KEY(PhotoID, GROUPHASHID))";
             
             //const char *photos_stmt = "CREATE TABLE IF NOT EXISTS PHOTOS (PHOTOID INTEGER PRIMARY KEY, GROUPHASHID TEXT, PHOTOURL TEXT, THUMBURL TEXT, DESCRIPTION TEXT, WIDTH REAL, HEIGHT REAL)";
             
@@ -236,7 +236,7 @@ sqlite3* database;
 -(int)submitSQLRequestCheckPanelsDownloadedForGroup:(NSString*)groupHashId{
     
     __block int rowCount=0;
-    NSLog(@"DataLoader. submitSQLRequestCheckPanelsDownloadedForGroup. databaseUpdating=%d, groupHashId=%@", databaseUpdating, groupHashId);
+    //NSLog(@"DataLoader. submitSQLRequestCheckPanelsDownloadedForGroup. databaseUpdating=%d, groupHashId=%@", databaseUpdating, groupHashId);
     if(databaseUpdating)
     {
         dispatch_async([self dispatchQueue], ^(void) {
@@ -309,14 +309,14 @@ sqlite3* database;
         //});
 
     }//end else
-       
+    
     return rowCount;
 }
 
 -(int)submitSQLRequestCheckComicsDownloadedForGroup:(NSString*)groupHashId{
     
     __block int rowCount=0;
-    NSLog(@"DataLoader. submitSQLRequestCheckComicsDownloadedForGroup. databaseUpdating=%d, groupHashId=%@", databaseUpdating, groupHashId);
+    //NSLog(@"DataLoader. submitSQLRequestCheckComicsDownloadedForGroup. databaseUpdating=%d, groupHashId=%@", databaseUpdating, groupHashId);
     if(databaseUpdating)
     {
         //dispatch_async([self dispatchQueue], ^(void) {
@@ -471,7 +471,7 @@ sqlite3* database;
 -(int)submitSQLRequestCheckResourceExists:(int)resourceId
 {
     __block int rowCount=0;
-    NSLog(@"submitSQLRequestCheckResourceExists. resourceId=%i, databaseUpdating=%d", resourceId, databaseUpdating);
+    //NSLog(@"submitSQLRequestCheckResourceExists. resourceId=%i, databaseUpdating=%d", resourceId, databaseUpdating);
     if(databaseUpdating)
     {
         dispatch_async([self dispatchQueue], ^(void) {
@@ -546,7 +546,7 @@ sqlite3* database;
 
 -(NSArray*)convertComicSQLIntoComic:(int)comicId{
     
-    NSLog(@"DataLoader. convertComicSQLIntoComic.comicId=%i", comicId);
+    //NSLog(@"DataLoader.convertComicSQLIntoComic.comicId=%i", comicId);
     
     NSMutableArray* comics = [[NSMutableArray alloc] init];
     
@@ -825,11 +825,11 @@ sqlite3* database;
 
 -(int)submitSQLRequestCheckPanelExists:(int)panelId{
 
-    NSLog(@"DataLoader.submitSQLRequestCheckPanelExists.databaseUpdating=%d, panelId=%i", databaseUpdating, panelId);
+    //NSLog(@"DataLoader.submitSQLRequestCheckPanelExists.databaseUpdating=%d, panelId=%i", databaseUpdating, panelId);
     __block int rowCount=0;
     //__block int placementCount=0;
     //__block int annotationCount=0;
-    __block int panelDownloaded=0;
+    //__block int panelDownloaded=0;
     
     if(databaseUpdating)
     {
@@ -875,7 +875,7 @@ sqlite3* database;
             }//end if(rowCount>0)
              */
             
-            NSLog(@"submitSQLRequestCheckPanelExists.panelId=%i, rowcount=%i, panelDownloaded=%i, databaseUpdating=%d", panelId, rowCount, panelDownloaded, databaseUpdating);
+            //NSLog(@"submitSQLRequestCheckPanelExists.panelId=%i, rowcount=%i, panelDownloaded=%i, databaseUpdating=%d", panelId, rowCount, panelDownloaded, databaseUpdating);
         });
     }
     else{
@@ -914,7 +914,7 @@ sqlite3* database;
             panelDownloaded =  [self submitSQLRequestGetAssetsForPanel:panelId];
         }//end if(rowCount>0)
         */
-            NSLog(@"DataLoader.submitSQLRequestCheckPanelExists.panelId=%i, rowcount=%i, panelDownloaded=%i, databaseUpdating=%d", panelId, rowCount, panelDownloaded, databaseUpdating);
+            //NSLog(@"DataLoader.submitSQLRequestCheckPanelExists.panelId=%i, rowcount=%i, panelDownloaded=%i, databaseUpdating=%d", panelId, rowCount, panelDownloaded, databaseUpdating);
     }//end else
     
     //return panelDownloaded;
@@ -927,7 +927,7 @@ sqlite3* database;
     __block int rowCount=0;
     __block float numPlacements=-1;
     __block float numAnnotations=-1;
-    NSLog(@"DataLoader.submitSQLRequestGetAssetsForPanel.panelId=%i", panelId);
+    //NSLog(@"DataLoader.submitSQLRequestGetAssetsForPanel.panelId=%i", panelId);
     if(databaseUpdating)
     {
         dispatch_async([self dispatchQueue], ^(void) {
@@ -949,7 +949,7 @@ sqlite3* database;
                     {
                         numPlacements = sqlite3_column_double(statement, 0);
                         numAnnotations = sqlite3_column_double(statement, 1);
-                        NSLog(@"panelId=%i has numPlacements=%f, numAnnotations=%f", panelId, numPlacements, numAnnotations);
+                        //NSLog(@"panelId=%i has numPlacements=%f, numAnnotations=%f", panelId, numPlacements, numAnnotations);
                     }
                 }
                 else
@@ -1137,13 +1137,13 @@ sqlite3* database;
 -(void)submitSQLRequestSaveAssetsForPanel:(int)panelId andGroupHashId:(NSString*)groupHashId andPlacements:(NSArray*)placements andAnnotations:(NSArray*)annotations
 {
     //NSLog(@"submitSQLRequestSaveAssetsForPanel. panelId=%i", panelId);
-    NSLog(@"DataLoader.submitSQLRequestSaveAssetsForPanel. panelId=%i, databaseUpdating=%d, placements=%i, annotations=%i", panelId, databaseUpdating, [placements count], [annotations count]);
+    //NSLog(@"DataLoader.submitSQLRequestSaveAssetsForPanel. panelId=%i, databaseUpdating=%d, placements=%i, annotations=%i", panelId, databaseUpdating, [placements count], [annotations count]);
     if(panelId>0 && placements!=nil && annotations!=nil)
     {
         dispatch_async([self dispatchQueue], ^(void) {
             
             databaseUpdating = YES;
-            NSLog(@"submitSQLRequestSaveAssetsForPanel. panelId=%i, databaseUpdating=%d, placements=%i, annotations=%i", panelId, databaseUpdating, [placements count], [annotations count]);
+            //NSLog(@"submitSQLRequestSaveAssetsForPanel. panelId=%i, databaseUpdating=%d, placements=%i, annotations=%i", panelId, databaseUpdating, [placements count], [annotations count]);
             
             float numPlacements =  [[NSNumber numberWithInt:[placements count]] floatValue];
             float numAnnotations = [[NSNumber numberWithInt:[annotations count]] floatValue];
@@ -1236,7 +1236,7 @@ sqlite3* database;
             //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
             {
                 NSString *insertSQL = [NSString stringWithFormat: @"update PANELS set numplacements=%f, numannotations=%f where panelId=%i and grouphashid=\"%@\"", numPlacements, numAnnotations, panelId, groupHashId];
-                NSLog(@"submitSQLRequestSaveAssetsForPanel.insertSQL=%@", insertSQL);
+                //NSLog(@"submitSQLRequestSaveAssetsForPanel.insertSQL=%@", insertSQL);
                 const char *insert_stmt = [insertSQL UTF8String];
                 
                 if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
@@ -1303,7 +1303,7 @@ sqlite3* database;
         if([resources count]>0){
             dispatch_async([self dispatchQueue], ^(void) {
                 databaseUpdating = YES;
-                NSLog(@"submitSQLRequestSaveResources. [resources count]=%i, dataBaseUpdating=%d", [resources count], databaseUpdating);
+                //NSLog(@"submitSQLRequestSaveResources. [resources count]=%i, dataBaseUpdating=%d", [resources count], databaseUpdating);
                 for(int i=0; i<[resources count]; i++)
                 {
                     Resource* resource = [resources objectAtIndex:i];
@@ -1314,8 +1314,8 @@ sqlite3* database;
                         
                         //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
                         {
-                            NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO resources(resourceid, themeId, TYPE, PHOTOURL, THUMBURL) VALUES(%i, %i, \"%@\",\"%@\",\"%@\")", resource.resourceId, resource.theme.themeId, resource.type, resource.imageURL, resource.thumbURL];
-                            //NSLog(@"insertSQL=%@", insertSQL);
+                            NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO resources(resourceid, themeId, TYPE, PHOTOURL, THUMBURL) VALUES(%i, %i, \"%@\",\"%@\",\"%@\")", resource.resourceId, 1, resource.type, resource.imageURL, resource.thumbURL];
+                            NSLog(@"insertSQL=%@", insertSQL);
                             const char *insert_stmt = [insertSQL UTF8String];
                             /*
                              sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
@@ -1363,7 +1363,7 @@ sqlite3* database;
     
     //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
     {
-        NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO resources(resourceid, themeId, TYPE, PHOTOURL, THUMBURL) VALUES(%i, %i, \"%@\",\"%@\",\"%@\")", resourceId, themeId, type, imageURL, thumbURL];
+        NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO resources(resourceid, themeId, TYPE, PHOTOURL, THUMBURL) VALUES(%i, %i, \"%@\",\"%@\",\"%@\")", resourceId, 1, type, imageURL, thumbURL];
         //NSLog(@"insertSQL=%@", insertSQL);
         const char *insert_stmt = [insertSQL UTF8String];
         /*
@@ -1442,7 +1442,7 @@ sqlite3* database;
 
 
 -(void)submitSQLRequestSavePanelsForGroup:(NSArray*)panels andGroupHashId:(NSString*)groupHashId{
-    NSLog(@"submitSQLRequestSavePanelsForGroup.");
+    //NSLog(@"submitSQLRequestSavePanelsForGroup.");
 
     dispatch_async([self dispatchQueue], ^(void) {
     sqlite3_stmt    *statement;
@@ -1519,7 +1519,7 @@ sqlite3* database;
         }
         
         databaseUpdating=NO;
-        NSLog(@"submitSQLRequestSavePanelsForGroup. All panels downloaded. databaseUpdating=%d", databaseUpdating);
+        //NSLog(@"submitSQLRequestSavePanelsForGroup. All panels downloaded. databaseUpdating=%d", databaseUpdating);
     }//end if([panels count]>0)
              
     });
@@ -1726,7 +1726,7 @@ sqlite3* database;
   }
 
 -(void)submitSQLRequestSaveGroups:(NSArray*)groups{
-    NSLog(@"submitSQLRequestSaveGroups. Total #groups=%i", [groups count]);
+    //NSLog(@"submitSQLRequestSaveGroups. Total #groups=%i", [groups count]);
     dispatch_async([self dispatchQueue], ^(void) {
         if([groups count]>0)
         {
@@ -1918,7 +1918,7 @@ sqlite3* database;
 }
 
 -(NSArray*)convertResourceSQLIntoResource:(int)resourceId{
-    NSLog(@"convertResourceSQLIntoResource:resourceId=%i, databaseUpdating=%d", resourceId, databaseUpdating);
+    //NSLog(@"convertResourceSQLIntoResource:resourceId=%i, databaseUpdating=%d", resourceId, databaseUpdating);
     NSMutableArray* resources = [[NSMutableArray alloc] init];
 
     if(databaseUpdating)
@@ -2000,7 +2000,7 @@ sqlite3* database;
 }
 
 -(NSArray*)convertPanelSQLIntoPanel:(int)panelId{
-    NSLog(@"convertPanelSQLIntoPanel.panelId=%i, databaseUpdating=%d", panelId, databaseUpdating);
+    //NSLog(@"convertPanelSQLIntoPanel.panelId=%i, databaseUpdating=%d", panelId, databaseUpdating);
     NSMutableArray* panels = [[NSMutableArray alloc] init];
     
     if(databaseUpdating)
@@ -2141,7 +2141,7 @@ sqlite3* database;
                 }//end if(numAnnotations>0)
                 
                 // Finalize and close database.
-                sqlite3_finalize(statement);
+                //sqlite3_finalize(statement);
                 //sqlite3_close(database);
                 
             }//end if(sqlite3_open([databasePath UTF8String], &database) == SQLITE_OK)
@@ -2286,7 +2286,7 @@ sqlite3* database;
             }//end if(numAnnotations>0)
             
             // Finalize and close database.
-            sqlite3_finalize(statement);
+            //sqlite3_finalize(statement);
             //sqlite3_close(database);
             
         }//end if(sqlite3_open([databasePath UTF8String], &database) == SQLITE_OK)
@@ -2296,7 +2296,7 @@ sqlite3* database;
         [panels addObject:panel];
     }//end else
     
-    NSLog(@"convertPanelSQLIntoPanel. [panels count]=%i", [panels count]);
+    //NSLog(@"convertPanelSQLIntoPanel. [panels count]=%i", [panels count]);
     return panels;
 }
 
@@ -2349,7 +2349,7 @@ sqlite3* database;
 
 -(NSArray*)convertPanelsSQLIntoPanels:(NSString*)groupHashId{
     NSMutableArray* panels = [[NSMutableArray alloc] init];
-    NSLog(@"convertPanelsSQLIntoPanels. databaseUpdating=%d", databaseUpdating);
+    //NSLog(@"convertPanelsSQLIntoPanels. databaseUpdating=%d", databaseUpdating);
     
     if(databaseUpdating)
     {
@@ -2453,7 +2453,7 @@ sqlite3* database;
 
 -(NSArray*)convertPhotosSQLIntoPhotos:(NSString*)groupHashId{
     NSMutableArray* photos = [[NSMutableArray alloc] init];
-    NSLog(@"DataLoader.convertPhotosSQLIntoPhotos. databaseUpdating=%d", databaseUpdating);
+    //NSLog(@"DataLoader.convertPhotosSQLIntoPhotos. databaseUpdating=%d", databaseUpdating);
     if(databaseUpdating){
         dispatch_sync([self dispatchQueue], ^(void) {
         //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
@@ -2715,7 +2715,7 @@ sqlite3* database;
 
 
 -(NSArray*)convertComicsSQLIntoComics:(NSString*)groupHashId{
-    NSLog(@"convertComicsSQLIntoComics.");
+    //NSLog(@"convertComicsSQLIntoComics.");
     NSMutableArray* comics = [[NSMutableArray alloc] init];
     
     if(databaseUpdating){

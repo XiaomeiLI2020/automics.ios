@@ -17,6 +17,8 @@
 @property (weak) id<PanelLoaderDelegate> delegate;
 //-(void)submitRequestGetPanelsForGroup:(int)groupId;
 -(void)submitRequestGetPanelsForGroup;
+-(void)submitRequestRefreshGetPanelsForGroup;
+//-(void)submitRequestRefreshGetPanelsForGroup:(int)oldNmPanels;
 -(void)submitRequestGetPanelWithId:(int)panelId;
 -(void)submitRequestPostPanel:(Panel*)panel;
 -(NSURLRequest*)preparePanelRequestForPostPanel:(Panel*)panel;
@@ -29,6 +31,7 @@
 @optional
 -(void)PanelLoader:(PanelLoader*)loader didFailWithError:(NSError*)error;
 -(void)PanelLoader:(PanelLoader*)loader didLoadPanels:(NSArray*)panels;
+-(void)PanelLoader:(PanelLoader*)loader didLoadRefreshedPanels:(NSArray*)panels;
 -(void)PanelLoader:(PanelLoader*)loader didLoadPanelsLocal:(NSArray*)panels;
 -(void)PanelLoader:(PanelLoader*)loader didLoadPanel:(Panel*)panel forObject:(id)obj;
 -(void)PanelLoader:(PanelLoader*)loader didLoadPanel:(Panel*)panel;

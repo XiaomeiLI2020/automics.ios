@@ -249,7 +249,8 @@ float themeScrollViewHeight = 80.0;
         ThemePreviewViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ThemePreviewViewController"];
         viewController.theme = selectedTheme;
         viewController.themeId = selectedThemeId;
-        [self presentViewController:viewController animated:YES completion:nil];
+        //[self presentViewController:viewController animated:YES completion:nil];
+        [self.navigationController pushViewController:viewController animated:YES];
     }
     /*
         NSLog(@"Already a member of this group");
@@ -390,7 +391,8 @@ float themeScrollViewHeight = 80.0;
     NSIndexPath *indexPath = (NSIndexPath*)obj;
     [photoLoadersInProgress removeObjectForKey:indexPath];
     if (resources.count > 0){
-        Resource* resource= [resources objectAtIndex:arc4random_uniform(resources.count)];
+        //Resource* resource= [resources objectAtIndex:arc4random_uniform(resources.count)];
+        Resource* resource= [resources objectAtIndex:0];
         //ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[APIWrapper getAbsoluteURLUsingImageRelativePath:[photo imageURL]]];
         ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[resource imageURL]];
         imageDownloader.obj = indexPath;

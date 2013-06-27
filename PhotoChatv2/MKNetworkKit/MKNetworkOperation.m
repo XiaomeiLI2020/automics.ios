@@ -1548,11 +1548,9 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
         DLog(@"%@", responseString);
         if([self.delegate respondsToSelector:@selector(MKNetworkOperation:operationFailed:)])
             [self.delegate MKNetworkOperation:self operationFailed:responseString];
-        
     }
     
-    
-}//end handlePostPhotoResponse
+}//end handlePostPanelResponse
 
 -(void)handlePostComicResponse{
     NSError* error;
@@ -1582,7 +1580,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
             [self.delegate MKNetworkOperation:self operationFailed:responseString];
     }
         
-}
+}//end handlePostComicResponse
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData*)data {
   

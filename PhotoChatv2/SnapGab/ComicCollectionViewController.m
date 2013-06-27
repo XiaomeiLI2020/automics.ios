@@ -31,9 +31,11 @@ NSString *kComicCellID = @"COMIC_CELL";
 @synthesize comicImages;
 
 
+
+
 - (void)viewDidLoad
 {
-    NSLog(@"ComicCollectionViewController.viewDidLoad.");
+    //NSLog(@"ComicCollectionViewController.viewDidLoad.");
     [super viewDidLoad];
      self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
     [self.collectionView setCollectionViewLayout:[[ComicCollectionViewLayout alloc] init]];
@@ -41,6 +43,64 @@ NSString *kComicCellID = @"COMIC_CELL";
     [self loadComics];
 
 }
+
+/*
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+*/
+
+-(id)initWithCoder:(NSCoder*)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if(self) {
+        
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(newComicNotification:)
+                                                     name:@"newComicNotification"
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(newComicNotification:)
+                                                     name:UIApplicationDidBecomeActiveNotification
+                                                   object:nil];
+        
+        /*
+         [[NSNotificationCenter defaultCenter] addObserver:self
+         selector:@selector(newPanelNotification)
+         name:@"newPanelNotification"
+         object:nil];
+         
+         
+         [[NSNotificationCenter defaultCenter] addObserver:self
+         selector:@selector(newPanelNotification)
+         name:UIApplicationDidBecomeActiveNotification
+         object:nil];
+         */
+        
+    }
+    return self;
+}
+
+-(void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)newComicNotification:(NSNotification*)note
+{
+    NSDictionary *theData = [note userInfo];
+    if (theData != nil) {
+        NSString* message = [theData objectForKey:@"comicnotification"];
+        NSLog(@"notification: %@", message);
+    }
+    else{
+        NSLog(@"New comic uploaded.");
+    }
+}
+
 
 - (void)viewDidUnload
 {
@@ -124,7 +184,7 @@ NSString *kComicCellID = @"COMIC_CELL";
 
 -(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    //NSLog(@"scrollViewDidEndScrollingAnimation.scrollView.tag");
+    NSLog(@"scrollViewDidEndScrollingAnimation.scrollView.tag");
     /*if(scrollView.tag==0)
         [self alignPageInPanelScrollView];
     if(scrollView.tag==1)
@@ -134,7 +194,7 @@ NSString *kComicCellID = @"COMIC_CELL";
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    //NSLog(@"scrollViewDidEndDecelerating.scrollView.tag");
+    NSLog(@"scrollViewDidEndDecelerating.scrollView.tag");
     /*if(scrollView.tag==0)
         [self alignPageInPanelScrollView];
     if(scrollView.tag==1)
@@ -174,9 +234,21 @@ NSString *kComicCellID = @"COMIC_CELL";
 
         //cell.imageView.image = [comicImages objectForKey:indexPath];
         NSString* imageURL = [comicImages objectForKey:indexPath];
+        //NSLog(@"imageURL=%@", imageURL);
+        
+        NSRange rangeValue = [imageURL rangeOfString:@"http://automicsii.cloudapp.net/" options:NSCaseInsensitiveSearch];
+        
+        if (rangeValue.length > 0)
+        {
+            [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:nil];
+        }
+        else{
+            
+            [cell.imageView setImage:[UIImage imageWithContentsOfFile:imageURL]];
+        }
         
         //[imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
-        [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:nil];
+        //[cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:nil];
         [cell.activityView stopAnimating];
         
         /*
@@ -242,16 +314,51 @@ NSString *kComicCellID = @"COMIC_CELL";
 }
 
 #pragma mark PanelLoaderDelegate
--(void)PanelLoader:(PanelLoader *)loader didLoadPanel:(Panel *)panel forObject:(id)obj{
+-(void)PanelLoader:(PanelLoader *)loader didLoadPanel:(Panel*)panel forObject:(id)obj{
     //NSLog(@"didLoadPanel");
     NSIndexPath *indexPath = (NSIndexPath*)obj;
     [panelLoadersInProgress removeObjectForKey:indexPath];
     if (panel.photo.imageURL != nil){
         
         
-        //[imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
+        NSFileManager* fileMgr = [NSFileManager defaultManager];
+        //NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+        NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        //NSString* imageName = [NSString stringWithFormat:@"%i.png", currentPage];
+        NSString* imageName = [NSString stringWithFormat:@"panelPhoto%i.png", panel.photo.photoId];
+        NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+        BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
         
-        [comicImages setObject:panel.photo.imageURL forKey:indexPath];
+        UIImageView *imageView = [[UIImageView alloc] init];
+        //NSLog(@"alignPageinPanelScrollView. Panel[%i].[%@] File exists=%d", currentPanel.panelId, imageName, fileExists);
+        if(!fileExists)
+        {
+            [comicImages setObject:panel.photo.imageURL forKey:indexPath];
+            
+            [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
+                      placeholderImage:nil
+                               success:^(UIImage *imageDownloaded) {
+                                   //UIImageWriteToSavedPhotosAlbum(imageDownloaded, nil, nil, nil);
+                                   
+                                   //NSLog(@"alignPageinPanelScrollView.saving image=%@", imageName);
+                                   NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                   [data1 writeToFile:currentFile atomically:YES];
+                                   
+                               }
+                               failure:^(NSError *error) {
+                                   NSLog(@"ComicCollectionViewController.Failed to load image");
+                               }];
+        }//end if(!fileExists)
+        else if(fileExists)
+        {
+            //NSLog(@"alignPageinPanelScrollView. Loading image from file=%@", imageName);
+            //NSError* err;
+            //[fileMgr removeItemAtPath:currentFile error:&err];
+            //[imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+            [comicImages setObject:currentFile forKey:indexPath];
+        }//end if(fileExists)
+        
+        //[comicImages setObject:panel.photo.imageURL forKey:indexPath];
         [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
         
         //ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[APIWrapper getAbsoluteURLUsingImageRelativePath:panel.photo.imageURL]];

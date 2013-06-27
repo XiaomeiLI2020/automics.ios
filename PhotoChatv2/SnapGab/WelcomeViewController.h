@@ -18,6 +18,7 @@ BOOL initialized = false;
 @property (weak, nonatomic) IBOutlet UIButton *comicCollectionButton;
 
 - (IBAction)logoutPressed:(id)sender;
+- (IBAction)groupsPressed:(id)sender;
 
 
 @end

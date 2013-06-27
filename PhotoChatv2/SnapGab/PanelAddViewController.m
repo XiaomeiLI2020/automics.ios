@@ -696,10 +696,12 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         [resourceList addObject:resource];
         resourceCounter++;
 
+        /*
         if(resourceCounter==[resourceList count])
         {
             [thumbnailScrollView layoutAssets];
         }
+         */
     }
 
 }
@@ -715,8 +717,11 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
     if(resources!=nil)
     {
+        NSLog(@"didLoadResources.[resources count]=%i", [resources count]);
+        
         numResources = [resources count];
         thumbnailScrollView.numItems = numSpeechBubbles + numResources;
+        [thumbnailScrollView layoutAssets];
         
         if([resources count]>0)
         {

@@ -192,6 +192,9 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     
     if([title isEqualToString:@"OK"])
     {
+        NSDictionary *dataDict = [NSDictionary dictionaryWithObject:@"New comic uploaded" forKey:@"comicnotification"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"newComicNotification" object:nil userInfo:dataDict];
+        
         [self performSegueWithIdentifier:@"postToComic" sender:self];
         //[self dismissViewControllerAnimated:YES completion:nil];
     }//end if

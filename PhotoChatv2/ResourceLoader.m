@@ -43,8 +43,9 @@ BOOL resourcesLoaded = NO;
     }//end if(!resourcesLoaded)
     else if(resourcesLoaded)
     {
-        //NSLog(@"submitRequestGetResourcesForTheme.Resources downloaded from the database.themeId=%i", themeId);
+
         NSArray* resources = [self convertResourcesSQLIntoResources:themeId];
+        //NSLog(@"submitRequestGetResourcesForTheme.Resources downloaded from the database.themeId=%i, [resources count]=%i", themeId, [resources count]);
         if(resources!=nil && [resources count]>0)
         {
             //NSLog(@"submitRequestGetResourcesForTheme.[resources count]=%i", [resources count]);
@@ -69,7 +70,7 @@ BOOL resourcesLoaded = NO;
     //NSLog(@"submitRequestGetResourceWithId");
     //If the resource is not in SQLite database, download it
     int resourceExists = [self submitSQLRequestCheckResourceExists:resourceId];
-    NSLog(@"ResourceLoader.submitRequestGetResourceWithResourceId. Resource#%i resourceExists=%i", resourceId, resourceExists);
+    //NSLog(@"ResourceLoader.submitRequestGetResourceWithResourceId. Resource#%i resourceExists=%i", resourceId, resourceExists);
     if(resourceExists==0)
     {
         //NSLog(@"Resource is not in the database yet.");
@@ -80,7 +81,7 @@ BOOL resourcesLoaded = NO;
     //If the resource is downloadeded
     else if(resourceExists>0)
     {
-        NSLog(@"ResourceLoader.submitRequestGetResourceWithResourceId.Resource downloaded from the database.");
+        //NSLog(@"ResourceLoader.submitRequestGetResourceWithResourceId.Resource downloaded from the database.");
         NSArray* resources = [self convertResourceSQLIntoResource:resourceId];
         if(resources!=nil && [resources count]>0)
         {
@@ -117,7 +118,7 @@ BOOL resourcesLoaded = NO;
 
 -(NSURLRequest*)prepareResourceRequestForGetResourceWithId:(int)resourceId{
     NSString* resourceURL = [APIWrapper getURLForGetResourceWithId:resourceId];
-    NSLog(@"resourceURL=%@", resourceURL);
+    //NSLog(@"resourceURL=%@", resourceURL);
     NSURL* url = [NSURL URLWithString:resourceURL];
     return [NSURLRequest requestWithURL:url];
 }

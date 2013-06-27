@@ -37,6 +37,13 @@
 
 }
 
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -209,7 +216,7 @@
 }
  */
 - (IBAction)loginPressed:(id)sender {
-    
+    //NSLog(@"login pressed");
     userEmail = self.emailTextField.text;
     userPassword = self.passwordTextField.text;
     
@@ -254,6 +261,7 @@
         user = currentUser;
         //NSLog(@"LoginViewController.didLoginUser.userId=%i", user.userId);
         
+        
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:user.currentSession.token forKey:@"session"];
         [userDefaults setObject:[NSNumber numberWithInt:user.userId] forKey:@"user_id"];
@@ -266,16 +274,20 @@
         
         //[userLoader submitRequestGetUser:user.userId];
         
+        //user.currentGroup.hashId = @"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
+        //NSLog(@"LoginViewController.didLoginUser.user.currentGroup.hashId=%@", user.currentGroup.hashId);
+
         //Store current_group_hash into the app's database
         if(user.currentGroup.hashId!=nil)
         {
             GroupLoader* groupLoader = [[GroupLoader alloc] init];
             [groupLoader submitRequestGetGroupForHashId:currentUser.currentGroup.hashId];
-            
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
-            UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"WelcomeViewController"];
-            [self presentViewController:viewController animated:YES completion:nil];
         }
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
+        UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"WelcomeViewController"];
+        //[self presentViewController:viewController animated:YES completion:nil];
+        [self.navigationController pushViewController:viewController animated:YES];
     }//end if(user!=nil)
 }
 
