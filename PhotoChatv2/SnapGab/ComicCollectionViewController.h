@@ -15,5 +15,7 @@
 
 @property IBOutlet UICollectionView* collectionView;
 
+- (IBAction)refreshed:(id)sender;
+
 
 @end

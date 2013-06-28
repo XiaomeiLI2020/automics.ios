@@ -281,7 +281,45 @@ ResourceLoader* resourceLoader;
     //cell.imageView.image = imageDownloader.image;
     //[cell.activityIndicator stopAnimating];
     
-    [cell.imageView setImageWithURL:[NSURL URLWithString:resource.imageURL] placeholderImage:nil];
+    
+    NSFileManager* fileMgr = [NSFileManager defaultManager];
+    //NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    //NSString* imageName = [NSString stringWithFormat:@"%i.png", currentPage];
+    NSString* imageName = [NSString stringWithFormat:@"resource%i.png", resource.resourceId];
+    NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+    BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
+    
+    if(!fileExists)
+    {
+        
+        [cell.imageView setImageWithURL:[NSURL URLWithString:resource.imageURL]
+                  placeholderImage:nil
+                           success:^(UIImage *imageDownloaded) {
+                               //UIImageWriteToSavedPhotosAlbum(imageDownloaded, nil, nil, nil);
+                               
+                               //NSLog(@"alignPageinPanelScrollView.saving image=%@", imageName);
+                               NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                               [data1 writeToFile:currentFile atomically:YES];
+                               
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"ComicCollectionViewController.Failed to load image");
+                           }];
+    }//end if(!fileExists)
+    else if(fileExists)
+    {
+        //NSLog(@"ThemePreviewViewController. Resource photo Loading image from file=%@", imageName);
+        //NSError* err;
+        //[fileMgr removeItemAtPath:currentFile error:&err];
+        [cell.imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+    }//end if(fileExists)
+    
+    
+    //[cell.imageView setImageWithURL:[NSURL URLWithString:resource.imageURL] placeholderImage:nil];
+    
+    
+    
     //cell.imageView.image = [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];;
     //[cell.activityIndicator stopAnimating];
     

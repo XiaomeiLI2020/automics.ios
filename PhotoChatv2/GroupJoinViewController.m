@@ -347,8 +347,18 @@ failure:^(NSError *error) {
         }
         if([object isKindOfClass:[NSString class]])
         {
-            [cell.imageView setImageWithURL:[NSURL URLWithString:object] placeholderImage:nil];
-        }
+            //[cell.imageView setImageWithURL:[NSURL URLWithString:object] placeholderImage:nil];
+            
+            NSRange rangeValue = [object rangeOfString:@"http://automicsii.cloudapp.net/" options:NSCaseInsensitiveSearch];
+            if (rangeValue.length>0)
+            {
+                [cell.imageView setImageWithURL:[NSURL URLWithString:object] placeholderImage:nil];
+            }
+            else{
+                
+                [cell.imageView setImage:[UIImage imageWithContentsOfFile:object]];
+            }
+        }//end if([object isKindOfClass:[NSString class]])
 
         [cell.activityIndicator stopAnimating];
     }else{
@@ -407,8 +417,46 @@ failure:^(NSError *error) {
         //Photo* photo = [photos objectAtIndex:arc4random_uniform(photos.count)];
         Photo* photo = [photos objectAtIndex:0];
         
+        NSFileManager* fileMgr = [NSFileManager defaultManager];
+        //NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+        NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        //NSString* imageName = [NSString stringWithFormat:@"%i.png", currentPage];
+        NSString* imageName = [NSString stringWithFormat:@"panelPhoto%i.png", photo.photoId];
+        NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+        BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
+        
+        UIImageView *imageView = [[UIImageView alloc] init];
+        //NSLog(@"alignPageinPanelScrollView. Panel[%i].[%@] File exists=%d", currentPanel.panelId, imageName, fileExists);
+        if(!fileExists)
+        {
+            [groupImages setObject:photo.imageURL forKey:indexPath];
+            
+            [imageView setImageWithURL:[NSURL URLWithString:photo.imageURL]
+                      placeholderImage:nil
+                               success:^(UIImage *imageDownloaded) {
+                                   //UIImageWriteToSavedPhotosAlbum(imageDownloaded, nil, nil, nil);
+                                   
+                                   //NSLog(@"alignPageinPanelScrollView.saving image=%@", imageName);
+                                   NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                   [data1 writeToFile:currentFile atomically:YES];
+                                   
+                               }
+                               failure:^(NSError *error) {
+                                   NSLog(@"ComicCollectionViewController.Failed to load image");
+                               }];
+        }//end if(!fileExists)
+        else if(fileExists)
+        {
+            //NSLog(@"GroupJoinViewController. Group photo Loading image from file=%@", imageName);
+            //NSError* err;
+            //[fileMgr removeItemAtPath:currentFile error:&err];
+            //[imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+            [groupImages setObject:currentFile forKey:indexPath];
+        }//end if(fileExists)
+        
+        
         //NSLog(@"photo.imageURL=%@", photo.imageURL)
-        [groupImages setObject:photo.imageURL forKey:indexPath];
+        //[groupImages setObject:photo.imageURL forKey:indexPath];
         [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
         
         //[groupImages setObject:image forKey:indexPath];

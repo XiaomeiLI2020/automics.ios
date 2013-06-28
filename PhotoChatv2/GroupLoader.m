@@ -280,6 +280,10 @@ BOOL groupsDownloaded = NO;
         Group* group = [GroupJSONHandler convertGroupJSONIntoGroup:groupdict];
         if(group!=nil)
         {
+            NSMutableArray* groups= [[NSMutableArray alloc] init];
+            [groups addObject:group];
+            [self submitSQLRequestSaveGroups:groups];
+            
             NSLog(@"group.name=%@, hashId=%@, id=%i", group.name, group.hashId, group.groupId);
             if ([self.delegate respondsToSelector:@selector(GroupLoader:didSaveGroup:)])
                 [self.delegate GroupLoader:self didSaveGroup:group];
@@ -314,6 +318,7 @@ BOOL groupsDownloaded = NO;
         Group* group = [GroupJSONHandler convertGroupJSONIntoGroup:groupdict];
         if(group!=nil)
         {
+            
             NSLog(@"group.name=%@, hashId=%@, id=%i", group.name, group.hashId, group.groupId);
             if ([self.delegate respondsToSelector:@selector(GroupLoader:didJoinGroup:)])
                 [self.delegate GroupLoader:self didJoinGroup:group];

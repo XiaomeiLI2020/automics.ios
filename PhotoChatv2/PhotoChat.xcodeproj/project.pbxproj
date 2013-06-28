@@ -100,6 +100,7 @@
 		D89317801765C78B00CC6A39 /* GroupLeaveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D893177F1765C78B00CC6A39 /* GroupLeaveViewController.m */; };
 		D8932C7C16D7ED7B007D97A9 /* GUIConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = D8932C7B16D7ED7B007D97A9 /* GUIConstant.m */; };
 		D894C179177AE505001805EF /* CustomSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D894C178177AE505001805EF /* CustomSegue.m */; };
+		D894C17D177D8556001805EF /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = D894C17C177D8556001805EF /* refresh.png */; };
 		D8A098A8167F497100762DB0 /* ResourceView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A098A7167F497100762DB0 /* ResourceView.m */; };
 		D8A098AB167F4B5600762DB0 /* resource1.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A098A9167F4B5500762DB0 /* resource1.png */; };
 		D8A098AC167F4B5600762DB0 /* resource2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A098AA167F4B5600762DB0 /* resource2.png */; };
@@ -339,6 +340,7 @@
 		D8932C7B16D7ED7B007D97A9 /* GUIConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GUIConstant.m; path = ../GUIConstant.m; sourceTree = "<group>"; };
 		D894C177177AE505001805EF /* CustomSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSegue.h; sourceTree = "<group>"; };
 		D894C178177AE505001805EF /* CustomSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSegue.m; sourceTree = "<group>"; };
+		D894C17C177D8556001805EF /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = SOURCE_ROOT; };
 		D8A098A6167F497100762DB0 /* ResourceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceView.h; sourceTree = "<group>"; };
 		D8A098A7167F497100762DB0 /* ResourceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceView.m; sourceTree = "<group>"; };
 		D8A098A9167F4B5500762DB0 /* resource1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resource1.png; sourceTree = "<group>"; };
@@ -741,6 +743,7 @@
 		48D0EA8016CD4B8600FE11E2 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				D894C17C177D8556001805EF /* refresh.png */,
 				D852C55317134A62004C408E /* thumb.png */,
 				48D58FFC1704A93B002ACF3E /* groupCellBackground.png */,
 				4866F59F1712F62A0031330D /* menu.png */,
@@ -1020,6 +1023,7 @@
 				48278AC4170DD9E30083B46C /* comicCell.png in Resources */,
 				48E46D62170EE57100771C80 /* groupDefaultCellBackground.jpg in Resources */,
 				4866F5A01712F62A0031330D /* menu.png in Resources */,
+				D894C17D177D8556001805EF /* refresh.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1225,7 +1229,7 @@
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				PRODUCT_NAME = PhotoChat;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "0763B4CF-8348-45EA-BCC4-78A37DC17FA0";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0763B4CF-8348-45EA-BCC4-78A37DC17FA0";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
@@ -1244,8 +1248,8 @@
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
 				PRODUCT_NAME = PhotoChat;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "40679836-C38A-4C86-8E8B-5AC91D6A74B6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "40679836-C38A-4C86-8E8B-5AC91D6A74B6";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};

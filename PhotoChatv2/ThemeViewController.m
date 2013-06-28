@@ -12,6 +12,7 @@
 #import "APIWrapper.h"
 #import "GroupCollectionViewLayout.h"
 #import "ThemePreviewViewController.h"
+#import "UIImageView+WebCache.h"
 
 @interface ThemeViewController ()
 
@@ -291,7 +292,31 @@ float themeScrollViewHeight = 80.0;
 
     //cell.label.text = group.name;
     if ([themeImages objectForKey:indexPath] != nil){
-        cell.imageView.image = [themeImages objectForKey:indexPath];
+        
+        id object= [themeImages objectForKey:indexPath];
+        if([object isKindOfClass:[UIImage class]])
+        {
+            
+            cell.imageView.image = [themeImages objectForKey:indexPath];
+        }
+        if([object isKindOfClass:[NSString class]])
+        {
+            //[cell.imageView setImageWithURL:[NSURL URLWithString:object] placeholderImage:nil];
+            
+            NSRange rangeValue = [object rangeOfString:@"http://automicsii.cloudapp.net/" options:NSCaseInsensitiveSearch];
+            if (rangeValue.length>0)
+            {
+                [cell.imageView setImageWithURL:[NSURL URLWithString:object] placeholderImage:nil];
+            }
+            else{
+                
+                [cell.imageView setImage:[UIImage imageWithContentsOfFile:object]];
+            }
+        }
+        
+
+        
+        //cell.imageView.image = [themeImages objectForKey:indexPath];
         [cell.activityIndicator stopAnimating];
     }else{
         // load the image for this cell
@@ -394,11 +419,54 @@ float themeScrollViewHeight = 80.0;
         //Resource* resource= [resources objectAtIndex:arc4random_uniform(resources.count)];
         Resource* resource= [resources objectAtIndex:0];
         //ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[APIWrapper getAbsoluteURLUsingImageRelativePath:[photo imageURL]]];
+        
+        NSFileManager* fileMgr = [NSFileManager defaultManager];
+        //NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+        NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        //NSString* imageName = [NSString stringWithFormat:@"%i.png", currentPage];
+        NSString* imageName = [NSString stringWithFormat:@"resource%i.png", resource.resourceId];
+        NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+        BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
+        
+        UIImageView *imageView = [[UIImageView alloc] init];
+        //NSLog(@"alignPageinPanelScrollView. Panel[%i].[%@] File exists=%d", currentPanel.panelId, imageName, fileExists);
+        if(!fileExists)
+        {
+            [themeImages setObject:resource.imageURL forKey:indexPath];
+            
+            [imageView setImageWithURL:[NSURL URLWithString:resource.imageURL]
+                      placeholderImage:nil
+                               success:^(UIImage *imageDownloaded) {
+                                   //UIImageWriteToSavedPhotosAlbum(imageDownloaded, nil, nil, nil);
+                                   
+                                   //NSLog(@"alignPageinPanelScrollView.saving image=%@", imageName);
+                                   NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                   [data1 writeToFile:currentFile atomically:YES];
+                                   
+                               }
+                               failure:^(NSError *error) {
+                                   NSLog(@"ComicCollectionViewController.Failed to load image");
+                               }];
+        }//end if(!fileExists)
+        else if(fileExists)
+        {
+            //NSLog(@"ThemeViewController. Resource photo Loading image from file=%@", imageName);
+            //NSError* err;
+            //[fileMgr removeItemAtPath:currentFile error:&err];
+            //[imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+            [themeImages setObject:currentFile forKey:indexPath];
+        }//end if(fileExists)
+
+        //[themeImages setObject:image forKey:indexPath];
+        [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+        
+        /*
         ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[resource imageURL]];
         imageDownloader.obj = indexPath;
         imageDownloader.delegate = self;
         if (imageDownloader.image == nil)
             [imageDownloadersInProgress setObject:imageDownloader forKey:indexPath];
+        */
     }else{
         //set default image.
         [self setDefaultImageForIndexPath:indexPath];

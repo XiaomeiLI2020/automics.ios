@@ -629,6 +629,21 @@
                                             <segue destination="Y5y-GU-y3Z" kind="custom" customClass="CustomSegue" id="08I-Ip-Xo0"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CsH-BX-YkK">
+                                        <rect key="frame" x="248" y="7" width="26" height="28"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal" image="refresh.png">
+                                            <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="refreshed:" destination="j9X-cF-RKP" eventType="touchUpInside" id="x7h-5f-DaA"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.36159899639999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
@@ -1409,6 +1424,7 @@
         <image name="menu.png" width="157" height="55"/>
         <image name="panel-edit.png" width="81" height="48"/>
         <image name="post-panel.png" width="91" height="74"/>
+        <image name="refresh.png" width="85" height="89"/>
     </resources>
     <classes>
         <class className="ComicAddViewController" superclassName="UIViewController">
@@ -1429,6 +1445,8 @@
         <class className="ComicCollectionViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicCollectionViewController.h"/>
             <relationships>
+                <relationship kind="action" name="refresh:"/>
+                <relationship kind="action" name="refreshed:"/>
                 <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
             </relationships>
         </class>
@@ -1574,14 +1592,14 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="5i4-Kp-FDj"/>
+        <segue reference="08I-Ip-Xo0"/>
+        <segue reference="eqx-Lk-Ciz"/>
+        <segue reference="6zG-tL-ydW"/>
+        <segue reference="Q3d-Fe-clA"/>
+        <segue reference="rdz-9E-0C6"/>
+        <segue reference="hwV-2V-vMm"/>
         <segue reference="snA-Gb-6Qz"/>
         <segue reference="woI-Op-NZA"/>
-        <segue reference="MWk-cz-y72"/>
-        <segue reference="zmL-BG-VQi"/>
-        <segue reference="eqx-Lk-Ciz"/>
-        <segue reference="hwV-2V-vMm"/>
-        <segue reference="Bsr-ag-bgE"/>
-        <segue reference="2ae-nG-hzI"/>
-        <segue reference="bhg-Cl-FT4"/>
     </inferredMetricsTieBreakers>
 </document>

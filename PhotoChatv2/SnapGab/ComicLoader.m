@@ -49,6 +49,36 @@ dispatch_queue_t backgroundQueue;
  
 }
 
+
+-(void)submitRequestRefreshComicsForGroup{
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+    
+    //int groupExists = [self submitSQLRequestCheckGroupExists:currentGroupHashId];
+    //NSLog(@"groupExists =%i", groupExists);
+    //NSLog(@"currentGroupHashId =%@", currentGroupHashId);
+    int comicsDownloaded = [self submitSQLRequestCheckComicsDownloadedForGroup:currentGroupHashId];
+    //NSLog(@"comicsDownloaded =%i", comicsDownloaded);
+    //if(comicsDownloaded==0)
+    if([self isReachable])
+    {
+        NSLog(@"comics refreshed from the server");
+        comicRequestType = kGetGroupComics;
+        comicsDownloaded = YES;
+        NSURLRequest* urlRequest = [self prepareComicRequestForGroup];
+        [self submitComicRequest:urlRequest];
+    }
+    //else if(comicsDownloaded==1)
+    else if(![self isReachable])
+    {
+        NSArray* comics = [self convertComicsSQLIntoComics:currentGroupHashId];
+        NSLog(@"comics downloaded from the database =%i.", [comics count]);
+        if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComics:)])
+            [self.delegate ComicLoader:self didLoadComics:comics];
+    }
+
+}
+
 -(void)submitRequestGetComicsForGroup{
     /*
      //if([self submitSQLRequestCountComicsForGroup:groupId]==0)
@@ -79,7 +109,7 @@ dispatch_queue_t backgroundQueue;
     //NSLog(@"groupExists =%i", groupExists);
     //NSLog(@"currentGroupHashId =%@", currentGroupHashId);
     int comicsDownloaded = [self submitSQLRequestCheckComicsDownloadedForGroup:currentGroupHashId];
-    NSLog(@"comicsDownloaded =%i", comicsDownloaded);
+    NSLog(@"current_group.comicsDownloaded=%i", comicsDownloaded);
     if(comicsDownloaded==0)
     {
         comicRequestType = kGetGroupComics;

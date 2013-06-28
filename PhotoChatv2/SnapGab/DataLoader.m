@@ -396,7 +396,7 @@ sqlite3* database;
 -(int)submitSQLRequestCheckPhotosDownloadedForGroup:(NSString*)groupHashId{
     
     __block int rowCount=0;
-    NSLog(@"DataLoader. submitSQLRequestCheckPhotosDownloadedForGroup. databaseUpdating=%d, groupHashId=%@", databaseUpdating, groupHashId);
+    //NSLog(@"DataLoader. submitSQLRequestCheckPhotosDownloadedForGroup. databaseUpdating=%d, groupHashId=%@", databaseUpdating, groupHashId);
     if(databaseUpdating){
         dispatch_async([self dispatchQueue], ^(void) {
         
@@ -1315,7 +1315,7 @@ sqlite3* database;
                         //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
                         {
                             NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO resources(resourceid, themeId, TYPE, PHOTOURL, THUMBURL) VALUES(%i, %i, \"%@\",\"%@\",\"%@\")", resource.resourceId, 1, resource.type, resource.imageURL, resource.thumbURL];
-                            NSLog(@"insertSQL=%@", insertSQL);
+                            //NSLog(@"insertSQL=%@", insertSQL);
                             const char *insert_stmt = [insertSQL UTF8String];
                             /*
                              sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);

@@ -182,6 +182,14 @@ NSString *kComicCellID = @"COMIC_CELL";
 }
 
 
+-(void)refreshComics{
+    //NSLog(@"loadComics");
+    ComicLoader *comicLoader = [[ComicLoader alloc] init];
+    comicLoader.delegate = self;
+    [comicLoader submitRequestRefreshComicsForGroup];
+}
+
+
 -(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
     NSLog(@"scrollViewDidEndScrollingAnimation.scrollView.tag");
@@ -237,8 +245,7 @@ NSString *kComicCellID = @"COMIC_CELL";
         //NSLog(@"imageURL=%@", imageURL);
         
         NSRange rangeValue = [imageURL rangeOfString:@"http://automicsii.cloudapp.net/" options:NSCaseInsensitiveSearch];
-        
-        if (rangeValue.length > 0)
+        if (rangeValue.length>0)
         {
             [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:nil];
         }
@@ -424,4 +431,9 @@ NSString *kComicCellID = @"COMIC_CELL";
     
 }
 
+
+- (IBAction)refreshed:(id)sender {
+    NSLog(@"refresh comics");
+    [self refreshComics];
+}
 @end

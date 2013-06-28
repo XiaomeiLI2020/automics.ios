@@ -21,6 +21,7 @@ extern int const kGetComic;
 @property (weak) id<ComicLoaderDelegate> delegate;
 //-(void)submitRequestGetComicsForGroup:(int)groupId;
 -(void)submitRequestGetComicsForGroup;
+-(void)submitRequestRefreshComicsForGroup;
 -(void)submitRequestGetComicWithId:(int)comicId;
 -(void)submitRequestPostComic:(Comic*)comic;
 -(NSURLRequest*)prepareComicRequestForPostComic:(Comic*)comic;
