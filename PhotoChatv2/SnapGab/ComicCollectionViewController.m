@@ -192,7 +192,7 @@ NSString *kComicCellID = @"COMIC_CELL";
 
 -(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    NSLog(@"scrollViewDidEndScrollingAnimation.scrollView.tag");
+    //NSLog(@"scrollViewDidEndScrollingAnimation.scrollView.tag");
     /*if(scrollView.tag==0)
         [self alignPageInPanelScrollView];
     if(scrollView.tag==1)
@@ -202,7 +202,7 @@ NSString *kComicCellID = @"COMIC_CELL";
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    NSLog(@"scrollViewDidEndDecelerating.scrollView.tag");
+    //NSLog(@"scrollViewDidEndDecelerating.scrollView.tag");
     /*if(scrollView.tag==0)
         [self alignPageInPanelScrollView];
     if(scrollView.tag==1)
@@ -252,12 +252,13 @@ NSString *kComicCellID = @"COMIC_CELL";
         else{
             
             [cell.imageView setImage:[UIImage imageWithContentsOfFile:imageURL]];
+            //[cell.imageView setImage:[UIImage imageNamed:imageURL]];
         }
         
         //[imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
         //[cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:nil];
         [cell.activityView stopAnimating];
-        
+        NSLog(@"animation stopped");
         /*
         for (UIView *subview in self.view.subviews)
         {
@@ -278,6 +279,7 @@ NSString *kComicCellID = @"COMIC_CELL";
                 Panel* panel = [comic.panels objectAtIndex:0];
                 //Download random panel in the comic.
                 [self loadPanelWithId:panel.panelId atIndexPath:indexPath];
+                NSLog(@"animation started.");
                 [cell.activityView startAnimating];
 
             }
@@ -299,7 +301,7 @@ NSString *kComicCellID = @"COMIC_CELL";
 }
 
 -(void)loadPanelWithId:(int)panelId atIndexPath:(NSIndexPath *)indexPath{
-    //NSLog(@"loadPanelWithId");
+    NSLog(@"loadPanelWithId.panelId=%i", panelId);
     PanelLoader *panelLoader = [[PanelLoader alloc] init];
     panelLoader.delegate = self;
     panelLoader.obj = indexPath;
@@ -337,7 +339,7 @@ NSString *kComicCellID = @"COMIC_CELL";
         BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
         
         UIImageView *imageView = [[UIImageView alloc] init];
-        //NSLog(@"alignPageinPanelScrollView. Panel[%i].[%@] File exists=%d", currentPanel.panelId, imageName, fileExists);
+        NSLog(@"didLoadPanel. Panel[%i].[%@] File exists=%d", panel.panelId, imageName, fileExists);
         if(!fileExists)
         {
             [comicImages setObject:panel.photo.imageURL forKey:indexPath];

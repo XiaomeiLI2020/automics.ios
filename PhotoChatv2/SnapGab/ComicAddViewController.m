@@ -648,6 +648,10 @@ BOOL thumbMode;
         [self alignPageInThumbnailScrollView];
 }
 
+-(void)didReceiveMemoryWarning{
+    //NSLog(@"didReceiveMemoryWarning");
+    [super didReceiveMemoryWarning];
+}
 
 -(void)newImageNotification
 {

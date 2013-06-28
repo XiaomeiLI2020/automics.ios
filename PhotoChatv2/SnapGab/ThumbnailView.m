@@ -58,7 +58,8 @@ int placementCounter;
             NSString* imageName = [NSString stringWithFormat:@"panelPhoto%i.png", panel.photo.photoId];
             NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
             BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
-            //NSLog(@"displayPageinPanelScrollView. Panel[%i].[%@] File exists=%d", panel.panelId, imageName, fileExists);
+           
+             //NSLog(@"displayPageinPanelScrollView. Panel[%i].[%@] File exists=%d", panel.panelId, imageName, fileExists);
             if(!fileExists)
             {
                 
@@ -78,15 +79,24 @@ int placementCounter;
                                        NSLog(@"displayPageinPanelScrollView.Failed to load image");
                                    }];
             }//end if(!fileExists)
+
             else if(fileExists)
             {
                 
                 //NSLog(@"displayPageinPanelScrollView. Loading image from file=%@", imageName);
                 //NSError* err;
                 //[fileMgr removeItemAtPath:currentFile error:&err];
-                [imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+                UIImage* imageDownloaded = [UIImage imageWithContentsOfFile:currentFile];
+                [imageView setImage:imageDownloaded];
+                image = imageDownloaded;
+                imageView.frame = CGRectMake(0.0, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
+                [self addSubview:imageView];
+                
+                
+                //[imageView setImage:[UIImage imageNamed:currentFile]];
                 //[imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
             }//end if(fileExists)
+           
             /*
                  [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
                                        success:^(UIImage *imageDownloaded) {

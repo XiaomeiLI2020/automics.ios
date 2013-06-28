@@ -253,6 +253,7 @@ CGRect originalBounds;
             else if(fileExists)
             {
                 UIImage* image= [UIImage imageWithContentsOfFile:currentFile];
+                //UIImage* image= [UIImage imageNamed:currentFile];
                 [_imageView setImage:image];
                 //_imageView.userInteractionEnabled = NO;
                 _imageView.userInteractionEnabled = NO;

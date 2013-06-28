@@ -53,6 +53,7 @@ NSString *databasePathStatic;
 -(void)submitSQLRequestSavePanelsForGroup:(NSArray*)panels andGroupHashId:(NSString*)groupHashId;
 //-(void)submitSQLRequestSaveAssetsForPanel:(int)panelId andPlacements:(NSArray*)placements andAnnotations:(NSArray*)annotations;
 -(void)submitSQLRequestSaveAssetsForPanel:(int)panelId andGroupHashId:(NSString*)groupHashId andPlacements:(NSArray*)placements andAnnotations:(NSArray*)annotations;
+-(void)submitSQLRequestSavePanelsWithAssetsForGroup:(NSArray*)panels andGroupHashId:(NSString*)groupHashId;
 
 //Panels: Retrieve from database
 -(int)submitSQLRequestCheckPanelsDownloadedForGroup:(NSString*)groupHashId;

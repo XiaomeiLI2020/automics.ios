@@ -258,7 +258,7 @@ sqlite3* database;
                 while(sqlite3_step(statement) == SQLITE_ROW )
                 {
                     rowCount = sqlite3_column_int(statement, 0);
-                    NSLog(@"submitSQLRequestCheckPanelsDownloadedForGroup. Rowcount is %d",rowCount);
+                    //NSLog(@"submitSQLRequestCheckPanelsDownloadedForGroup. Rowcount is %d",rowCount);
                 }
             }
             else
@@ -293,7 +293,7 @@ sqlite3* database;
                 while(sqlite3_step(statement) == SQLITE_ROW )
                 {
                     rowCount = sqlite3_column_int(statement, 0);
-                    NSLog(@"submitSQLRequestCheckPanelsDownloadedForGroup. Rowcount is %d",rowCount);
+                    //NSLog(@"submitSQLRequestCheckPanelsDownloadedForGroup. Rowcount is %d",rowCount);
                 }
             }
             else
@@ -337,7 +337,7 @@ sqlite3* database;
                 while(sqlite3_step(statement) == SQLITE_ROW )
                 {
                     rowCount = sqlite3_column_int(statement, 0);
-                    NSLog(@"submitSQLRequestCheckComicsDownloadedForGroup. Rowcount is %d",rowCount);
+                    //NSLog(@"submitSQLRequestCheckComicsDownloadedForGroup. Rowcount is %d",rowCount);
                 }
             }
             else
@@ -373,7 +373,7 @@ sqlite3* database;
                 while(sqlite3_step(statement) == SQLITE_ROW )
                 {
                     rowCount = sqlite3_column_int(statement, 0);
-                    NSLog(@"submitSQLRequestCheckComicsDownloadedForGroup. Rowcount is %d",rowCount);
+                    //NSLog(@"submitSQLRequestCheckComicsDownloadedForGroup. Rowcount is %d",rowCount);
                 }
             }
             else
@@ -921,6 +921,46 @@ sqlite3* database;
     return rowCount;
 }
 
+
+-(int)submitSQLRequestCheckPanelExistsLocal:(int)panelId{
+    
+    //NSLog(@"DataLoader.submitSQLRequestCheckPanelExists.databaseUpdating=%d, panelId=%i", databaseUpdating, panelId);
+    __block int rowCount=0;
+   //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
+        {
+            //NSString *querySQL = [NSString stringWithFormat: @"SELECT address, phone FROM contacts WHERE name=\"%@\"", name.text];
+            NSString *retrieveSQL = [NSString stringWithFormat: @"select COUNT(*) from panels where panelId=%i", panelId];
+            //NSLog(@"retrieveSQL=%@", retrieveSQL);
+            const char* sqlStatement = [retrieveSQL UTF8String];
+            sqlite3_stmt *statement;
+            
+            if( sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK )
+            {
+                //Loop through all the returned rows (should be just one)
+                //if(sqlite3_step(statement)!=SQLITE_ROW)
+                //    NSLog(@"Rowcount is %d",rowCount);
+                
+                while(sqlite3_step(statement) == SQLITE_ROW )
+                {
+                    rowCount = sqlite3_column_int(statement, 0);
+                    //NSLog(@"Rowcount is %d",rowCount);
+                }
+            }
+            else
+            {
+                NSLog( @"submitSQLRequestCheckPanelExists.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
+            }
+            
+            // Finalize and close database.
+            sqlite3_finalize(statement);
+            //sqlite3_close(database);
+        }//end if(sqlite3_open([databasePath UTF8String], &database) == SQLITE_OK)
+
+    return rowCount;
+}
+
+
+
 -(int)submitSQLRequestGetAssetsForPanel:(int)panelId{
     
 
@@ -1009,6 +1049,52 @@ sqlite3* database;
     }//end else
     
      return rowCount;
+}
+
+
+-(int)submitSQLRequestGetAssetsForPanelLocal:(int)panelId{
+    
+    
+    __block int rowCount=0;
+    __block float numPlacements=-1;
+    __block float numAnnotations=-1;
+        
+        //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
+        {
+            //NSString *querySQL = [NSString stringWithFormat: @"SELECT address, phone FROM contacts WHERE name=\"%@\"", name.text];
+            NSString *retrieveSQL = [NSString stringWithFormat: @"select numplacements, numannotations from panels where panelId=%i", panelId];
+            const char* sqlStatement = [retrieveSQL UTF8String];
+            sqlite3_stmt *statement;
+            
+            if(sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK)
+            {
+                //Loop through all the returned rows (should be just one)
+                //if(sqlite3_step(statement)!=SQLITE_ROW)
+                //    NSLog(@"Rowcount is %d",rowCount);
+                
+                while(sqlite3_step(statement) == SQLITE_ROW )
+                {
+                    numPlacements = sqlite3_column_double(statement, 0);
+                    numAnnotations = sqlite3_column_double(statement, 1);
+                    //NSLog(@"numPlacements=%f, numAnnotations=%f", numPlacements, numAnnotations);
+                }
+            }
+            else
+            {
+                NSLog( @"submitSQLRequestGetAssetsForPanel.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
+            }
+            
+            // Finalize and close database.
+            sqlite3_finalize(statement);
+            //sqlite3_close(database);
+        }//end if(sqlite3_open([databasePath UTF8String], &database) == SQLITE_OK)
+        
+        if(numPlacements>=0 && numAnnotations>=0)
+            return 1;
+        else
+            return 0;
+    
+    return rowCount;
 }
 
 
@@ -1134,6 +1220,194 @@ sqlite3* database;
     return rowCount;
 }
 
+-(void)submitSQLRequestSavePanelsWithAssetsForGroup:(NSArray*)panels andGroupHashId:(NSString*)groupHashId{
+    
+    dispatch_async([self dispatchQueue], ^(void) {
+        sqlite3_stmt    *statement;
+        //const char *dbpath = [databasePathStatic UTF8String];
+        
+        if([panels count]>0)
+        {
+            databaseUpdating = YES;
+            for(int i=0; i<[panels count]; i++)
+            {
+                Panel* panel = [panels objectAtIndex:i];
+                if(panel!=nil)
+                {
+                    
+                    int panelExists = [self submitSQLRequestCheckPanelExistsLocal:panel.panelId];
+                    int assestsExist =  [self submitSQLRequestGetAssetsForPanelLocal:panel.panelId];
+                    
+                    if(panelExists==0)
+                    {
+                        if(panel.photo!=nil && panel.photo.photoId>0)
+                        {
+                            
+                            //if (sqlite3_open(dbpath, &database) == SQLITE_OK)
+                            {
+                                NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO PANELS (panelId, grouphashId, photoId, photourl, numplacements, numannotations) VALUES (\"%i\",\"%@\",\"%i\",\"%@\", \"%f\", \"%f\")", panel.panelId, groupHashId, panel.photo.photoId, panel.photo.imageURL, -1.0, -1.0];
+                                //NSLog(@"submitSQLRequestSavePanelsForGroup.insertSQL=%@", insertSQL);
+                                const char *insert_stmt = [insertSQL UTF8String];
+                                /*
+                                 sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
+                                 if (sqlite3_step(statement) == SQLITE_DONE)
+                                 {
+                                 //NSLog(@"submitSQLRequestSavePanelsForGroup. Panel added=%i", panel.panelId);
+                                 
+                                 }
+                                 */
+                                if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
+                                {
+                                    while (sqlite3_step(statement) == SQLITE_DONE)
+                                    {
+                                        sqlite3_column_text(statement, 0);
+                                        
+                                    } //else
+                                }
+                                else {
+                                    NSLog(@"submitSQLRequestSavePanelsForGroup.Failed to add panel=%i. Error is:  %s", panel.panelId, sqlite3_errmsg(database));
+                                }
+                                sqlite3_finalize(statement);
+                                //sqlite3_close(database);
+                            }//end if (sqlite3_open(dbpath, &database) == SQLITE_OK)
+                            
+                        }//end if(panel.photo!=nil && panel.photo.photoId>0)
+                    }//end if(panelExists==0) 
+                    
+                    if(assestsExist==0)
+                    {
+                        if(panel.placements!=nil && panel.annotations!=nil)
+                        {
+                            float numPlacements =  [[NSNumber numberWithInt:[panel.placements count]] floatValue];
+                            float numAnnotations = [[NSNumber numberWithInt:[panel.annotations count]] floatValue];
+                            sqlite3_stmt    *statement;
+                            //const char *dbpath = [databasePathStatic UTF8String];
+                            
+                            
+                            if([panel.placements count]>0)
+                            {
+                                for(int i=0; i<[panel.placements count]; i++)
+                                {
+                                    Placement* placement = [panel.placements objectAtIndex:i];
+                                    if(placement!=nil)
+                                    {
+                                        //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
+                                        {
+                                            //(PLACEMENTID INTEGER NOT NULL, PANELID INTEGER NOT NULL, RESOURCEID INTEGER, XOFF REAL, YOFF REAL, SCALE REAL, ANGLE REAL, ZINDEX INT, PRIMARY KEY(PLACEMENTID, PANELID))"
+                                            NSString *insertSQL = [NSString stringWithFormat: @"insert into placements (PLACEMENTID, PANELID, GROUPHASHID, RESOURCEID, XOFF, YOFF, SCALE, ANGLE, ZINDEX) values(%i, %i, \"%@\", %i, %f, %f, %f, %f, %i)", i, panel.panelId, groupHashId, placement.resourceId, placement.xOffset, placement.yOffset, placement.scale, placement.angle, placement.zIndex];
+                                            //NSLog(@"insertSQL=%@", insertSQL);
+                                            const char *insert_stmt = [insertSQL UTF8String];
+                                            
+                                            //sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
+                                            //if (sqlite3_step(statement) == SQLITE_DONE)
+                                            {
+                                                //NSLog(@"Placement added");
+                                                
+                                            }
+                                            
+                                            if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
+                                            {
+                                                while (sqlite3_step(statement) == SQLITE_DONE)
+                                                {
+                                                    sqlite3_column_text(statement, 0);
+                                                    
+                                                } //else
+                                            }
+                                            else {
+                                                NSLog(@"submitSQLRequestSaveAssetsForPanel.Failed to add placement.Error is:  %s", sqlite3_errmsg(database));
+                                            }
+                                            
+                                            sqlite3_finalize(statement);
+                                            //sqlite3_close(database);
+                                            
+                                        }//end if(sqlite3_open(dbpath, &database) == SQLITE_OK)
+                                    }//end if(placement!=nil)
+                                }//end for
+                            }//end if([placements count]>0)
+                            
+                            if([panel.annotations count]>0)
+                            {
+                                for(int i=0; i<[panel.annotations count]; i++)
+                                {
+                                    Annotation* annotation = [panel.annotations objectAtIndex:i];
+                                    if(annotation!=nil)
+                                    {
+                                        //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
+                                        {
+                                            //(ANNOTATIONID INTEGER, PANELID INTEGER, GROUPHASHID TEXT, TXT TEXT, XOFF REAL, YOFF REAL, BUBBLESTYLE INTEGER, FOPTIONS TEXT, PRIMARY KEY(ANNOTATIONID, PANELID, GROUPHASHID))
+                                            NSString *insertSQL = [NSString stringWithFormat: @"insert into Annotations (ANNOTATIONID, PANELID, GROUPHASHID, TXT, XOFF, YOFF, BUBBLESTYLE) values(%i, %i, \"%@\",\"%@\", %f, %f, %i)", annotation.annotationId, panel.panelId, groupHashId,annotation.text, annotation.xOffset, annotation.yOffset, annotation.bubbleStyle];
+                                            //NSLog(@"insertSQL=%@", insertSQL);
+                                            const char *insert_stmt = [insertSQL UTF8String];
+                                            
+                                            //sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
+                                            //if (sqlite3_step(statement) == SQLITE_DONE)
+                                            {
+                                                //NSLog(@"Placement added");
+                                                
+                                            }
+                                            
+                                            if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
+                                            {
+                                                while (sqlite3_step(statement) == SQLITE_DONE)
+                                                {
+                                                    sqlite3_column_text(statement, 0);
+                                                    
+                                                } //else
+                                            }
+                                            else {
+                                                NSLog(@"submitSQLRequestSaveAssetsForPanel.Failed to add placement.Error is:  %s", sqlite3_errmsg(database));
+                                            }
+                                            
+                                            sqlite3_finalize(statement);
+                                            //sqlite3_close(database);
+                                            
+                                        }//end if(sqlite3_open(dbpath, &database) == SQLITE_OK)
+                                    }//end if(placement!=nil)
+                                }//end for
+                            }//end if([placements count]>0)
+                            
+                            
+                            //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
+                            {
+                                NSString *insertSQL = [NSString stringWithFormat: @"update PANELS set numplacements=%f, numannotations=%f where panelId=%i and grouphashid=\"%@\"", numPlacements, numAnnotations, panel.panelId, groupHashId];
+                                //NSLog(@"submitSQLRequestSaveAssetsForPanel.insertSQL=%@", insertSQL);
+                                const char *insert_stmt = [insertSQL UTF8String];
+                                
+                                if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
+                                {
+                                    while (sqlite3_step(statement) == SQLITE_DONE)
+                                    {
+                                        sqlite3_column_text(statement, 0);
+                                        
+                                    } //else
+                                }
+                                else
+                                {
+                                    NSLog(@"submitSQLRequestSaveAssetsForPanel. Failed to update panel.Error is:  %s", sqlite3_errmsg(database));
+                                }
+                                
+                                sqlite3_finalize(statement);
+                                //sqlite3_close(database);
+                            }//end if(sqlite3_open(dbpath, &database) == SQLITE_OK)
+                            
+                        }//end if(panel.placements!=nil && panel.annotations!=nil)
+                    }//end if(assestsExist==0)
+                    
+                    
+                    
+                    
+                }//end if(panel!=nil)
+            }//end for
+
+            databaseUpdating=NO;
+            //NSLog(@"submitSQLRequestSavePanelsForGroup. All panels downloaded. databaseUpdating=%d", databaseUpdating);
+        }//end if([panels count]>0)
+        
+    });
+
+    
+}
+
 -(void)submitSQLRequestSaveAssetsForPanel:(int)panelId andGroupHashId:(NSString*)groupHashId andPlacements:(NSArray*)placements andAnnotations:(NSArray*)annotations
 {
     //NSLog(@"submitSQLRequestSaveAssetsForPanel. panelId=%i", panelId);
@@ -1149,6 +1423,7 @@ sqlite3* database;
             float numAnnotations = [[NSNumber numberWithInt:[annotations count]] floatValue];
             sqlite3_stmt    *statement;
             //const char *dbpath = [databasePathStatic UTF8String];
+            
             
             if([placements count]>0)
             {
@@ -1456,37 +1731,42 @@ sqlite3* database;
             Panel* panel = [panels objectAtIndex:i];
             if(panel!=nil)
             {
-                if(panel.photo!=nil && panel.photo.photoId>0)
+                int panelExists = [self submitSQLRequestCheckPanelExistsLocal:panel.panelId];
+                if(panelExists==0)
                 {
-                    //if (sqlite3_open(dbpath, &database) == SQLITE_OK)
+                    if(panel.photo!=nil && panel.photo.photoId>0)
                     {
-                        NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO PANELS (panelId, grouphashId, photoId, photourl, numplacements, numannotations) VALUES (\"%i\",\"%@\",\"%i\",\"%@\", \"%f\", \"%f\")", panel.panelId, groupHashId, panel.photo.photoId, panel.photo.imageURL, -1.0, -1.0];
-                        //NSLog(@"submitSQLRequestSavePanelsForGroup.insertSQL=%@", insertSQL);
-                        const char *insert_stmt = [insertSQL UTF8String];
-                        /*
-                         sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
-                         if (sqlite3_step(statement) == SQLITE_DONE)
-                         {
-                         //NSLog(@"submitSQLRequestSavePanelsForGroup. Panel added=%i", panel.panelId);
-                         
-                         }
-                         */
-                        if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
+                        //if (sqlite3_open(dbpath, &database) == SQLITE_OK)
                         {
-                            while (sqlite3_step(statement) == SQLITE_DONE)
+                            NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO PANELS (panelId, grouphashId, photoId, photourl, numplacements, numannotations) VALUES (\"%i\",\"%@\",\"%i\",\"%@\", \"%f\", \"%f\")", panel.panelId, groupHashId, panel.photo.photoId, panel.photo.imageURL, -1.0, -1.0];
+                            //NSLog(@"submitSQLRequestSavePanelsForGroup.insertSQL=%@", insertSQL);
+                            const char *insert_stmt = [insertSQL UTF8String];
+                            /*
+                             sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
+                             if (sqlite3_step(statement) == SQLITE_DONE)
+                             {
+                             //NSLog(@"submitSQLRequestSavePanelsForGroup. Panel added=%i", panel.panelId);
+                             
+                             }
+                             */
+                            if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
                             {
-                                sqlite3_column_text(statement, 0);
-                                
-                            } //else
-                        }
-                        else {
-                            NSLog(@"submitSQLRequestSavePanelsForGroup.Failed to add panel=%i. Error is:  %s", panel.panelId, sqlite3_errmsg(database));
-                        }
-                        sqlite3_finalize(statement);
-                        //sqlite3_close(database);
-                    }//end if (sqlite3_open(dbpath, &database) == SQLITE_OK)
+                                while (sqlite3_step(statement) == SQLITE_DONE)
+                                {
+                                    sqlite3_column_text(statement, 0);
+                                    
+                                } //else
+                            }
+                            else {
+                                NSLog(@"submitSQLRequestSavePanelsForGroup.Failed to add panel=%i. Error is:  %s", panel.panelId, sqlite3_errmsg(database));
+                            }
+                            sqlite3_finalize(statement);
+                            //sqlite3_close(database);
+                        }//end if (sqlite3_open(dbpath, &database) == SQLITE_OK)
+                        
+                    }//end if(panel.photo!=nil && panel.photo.photoId>0)
+                }//end if(panelExists==0)
 
-                }//end if(panel.photo!=nil && panel.photo.photoId>0)
             }//end if(panel!=nil)
         }//end for
         

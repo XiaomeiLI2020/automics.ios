@@ -401,6 +401,7 @@ int thumbnailsCompleted;
                     //NSError* err;
                     //[fileMgr removeItemAtPath:currentFile error:&err];
                     [imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+                    //[imageView setImage:[UIImage imageNamed:currentFile]];
                     //[imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
                 }//end if(fileExists)
 
@@ -515,6 +516,7 @@ int thumbnailsCompleted;
                         //NSError* err;
                         //[fileMgr removeItemAtPath:currentFile error:&err];
                         [imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+                        //[imageView setImage:[UIImage imageNamed:currentFile]];
                         //[imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:nil];
                     }//end if(fileExists)
                     

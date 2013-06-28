@@ -150,6 +150,11 @@ UILabel* clickLabel;
     [self addNewPanelToComic:page];
 }
 
+-(void)didReceiveMemoryWarning{
+    //NSLog(@"didReceiveMemoryWarning");
+    [super didReceiveMemoryWarning];
+}
+
 -(void)addNewPanelToComic:(int)page
 {
     //NSLog(@"addNewPanelToComic. page= %i", page);

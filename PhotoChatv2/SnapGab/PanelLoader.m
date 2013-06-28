@@ -126,7 +126,7 @@ int currentNumPanels = 0;
         NSURLRequest* urlRequest = [self preparePanelRequestForGroup];
         [self submitPanelRequest:urlRequest];
     }
-    else
+    else if(panelsDownloaded==1)
     {
         //NSLog(@"PanelLoader. Panels downloaded from the database.");
         //NSLog(@"[self submitSQLRequestCountPanelsForGroup:groupId]=%i", [self submitSQLRequestCountPanelsForGroup:groupId]);
@@ -163,12 +163,12 @@ int currentNumPanels = 0;
     //If the panel is not in SQLite database, download it
     int panelExists = [self submitSQLRequestCheckPanelExists:panelId];
     int assestsExist =  [self submitSQLRequestGetAssetsForPanel:panelId];
-    //NSLog(@"PanelLoader.submitRequestGetPanelWithId. panelId=%i, panelExists=%i, assestsExist=%i", panelId, panelExists, assestsExist);
+    NSLog(@"PanelLoader.submitRequestGetPanelWithId. panelId=%i, panelExists=%i, assestsExist=%i", panelId, panelExists, assestsExist);
     
     //Download panel if numplacements and numannotations values in panels table are -1, means panels and annotations not downloaded yet, and the internet is accessible
     if((panelExists==0 || assestsExist==0) && [self isReachable])
     {
-        //NSLog(@"Panel#%i downloading from the server", panelId);
+        NSLog(@"Panel#%i downloading from the server", panelId);
         panelRequestType = kGetPanel;
         NSURLRequest* urlRequest = [self preparePanelRequestForGetPanelWithId:panelId];
         [self submitPanelRequest:urlRequest];
@@ -351,7 +351,9 @@ int currentNumPanels = 0;
             
             //[self submitSQLRequestSavePanelsForGroup:panels andGroupHashId:currentGroupHashId];
             //NSLog(@"handleGetPanelWithIdResponse.submitSQLRequestSaveAssetsForPanel.panelId=%i", panel.panelId);
-            [self submitSQLRequestSaveAssetsForPanel:panel.panelId andGroupHashId:currentGroupHashId andPlacements:panel.placements andAnnotations:panel.annotations];
+            //[self submitSQLRequestSaveAssetsForPanel:panel.panelId andGroupHashId:currentGroupHashId andPlacements:panel.placements andAnnotations:panel.annotations];
+            [self submitSQLRequestSavePanelsWithAssetsForGroup:panels andGroupHashId:currentGroupHashId];
+            
             //NSLog(@"handleGetPanelWithIdResponse. panelId=%i  has %i placements, %i annotations", panel.panelId, [panel.placements count], [panel.annotations count]);
             if ([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanel:forObject:)])
                 [self.delegate PanelLoader:self didLoadPanel:panel forObject:obj];

@@ -132,8 +132,9 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     //NSLog(@"applicationWillTerminate");
-    [DataLoader closeDatabase];
+    //[DataLoader closeDatabase];
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+   
 }
 
 @end

@@ -48,6 +48,11 @@ NSString *kCellID = @"GROUP_CELL";
     [super viewDidDisappear:animated];
 }
 
+-(void)didReceiveMemoryWarning{
+    //NSLog(@"didReceiveMemoryWarning");
+    [super didReceiveMemoryWarning];
+}
+
 -(void)loadGroups{
     GroupLoader *groupLoader = [[GroupLoader alloc] init];
     groupLoader.delegate = self;
@@ -164,6 +169,7 @@ NSString *kCellID = @"GROUP_CELL";
             else{
                 
                 [cell.imageView setImage:[UIImage imageWithContentsOfFile:object]];
+                //[cell.imageView setImage:[UIImage imageNamed:object]];
             }
         }
         
