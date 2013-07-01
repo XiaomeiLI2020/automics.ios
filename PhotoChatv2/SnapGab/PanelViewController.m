@@ -133,7 +133,7 @@ int thumbnailsCompleted;
     if(currentPage!=page-1)
     {
         currentPage = page - 1;
-        NSLog(@"currentPage=%i, page=%i", currentPage, page);
+        //NSLog(@"currentPage=%i, page=%i", currentPage, page);
         if(currentPage>=0 && currentPage<[self.panels count])
         {
             //NSLog(@"singleTapcaptured.currentPage=%i", currentPage);
@@ -404,12 +404,15 @@ int thumbnailsCompleted;
                     //[imageView setImage:[UIImage imageNamed:currentFile]];
                     //[imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
                 }//end if(fileExists)
-
                 
+
+                //[imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
                 [imageView setContentMode:UIViewContentModeScaleAspectFill];
                 imageView.frame = CGRectMake(page*panelScrollObjWidth, 0, panelScrollObjWidth, panelScrollObjHeight);
                 imageView.tag = page;	// tag our images for later use when we place them in serial fashion
+                imageView.clipsToBounds= YES;
                 // add images to the panel scrollview
+                
                 [panelScrollView addSubview:imageView];
             }//end if panel!=nil
         }//end if(!displayed)
@@ -446,9 +449,10 @@ int thumbnailsCompleted;
         
         lastContentOffSet = panelScrollView.contentOffset;
 
-        //if(page!=currentPage)
+        //NSLog(@"alignPageInPanelScrollView. page=%i, currentPage=%i.", page, currentPage);
+        if(page!=currentPage)
         {
-            //NSLog(@"annotations & placements removed.");
+            //NSLog(@"alignPageInPanelScrollView. page=%i, currentPage=%i. annotations & placements removed.", page, currentPage);
             [self removeAllBubbles];
             [self removeAllResources];
         }
@@ -483,6 +487,9 @@ int thumbnailsCompleted;
                  //Check if the panel is not already displayed in the panel scrollview, display it
                 if(!displayed)
                 {
+                    UIImageView *imageView = [[UIImageView alloc] init];
+                    
+               
                     NSFileManager* fileMgr = [NSFileManager defaultManager];
                     //NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
                     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -491,8 +498,9 @@ int thumbnailsCompleted;
                     NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
                     BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
                     
-                    UIImageView *imageView = [[UIImageView alloc] init];
+
                     //NSLog(@"alignPageinPanelScrollView. Panel[%i].[%@] File exists=%d", currentPanel.panelId, imageName, fileExists);
+
                     if(!fileExists)
                     {
                         
@@ -520,30 +528,13 @@ int thumbnailsCompleted;
                         //[imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:nil];
                     }//end if(fileExists)
                     
-                    /*
-                    [imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL]
-                               placeholderImage:nil
-                                        success:^(UIImage *imageDownloaded) {
-                                            //UIImageWriteToSavedPhotosAlbum(imageDownloaded, nil, nil, nil);
-                                            
-                                            
-                                             //NSString *docDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-                                             // If you go to the folder below, you will find those pictures
-                                             //NSLog(@"%@",docDir);
-                                             
-                                             NSLog(@"saving image=%@", imageName);
-                                             NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
-                                             [data1 writeToFile:currentFile atomically:YES];
-                                        }
-                                       failure:^(NSError *error) {
-                                           NSLog(@"Failed to load image");
-                                       }];
-                    */
+                    
                     //[imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:nil];
                     imageView.frame = CGRectMake(currentPage*panelScrollObjWidth, 0, panelScrollObjWidth, panelScrollObjHeight);
                     imageView.tag = currentPage;	// tag our images for later use when we place them in serial fashion
                     
                     [imageView setContentMode:UIViewContentModeScaleAspectFill];
+                    imageView.clipsToBounds= YES;
                     //[activityIndicator stopAnimating];
                     // add images to the panel scrollview
                     [panelScrollView addSubview:imageView];
@@ -612,7 +603,7 @@ int thumbnailsCompleted;
 
             
             // Scroll to the current page's thumbnail in thumbnail scrollview
-            [thumbnailScrollView scrollItemToVisible:(currentPage)];
+            //[thumbnailScrollView scrollItemToVisible:(currentPage)];
             //NSLog(@"alignPageInPanelScrollView.thumbnailScrollView scrollItemToVisible:(currentPage)");
             //if([self.panels count]<=4)
             //    [self alignPageInThumbnailScrollView];
@@ -891,15 +882,18 @@ int thumbnailsCompleted;
                 UIImageView *imageView = [[UIImageView alloc] init];
                 imageView.frame = CGRectMake(index*thumbnailWidth, 0, thumbnailWidth, thumbnailHeight);
                 //[imageView setImage:thumbnailPanel.thumbnail];
+                photoDownloaded = [[downloadedPhotos objectAtIndex:index] boolValue];
                 if(!photoDownloaded)
                 {
+                    //NSLog(@"Panel without resources shown. index=%i", index);
                     [imageView setImageWithURL:[NSURL URLWithString:thumbnailPanel.photo.imageURL] placeholderImage:nil];
+
                     /*
                     NSFileManager* fileMgr = [NSFileManager defaultManager];
                     //NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
                     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
                     //NSString* imageName = [NSString stringWithFormat:@"%i.png", currentPage];
-                    NSString* imageName = [NSString stringWithFormat:@"thumbPhoto%i.png", thumbnailPanel.panelId];
+                    NSString* imageName = [NSString stringWithFormat:@"panelPhoto%i.png", thumbnailPanel.photo.photoId];
                     NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
                     BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
                     
@@ -924,17 +918,19 @@ int thumbnailsCompleted;
                     }//end if(!fileExists)
                     else if(fileExists)
                     {
-                        NSLog(@"displayThumbnails. Loading image from file=%@", imageName);
-                        NSError* err;
-                        [fileMgr removeItemAtPath:currentFile error:&err];
-                        //[imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
-                        [imageView setImageWithURL:[NSURL URLWithString:thumbnailPanel.photo.imageURL] placeholderImage:nil];
+                        //NSLog(@"displayThumbnails. Loading image from file=%@", imageName);
+                        //NSError* err;
+                        //[fileMgr removeItemAtPath:currentFile error:&err];
+                        [imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+                        //[imageView setImageWithURL:[NSURL URLWithString:thumbnailPanel.photo.imageURL] placeholderImage:nil];
                     }//end if(fileExists)
-                    */ 
-                }
+                  */
+                }//end if(!photoDownloaded)
                 else
+                {
+                    //NSLog(@"displayThumbnails.Thumbnail shown. index=%i", index);
                     [imageView setImage:thumbnailPanel.thumbnail];
-   
+                }
                 /*
                 NSFileManager* fileMgr = [NSFileManager defaultManager];
                 //NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
@@ -1133,11 +1129,46 @@ int thumbnailsCompleted;
                  }
                  */
 
-                
                 UIImageView *imageView = [[UIImageView alloc] init];
                 if(!photoDownloaded)
                 {
                     [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
+                    /*
+                    NSFileManager* fileMgr = [NSFileManager defaultManager];
+                    //NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+                    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                    //NSString* imageName = [NSString stringWithFormat:@"%i.png", currentPage];
+                    NSString* imageName = [NSString stringWithFormat:@"panelPhoto%i.png", panel.photo.photoId];
+                    NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+                    BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
+                    
+                    //NSLog(@"alignPageinPanelScrollView. Panel[%i].[%@] File exists=%d", currentPanel.panelId, imageName, fileExists);
+                    if(!fileExists)
+                    {
+                        
+                        [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
+                                  placeholderImage:nil
+                                           success:^(UIImage *imageDownloaded) {
+                                               //UIImageWriteToSavedPhotosAlbum(imageDownloaded, nil, nil, nil);
+                                               
+                                               //NSLog(@"alignPageinPanelScrollView.saving image=%@", imageName);
+                                               NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                               [data1 writeToFile:currentFile atomically:YES];
+                                               
+                                           }
+                                           failure:^(NSError *error) {
+                                               NSLog(@"displayThumbnails.Failed to load image");
+                                           }];
+                    }//end if(!fileExists)
+                    else if(fileExists)
+                    {
+                        //NSLog(@"displayThumbnails. Loading image from file=%@", imageName);
+                        //NSError* err;
+                        //[fileMgr removeItemAtPath:currentFile error:&err];
+                        [imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+                        //[imageView setImageWithURL:[NSURL URLWithString:thumbnailPanel.photo.imageURL] placeholderImage:nil];
+                    }//end if(fileExists)
+                     */
                 }
                 else
                 {
@@ -1218,7 +1249,7 @@ int thumbnailsCompleted;
         NSLog(@"notification: %@", message);
     }
     else{
-        NSLog(@"New panel uploaded.");
+        NSLog(@"Nil data. New panel uploaded.");
     }
 }
 
@@ -1685,6 +1716,7 @@ int thumbnailsCompleted;
                     
                     if(!thumbMode)
                     {
+                        //NSLog(@"Annotation added. currentPage=%i", currentPage);
                         SpeechBubbleView* sbv = [[SpeechBubbleView alloc] initWithFrame:xywh andText:text andStyle:styleId];
                         sbv.userInteractionEnabled = NO;
                         sbv.alpha = 0.0f;
@@ -1718,6 +1750,7 @@ int thumbnailsCompleted;
                 //NSLog(@"didLoadPanel. self.panels objectAtIndex:currentPage.currentPage=%i, [self.panels count]=%i", currentPage, [self.panels count]);
                 if(placementCounter<[panel.placements count])
                 {
+                    //NSLog(@"didLoadPanel. resourceloader called. thumbMode=%d", thumbMode);
                     int resourceId = [[panel.placements objectAtIndex:placementCounter] resourceId];
                     [resourceLoader submitRequestGetResourceWithResourceId:resourceId];
                 }
@@ -1728,20 +1761,21 @@ int thumbnailsCompleted;
                 NSNumber* yesObj = [NSNumber numberWithBool:YES];
                 if(!thumbMode)
                 {
+                    //Declate a panel has been downloaded
                     if(currentPage<[downloadedPanels count])
                         [downloadedPanels replaceObjectAtIndex:currentPage withObject:yesObj];
                     //BOOL panelDownloaded = [[downloadedPanels objectAtIndex:currentPage] boolValue];
                     //NSLog(@"didLoadPanel.thumbMode=%d, downloadedPanels[%i] =%d. thumbnailScrollView scrollItemToVisible:(currentPage)", thumbMode, currentPage, panelDownloaded);
                     
                     //[self alignPageInPanelScrollView];
-                    // Scroll to the current page's thumbnail in thumbnail scrollview
-                    //[thumbnailScrollView scrollItemToVisible:(currentPage)];
+                    // Scroll to the current page's thumbnail in thumbnail scrollview, after the panel downloaded
+                    [thumbnailScrollView scrollItemToVisible:(currentPage)];
                     
                     if([panels count]<=4)
                         [self alignPageInThumbnailScrollView];
                     
-                }
-               if(thumbMode)
+                }//end if(!thumbMode)
+                if(thumbMode)
                 {
                     if(thumbnailIndex<[downloadedPanels count])
                         [downloadedPanels replaceObjectAtIndex:thumbnailIndex withObject:yesObj];
@@ -1776,7 +1810,7 @@ int thumbnailsCompleted;
                         else if(thumbnailIndex==(thumbPage+3))
                         {
                             thumbMode = NO;
-                            NSLog(@"didloadPanel.thumbMode changed to=%d", thumbMode);
+                            //NSLog(@"didloadPanel.thumbMode changed to=%d", thumbMode);
                             [self displayThumbails];
                         }
                         
@@ -1909,15 +1943,15 @@ int thumbnailsCompleted;
                                                        decoratorWidth, decoratorHeight);
                             defaultScale = placement.scale;
                             defaultAngle = placement.angle;
-                        }
-                    }
-                }
+                        }//end if(placement!=nil)
+                    }//end if(resourcePanel.placements!=nil && [resourcePanel.placements count]>placementCounter)
+                }//end if([type isEqual:@"d"])
                 if([type isEqual:@"f"])
                 {
                     resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
-                }
+                }//end if([type isEqual:@"f"])
                 
-                //NSLog(@"resourceview added");
+                //NSLog(@"resourceview added. currentPage=%i", currentPage);
                 ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource andScale:defaultScale andAngle:defaultAngle];
                 rv.userInteractionEnabled = NO;
                 [self.view addSubview:rv];
@@ -1944,6 +1978,7 @@ int thumbnailsCompleted;
                 NSNumber* yesObj = [NSNumber numberWithBool:YES];
                 if(!thumbMode)
                 {
+                    //Declare a panel downloaded
                     if(currentPage<[downloadedPanels count])
                         [downloadedPanels replaceObjectAtIndex:currentPage withObject:yesObj];
                     
@@ -1989,7 +2024,7 @@ int thumbnailsCompleted;
                         else if(thumbnailIndex==(thumbPage+3))
                         {
                             thumbMode = NO;
-                            NSLog(@"didloadPanel.thumbMode changed to=%d", thumbMode);
+                            //NSLog(@"didloadPanel.thumbMode changed to=%d", thumbMode);
                             [self displayThumbails];
                         }
                     }

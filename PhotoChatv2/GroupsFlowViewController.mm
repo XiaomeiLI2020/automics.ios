@@ -245,7 +245,11 @@ NSString *kCellID = @"GROUP_CELL";
         }//end if(fileExists)
         
         //[groupImages setObject:photo.imageURL forKey:indexPath];
-        [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+        //[self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+        });
+        
         /*
         //ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[APIWrapper getAbsoluteURLUsingImageRelativePath:[photo imageURL]]];
         ImageDownloader *imageDownloader = [[ImageDownloader alloc] initWithImageURL:[photo imageURL]];

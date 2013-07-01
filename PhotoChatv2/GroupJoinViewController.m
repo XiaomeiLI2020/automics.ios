@@ -463,7 +463,12 @@ failure:^(NSError *error) {
         
         //NSLog(@"photo.imageURL=%@", photo.imageURL)
         //[groupImages setObject:photo.imageURL forKey:indexPath];
-        [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+        
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+        });
+        
+        //[self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
         
         //[groupImages setObject:image forKey:indexPath];
         //[self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];

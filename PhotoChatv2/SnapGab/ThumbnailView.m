@@ -50,7 +50,7 @@ int placementCounter;
 */
                 
                 __weak UIImageView* _imageView = imageView;
-            
+           
             NSFileManager* fileMgr = [NSFileManager defaultManager];
             //NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
             NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -58,8 +58,7 @@ int placementCounter;
             NSString* imageName = [NSString stringWithFormat:@"panelPhoto%i.png", panel.photo.photoId];
             NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
             BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
-           
-             //NSLog(@"displayPageinPanelScrollView. Panel[%i].[%@] File exists=%d", panel.panelId, imageName, fileExists);
+                        //NSLog(@"displayPageinPanelScrollView. Panel[%i].[%@] File exists=%d", panel.panelId, imageName, fileExists);
             if(!fileExists)
             {
                 
@@ -97,6 +96,7 @@ int placementCounter;
                 //[imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
             }//end if(fileExists)
            
+            
             /*
                  [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
                                        success:^(UIImage *imageDownloaded) {

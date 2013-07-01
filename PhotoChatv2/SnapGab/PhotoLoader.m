@@ -64,7 +64,7 @@ bool photosDownloaded = NO;
         [self submitPhotoRequest:urlRequest];
     }
     else{
-        NSLog(@"PhotoLoader.Photos downloaded from the database.");
+        //NSLog(@"PhotoLoader.Photos downloaded from the database.");
         NSArray *photos = [self convertPhotosSQLIntoPhotos:groupHashId];
         if(photos!=nil)
         {

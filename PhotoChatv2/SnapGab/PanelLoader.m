@@ -163,12 +163,12 @@ int currentNumPanels = 0;
     //If the panel is not in SQLite database, download it
     int panelExists = [self submitSQLRequestCheckPanelExists:panelId];
     int assestsExist =  [self submitSQLRequestGetAssetsForPanel:panelId];
-    NSLog(@"PanelLoader.submitRequestGetPanelWithId. panelId=%i, panelExists=%i, assestsExist=%i", panelId, panelExists, assestsExist);
+    //NSLog(@"PanelLoader.submitRequestGetPanelWithId. panelId=%i, panelExists=%i, assestsExist=%i", panelId, panelExists, assestsExist);
     
     //Download panel if numplacements and numannotations values in panels table are -1, means panels and annotations not downloaded yet, and the internet is accessible
     if((panelExists==0 || assestsExist==0) && [self isReachable])
     {
-        NSLog(@"Panel#%i downloading from the server", panelId);
+        //NSLog(@"Panel#%i downloading from the server", panelId);
         panelRequestType = kGetPanel;
         NSURLRequest* urlRequest = [self preparePanelRequestForGetPanelWithId:panelId];
         [self submitPanelRequest:urlRequest];
@@ -177,7 +177,7 @@ int currentNumPanels = 0;
     else if(assestsExist>0 || (panelExists>0 && ![self isReachable]))
     //else if(panelExists>0)
     {
-        NSLog(@"Panel#%i has assets already downloaded, or the app is offline", panelId);
+        //NSLog(@"Panel#%i has assets already downloaded, or the app is offline", panelId);
         NSArray* panelsLocal = [self convertPanelSQLIntoPanel:panelId];
         if(panelsLocal!=nil && [panelsLocal count]>0)
         {
@@ -299,11 +299,11 @@ int currentNumPanels = 0;
             
             //int previousNumPanels = [self submitSQLRequestCountPanelsForGroup:currentGroupHashId];
             
-            NSLog(@"PanelLoader.handleRefreshGetPanelsForGroupResponse. currentNumPanels=%i, [new panels count]=%i" , currentNumPanels, [panels count]);
+            //NSLog(@"PanelLoader.handleRefreshGetPanelsForGroupResponse. currentNumPanels=%i, [new panels count]=%i" , currentNumPanels, [panels count]);
             
             if(currentNumPanels==[panels count])
             {
-                NSLog(@"PanelLoader.handleRefreshGetPanelsForGroupResponse. No new panel added.");
+                //NSLog(@"PanelLoader.handleRefreshGetPanelsForGroupResponse. No new panel added.");
             }
             
             if([panels count]>currentNumPanels)

@@ -10,9 +10,11 @@
 
 @implementation ComicCollectionViewCell
 
+
 -(void)setComic:(Comic*)newComic{
     comic = newComic;
     _label.text = newComic.name;
+    
 }
 
 -(Comic*)getComic{

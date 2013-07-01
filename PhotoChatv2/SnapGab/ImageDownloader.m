@@ -44,6 +44,7 @@
 
 #pragma mark NSURLConnectionDelegate functions.
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
+    NSLog(@"imageDownloader.connectionDidFinishLoading.[self.downloadedData.length]=%i", self.downloadedData.length);
     [super connectionDidFinishLoading:connection];
     downloading = NO;
     image = [UIImage imageWithData:self.downloadedData];

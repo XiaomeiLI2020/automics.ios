@@ -62,7 +62,7 @@ dispatch_queue_t backgroundQueue;
     //if(comicsDownloaded==0)
     if([self isReachable])
     {
-        NSLog(@"comics refreshed from the server");
+        //NSLog(@"comics refreshed from the server");
         comicRequestType = kGetGroupComics;
         comicsDownloaded = YES;
         NSURLRequest* urlRequest = [self prepareComicRequestForGroup];
@@ -72,7 +72,7 @@ dispatch_queue_t backgroundQueue;
     else if(![self isReachable])
     {
         NSArray* comics = [self convertComicsSQLIntoComics:currentGroupHashId];
-        NSLog(@"comics downloaded from the database =%i.", [comics count]);
+        //NSLog(@"comics downloaded from the database =%i.", [comics count]);
         if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComics:)])
             [self.delegate ComicLoader:self didLoadComics:comics];
     }
@@ -120,7 +120,7 @@ dispatch_queue_t backgroundQueue;
     else if(comicsDownloaded==1)
     {
         NSArray* comics = [self convertComicsSQLIntoComics:currentGroupHashId];
-        NSLog(@"comics downloaded from the database =%i.", [comics count]);
+        //NSLog(@"comics downloaded from the database =%i.", [comics count]);
         if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComics:)])
             [self.delegate ComicLoader:self didLoadComics:comics];
     }
