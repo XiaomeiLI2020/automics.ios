@@ -199,6 +199,29 @@ float themeScrollViewHeight = 80.0;
     [themeImages setObject:image forKey:indexPath];
 }
 
+-(void)cancelDownLoadRequests{
+    [self cancelPhotoLoadRequests];
+    [self cancelImageDownloadRequests];
+}
+
+
+-(void)cleanupData{
+    //NSLog(@"cleanUpData");
+    [self cancelDownLoadRequests];
+    [themeImages removeAllObjects];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    if([[segue identifier] isEqualToString:@"groupName"])
+    {
+        //NSLog(@"prepareForSegue.comicAdd1");
+        [self cleanupData];
+        [self.collectionView removeFromSuperview];
+        //[self cancelPanelLoadRequests];
+        //[self cancelDownLoadRequests];
+    }//end if
+}
 
 /*
  -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{

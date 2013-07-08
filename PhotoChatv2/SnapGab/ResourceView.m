@@ -470,9 +470,9 @@ CGRect originalBounds;
         self.imageView.layer.borderColor = [[UIColor blackColor] CGColor];
         self.imageView.layer.borderWidth = 2.0;
         
-        [self setupScaleView];
+        //[self setupScaleView];
         [self setupDeleteView];
-        [self setupRotateView];
+        //[self setupRotateView];
         
         [self setupDeleteGesture];
         [self setUpPinchGesture];
@@ -540,8 +540,8 @@ CGRect originalBounds;
         
         //self.imageView.frame = [self calculateImageViewFrame];
         self.deleteView.frame = [self calculateDeleteViewFrame];
-        self.scaleView.frame = [self calculateScaleViewFrame];
-        self.rotateView.frame = [self calculateRotateViewFrame];
+        //self.scaleView.frame = [self calculateScaleViewFrame];
+        //self.rotateView.frame = [self calculateRotateViewFrame];
         [self setNeedsDisplay];
         _previousScale = currentScale;
         //_previousScale = scaleStep;
@@ -589,8 +589,8 @@ CGRect originalBounds;
         _previousScale = _scale;
         
         self.deleteView.frame = [self calculateDeleteViewFrame];
-        self.scaleView.frame = [self calculateScaleViewFrame];
-        self.rotateView.frame = [self calculateRotateViewFrame];
+        //self.scaleView.frame = [self calculateScaleViewFrame];
+        //self.rotateView.frame = [self calculateRotateViewFrame];
     }
     
     CGFloat currentScale = [gestureRecognizer scale];

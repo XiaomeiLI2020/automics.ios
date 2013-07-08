@@ -13,6 +13,7 @@
 #import "NSData+Base64.h"
 #import "Base64.h"
 #import "User.h"
+#import "UserLoader.h"
 #import "Photo.h"
 #import "Annotation.h"
 #import "GUIConstant.h"
@@ -360,6 +361,11 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     //if(self.connection) [self.connection cancel];
     //[self performSegueWithIdentifier:@"postToView" sender:self];
     [self dismissViewControllerAnimated:YES completion:nil];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
+    UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"PanelViewController"];
+    //[self presentViewController:viewController animated:YES completion:nil];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -388,11 +394,12 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     
     if([title isEqualToString:@"OK"])
     {
-        NSDictionary *dataDict = [NSDictionary dictionaryWithObject:@"New panel uploaded" forKey:@"panelnotification"];
+
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"newPanelNotification" object:nil userInfo:dataDict];
         //alertShown = NO;
-        [self performSegueWithIdentifier:@"postToView" sender:self];
+        //[self performSegueWithIdentifier:@"postToView" sender:self];
+        [self.navigationController popViewControllerAnimated:YES];
+        
         //[self dismissViewControllerAnimated:YES completion:nil];
     }//end if
 }//end alertView
@@ -400,6 +407,9 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 #pragma mark PanelLoader functions.
 -(void)PanelLoader:(PanelLoader *)loader didSavePanel:(NSString*)response{
     //NSLog(@"Panel saved: %@", response);
+    
+    UserLoader* userLoader = [[UserLoader alloc] init];
+    [userLoader submitRequestPostNotification:@"New Image Uploaded."];
     
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Upload Successful"
@@ -485,6 +495,11 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 
 -(void)MKNetworkOperation:(MKNetworkOperation *)loader didUploadPanel:(NSString*)response{
     NSLog(@"PhotoPosterView.MKNetworkOperation.didUploadPanel.Panel saved: %@", response);
+    
+    //Post a notification when a panel has been successfully added.
+    UserLoader* userLoader = [[UserLoader alloc] init];
+    [userLoader submitRequestPostNotification:@"New image uploaded."];
+    
     UIAlertView *message = [[UIAlertView alloc]
                             initWithTitle:@"Upload Successful"
                             message:nil

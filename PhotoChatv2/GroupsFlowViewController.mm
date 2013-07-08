@@ -96,6 +96,30 @@ NSString *kCellID = @"GROUP_CELL";
     [groupImages setObject:image forKey:indexPath];
 }
 
+-(void)cancelDownLoadRequests{
+    [self cancelPhotoLoadRequests];
+    [self cancelImageDownloadRequests];
+}
+
+
+-(void)cleanupData{
+    //NSLog(@"cleanUpData");
+    [self cancelDownLoadRequests];
+    [groupImages removeAllObjects];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    if([[segue identifier] isEqualToString:@"invitetogroupsmenu"])
+    {
+        //NSLog(@"prepareForSegue.comicAdd1");
+        [self cleanupData];
+        [self.collectionView removeFromSuperview];
+        //[self cancelPanelLoadRequests];
+        //[self cancelDownLoadRequests];
+    }//end if
+}
+
 #pragma mark - UICollectionViewDelegate
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     GroupCollectionViewCell* selectedGroupCell = (GroupCollectionViewCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
@@ -194,9 +218,11 @@ NSString *kCellID = @"GROUP_CELL";
 }
 
 -(void)GroupLoader:(GroupLoader *)groupLoader didFailWithError:(NSError *)errors{
+    NSLog(@"GroupFlowViewController. Group failed to load.");
+    /*
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Groups", nil) message:errors.description delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil];
     [alertView show];
-    
+    */
 }
 
 #pragma mark - PhotoLoaderDelegate

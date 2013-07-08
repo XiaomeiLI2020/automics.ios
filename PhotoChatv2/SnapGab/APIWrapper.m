@@ -21,6 +21,10 @@
     return [NSString stringWithFormat:@"%@/%@/%@/%@", kBaseURL,kAPIURL,kPanelURL,inputId];
 }
 
++(NSString*)getURLForPostNotification{
+        return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL,kAPIURL,kNotificationURL];
+}
+
 +(NSString*)getURLForPostPanel{
     return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL,kAPIURL,kPanelURL];
 }

@@ -109,6 +109,30 @@ NSString *pCellID = @"GROUP_CELL";
     [groupImages setObject:image forKey:indexPath];
 }
 
+-(void)cancelDownLoadRequests{
+    [self cancelPhotoLoadRequests];
+    [self cancelImageDownloadRequests];
+}
+
+
+-(void)cleanupData{
+    //NSLog(@"cleanUpData");
+    [self cancelDownLoadRequests];
+    [groupImages removeAllObjects];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    if([[segue identifier] isEqualToString:@"leavetogroupsmenu"])
+    {
+        //NSLog(@"prepareForSegue.comicAdd1");
+        [self cleanupData];
+        [self.collectionView removeFromSuperview];
+        //[self cancelPanelLoadRequests];
+        //[self cancelDownLoadRequests];
+    }//end if
+}
+
 #pragma mark - UserLoaderDelegate
 /*
  -(void)UserLoader:(UserLoader*)loader didJoinGroup:(User*)currentUser{
@@ -212,15 +236,29 @@ NSString *pCellID = @"GROUP_CELL";
     
     if(!alertShown)
     {
-        groupHashId = group.hashId;
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Leave Group"
-                              message: [NSString stringWithFormat:@"You will leave %@", group.name]
-                              delegate: self
-                              cancelButtonTitle:@"Confirm"
-                              otherButtonTitles:@"Cancel", nil];
-        [alert show];
-        alertShown = YES;
+        if([userLoader isReachable])
+        {
+            groupHashId = group.hashId;
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle: @"Leave Group"
+                                  message: [NSString stringWithFormat:@"You will leave %@", group.name]
+                                  delegate: self
+                                  cancelButtonTitle:@"Confirm"
+                                  otherButtonTitles:@"Cancel", nil];
+            [alert show];
+            alertShown = YES;
+        }//end if([userLoader isReachable])
+        else{
+            
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle: @"You are offline."
+                                  message:@"Group change only when Internet is available"
+                                  delegate: nil
+                                  cancelButtonTitle:@"Cancel"
+                                  otherButtonTitles:nil];
+            [alert show];
+        }//end else
+
     }//end if(!alertShown)
     
     /*
@@ -375,9 +413,11 @@ NSString *pCellID = @"GROUP_CELL";
 }
 
 -(void)GroupLoader:(GroupLoader *)groupLoader didFailWithError:(NSError *)errors{
+    NSLog(@"GroupLeaveViewController. Group failed to load.");
+    /*
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Groups", nil) message:errors.description delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil];
     [alertView show];
-    
+    */
 }
 
 #pragma mark - PhotoLoaderDelegate

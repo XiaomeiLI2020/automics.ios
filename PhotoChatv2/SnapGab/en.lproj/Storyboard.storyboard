@@ -58,7 +58,7 @@
                                 <rect key="frame" x="116" y="192" width="175" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="yR9-Y8-Uir" id="g2I-J1-rIB"/>
                                 </connections>
@@ -103,7 +103,6 @@
                                 </state>
                                 <connections>
                                     <action selector="logoutPressed:" destination="Y5y-GU-y3Z" eventType="touchUpInside" id="XRu-IO-MHb"/>
-                                    <segue destination="yR9-Y8-Uir" kind="custom" identifier="logout" customClass="CustomSegue" id="aIZ-Hp-dv9"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="vmW-dd-9YL">
@@ -152,6 +151,13 @@
                                     <segue destination="W4t-y8-2nd" kind="custom" customClass="CustomSegue" id="bAh-In-1Hp"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ctr-yX-u8W">
+                                <rect key="frame" x="20" y="72" width="285" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -160,6 +166,7 @@
                     <connections>
                         <outlet property="comicCollectionButton" destination="Wkt-W9-Euj" id="cPS-l2-ITy"/>
                         <outlet property="imageButton" destination="vmW-dd-9YL" id="KM2-nd-YNV"/>
+                        <outlet property="welcomeLabel" destination="Ctr-yX-u8W" id="Zgi-I8-SOB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S5s-fK-zpW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -183,7 +190,7 @@
                                         <barButtonItem key="leftBarButtonItem" title="Menu" id="xTp-wi-oQR">
                                             <connections>
                                                 <action selector="backButtonClick:" destination="baH-GS-9Zg" id="LJD-vw-D26"/>
-                                                <segue destination="Y5y-GU-y3Z" kind="custom" customClass="CustomSegue" id="jRh-s1-3eS"/>
+                                                <segue destination="Y5y-GU-y3Z" kind="custom" customClass="CustomPopSegue" id="jRh-s1-3eS"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -261,7 +268,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hmu-jt-D12" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-26" y="-1771"/>
+            <point key="canvasLocation" x="-160" y="-1871"/>
         </scene>
         <!--GroupJoinViewController-->
         <scene sceneID="D6l-BR-yAB">
@@ -280,7 +287,7 @@
                                         <barButtonItem key="leftBarButtonItem" title="Groups" id="X9Q-JT-ltu">
                                             <connections>
                                                 <action selector="backButtonClick:" destination="baH-GS-9Zg" id="PM0-6A-BVW"/>
-                                                <segue destination="W4t-y8-2nd" kind="custom" customClass="CustomSegue" id="wEz-tR-Suf"/>
+                                                <segue destination="W4t-y8-2nd" kind="custom" identifier="jointogroupsmenu" customClass="CustomPopSegue" id="wEz-tR-Suf"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -346,7 +353,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xJN-qs-NDD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1338" y="-1542"/>
+            <point key="canvasLocation" x="1520" y="-1792"/>
         </scene>
         <!--ComicDetailsViewController-->
         <scene sceneID="O6h-Sc-0O7">
@@ -369,7 +376,7 @@
                                 </state>
                                 <connections>
                                     <action selector="comicsButtonCicked:" destination="mOw-fD-4Tm" eventType="touchDown" id="F9Y-uU-qMA"/>
-                                    <segue destination="j9X-cF-RKP" kind="custom" customClass="CustomSegue" id="5i4-Kp-FDj"/>
+                                    <segue destination="j9X-cF-RKP" kind="custom" customClass="CustomPopSegue" id="5i4-Kp-FDj"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ydg-60-tfz">
@@ -387,10 +394,10 @@
                                     <segue destination="HQA-Ky-Csc" kind="custom" identifier="detailToEdit" customClass="CustomSegue" id="vnI-2b-eqB"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Comic" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rp0-mu-EHD">
-                                <rect key="frame" x="135" y="-1" width="66" height="34"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Comic" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ehy-j0-Rlx">
+                                <rect key="frame" x="138" y="2" width="105" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -399,12 +406,13 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="comicNameLabel" destination="ehy-j0-Rlx" id="uvY-Rb-JBE"/>
                         <outlet property="editPressed" destination="ydg-60-tfz" id="Dj1-ka-KbK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lpc-Xa-vNH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1358" y="704"/>
+            <point key="canvasLocation" x="-1666" y="-1252"/>
         </scene>
         <!--ComicEditViewController-->
         <scene sceneID="NEd-p3-Ij7">
@@ -426,7 +434,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="j9X-cF-RKP" kind="custom" customClass="CustomSegue" id="FLK-nH-OGJ"/>
+                                    <segue destination="j9X-cF-RKP" kind="custom" identifier="editToComics" customClass="CustomPopSegue" id="FLK-nH-OGJ"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="AdM-q5-Isj">
@@ -459,22 +467,32 @@
                                     <segue destination="YTa-38-WW0" kind="custom" identifier="editPost" customClass="CustomSegue" id="kZ1-sQ-Xvc"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="gKZ-VZ-aRj">
+                                <rect key="frame" x="94" y="4" width="128" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="HQA-Ky-Csc" id="ht0-i6-oO9"/>
+                                </connections>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="comicTextField" destination="gKZ-VZ-aRj" id="6tL-qD-g6t"/>
                         <outlet property="postButton" destination="4Te-Nq-ef4" id="trt-xN-tGm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DrR-EZ-pSa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1968" y="-860"/>
+            <point key="canvasLocation" x="-1330" y="-1252"/>
         </scene>
         <!--ComicAddViewController-->
         <scene sceneID="TA9-4J-CzE">
             <objects>
-                <viewController id="Yee-0B-mIQ" userLabel="ComicAddViewController" customClass="ComicAddViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ComicAddViewController" id="Yee-0B-mIQ" userLabel="ComicAddViewController" customClass="ComicAddViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jZs-55-Y7P">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -492,7 +510,7 @@
                                 </state>
                                 <connections>
                                     <action selector="comicsButtonCicked:" destination="Yee-0B-mIQ" eventType="touchDown" id="A8x-Zq-H0W"/>
-                                    <segue destination="j9X-cF-RKP" kind="custom" customClass="CustomSegue" id="4Lp-9r-ZKY"/>
+                                    <segue destination="GFb-Oc-X3m" kind="custom" customClass="CustomPopSegue" id="lKu-mN-daf"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="QeJ-hM-gcD">
@@ -535,7 +553,89 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KqT-iu-3Z7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-640" y="215"/>
+            <point key="canvasLocation" x="-2080" y="-1494"/>
+        </scene>
+        <!--ComicNameViewController-->
+        <scene sceneID="luG-0x-Ypg">
+            <objects>
+                <viewController storyboardIdentifier="ComicNameViewController" id="GFb-Oc-X3m" userLabel="ComicNameViewController" customClass="ComicNameViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BEx-xH-q4c">
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" id="VKM-Ni-LMr">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="0.36159899639999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <items>
+                                    <navigationItem title="Comic Name" id="JyI-x1-m2U">
+                                        <barButtonItem key="leftBarButtonItem" title="Comics" id="lRo-5B-DVa">
+                                            <connections>
+                                                <action selector="backButtonClick:" destination="baH-GS-9Zg" id="DGX-5k-gTf"/>
+                                                <segue destination="j9X-cF-RKP" kind="custom" customClass="CustomPopSegue" id="Owm-u3-bHi"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1Ot-p7-sNj">
+                                <rect key="frame" x="183" y="198" width="89" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Confirm">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="confirmPressed:" destination="GFb-Oc-X3m" eventType="touchUpInside" id="iZH-0M-Nrl"/>
+                                    <action selector="selectTheme:" destination="hm6-36-FWL" eventType="touchUpInside" id="lEk-dl-gGA"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="6AG-XI-vYD">
+                                <rect key="frame" x="52" y="198" width="72" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelPressed:" destination="hm6-36-FWL" eventType="touchUpInside" id="4Kh-YC-STS"/>
+                                    <action selector="cancelPressed:" destination="GFb-Oc-X3m" eventType="touchUpInside" id="f2K-yS-QgA"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Please type a comic name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Dfv-Mm-kzz">
+                                <rect key="frame" x="46" y="111" width="234" height="26"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="gJF-61-EI6">
+                                <rect key="frame" x="43" y="145" width="234" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="GFb-Oc-X3m" id="SdS-0N-FUc"/>
+                                </connections>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <connections>
+                        <outlet property="comicTextField" destination="gJF-61-EI6" id="eus-Ed-xvb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="N84-L4-NTO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2602" y="-1385"/>
         </scene>
         <!--Comic Collection View Controller-->
         <scene sceneID="r1p-oa-RBE">
@@ -611,7 +711,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <connections>
-                                            <segue destination="Yee-0B-mIQ" kind="custom" identifier="comicAdd1" customClass="CustomSegue" id="T94-jC-2l0"/>
+                                            <segue destination="GFb-Oc-X3m" kind="custom" identifier="ComicAddName" customClass="CustomSegue" id="Wbe-Kn-xnz"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="DZZ-PY-KAd">
@@ -626,7 +726,7 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="Y5y-GU-y3Z" kind="custom" customClass="CustomSegue" id="08I-Ip-Xo0"/>
+                                            <segue destination="Y5y-GU-y3Z" kind="custom" identifier="comicstomenu1" customClass="CustomRootSegue" id="08I-Ip-Xo0"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CsH-BX-YkK">
@@ -657,7 +757,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Stk-cj-JUb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2412" y="-760"/>
+            <point key="canvasLocation" x="-2920" y="-811"/>
         </scene>
         <!--GroupAddViewController-->
         <scene sceneID="4FE-z2-g3h">
@@ -676,7 +776,7 @@
                                         <barButtonItem key="leftBarButtonItem" title="Groups" id="THa-gL-EtU">
                                             <connections>
                                                 <action selector="backButtonClick:" destination="baH-GS-9Zg" id="aym-60-Zf8"/>
-                                                <segue destination="W4t-y8-2nd" kind="custom" customClass="CustomSegue" id="6zG-tL-ydW"/>
+                                                <segue destination="W4t-y8-2nd" kind="custom" customClass="CustomPopSegue" id="6zG-tL-ydW"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -720,7 +820,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="dua-Oe-SMn">
-                                <rect key="frame" x="44" y="142" width="234" height="30"/>
+                                <rect key="frame" x="44" y="148" width="234" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done"/>
@@ -744,7 +844,7 @@
         <!--PanelViewController-->
         <scene sceneID="NU1-xg-px1">
             <objects>
-                <viewController id="xKX-9l-Tt1" userLabel="PanelViewController" customClass="PanelViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PanelViewController" id="xKX-9l-Tt1" userLabel="PanelViewController" customClass="PanelViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LR6-IC-ylT">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -761,7 +861,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="Y5y-GU-y3Z" kind="custom" customClass="CustomSegue" id="MWk-cz-y72"/>
+                                    <segue destination="Y5y-GU-y3Z" kind="custom" identifier="panelstomenu" customClass="CustomRootSegue" id="MWk-cz-y72"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Uby-hF-3kl">
@@ -834,7 +934,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="xKX-9l-Tt1" kind="custom" identifier="panelView" customClass="CustomSegue" id="oWI-Zy-sTF"/>
+                                    <segue destination="xKX-9l-Tt1" kind="custom" identifier="panelView" customClass="CustomPopSegue" id="oWI-Zy-sTF"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" id="Sxs-cu-8kg">
@@ -857,7 +957,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Image" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Fu0-Ds-UbM">
-                                <rect key="frame" x="134" y="2" width="58" height="34"/>
+                                <rect key="frame" x="119" y="2" width="103" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -868,6 +968,7 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="imageLabel" destination="Fu0-Ds-UbM" id="R5e-8R-nTy"/>
                         <outlet property="imageView" destination="Sxs-cu-8kg" id="1lZ-Qd-fNz"/>
                     </connections>
                 </viewController>
@@ -892,7 +993,7 @@
                                         <barButtonItem key="leftBarButtonItem" title="Group" id="5xp-yv-NWt">
                                             <connections>
                                                 <action selector="backButtonClick:" destination="baH-GS-9Zg" id="q6g-n3-ytl"/>
-                                                <segue destination="hm6-36-FWL" kind="custom" identifier="groupName" customClass="CustomSegue" id="2ae-nG-hzI"/>
+                                                <segue destination="hm6-36-FWL" kind="custom" identifier="groupName" customClass="CustomPopSegue" id="2ae-nG-hzI"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -977,7 +1078,7 @@
                                         <barButtonItem key="leftBarButtonItem" title="Themes" id="kQI-RI-0b7">
                                             <connections>
                                                 <action selector="backButtonClick:" destination="baH-GS-9Zg" id="4dy-f4-3Uo"/>
-                                                <segue destination="YHP-t6-eB2" kind="custom" customClass="CustomSegue" id="bhg-Cl-FT4"/>
+                                                <segue destination="YHP-t6-eB2" kind="custom" identifier="backthemes" customClass="CustomPopSegue" id="bhg-Cl-FT4"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" title="Select Theme" id="rSI-tr-nfV">
@@ -1047,7 +1148,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r05-LR-eLl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2929" y="-1205"/>
+            <point key="canvasLocation" x="3215" y="-1270"/>
         </scene>
         <!--PanelAddViewController-->
         <scene sceneID="g9P-Bn-dcV">
@@ -1100,7 +1201,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="xKX-9l-Tt1" kind="custom" identifier="backImages" customClass="CustomSegue" id="lbd-Gx-frY"/>
+                                    <segue destination="xKX-9l-Tt1" kind="custom" identifier="backImages" customClass="CustomPopSegue" id="lbd-Gx-frY"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ULz-3m-jMF">
@@ -1289,7 +1390,7 @@
                                         <barButtonItem key="leftBarButtonItem" title="Groups" id="vLS-M3-s0r">
                                             <connections>
                                                 <action selector="backButtonClick:" destination="baH-GS-9Zg" id="1md-Tp-RHv"/>
-                                                <segue destination="W4t-y8-2nd" kind="custom" identifier="backgroupsmenu" customClass="CustomSegue" id="qhc-Tl-amR"/>
+                                                <segue destination="W4t-y8-2nd" kind="custom" identifier="invitetogroupsmenu" customClass="CustomPopSegue" id="qhc-Tl-amR"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -1324,7 +1425,7 @@
                                         <barButtonItem key="leftBarButtonItem" title="Groups" id="VUu-cw-J1D">
                                             <connections>
                                                 <action selector="backButtonClick:" destination="baH-GS-9Zg" id="5JS-Pt-fr0"/>
-                                                <segue destination="W4t-y8-2nd" kind="custom" customClass="CustomSegue" id="Bsr-ag-bgE"/>
+                                                <segue destination="W4t-y8-2nd" kind="custom" identifier="leavetogroupsmenu" customClass="CustomPopSegue" id="Bsr-ag-bgE"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -1390,7 +1491,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YwC-T1-0ZX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="385" y="-2178"/>
+            <point key="canvasLocation" x="465" y="-2295"/>
         </scene>
         <!--MainNavigationController-->
         <scene sceneID="l7E-uP-SR9">
@@ -1432,14 +1533,14 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="5i4-Kp-FDj"/>
-        <segue reference="08I-Ip-Xo0"/>
-        <segue reference="eqx-Lk-Ciz"/>
-        <segue reference="6zG-tL-ydW"/>
-        <segue reference="Q3d-Fe-clA"/>
-        <segue reference="rdz-9E-0C6"/>
-        <segue reference="hwV-2V-vMm"/>
-        <segue reference="snA-Gb-6Qz"/>
-        <segue reference="woI-Op-NZA"/>
+        <segue reference="kZ1-sQ-Xvc"/>
+        <segue reference="jBs-q8-pBL"/>
+        <segue reference="MWk-cz-y72"/>
+        <segue reference="oWI-Zy-sTF"/>
+        <segue reference="P1E-0g-8Qy"/>
+        <segue reference="Wbe-Kn-xnz"/>
+        <segue reference="wEz-tR-Suf"/>
+        <segue reference="2ae-nG-hzI"/>
+        <segue reference="bhg-Cl-FT4"/>
     </inferredMetricsTieBreakers>
 </document>

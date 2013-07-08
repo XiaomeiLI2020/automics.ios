@@ -41,18 +41,43 @@ NSString *mCellID = @"GROUP_CELL";
     userLoader = [[UserLoader alloc] init];
     userLoader.delegate = self;
     dataLoader= [[DataLoader alloc] init];
+    photoLoadersInProgress = [[NSMutableDictionary alloc] init];
+    imageDownloadersInProgress = [[NSMutableDictionary alloc] init];
+    groupImages = [[NSMutableDictionary alloc] init];
     
+
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     groupHashId= [prefs objectForKey:@"current_group_hash"];
     NSLog(@"GroupJoinViewController.groupHashId=%@", groupHashId);
 
     [self loadGroups];
     self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
+    [self.collectionView setCollectionViewLayout:[[GroupCollectionViewLayout alloc] init]];
+
+}
+
+/*
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    
+    alertShown = NO;
+    userLoader = [[UserLoader alloc] init];
+    userLoader.delegate = self;
+    dataLoader= [[DataLoader alloc] init];
     photoLoadersInProgress = [[NSMutableDictionary alloc] init];
     imageDownloadersInProgress = [[NSMutableDictionary alloc] init];
     groupImages = [[NSMutableDictionary alloc] init];
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    groupHashId= [prefs objectForKey:@"current_group_hash"];
+    NSLog(@"GroupJoinViewController.groupHashId=%@", groupHashId);
+    
+    [self loadGroups];
+    self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
     [self.collectionView setCollectionViewLayout:[[GroupCollectionViewLayout alloc] init]];
 }
+*/
 
 -(void)viewDidDisappear:(BOOL)animated{
     [self cancelPhotoLoadRequests];
@@ -109,6 +134,32 @@ NSString *mCellID = @"GROUP_CELL";
     [groupImages setObject:image forKey:indexPath];
 }
 
+-(void)cancelDownLoadRequests{
+    [self cancelPhotoLoadRequests];
+    [self cancelImageDownloadRequests];
+}
+
+
+-(void)cleanupData{
+    //NSLog(@"cleanUpData");
+    [self cancelDownLoadRequests];
+    [groupImages removeAllObjects];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    if([[segue identifier] isEqualToString:@"jointogroupsmenu"])
+    {
+        //NSLog(@"prepareForSegue.comicAdd1");
+        [self cleanupData];
+        [self.collectionView removeFromSuperview];
+        //[self cancelPanelLoadRequests];
+        //[self cancelDownLoadRequests];
+    }//end if
+}
+
+
+
 #pragma mark - UserLoaderDelegate
 /*
 -(void)UserLoader:(UserLoader*)loader didJoinGroup:(User*)currentUser{
@@ -156,13 +207,15 @@ NSString *mCellID = @"GROUP_CELL";
 
     if(currentUser!=nil)
     {
-        NSLog(@"didJoinGroup.currentUser.userId=%i", currentUser.userId);
-        NSLog(@"didJoinGroup.currentUser.groupHashId=%@", currentUser.groupHashId);
+        NSLog(@"GroupJoinViewController.didJoinGroup.currentUser.userId=%i", currentUser.userId);
+        NSLog(@"GroupJoinViewController.didJoinGroup.currentUser.groupHashId=%@", currentUser.currentGroup.hashId);
          
          NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-         [userDefaults setObject:currentUser.groupHashId forKey:@"current_group_hash"];
+         [userDefaults setObject:currentUser.currentGroup.hashId forKey:@"current_group_hash"];
          [userDefaults setObject:[NSNumber numberWithInt:currentUser.userId] forKey:@"user_id"];
          [userDefaults synchronize];
+        
+        [userLoader submitSQLRequestUpdateCurrentGroup:currentUser.currentGroup.hashId andUserId:currentUser.userId];
 
     }
     
@@ -197,19 +250,23 @@ NSString *mCellID = @"GROUP_CELL";
             [userLoader submitRequestPostJoinGroup:sessionToken andGroupHashId:groupHashId];
         else{
             
-            if(userId!=0)
+            if(userId>0)
                 [userLoader submitRequestPostChangeGroup:userId andNewGroupHashId:groupHashId];
         }
         
         return;
-    }//end if
+    }//end if([title isEqualToString:@"Confirm"])
     if([title isEqualToString:@"Cancel"])
     {
         alertShown = NO;
+        
+        //Restore the groupHashId to the current group
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        groupHashId = [prefs objectForKey:@"current_group_hash"];
         //[self performSegueWithIdentifier:@"postToView" sender:self];
         //[self dismissViewControllerAnimated:YES completion:nil];
         return;
-    }//end if
+    }//end if([title isEqualToString:@"Cancel"])
 }//end alertView
 
 #pragma mark - UICollectionViewDelegate
@@ -238,15 +295,31 @@ NSString *mCellID = @"GROUP_CELL";
         
         if(!alertShown)
         {
-            groupHashId = group.hashId;
-            UIAlertView *alert = [[UIAlertView alloc]
-                                  initWithTitle: @"Select Group"
-                                  message: [NSString stringWithFormat:@"You have selected %@", group.name]
-                                  delegate: self
-                                  cancelButtonTitle:@"Confirm"
-                                  otherButtonTitles:@"Cancel", nil];
-            [alert show];
-            alertShown = YES;
+            if([userLoader isReachable])
+            {
+                groupHashId = group.hashId;
+                UIAlertView *alert = [[UIAlertView alloc]
+                                      initWithTitle: @"Select Group"
+                                      message: [NSString stringWithFormat:@"You have selected %@", group.name]
+                                      delegate: self
+                                      cancelButtonTitle:@"Confirm"
+                                      otherButtonTitles:@"Cancel", nil];
+                [alert show];
+                alertShown = YES;
+                
+            }//end if([userLoader isReachable])
+            else{
+                
+                UIAlertView *alert = [[UIAlertView alloc]
+                                      initWithTitle: @"You are offline."
+                                      message:@"Group change only when Internet is available"
+                                      delegate: nil
+                                      cancelButtonTitle:@"Cancel"
+                                      otherButtonTitles:nil];
+                [alert show];
+            }//end else
+            
+            
         }//end if(!alertShown)
     }//end else
     
@@ -394,6 +467,8 @@ failure:^(NSError *error) {
                 [userDefaults setObject:currentUser.currentGroup.hashId forKey:@"current_group_hash"];
                 [userDefaults synchronize];
                 
+                [self.userLoader submitSQLRequestUpdateCurrentGroup:currentUser.currentGroup.hashId andUserId:currentUser.userId];
+                
             }
         }
     }
@@ -410,9 +485,11 @@ failure:^(NSError *error) {
 }
 
 -(void)GroupLoader:(GroupLoader *)groupLoader didFailWithError:(NSError *)errors{
+    NSLog(@"GroupJoinViewController. Group failed to load.");
+    /*
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Groups", nil) message:errors.description delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil];
     [alertView show];
-    
+    */
 }
 
 #pragma mark - PhotoLoaderDelegate

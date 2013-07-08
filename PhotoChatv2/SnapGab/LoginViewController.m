@@ -34,7 +34,108 @@
     userLoader = [[UserLoader alloc] init];
     userLoader.delegate = self;
     dataLoader = [[DataLoader alloc] init];
+    
 
+    [dataLoader initiateSQL];
+    int userId = [dataLoader submitSQLRequestCheckLoggedInUser];
+    NSLog(@"LoginViewController.userId=%i", userId);
+    if(userId>0)
+    {
+        NSArray* users = [dataLoader convertUsersSQLIntoUsers:userId];
+        if(users!=nil && [users count]>0)
+        {
+            User* currentUser = [users objectAtIndex:0];
+            if(currentUser!=nil)
+            {
+                NSLog(@"LoginViewController.user.currentGroup.hashId=%@", currentUser.currentGroup.hashId);
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                [userDefaults setObject:currentUser.email forKey:@"email"];
+                [userDefaults setObject:currentUser.currentSession.token forKey:@"session"];
+                [userDefaults setObject:[NSNumber numberWithInt:currentUser.userId] forKey:@"user_id"];
+                [userDefaults setObject:currentUser.currentGroup.hashId forKey:@"current_group_hash"];
+                [userDefaults synchronize];
+                
+
+                [userLoader submitRequestPostDeviceToken];
+
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
+                UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"WelcomeViewController"];
+                //[self presentViewController:viewController animated:YES completion:nil];
+                [self.navigationController pushViewController:viewController animated:YES];
+                
+            }//end if(currentUser!=nil)
+                        
+            
+            //[userLoader submitRequestPostDeviceToken];
+            
+            //Generate a database for the app
+            //[dataLoader submitSQLRequestCreateTablesForApp];
+            
+            /*
+            NSMutableArray* users = [[NSMutableArray alloc] init];
+            [users addObject:user];
+            [dataLoader submitSQLRequestSaveUsers:users];
+            */
+            
+            //[userLoader submitRequestGetUser:user.userId];
+            
+            //user.currentGroup.hashId = @"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
+            //NSLog(@"LoginViewController.didLoginUser.user.currentGroup.hashId=%@", user.currentGroup.hashId);
+            
+            /*
+            //Store current_group_hash into the app's database
+            if(user.currentGroup.hashId!=nil)
+            {
+                GroupLoader* groupLoader = [[GroupLoader alloc] init];
+                [groupLoader submitRequestGetGroupForHashId:currentUser.currentGroup.hashId];
+            }
+            */
+
+
+
+        }//end if(users!=nil && [users count]>0)
+    }//end if(userId>0)
+    /*
+    NSError* err;
+    NSString *docsDir;
+    NSArray *dirPaths;
+    NSString* appName = [NSString stringWithFormat: @"automics.sql"];
+    //databaseQueue = dispatch_queue_create("automics.database", NULL);
+    
+    // Get the documents directory
+    dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    docsDir = [dirPaths objectAtIndex:0];
+    // Build the path to the database file
+    NSString* databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent:appName]];
+    //NSLog(@"databasePath=%@, databasePathStatic=%@ ", databasePath, databasePathStatic);
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    
+    BOOL fileExists = [fileMgr fileExistsAtPath:databasePath];
+    NSLog(@"fileExists=%d", fileExists);
+    
+    if(fileExists)
+    {
+        int userId = [dataLoader submitSQLRequestCheckLoggedInUser];
+        NSLog(@"userId=%i", userId);
+        
+    }//end if
+    */
+    
+    /*
+    if(fileExists)
+    {
+        [fileMgr removeItemAtPath:databasePath error:&err];
+        if(err)
+        {
+            NSLog(@"File Manager: %@ %d %@", [err domain], [err code], [[err userInfo] description]);
+        }
+        else
+        {
+            //NSLog(@"File %@ deleted.", appName);
+        }
+    }
+*/
+    
 }
 
 
@@ -220,32 +321,40 @@
     userEmail = self.emailTextField.text;
     userPassword = self.passwordTextField.text;
     
+    /*
     if(userEmail!=nil)
         userEmail = @"urashid@lincoln.ac.uk";
     if(userPassword!=nil)
         userPassword = @"password";
+    */
     
-    user.email = userEmail;
-    user.password = userPassword;
-    //user.groupHashId = hashId;
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:nil forKey:@"current_group_hash"];
-    [userDefaults setObject:user.email forKey:@"email"];
-    [userDefaults setObject:user.password forKey:@"password"];
-    [userDefaults synchronize];
-    
-    [userLoader submitRequestPostGenerateSessionToken:user];
+    if(userEmail!=nil && ![userEmail isEqualToString:@""]
+       && userPassword!=nil && ![userPassword isEqualToString:@""])
+    {
+        user.email = userEmail;
+        user.password = userPassword;
+        
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:nil forKey:@"current_group_hash"];
+        [userDefaults setObject:user.email forKey:@"email"];
+        [userDefaults setObject:user.password forKey:@"password"];
+        [userDefaults synchronize];
+        
+        [userLoader submitRequestPostGenerateSessionToken:user];
 
+    }//end if(userEmail!=nil && userPassword!=nil)
+   
 }
 
 #pragma mark UserLoader methods
 -(void)UserLoader:(UserLoader*)loader didFailWithError:(NSError*)error{
-    NSLog(@"Group request failed.");
+    //NSLog(@"Group request failed.");
     
     UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle: @"Failed to register, error:"
-                          message: [NSString stringWithFormat:@"%@", error]
+                          initWithTitle: @"Failed to log in:"
+                          //message: [NSString stringWithFormat:@"%@", error]
+                          message: @"Invalid password or email Id"
                           delegate: nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
@@ -269,8 +378,14 @@
         [userDefaults synchronize];
         
         
+        [userLoader submitRequestPostDeviceToken];
+        
         //Generate a database for the app
         [dataLoader submitSQLRequestCreateTablesForApp];
+        
+        NSMutableArray* users = [[NSMutableArray alloc] init];
+        [users addObject:user];
+        [dataLoader submitSQLRequestSaveUsers:users];
         
         //[userLoader submitRequestGetUser:user.userId];
         
@@ -290,7 +405,6 @@
         [self.navigationController pushViewController:viewController animated:YES];
     }//end if(user!=nil)
 }
-
 
 
 @end

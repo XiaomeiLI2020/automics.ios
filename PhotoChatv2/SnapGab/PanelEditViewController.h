@@ -22,7 +22,9 @@
 @property MainScrollSelector *panelScrollView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UILabel *imageLabel;
 
+@property int currentPage;
 @property int subviewId;
 @property CGRect originalFrame;
 

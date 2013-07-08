@@ -9,6 +9,7 @@
 #import "ComicPosterViewController.h"
 #import "MKNetworkEngine.h"
 #import "AppDelegate.h"
+#import "UserLoader.h"
 
 @interface ComicPosterViewController ()
 
@@ -20,9 +21,9 @@
 @synthesize progressView;
 @synthesize connection;
 @synthesize image;
-
 @synthesize comicContents;
 @synthesize comicLoader;
+@synthesize comicName;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -95,11 +96,16 @@
     }
 
     Comic* comic = [[Comic alloc] init];
-    comic.name = @"new comic";
+    //comic.name = @"new comic";
+    if(comicName!=nil && ![comicName isEqualToString:@""])
+        comic.name = comicName;
+    //NSLog(@"ComicPosterViewController. comicName=%@", comicName);
+    
     comic.description = @"description of comic";
     comic.panels = [[NSArray alloc] initWithArray:comicContents];
     
-
+    NSLog(@"ComicPosterViewController. [comic.panels count]=%i", [comic.panels count]);
+    
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     //appDelegate.automicsEngine.delegate = self;
     NSURLRequest* urlRequest = [comicLoader prepareComicRequestForPostComic:comic];
@@ -192,10 +198,14 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     
     if([title isEqualToString:@"OK"])
     {
-        NSDictionary *dataDict = [NSDictionary dictionaryWithObject:@"New comic uploaded" forKey:@"comicnotification"];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"newComicNotification" object:nil userInfo:dataDict];
+        //NSDictionary *dataDict = [NSDictionary dictionaryWithObject:@"New comic uploaded" forKey:@"comicnotification"];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"newComicNotification" object:nil userInfo:dataDict];
         
-        [self performSegueWithIdentifier:@"postToComic" sender:self];
+        UserLoader* userLoader = [[UserLoader alloc] init];
+        [userLoader submitRequestPostNotification:@"New comic uploaded."];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+        //[self performSegueWithIdentifier:@"postToComic" sender:self];
         //[self dismissViewControllerAnimated:YES completion:nil];
     }//end if
 }//end alertView
@@ -254,6 +264,10 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 
 #pragma mark MKNetworkOperation functions.
 -(void)MKNetworkOperation:(MKNetworkOperation*)operation didUploadComic:(NSString*)response {
+    
+    //Post a notification when a panel has been successfully added.
+    UserLoader* userLoader = [[UserLoader alloc] init];
+    [userLoader submitRequestPostNotification:@"New comic uploaded."];
     
     UIAlertView *message = [[UIAlertView alloc]
                             initWithTitle:@"Upload Successful"

@@ -27,3 +27,4 @@ NSString* const kJoinGroupURL = @"join";
 NSString* const kMembershipURL = @"membership";
 NSString* const kRegisterURL = @"register";
 NSString* const kUserURL = @"user";
+NSString* const kNotificationURL = @"notification";

@@ -28,6 +28,7 @@
 @synthesize panelScrollView;
 @synthesize currentPage;
 @synthesize activityIndicator;
+@synthesize comicName;
 
 
 BOOL _bubblesAdded;
@@ -103,7 +104,10 @@ NSString* urlImageString;
     
     if(comicId>0)
     {
+        //NSLog(@"ComicDetailViewController.comicId=%i", comicId);
+        self.comicNameLabel.text = @"Comic";
         [comicLoader submitRequestGetComicWithId:comicId];
+        
     }
     
 
@@ -399,7 +403,9 @@ NSString* urlImageString;
         {
             ComicEditViewController *cpvc = (ComicEditViewController *)[segue destinationViewController];
             cpvc.comicId = self.comicId;
-        }
+            cpvc.comicName = comicName;
+            //NSLog(@"ComicDetailView.comicName=%@", comicName);
+        }//end if([[segue identifier] isEqualToString:@"detailToEdit"])
 }
 
 
@@ -718,6 +724,14 @@ if (image){
         comicPanelList = comic.panels;
         numComicPanels = [comic.panels count];
         panelScrollView.numItems = numComicPanels;
+        
+        //NSLog(@"ComicDetailsViewController.numComicPanels=%i", numComicPanels);
+        
+        self.comicNameLabel.text = comic.name;
+        self.comicNameLabel.numberOfLines = 0; //will wrap text in new line
+        [self.comicNameLabel sizeToFit];
+        
+        //NSLog(@"didLoadComic.comic.name=%@", comic.name);
         
         comicPanelCounter = 0;
         

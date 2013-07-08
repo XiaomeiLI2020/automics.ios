@@ -114,6 +114,11 @@ int placementCounter;
                     [self loadAnnotations:panel];
                     //NSLog(@"panelId=%i.annotations already downloaded are added.", panel.panelId);
                     [self loadPlacements:panel];
+                    /*
+                    dispatch_async(dispatch_get_main_queue(), ^(void) {
+                        snapshot = [self imageWithView:self];
+                    });
+                     */
                     snapshot = [self imageWithView:self];
 
 

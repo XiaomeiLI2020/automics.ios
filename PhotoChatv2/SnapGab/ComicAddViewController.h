@@ -21,9 +21,11 @@
 @property NSString* _groupName;
 @property int currentPage;
 @property int panelCounter;
+@property NSString* comicName;
 
 @property NSURL* url;
 @property int thumbPage;
+@property CGFloat lastContentOffsetX;
 
 @property MainScrollSelector *panelScrollView;
 @property MainScrollSelector *thumbnailScrollView;

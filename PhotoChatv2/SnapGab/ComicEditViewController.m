@@ -39,6 +39,8 @@
 @synthesize downloadedComicPanels;
 @synthesize resourceList;
 @synthesize placementList;
+@synthesize lastContentOffsetX;
+@synthesize comicName;
 
 BOOL _bubblesAdded;
 BOOL _resourcesAdded;
@@ -103,8 +105,16 @@ UILabel* clickLabel;
     _thumbnailsAdded = NO;
     thumbMode = NO;
     initialized = NO;
+    lastContentOffsetX = 0.0;
 }
 
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    
+    [self setComicTextField:nil];
+}
 
 
 -(void)addLabel
@@ -290,6 +300,10 @@ UILabel* clickLabel;
     {
         [comicLoader submitRequestGetComicWithId:comicId];
     }
+    if(comicName!=nil)
+    {
+        self.comicTextField.text = comicName;
+    }
 
 }
 
@@ -351,6 +365,16 @@ UILabel* clickLabel;
     [self updateComicScrollViews];
     
 }//end updateScrollViews
+
+
+- (BOOL)textFieldShouldReturn:(UITextField*)theTextField {
+    //NSLog(@"textFieldShouldReturn");
+    if (theTextField == self.comicTextField) {
+        [theTextField resignFirstResponder];
+    }
+    
+    return YES;
+}
 
 -(void)alignPageInPanelScrollView
 {
@@ -565,6 +589,15 @@ UILabel* clickLabel;
         CGFloat pos = (CGFloat)self.thumbnailScrollView.contentOffset.x / thumbnailWidth;
         int page = round(ceilf(pos));
         //NSLog(@"alignPageInThumbnailScrollView.page=%i", page);
+        
+        if(lastContentOffsetX == self.thumbnailScrollView.contentOffset.x)
+        {
+            NSLog(@"ComicEditViewController.panels refreshed");
+            //[panelsLoader submitRequestRefreshGetPanelsForGroup];
+        }
+        
+        lastContentOffsetX = self.thumbnailScrollView.contentOffset.x;
+
         
         thumbPage = page;
         //Add bubbles and resources to a panel after scrolling
@@ -994,12 +1027,14 @@ UILabel* clickLabel;
 
     if([[segue identifier] isEqualToString:@"editPost"])
     {
-        //NSLog(@"[comicPanelList count]=%i", [comicPanelList count]);
+        NSLog(@"ComicEditViewController.segue.[comicPanelList count]=%i", [comicPanelList count]);
         if([comicPanelList count]>0)
         {
             ComicPosterViewController *cpvc = (ComicPosterViewController *)[segue destinationViewController];
             cpvc.comicContents = [[NSMutableArray alloc] init];
-            
+            comicName = self.comicTextField.text;
+            cpvc.comicName = comicName;
+
             NSUInteger i;
             for(i=0; i<[comicPanelList count]; i++)
             {
@@ -1422,6 +1457,51 @@ UILabel* clickLabel;
     NSLog(@"Panel failed to load.");
 }
 
+-(void)PanelLoader:(PanelLoader *)loader didLoadRefreshedPanels:(NSArray*)panelsLocal{
+    
+    /*
+     NSMutableArray* arrayCat(NSArray *a, NSArray *b)
+     {
+     NSMutableArray *ret = [NSMutableArray arrayWithCapacity:[a count] + [b count]];
+     [ret addObjectsFromArray:a];
+     [ret addObjectsFromArray:b];
+     return ret;
+     }
+     */
+    
+    //NSLog(@"PanelViewController.didLoadRefreshedPanels. currentPanels=%i, [panelsLocal count]=%i", [panels count], [panelsLocal count]);
+    //NSMutableArray *newPanels = [NSMutableArray arrayWithCapacity:[panels count] + [panelsLocal count]];
+    //initialized = NO;
+    NSMutableArray *newPanels = [[NSMutableArray alloc] initWithArray:panelList];
+    [newPanels addObjectsFromArray:panelsLocal];
+    
+    panelList = newPanels;
+    numPanels = [newPanels count];
+    
+    
+    for(UIView* subView in thumbnailScrollView.subviews)
+    {
+        //if(subView.tag==page && [subView isMemberOfClass:[UIImageView class]])
+        if([subView isMemberOfClass:[UIImageView class]])
+        {
+            [subView removeFromSuperview];
+        }//end if
+    }//end for
+    
+    for (int i=0; i<[panelsLocal count];i++)
+    {
+        NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
+        [downloadedPanels addObject:panelDownloaded];
+        [downloadedPhotos addObject:panelDownloaded];
+    }
+    
+    
+    [self updateScrollViews];
+    [self alignPageInThumbnailScrollView];
+    
+}
+
+
 -(void)PanelLoader:(PanelLoader *)loader didLoadPanels:(NSArray*)panels{
     
     //NSLog(@"ComicEditView.didLoadPanels.");
@@ -1800,6 +1880,8 @@ UILabel* clickLabel;
         comicPanelList = comic.panels;
         numComicPanels = [comic.panels count];
         panelScrollView.numItems = numComicPanels;
+        
+        NSLog(@"ComicEditViewController.numComicPanels=%i", numComicPanels);
                 
         if([comic.panels count]>0)
         {

@@ -21,11 +21,12 @@
 
 @property int currentPage;
 
-
 @property (strong, nonatomic) IBOutlet UIButton *editPressed;
+@property (weak, nonatomic) IBOutlet UILabel *comicNameLabel;
 
 @property int comicId;
 @property UIActivityIndicatorView *activityIndicator;
+@property NSString* comicName;
 
 -(IBAction)comicsButtonCicked:(id)sender;
 

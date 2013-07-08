@@ -24,6 +24,8 @@ int const kPostJoinGroup = 2;
 int const kPostChangeGroup = 3;
 int const kLeaveGroup = 4;
 int const kGetUser = 5;
+int const kPostDeviceToken = 6;
+int const kPostNotification = 7;
 
 NSString* leaveGroupHashId;
 @synthesize delegate;
@@ -75,6 +77,164 @@ NSString* leaveGroupHashId;
 
 }
 
+
+-(void)submitRequestPostNotification:(NSString*)message
+{
+    userRequestType = kPostNotification;
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSString* session = [prefs objectForKey:@"session"];
+    
+    NSString *notificationURL = [APIWrapper getURLForPostNotification];
+    NSLog(@"submitRequestPostNotification.notificationURL=%@", notificationURL);
+    NSURL* url = [NSURL URLWithString:notificationURL];
+    
+    
+    NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
+    [urlRequest setHTTPMethod:@"POST"];
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSError *requestError;
+    NSArray *objects = [NSArray arrayWithObjects:message, session, nil];
+    NSArray *keys = [NSArray arrayWithObjects:@"msg",@"session", nil];
+    NSDictionary *questionDict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    NSDictionary *jsonDict = [NSDictionary dictionaryWithObject:questionDict forKey:@"data"];
+    //Create JSON object
+    NSData *jsonRequestData = [NSJSONSerialization dataWithJSONObject:jsonDict options:NSJSONWritingPrettyPrinted error:&requestError];
+    
+    // setting the body of the post to the reqeust
+    [urlRequest setHTTPBody:jsonRequestData];
+    
+    [self submitUserRequest:urlRequest];
+
+    
+}
+
+/*
+-(void)submitRequestPostNotification
+{
+    userRequestType = kPostNotification;
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSString* session = [prefs objectForKey:@"session"];
+    
+    NSString *notificationURL = [APIWrapper getURLForPostNotification];
+    NSLog(@"submitRequestPostNotification.notificationURL=%@", notificationURL);
+    NSURL* url = [NSURL URLWithString:notificationURL];
+    
+    
+    NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
+    [urlRequest setHTTPMethod:@"POST"];
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSError *requestError;
+    NSArray *objects = [NSArray arrayWithObjects:@"Hello", session, nil];
+    NSArray *keys = [NSArray arrayWithObjects:@"msg",@"session", nil];
+    NSDictionary *questionDict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    NSDictionary *jsonDict = [NSDictionary dictionaryWithObject:questionDict forKey:@"data"];
+    //Create JSON object
+    NSData *jsonRequestData = [NSJSONSerialization dataWithJSONObject:jsonDict options:NSJSONWritingPrettyPrinted error:&requestError];
+    
+    // setting the body of the post to the reqeust
+    [urlRequest setHTTPBody:jsonRequestData];
+    
+    [self submitUserRequest:urlRequest];
+    
+}
+ */
+
+-(void)submitRequestPostDeviceToken
+{
+    userRequestType = kPostDeviceToken;
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    int userId = [[prefs objectForKey:@"user_id"] integerValue];
+    NSString* deviceToken = [prefs objectForKey:@"token"];
+    NSString* session = [prefs objectForKey:@"session"];
+    
+    NSString *userURL = [APIWrapper getURLForPostUserWithId:userId];
+    NSLog(@"submitRequestPostDeviceToken.userURL=%@", userURL);
+    NSURL* url = [NSURL URLWithString:userURL];
+
+    /*
+    NSString* authenticatedUserURL = [self authenticatedGetURL:userURL];
+    NSLog(@"submitRequestPostChangeGroup.authenticatedUserURL=%@", authenticatedUserURL);
+    NSURL* url = [NSURL URLWithString:authenticatedUserURL];
+    */
+    
+    
+    if(deviceToken!=nil && session!=nil)
+    {
+        NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
+        [urlRequest setHTTPMethod:@"POST"];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        
+        NSError *requestError;
+        NSArray *objects = [NSArray arrayWithObjects:deviceToken, session, nil];
+        NSArray *keys = [NSArray arrayWithObjects:@"device_token",@"session", nil];
+        NSDictionary *questionDict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+        NSDictionary *jsonDict = [NSDictionary dictionaryWithObject:questionDict forKey:@"data"];
+        //Create JSON object
+        NSData *jsonRequestData = [NSJSONSerialization dataWithJSONObject:jsonDict options:NSJSONWritingPrettyPrinted error:&requestError];
+        
+        // setting the body of the post to the reqeust
+        [urlRequest setHTTPBody:jsonRequestData];
+        
+        [self submitUserRequest:urlRequest];
+        
+    }//end if(deviceToken!=nil && session!=nil)
+    
+    /*
+    NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
+    [urlRequest setHTTPMethod:@"POST"];
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSError *requestError;
+    NSArray *objects = [NSArray arrayWithObjects:deviceToken, session, nil];
+    NSArray *keys = [NSArray arrayWithObjects:@"device_token",@"session", nil];
+    NSDictionary *questionDict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    NSDictionary *jsonDict = [NSDictionary dictionaryWithObject:questionDict forKey:@"data"];
+    //Create JSON object
+    NSData *jsonRequestData = [NSJSONSerialization dataWithJSONObject:jsonDict options:NSJSONWritingPrettyPrinted error:&requestError];
+    
+    // setting the body of the post to the reqeust
+    [urlRequest setHTTPBody:jsonRequestData];
+    
+    [self submitUserRequest:urlRequest];
+     */
+    
+}
+
+/*
+-(void)submitRequestPostDeviceToken:(NSString*)deviceToken andSessionToken:(NSString*)sessionToken
+{
+    if(deviceToken!=nil && sessionToken!=nil)
+    {
+        userRequestType = kPostDeviceToken;
+        
+        NSString *userURL = [APIWrapper getURLForPostUserWithId:userId];
+        NSLog(@"submitRequestPostChangeGroup.userURL=%@", userURL);
+        NSString* authenticatedUserURL = [self authenticatedGetURL:userURL];
+        NSLog(@"submitRequestPostChangeGroup.authenticatedUserURL=%@", authenticatedUserURL);
+        NSURL* url = [NSURL URLWithString:authenticatedUserURL];
+        
+        NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
+        [urlRequest setHTTPMethod:@"POST"];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        
+        [self setChangeGroupPostData:hashId InURLRequest:urlRequest];
+        [self submitUserRequest:urlRequest];
+
+        
+    }//end if
+}
+*/
+
 -(void)submitRequestPostJoinGroup:(NSString*)token andGroupHashId:(NSString*)hashId;
 {
     if(token!=nil && hashId!=nil)
@@ -101,7 +261,7 @@ NSString* leaveGroupHashId;
 
 -(void)submitRequestPostChangeGroup:(int)userId andNewGroupHashId:(NSString*)hashId;
 {
-    if(userId!=0 && hashId!=nil)
+    if(userId>0 && hashId!=nil && ![hashId isEqualToString:@""])
     {
         userRequestType = kPostChangeGroup;
         
@@ -311,27 +471,36 @@ NSString* leaveGroupHashId;
 -(void)handlePostForLoginUserResponse
 {
     NSError* error;
-    NSDictionary* userdict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
-    //NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
-    //NSLog(@"UserLoader.handlePostForLoginUserResponse.loginData=%@", responseString);
-    if (userdict!= nil)
+    
+    NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
+    NSLog(@"UserLoader.handlePostForLoginUserResponse.loginData=%@", responseString);
+    
     {
-        //NSString* sessionToken =
-        User* user = [UserJSONHandler getUserFromUserJSON:userdict];
-        
-        if(user!=nil)
+        NSDictionary* userdict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+        //responseString = [[NSString alloc] initWithData:userdict encoding:NSUTF8StringEncoding];
+        //NSLog(@"UserLoader.handlePostForLoginUserResponse.loginData=%@", responseString);
+        if (userdict!= nil)
         {
-            
-            if ([self.delegate respondsToSelector:@selector(UserLoader:didLoginUser:)])
-                [self.delegate UserLoader:self didLoginUser:user];
+            //NSString* sessionToken =
+            User* user = [UserJSONHandler getUserFromUserJSON:userdict];
+            if(user!=nil && user.userId>0)
+            {
+                NSLog(@"user.userId=%i", user.userId);
+                if ([self.delegate respondsToSelector:@selector(UserLoader:didLoginUser:)])
+                    [self.delegate UserLoader:self didLoginUser:user];
+            }//end if(user!=nil && user.userId>0)
+            else{
+                [self reportErrorToDelegate:error];
+            }//end else
+        }
+        else{
+            [self reportErrorToDelegate:error];
         }
 
         
-    }
-    else{
-        [self reportErrorToDelegate:error];
-    }
+    }//end if(![responseString isEqualToString:@"invalid user"])
     
+       
     
 }
 -(void)handlePostForGenerateSessionResponse
@@ -403,6 +572,26 @@ NSString* leaveGroupHashId;
     
 }
 
+-(void)handlePostDeviceToken{
+    if(self.downloadedData.length > 0)
+    {
+        //NSDictionary* userdict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+        NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
+        NSLog(@"handlePostDeviceToken.responseString=%@", responseString);
+
+    }
+}
+
+-(void)handlePostNotification{
+    if(self.downloadedData.length > 0)
+    {
+        //NSDictionary* userdict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+        NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
+        NSLog(@"handlePostNotification.responseString=%@", responseString);
+        
+    }
+}
+
 #pragma mark NSURLConnectionDataDelegate methods
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
@@ -427,6 +616,12 @@ NSString* leaveGroupHashId;
                 break;
             case kGetUser:
                 [self handleGetUserResponse];
+                break;
+            case kPostDeviceToken:
+                [self handlePostDeviceToken];
+                break;
+            case kPostNotification:
+                [self handlePostNotification];
                 break;
                 
         }

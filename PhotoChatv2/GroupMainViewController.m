@@ -31,10 +31,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
+   
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSString* groupHashId= [prefs objectForKey:@"current_group_hash"];
-    NSLog(@"GroupMainViewController.current_group_hash=%@", groupHashId);
+    NSLog(@"GroupMainViewController.viewDidLoad.current_group_hash=%@", groupHashId);
     if(groupHashId==nil)
     {
 
@@ -49,10 +49,41 @@
     }
     else{
         inviteButton.enabled = YES;
-        //inviteButton.alpha = 0;
+        inviteButton.alpha = 1;
         
         leaveButton.enabled = YES;
-        //leaveButton.alpha = 0;
+        leaveButton.alpha = 1;
+        
+        [joinGroup setTitle:@"Change Group" forState:UIControlStateNormal];
+    }
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSString* groupHashId= [prefs objectForKey:@"current_group_hash"];
+    NSLog(@"GroupMainViewController.viewWillAppear.current_group_hash=%@", groupHashId);
+    if(groupHashId==nil)
+    {
+        
+        inviteButton.enabled = NO;
+        inviteButton.alpha = 0.4;
+        
+        leaveButton.enabled = NO;
+        leaveButton.alpha = 0.4;
+        
+        [joinGroup setTitle:@"Select Group" forState:UIControlStateNormal];
+        
+    }
+    else{
+        inviteButton.enabled = YES;
+        inviteButton.alpha = 1;
+        
+        leaveButton.enabled = YES;
+        leaveButton.alpha = 1;
         
         [joinGroup setTitle:@"Change Group" forState:UIControlStateNormal];
     }

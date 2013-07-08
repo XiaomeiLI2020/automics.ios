@@ -69,16 +69,18 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    //NSLog(@"didReceiveRemoteNotification");
-    /* 	 UIAlertView *alert = [[UIAlertView alloc]
+    NSLog(@"AppDelegate.didReceiveRemoteNotification");
+    /*
+    UIAlertView *alert = [[UIAlertView alloc]
      initWithTitle: @"PhotoChat"
      message: @"Image Received"
      delegate: nil
      cancelButtonTitle:@"OK"
      otherButtonTitles:nil];
-     [alert show];*/
+     [alert show];
     //[(MainViewController*)self.window.rootViewController.presentedViewController updateNumImages]; //and if not presented?
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"newImageNotification" object:nil];
+    */
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"newPanelNotification" object:nil];
 }
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
@@ -88,9 +90,9 @@
                         componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<> "]]
                        componentsJoinedByString:@"" ];
     
-    NSLog(@"My token is: %@", token);
+    NSLog(@"AppDelegate.My token is: %@", token);
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs setObject:token forKey:@"token"];
+    [prefs setObject:token forKey:@"device_token"];
     [prefs synchronize];
 }
 

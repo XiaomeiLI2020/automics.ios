@@ -184,6 +184,31 @@ ResourceLoader* resourceLoader;
     }//end if
 }
 
+-(void)cancelDownLoadRequests{
+    [self cancelPhotoLoadRequests];
+    [self cancelImageDownloadRequests];
+}
+
+
+-(void)cleanupData{
+    //NSLog(@"cleanUpData");
+    [self cancelDownLoadRequests];
+    [themeImages removeAllObjects];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    if([[segue identifier] isEqualToString:@"backthemes"])
+    {
+        //NSLog(@"prepareForSegue.comicAdd1");
+        [self cleanupData];
+        [self.collectionView removeFromSuperview];
+        //[self cancelPanelLoadRequests];
+        //[self cancelDownLoadRequests];
+    }//end if
+}
+
+
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {

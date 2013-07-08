@@ -670,17 +670,61 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     if(resource!=nil)
     {
+        
         //NSLog(@"addResoruceToscrolView.");
         //int resourceId = resource.resourceId;
-        NSString* thumb_url = resource.thumbURL;
+        //NSString* thumb_url = resource.thumbURL;
+        UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
 
         //UIImage *image = [UIImage imageNamed:resource.thumbURL];
-        
+        /*
         NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:thumb_url]];
         UIImage *image = [UIImage imageWithData:imageURL];
         
         UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
         [styleButton setImage:image forState:UIControlStateNormal];
+        */
+        
+        
+        
+        NSFileManager* fileMgr = [NSFileManager defaultManager];
+        //NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+        NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        //NSString* imageName = [NSString stringWithFormat:@"%i.png", page];
+        NSString* imageName = [NSString stringWithFormat:@"resourcePhoto%i.png", resource.resourceId];
+        NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+        BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
+        
+        if(!fileExists)
+        {
+            UIImageView *resourceImageView = [[UIImageView alloc] init];
+            //[imageView setImageWithURL:[NSURL URLWithString:resource.thumbURL] placeholderImage:nil];
+            
+            [resourceImageView setImageWithURL:[NSURL URLWithString:resource.imageURL]
+                       placeholderImage:nil
+                                success:^(UIImage *imageDownloaded) {
+                                    //NSLog(@"image successfully downloaded.");
+                                    
+                                    [styleButton setImage:imageDownloaded forState:UIControlStateNormal];
+                                    
+                                    NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                    [data1 writeToFile:currentFile atomically:YES];
+                                    
+                                }
+                                failure:^(NSError *error) {
+                                    NSLog(@"Failed to load resource image.");
+                                }];
+            
+        }//end if(!fileExists)
+        
+        else if(fileExists)
+        {
+            UIImage* image= [UIImage imageWithContentsOfFile:currentFile];
+            [styleButton setImage:image forState:UIControlStateNormal];
+        }
+
+        
+        
         
         CGRect rect1 = styleButton.frame;
         rect1.size.height = assetHeight;
@@ -706,6 +750,14 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 }
 
+
+-(NSArray*)arrayByRemovingObject:(NSArray*)array andResource:(Resource*)resource
+{
+    NSMutableArray *newArray = [NSMutableArray arrayWithArray:array];
+    [newArray removeObject:resource];
+    return [NSArray arrayWithArray:newArray];
+}
+
 #pragma mark ResourceLoader functions.
 -(void)ResourceLoader:(ResourceLoader*)loader didFailWithError:(NSError*)error{
     //NSLog(@"resource failed to load.");
@@ -718,6 +770,20 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     if(resources!=nil)
     {
         //NSLog(@"didLoadResources.[resources count]=%i", [resources count]);
+        
+        if([resources count]>0)
+        {
+            for(Resource* resource in resources)
+            {
+                if(resource!=nil)
+                {
+                    if([resource.type isEqualToString:@"f"])
+                    {
+                        resources = [self arrayByRemovingObject:resources andResource:resource];
+                    }
+                }//end if
+            }//end for
+        }//end if
         
         numResources = [resources count];
         thumbnailScrollView.numItems = numSpeechBubbles + numResources;
@@ -739,6 +805,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                 }//end if resource!=nil
 
             }//end for
+            
         }//end if
     }//end if resources!=nil
 

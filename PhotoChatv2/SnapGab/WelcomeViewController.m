@@ -20,6 +20,8 @@ GroupLoader* groupLoader;
 @synthesize imageButton;
 @synthesize comicCollectionButton;
 
+BOOL alertShown;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -35,6 +37,18 @@ GroupLoader* groupLoader;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
+    alertShown = NO;
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSString* email= [prefs objectForKey:@"email"];
+    //NSString* groupHashId= [prefs objectForKey:@"current_group_hash"];
+
+    
+    self.welcomeLabel.text= [NSString stringWithFormat: @"Logged in as %@", email];
+    self.welcomeLabel.numberOfLines = 0; //will wrap text in new line
+    [self.welcomeLabel sizeToFit];
+    
+    
     //Create databse for the app
     //dataLoader = [[DataLoader alloc] init];
     //[dataLoader submitSQLRequestCreateTablesForGroup:1];
@@ -73,6 +87,9 @@ GroupLoader* groupLoader;
     [super viewDidAppear:animated];
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSString* groupHashId= [prefs objectForKey:@"current_group_hash"];
+    NSLog(@"WelcomeViewController.viewDidAppear.groupHashId=%@", groupHashId);
+    
+    //welcomeLabel
     //NSString* userId= [prefs objectForKey:@"user_id"];
     //NSLog(@"WelcomeViewController.viewDidAppear.groupHashId=%@", groupHashId);
     if(groupHashId==nil)
@@ -86,10 +103,10 @@ GroupLoader* groupLoader;
     }
     else{
         imageButton.enabled = YES;
-        //imageButton.alpha = 0;
+        imageButton.alpha = 1;
         
         comicCollectionButton.enabled = YES;
-        //comicCollectionButton.alpha = 0;
+        comicCollectionButton.alpha = 1;
         
         //groupLoader = [[GroupLoader alloc] init];
         //[groupLoader submitRequestGetGroupForHashId:groupHashId];
@@ -97,13 +114,13 @@ GroupLoader* groupLoader;
     
 }
 
-/*
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
-*/
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -111,6 +128,22 @@ GroupLoader* groupLoader;
 }
 
 - (IBAction)logoutPressed:(id)sender {
+    //NSLog(@"logout pressed");
+    
+    if(!alertShown)
+    {
+        UIAlertView *message = [[UIAlertView alloc]
+                                initWithTitle:@"Logout"
+                                message:@"You are loging out of Trepic app."
+                                delegate:self
+                                cancelButtonTitle:@"Confirm"
+                                otherButtonTitles:@"Cancel", nil];
+        [message show];
+        
+    }//end if(!alertShown)
+    
+  
+    
     //[self.navigationController popViewControllerAnimated:YES];
     
     //[self performSegueWithIdentifier:@"logout" sender:self];
@@ -128,6 +161,7 @@ GroupLoader* groupLoader;
 }
 
 
+/*
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
 
     if([[segue identifier] isEqualToString:@"logout"])
@@ -142,6 +176,7 @@ GroupLoader* groupLoader;
     }//end if
 
 }
+ */
 
 /*
 #pragma mark GroupLoader functions.
@@ -152,5 +187,63 @@ GroupLoader* groupLoader;
     }//end if
 }
 */
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"Confirm"])
+    {
+        alertShown = NO;
+        NSLog(@"Confirm pressed");
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:nil forKey:@"session"];
+        [userDefaults setObject:nil forKey:@"current_group_hash"];
+        [userDefaults setObject:nil forKey:@"user_id"];
+        [userDefaults synchronize];
+        
+        NSError *err;
+        NSString *docsDir;
+        NSArray *dirPaths;
+        NSString* appName = [NSString stringWithFormat: @"automics.sql"];
+        //databaseQueue = dispatch_queue_create("automics.database", NULL);
+        
+        // Get the documents directory
+        dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        docsDir = [dirPaths objectAtIndex:0];
+        // Build the path to the database file
+        NSString* databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent:appName]];
+        databasePathStatic = databasePath;
+        //NSLog(@"databasePath=%@, databasePathStatic=%@ ", databasePath, databasePathStatic);
+        NSFileManager *filemgr = [NSFileManager defaultManager];
+        if([filemgr fileExistsAtPath:databasePath])
+        {
+            [filemgr removeItemAtPath:databasePath error:&err];
+            if(err)
+            {
+                NSLog(@"File Manager: %@ %d %@", [err domain], [err code], [[err userInfo] description]);
+            }
+            else
+            {
+                //NSLog(@"File %@ deleted.", appName);
+            }
+
+        }
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        
+        return;
+    }//end if
+    if([title isEqualToString:@"Cancel"])
+    {
+        alertShown = NO;
+        NSLog(@"Cancel pressed");
+        
+        
+        return;
+    }//end if
+}//end alertView
+
+
 
 @end

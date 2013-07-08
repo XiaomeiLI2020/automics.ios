@@ -112,10 +112,14 @@ dispatch_queue_t backgroundQueue;
     //NSLog(@"current_group.comicsDownloaded=%i", comicsDownloaded);
     if(comicsDownloaded==0)
     {
-        comicRequestType = kGetGroupComics;
-        comicsDownloaded = YES;
-        NSURLRequest* urlRequest = [self prepareComicRequestForGroup];
-        [self submitComicRequest:urlRequest];
+        if([self isReachable])
+        {
+            comicRequestType = kGetGroupComics;
+            comicsDownloaded = YES;
+            NSURLRequest* urlRequest = [self prepareComicRequestForGroup];
+            [self submitComicRequest:urlRequest];
+        }
+
     }
     else if(comicsDownloaded==1)
     {
@@ -130,6 +134,7 @@ dispatch_queue_t backgroundQueue;
 -(void)submitRequestGetComicWithId:(int)comicId{
     
     int comicExists = [self submitSQLRequestCheckComicExists:comicId];
+    NSLog(@"ComicLoader. comicExists=%i", comicExists);
     if(comicExists==0 && [self isReachable])
     //if(comicExists==0)
     {

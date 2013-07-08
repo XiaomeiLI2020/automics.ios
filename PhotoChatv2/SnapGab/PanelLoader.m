@@ -119,7 +119,7 @@ int currentNumPanels = 0;
     int panelsDownloaded = [self submitSQLRequestCheckPanelsDownloadedForGroup:currentGroupHashId];
     //NSLog(@"PanelLoader.submitRequestGetPanelsForGroup.panelsDownloaded=%i", panelsDownloaded);
     
-    if(panelsDownloaded==0)
+    if(panelsDownloaded==0 && [self isReachable])
     {
         panelRequestType = kGetGroupPanels;
         //panelsDownloaded = YES;

@@ -37,5 +37,6 @@
 +(NSString*)getURLForPostRegister;
 +(NSString*)getURLForPostUser;
 +(NSString*)getURLForPostUserWithId:(int)userId;
++(NSString*)getURLForPostNotification;
 
 @end

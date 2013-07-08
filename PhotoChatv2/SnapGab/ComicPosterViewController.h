@@ -22,6 +22,7 @@
 
 @property ComicLoader* comicLoader;
 @property NSMutableArray *comicContents;
+@property NSString* comicName;
 
 - (IBAction)cancelPressed:(id)sender;
 

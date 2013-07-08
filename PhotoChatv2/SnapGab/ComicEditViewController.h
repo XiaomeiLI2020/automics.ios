@@ -13,10 +13,11 @@
 #import "PanelLoader.h"
 
 @interface ComicEditViewController : UIViewController
-<UIScrollViewDelegate, UIAlertViewDelegate, PanelLoaderDelegate, ComicLoaderDelegate, ResourceLoaderDelegate>
+<UITextFieldDelegate, UIScrollViewDelegate, UIAlertViewDelegate, PanelLoaderDelegate, ComicLoaderDelegate, ResourceLoaderDelegate>
 
 @property MainScrollSelector *panelScrollView;
 @property MainScrollSelector *thumbnailScrollView;
+@property (weak, nonatomic) IBOutlet UITextField *comicTextField;
 
 @property int currentPage;
 @property int thumbPage;
@@ -27,7 +28,8 @@
 @property NSMutableArray* downloadedPhotos;
 @property NSArray *resourceList;
 @property NSArray *placementList;
-
+@property CGFloat lastContentOffsetX;
+@property NSString* comicName;
 
 - (IBAction)deletePanel:(id)sender;
 

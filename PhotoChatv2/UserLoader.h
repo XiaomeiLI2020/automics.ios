@@ -18,6 +18,10 @@
 @property (weak) id<UserLoaderDelegate> delegate;
 -(void)submitRequestGetUser:(int)userId;
 -(void)submitRequestPostJoinGroup:(NSString*)sessionToken andGroupHashId:(NSString*)groupHashId;
+//-(void)submitRequestPostDeviceToken:(NSString*)deviceToken andSessionToken:(NSString*)sessionToken;
+-(void)submitRequestPostDeviceToken;
+//-(void)submitRequestPostNotification;
+-(void)submitRequestPostNotification:(NSString*)message;
 -(void)submitRequestPostChangeGroup:(int)userId andNewGroupHashId:(NSString*)groupHashId;
 -(void)submitRequestDeleteFromGroup:(NSString*)groupHashId;
 //-(void)submitRequestPostJoinGroup:(NSString*)sessionToken andGroupHashId:(NSString*)groupHashId;

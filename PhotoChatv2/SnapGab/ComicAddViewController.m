@@ -36,6 +36,8 @@
 @synthesize panelArray;
 @synthesize panelCounter;
 @synthesize activityIndicator;
+@synthesize lastContentOffsetX;
+@synthesize comicName;
 
 BOOL _bubblesAdded;
 BOOL _resourcesAdded;
@@ -102,6 +104,8 @@ BOOL thumbMode;
     _bubblesAdded = NO;
     _resourcesAdded = NO;
     thumbMode = NO;
+    
+    lastContentOffsetX = 0.0;
 }
 
 
@@ -547,6 +551,18 @@ BOOL thumbMode;
         CGFloat pos = (CGFloat)self.thumbnailScrollView.contentOffset.x / thumbnailWidth;
         int page = round(ceilf(pos));
         
+        if(lastContentOffsetX == self.thumbnailScrollView.contentOffset.x)
+        {
+            NSLog(@"ComicAddViewController.panels refreshed");
+            //[panelsLoader submitRequestRefreshGetPanelsForGroup];
+        }
+        
+        lastContentOffsetX = self.thumbnailScrollView.contentOffset.x;
+        
+        /*
+        CGFloat totalWidth = (CGFloat) ([self.panels count]-1)*thumbnailWidth;
+        NSLog(@"alignPageInThumbnailScrollView.self.thumbnailScrollView.contentOffset.x=%f, totalWidth=%f, page=%i, [self.panels count]=%i", self.thumbnailScrollView.contentOffset.x, totalWidth, page, [self.panels count]);
+        */
         thumbPage = page;
         //NSLog(@"alignPageInThumbnailScrollView.page=%i, [panels count]=%i, thumbnailIndex=%i", page, [panels count], thumbnailIndex);
         
@@ -669,8 +685,8 @@ BOOL thumbMode;
         {
             
             ComicPosterViewController *cpvc = (ComicPosterViewController *)[segue destinationViewController];
-            
             cpvc.comicContents = [[NSMutableArray alloc] init];
+            cpvc.comicName = comicName;
             
             NSUInteger i;
             for(i=0; i<[comicPanelList count]; i++)
@@ -1210,6 +1226,51 @@ BOOL thumbMode;
 -(void)PanelLoader:(PanelLoader*)loader didFailWithError:(NSError*)error{
     
 }
+
+-(void)PanelLoader:(PanelLoader *)loader didLoadRefreshedPanels:(NSArray*)panelsLocal{
+    
+    /*
+     NSMutableArray* arrayCat(NSArray *a, NSArray *b)
+     {
+     NSMutableArray *ret = [NSMutableArray arrayWithCapacity:[a count] + [b count]];
+     [ret addObjectsFromArray:a];
+     [ret addObjectsFromArray:b];
+     return ret;
+     }
+     */
+    
+    //NSLog(@"PanelViewController.didLoadRefreshedPanels. currentPanels=%i, [panelsLocal count]=%i", [panels count], [panelsLocal count]);
+    //NSMutableArray *newPanels = [NSMutableArray arrayWithCapacity:[panels count] + [panelsLocal count]];
+    //initialized = NO;
+    NSMutableArray *newPanels = [[NSMutableArray alloc] initWithArray:panels];
+    [newPanels addObjectsFromArray:panelsLocal];
+    
+    panels = newPanels;
+    numPanels = [newPanels count];
+    
+    
+    for(UIView* subView in thumbnailScrollView.subviews)
+    {
+        //if(subView.tag==page && [subView isMemberOfClass:[UIImageView class]])
+        if([subView isMemberOfClass:[UIImageView class]])
+        {
+            [subView removeFromSuperview];
+        }//end if
+    }//end for
+    
+    for (int i=0; i<[panelsLocal count];i++)
+    {
+        NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
+        [downloadedPanels addObject:panelDownloaded];
+        [downloadedPhotos addObject:panelDownloaded];
+    }
+    
+    
+    [self updateScrollViews];
+    [self alignPageInThumbnailScrollView];
+
+}
+
 
 -(void)PanelLoader:(PanelLoader *)loader didLoadPanels:(NSArray*)panelsLocal{
     

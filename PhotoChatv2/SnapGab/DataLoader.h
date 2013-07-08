@@ -47,6 +47,7 @@ NSString *databasePathStatic;
 
 //Tables
 //-(void)submitSQLRequestCreateTablesForGroup:(int)groupId;
+-(void)initiateSQL;
 -(void)submitSQLRequestCreateTablesForApp;
 
 //Panels: Insert into database
@@ -101,5 +102,16 @@ NSString *databasePathStatic;
 -(NSArray*)convertComicsSQLIntoComics:(NSString*)groupHashId;
 -(int)submitSQLRequestCheckComicExists:(int)comicId;
 -(NSArray*)convertComicSQLIntoComic:(int)comicId;
+
+//Users: Insert into database
+-(void)submitSQLRequestSaveUsers:(NSArray*)users;
+-(void)submitSQLRequestUpdateCurrentGroup:(NSString*)groupHashId andUserId:(int)userId;
+
+//Users: Retrieve from database
+-(int)submitSQLRequestCheckUserExists:(int)userId;
+-(int)submitSQLRequestCheckUserLoggedOut:(int)userId;
+-(int)submitSQLRequestCheckLoggedInUser;
+-(NSArray*)convertUsersSQLIntoUsers:(int)userId;
+
 
 @end

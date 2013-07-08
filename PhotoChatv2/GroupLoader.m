@@ -28,7 +28,7 @@ BOOL groupsDownloaded = NO;
 @synthesize delegate;
 
 -(void)submitRequestGetGroups{
-    if(!groupsDownloaded)
+    if(!groupsDownloaded && [self isReachable])
     {
         groupRequestType = kGetGroups;
         groupsDownloaded = YES;
@@ -139,14 +139,16 @@ BOOL groupsDownloaded = NO;
     {
 
         NSArray* groups = [self convertGroupSQLIntoGroup:groupHashId];
-        if(groups!=nil){
+        if(groups!=nil && [groups count]>0)
+        {
             Group* group = [groups objectAtIndex:0];
-            if(group!=nil){
+            if(group!=nil)
+            {
                 //NSLog(@"Group %@ downloaded from the database.", group.name);
                 if ([self.delegate respondsToSelector:@selector(GroupLoader:didLoadGroup:)])
                     [self.delegate GroupLoader:self didLoadGroup:group];
             }//end if(group!=nil)
-        }//end if(groups!=nil)
+        }//end if(groups!=nil && [groups count]>0)
     }//end else
 }
 

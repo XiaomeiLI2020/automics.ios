@@ -12,10 +12,11 @@
 BOOL initialized = false;
 
 @interface WelcomeViewController:UIViewController
-<GroupLoaderDelegate>
+<GroupLoaderDelegate, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *imageButton;
 @property (weak, nonatomic) IBOutlet UIButton *comicCollectionButton;
+@property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
 
 - (IBAction)logoutPressed:(id)sender;
 - (IBAction)groupsPressed:(id)sender;

@@ -252,6 +252,7 @@ int thumbnailsCompleted;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     //NSLog(@"PanelViewController.viewDidLoad");
+
     [self initiateDataSet];
     [self initiateScrollViews];
     
@@ -265,6 +266,7 @@ int thumbnailsCompleted;
     //[panelsLoader submitRequestGetPanelsForGroup:1];
     [panelsLoader submitRequestGetPanelsForGroup];
 
+
 }
 
 
@@ -272,7 +274,22 @@ int thumbnailsCompleted;
 - (void)viewDidAppear:(BOOL)animated
 {
     //NSLog(@"viewDidAppear");
-
+    [super viewDidAppear:YES];
+    /*
+    [self initiateDataSet];
+    [self initiateScrollViews];
+    
+    
+    activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	activityIndicator.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
+	activityIndicator.center = self.view.center;
+	[self.view addSubview: activityIndicator];
+    [activityIndicator startAnimating];
+    
+    //[panelsLoader submitRequestGetPanelsForGroup:1];
+    [panelsLoader submitRequestGetPanelsForGroup];
+*/
+    
 }
 
 
@@ -1247,6 +1264,7 @@ int thumbnailsCompleted;
     if (theData != nil) {
         NSString* message = [theData objectForKey:@"panelnotification"];
         NSLog(@"notification: %@", message);
+        //[[NSNotificationCenter defaultCenter] removeObserver:self];
     }
     else{
         NSLog(@"Nil data. New panel uploaded.");
@@ -1353,6 +1371,7 @@ int thumbnailsCompleted;
                 PanelEditViewController *pevc = (PanelEditViewController *)[segue destinationViewController];
                 pevc.url = [NSURL URLWithString:panel.photo.imageURL];
                 pevc.currentPanel = panel;
+                pevc.currentPage = currentPage;
                 
                 //NSLog(@"editPanel called.");
                
@@ -1449,6 +1468,13 @@ int thumbnailsCompleted;
     NSMutableArray *newArray = [NSMutableArray arrayWithArray:array];
     [newArray replaceObjectAtIndex:index withObject:panel];
     //[newArray addObject:object];
+    return [NSArray arrayWithArray:newArray];
+}
+
+-(NSArray*)arrayByRemovingObject:(NSArray*)array andResource:(Resource*)resource
+{
+    NSMutableArray *newArray = [NSMutableArray arrayWithArray:array];
+    [newArray removeObject:resource];
     return [NSArray arrayWithArray:newArray];
 }
 
@@ -1567,14 +1593,19 @@ int thumbnailsCompleted;
 -(void)PanelLoader:(PanelLoader*)loader didFailWithError:(NSError*)error{
     NSLog(@"PanelViewController.Panel failed to load.");
     //[self performSegueWithIdentifier:@"panelsToMenu" sender:self];
+    [activityIndicator stopAnimating];
     
 }
 
 
 -(void)PanelLoader:(PanelLoader*)loader didLoadPanels:(NSArray*)panelsLocal{
 
+    
     panels= panelsLocal;
     numPanels = [panelsLocal count];
+    
+    //if(numPanels>0)
+    //    [activityIndicator startAnimating];
     
     //NSLog(@"PanelViewController.didLoadPanels.numPanels=%i", numPanels);
     //[photoLoader submitRequestGetPhotosForGroup:@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12"];

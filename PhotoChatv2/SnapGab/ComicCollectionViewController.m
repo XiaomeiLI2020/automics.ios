@@ -19,10 +19,12 @@
 @property NSMutableDictionary *comicImages;
 @property NSMutableDictionary *panelLoadersInProgress;
 @property NSMutableDictionary *imageDownloadersInProgress;
+
 @end
 
 @implementation ComicCollectionViewController
 
+BOOL segueCalled = NO;
 BOOL comicsStored = NO;
 NSString *kComicCellID = @"COMIC_CELL";
 @synthesize comics;
@@ -32,13 +34,15 @@ NSString *kComicCellID = @"COMIC_CELL";
 
 
 
-
 - (void)viewDidLoad
 {
     //NSLog(@"ComicCollectionViewController.viewDidLoad.");
     [super viewDidLoad];
-     self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
+    
+
+    self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
     [self.collectionView setCollectionViewLayout:[[ComicCollectionViewLayout alloc] init]];
+    
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
@@ -133,6 +137,7 @@ NSString *kComicCellID = @"COMIC_CELL";
     //NSLog(@"cleanUpData");
     [self cancelDownLoadRequests];
     [comicImages removeAllObjects];
+    //[self.collectionView removeFromSuperview];
 }
 
 -(void)cancelPanelLoadRequests{
@@ -216,19 +221,28 @@ NSString *kComicCellID = @"COMIC_CELL";
 -(void)ComicLoader:(ComicLoader*)loader didLoadComics:(NSArray *)groupComics{
     //NSLog(@"didLoadComics");
     self.comics = groupComics;
-    //NSLog(@"didLoadComics. reloadData");
+    //NSLog(@"didLoadComics.self.comics");
     
     //To make sure messages sent to any UIKit object are sent on the main thread.
-    dispatch_async(dispatch_get_main_queue(), ^(void) {
-        [self.collectionView reloadData];
-    });
+   
+    if([self.comics count]>0)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            [self.collectionView reloadData];
+        });
+    }//end if([self.comics count]>0)
+
+
     //[self.collectionView reloadData];
 
 }
 
 -(void)ComicLoader:(ComicLoader *)loader didFailWithError:(NSError *)error{
+    NSLog(@"ComicLoader.didFailWithError");
+    /*
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Comics", nil) message:error.description delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil];
     [alertView show];
+     */
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -239,93 +253,105 @@ NSString *kComicCellID = @"COMIC_CELL";
         return 0;
 }
 
+
+
 -(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     ComicCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kComicCellID forIndexPath:indexPath];
     Comic* comic = [self.comics objectAtIndex:indexPath.item];
     [cell setComic:comic];
     //cell.label.text=@"";
-    //NSLog(@"collectionView cellForItemAtIndexPath.[self.comics count]=%i, indexPath.item=%i, comicId=%i, [comicImages objectForKey:indexPath]=%@", [self.comics count], indexPath.item, comic.comicId, [comicImages objectForKey:indexPath]);
+    NSLog(@"collectionView cellForItemAtIndexPath.[self.comics count]=%i, indexPath.item=%i, comicId=%i, [comicImages count]=%i, [comicImages objectForKey:indexPath]=%@", [self.comics count], indexPath.item, comic.comicId, [comicImages count], [comicImages objectForKey:indexPath]);
 
-    if ([comicImages objectForKey:indexPath] != nil){
-
-        //[cell.activityView stopAnimating];
-
-        id object= [comicImages objectForKey:indexPath];
-        if([object isKindOfClass:[UIImage class]])
+    //if([comicImages count]>0)
+    {
+        if([comicImages objectForKey:indexPath] != nil)
         {
             
-            cell.imageView.image = [comicImages objectForKey:indexPath];
-        }
-        if([object isKindOfClass:[NSString class]])
-        {
-            //[cell.imageView setImageWithURL:object placeholderImage:nil];
-            NSRange rangeValue = [object rangeOfString:@"http://automicsii.cloudapp.net/" options:NSCaseInsensitiveSearch];
-            if (rangeValue.length>0)
+            //[cell.activityView stopAnimating];
+            
+            id object= [comicImages objectForKey:indexPath];
+            if([object isKindOfClass:[UIImage class]])
             {
-                [cell.imageView setImageWithURL:[NSURL URLWithString:object] placeholderImage:nil];
-            }
-            else{
                 
-                [cell.imageView setImage:[UIImage imageWithContentsOfFile:object]];
-                //[cell.imageView setImage:[UIImage imageNamed:imageURL]];
+                cell.imageView.image = [comicImages objectForKey:indexPath];
             }
-
-        }
-        
-        [cell.activityView stopAnimating];
-        //NSLog(@"animation stopped.");
-        
-        //cell.imageView.image = [comicImages objectForKey:indexPath];
-        
-        //NSString* imageURL = [comicImages objectForKey:indexPath];
-        //NSLog(@"imageURL=%@", imageURL);
-        /*
-        NSRange rangeValue = [imageURL rangeOfString:@"http://automicsii.cloudapp.net/" options:NSCaseInsensitiveSearch];
-        if (rangeValue.length>0)
-        {
-            [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:nil];
-        }
-        else{
-         
-            [cell.imageView setImage:[UIImage imageWithContentsOfFile:imageURL]];
-            //[cell.imageView setImage:[UIImage imageNamed:imageURL]];
-        }
-        */
-        
-
-        //[imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
-        //[cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:nil];
-        //[cell.activityView stopAnimating];
-        //NSLog(@"animation stopped.imageURL =%@, indexPath.row=%i", imageURL, indexPath.row);
-
-    }//end if ([comicImages objectForKey:indexPath] != nil)
-    else{
-        //NSLog(@"[comic.panels count]=%i", [comic.panels count]);
-        if([comic.panels count] > 0)
-        {
-            //if ([panelLoadersInProgress objectForKey:indexPath] == nil && [imageDownloadersInProgress objectForKey:indexPath] == nil)
-            if ([panelLoadersInProgress objectForKey:indexPath] == nil)
+            if([object isKindOfClass:[NSString class]])
             {
-        
-                //[cell.activityView startAnimating];
+                //[cell.imageView setImageWithURL:object placeholderImage:nil];
+                NSRange rangeValue = [object rangeOfString:@"http://automicsii.cloudapp.net/" options:NSCaseInsensitiveSearch];
+                if (rangeValue.length>0)
+                {
+                    [cell.imageView setImageWithURL:[NSURL URLWithString:object] placeholderImage:nil];
+                }
+                else{
+                    
+                    [cell.imageView setImage:[UIImage imageWithContentsOfFile:object]];
+                    //[cell.imageView setImage:[UIImage imageNamed:imageURL]];
+                }
                 
-                //Panel* panel = [comic.panels objectAtIndex:arc4random_uniform([comic.panels count])];
-                Panel* panel = [comic.panels objectAtIndex:0];
-                //NSLog(@"animation started.=panel.panelId=%i, panel.photo.photoId=%i, panel.photo.imageURL=%@", panel.panelId, panel.photo.photoId, panel.photo.imageURL);
-                //Download random panel in the comic.
-                [self loadPanelWithId:panel.panelId atIndexPath:indexPath];
-                //NSLog(@"animation started.=panel.panelId=%i, panel.photo.photoId=%i", panel.panelId, panel.photo.photoId);
-                [cell.activityView startAnimating];
-
-            }//end if ([panelLoadersInProgress objectForKey:indexPath] == nil)
-        }//end if([comic.panels count]>0)
-        else
+            }
+            NSLog(@"animation stopped. indexPath.item=%i", indexPath.item);
+            if(cell.activityView!=nil)
+                [cell.activityView stopAnimating];
+            //NSLog(@"animation stopped.");
+            
+            //cell.imageView.image = [comicImages objectForKey:indexPath];
+            
+            //NSString* imageURL = [comicImages objectForKey:indexPath];
+            //NSLog(@"imageURL=%@", imageURL);
+            /*
+             NSRange rangeValue = [imageURL rangeOfString:@"http://automicsii.cloudapp.net/" options:NSCaseInsensitiveSearch];
+             if (rangeValue.length>0)
+             {
+             [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:nil];
+             }
+             else{
+             
+             [cell.imageView setImage:[UIImage imageWithContentsOfFile:imageURL]];
+             //[cell.imageView setImage:[UIImage imageNamed:imageURL]];
+             }
+             */
+            
+            
+            //[imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
+            //[cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:nil];
+            //[cell.activityView stopAnimating];
+            //NSLog(@"animation stopped.imageURL =%@, indexPath.row=%i", imageURL, indexPath.row);
+            
+        }//end if ([comicImages objectForKey:indexPath] != nil)
+        else if([comicImages objectForKey:indexPath] == nil)
         {
-            //NSLog(@"collectionView cellForItemAtIndexPath");
-            [self setDefaultImageForIndexPath:indexPath];
-            [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-        }//end else
-    }//end if ([comicImages objectForKey:indexPath] == nil)
+            //NSLog(@"[comic.panels count]=%i", [comic.panels count]);
+            if([comic.panels count] > 0)
+            {
+                //if ([panelLoadersInProgress objectForKey:indexPath] == nil && [imageDownloadersInProgress objectForKey:indexPath] == nil)
+                if ([panelLoadersInProgress objectForKey:indexPath] == nil)
+                {
+                    
+                    //[cell.activityView startAnimating];
+                    
+                    //Panel* panel = [comic.panels objectAtIndex:arc4random_uniform([comic.panels count])];
+                    Panel* panel = [comic.panels objectAtIndex:0];
+                    //NSLog(@"animation started.=panel.panelId=%i, panel.photo.photoId=%i, panel.photo.imageURL=%@", panel.panelId, panel.photo.photoId, panel.photo.imageURL);
+                    //Download random panel in the comic.
+                    [self loadPanelWithId:panel.panelId atIndexPath:indexPath];
+                    //NSLog(@"animation started.=panel.panelId=%i, panel.photo.photoId=%i", panel.panelId, panel.photo.photoId);
+                    [cell.activityView startAnimating];
+                    
+                }//end if ([panelLoadersInProgress objectForKey:indexPath] == nil)
+            }//end if([comic.panels count]>0)
+            else if([comic.panels count] == 0)
+            {
+                NSLog(@"collectionView cellForItemAtIndexPath. [comicImages objectForKey:indexPath] is nil");
+                [self setDefaultImageForIndexPath:indexPath];
+                //dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+                //});
+                //[self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+            }//end else
+        }//end if ([comicImages objectForKey:indexPath] == nil)
+        
+    }//end if([comicImages count]>0)
 
     return cell;
 }
@@ -334,9 +360,15 @@ NSString *kComicCellID = @"COMIC_CELL";
 
 #pragma mark UICollectionViewDelegate
 
--(void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
+-(void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell*)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
     //NSLog(@"collectionView.didEndDisplayingCell. indexPath.row=%i, indexPath.section=%i", indexPath.row, indexPath.section);
-    [self cancelPanelLoadRequestForIndexPath:indexPath];
+    
+    //if([panelLoadersInProgress objectForKey:indexPath]!=nil)
+    if(indexPath!=nil && [panelLoadersInProgress objectForKey:indexPath]!=nil)// && [comicImages objectForKey:indexPath]!=nil)
+    {
+        [self cancelPanelLoadRequestForIndexPath:indexPath];
+    }
+    //[self cancelPanelLoadRequestForIndexPath:indexPath];
     //[self cancelImageDownloadRequestForIndexPath:indexPath];
 }
 
@@ -361,7 +393,9 @@ NSString *kComicCellID = @"COMIC_CELL";
     //NSLog(@"didLoadPanel. panel.panelId=%i", panel.panelId);
     NSIndexPath *indexPath = (NSIndexPath*)obj;
     [panelLoadersInProgress removeObjectForKey:indexPath];
-    if (panel.photo.imageURL != nil){
+    
+    NSLog(@"didLoadPanel. panel.panelId=%i, indexPath.item=%i", panel.panelId, indexPath.item);
+    if (panel.photo.imageURL != nil && panel.photo.photoId>0){
         
         UIImageView *imageView = [[UIImageView alloc] init];
         NSFileManager* fileMgr = [NSFileManager defaultManager];
@@ -373,7 +407,7 @@ NSString *kComicCellID = @"COMIC_CELL";
         BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
         
 
-        //NSLog(@"didLoadPanel. Panel[%i].[%@] File exists=%d", panel.panelId, imageName, fileExists);
+        NSLog(@"didLoadPanel. Panel[%i].[%@] File exists=%d", panel.panelId, imageName, fileExists);
         if(!fileExists)
         {
             [comicImages setObject:panel.photo.imageURL forKey:indexPath];
@@ -382,6 +416,8 @@ NSString *kComicCellID = @"COMIC_CELL";
                       placeholderImage:nil
                                success:^(UIImage *imageDownloaded) {
                                    //UIImageWriteToSavedPhotosAlbum(imageDownloaded, nil, nil, nil);
+                                   
+                                   //[comicImages setObject:imageDownloaded forKey:indexPath];
                                    
                                    //NSLog(@"alignPageinPanelScrollView.saving image=%@", imageName);
                                    NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
@@ -479,16 +515,37 @@ NSString *kComicCellID = @"COMIC_CELL";
         Comic* selectedComic = [self.comics objectAtIndex:indexPath.item];
         ComicDetailsViewController *cpvc = (ComicDetailsViewController *)[segue destinationViewController];
         cpvc.comicId = selectedComic.comicId;
+        cpvc.comicName = selectedComic.name;
     }
 
     if([[segue identifier] isEqualToString:@"comicstomenu1"])
     {
-        //NSLog(@"prepareForSegue.comicstomenu1");
-        [self cleanupData];
+        NSLog(@"prepareForSegue.comicstomenu1");
+        //[self cleanupData];
+        //[self.collectionView removeFromSuperview];
+        
+
+        [self.collectionView performBatchUpdates:^{
+            [self cleanupData];
+            
+            //Couldn't find a better way to prevent app crashing, so used this.
+            [self.collectionView removeFromSuperview];
+
+        } completion:nil];
+
+        
         //[self viewDidDisappear:YES];
         //[self cancelPanelLoadRequests];
         //[self cancelDownLoadRequests];
     }
+    
+    if([[segue identifier] isEqualToString:@"comicAddName"])
+    {
+        //NSLog(@"prepareForSegue.comicAdd1");
+        [self cleanupData];
+        //[self cancelPanelLoadRequests];
+        //[self cancelDownLoadRequests];
+    }//end if
     
     if([[segue identifier] isEqualToString:@"comicAdd1"])
     {
