@@ -32,6 +32,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
    
+    /*
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSString* groupHashId= [prefs objectForKey:@"current_group_hash"];
     NSLog(@"GroupMainViewController.viewDidLoad.current_group_hash=%@", groupHashId);
@@ -56,6 +57,7 @@
         
         [joinGroup setTitle:@"Change Group" forState:UIControlStateNormal];
     }
+     */
     
 }
 
@@ -86,6 +88,8 @@
         leaveButton.alpha = 1;
         
         [joinGroup setTitle:@"Change Group" forState:UIControlStateNormal];
+        
+
     }
 }
 

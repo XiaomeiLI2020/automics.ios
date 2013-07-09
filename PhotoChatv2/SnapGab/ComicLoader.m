@@ -109,7 +109,7 @@ dispatch_queue_t backgroundQueue;
     //NSLog(@"groupExists =%i", groupExists);
     //NSLog(@"currentGroupHashId =%@", currentGroupHashId);
     int comicsDownloaded = [self submitSQLRequestCheckComicsDownloadedForGroup:currentGroupHashId];
-    //NSLog(@"current_group.comicsDownloaded=%i", comicsDownloaded);
+    NSLog(@"current_group.comicsDownloaded=%i", comicsDownloaded);
     if(comicsDownloaded==0)
     {
         if([self isReachable])

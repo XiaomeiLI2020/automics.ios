@@ -412,7 +412,18 @@ failure:^(NSError *error) {
     GroupCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:mCellID forIndexPath:indexPath];
     Group *group = [_groups objectAtIndex:indexPath.item];
     [cell setGroup:group];
-    //cell.label.text = group.name;
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSString* groupHashIdLocal= [prefs objectForKey:@"current_group_hash"];
+    
+    //Display the name of current group in italic font
+    if([groupHashIdLocal isEqualToString:group.hashId])
+    {
+        cell.label.font = [UIFont italicSystemFontOfSize:18.0f];
+    }//end if([groupHashIdLocal isEqualToString:group.hashId])
+    
+    //cell.label.font = [UIFont italicSystemFontOfSize:16.0f];
+    //cell.label.text = @"Current group"group.name;
     
     if ([groupImages objectForKey:indexPath] != nil)
     {

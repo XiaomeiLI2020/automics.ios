@@ -221,7 +221,7 @@ NSString *kComicCellID = @"COMIC_CELL";
 -(void)ComicLoader:(ComicLoader*)loader didLoadComics:(NSArray *)groupComics{
     //NSLog(@"didLoadComics");
     self.comics = groupComics;
-    //NSLog(@"didLoadComics.self.comics");
+    //NSLog(@"ComicCollectionViewController.didLoadComics.self.comics=%i", [self.comics count]);
     
     //To make sure messages sent to any UIKit object are sent on the main thread.
    
@@ -259,6 +259,7 @@ NSString *kComicCellID = @"COMIC_CELL";
     ComicCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kComicCellID forIndexPath:indexPath];
     Comic* comic = [self.comics objectAtIndex:indexPath.item];
     [cell setComic:comic];
+    
     //cell.label.text=@"";
     NSLog(@"collectionView cellForItemAtIndexPath.[self.comics count]=%i, indexPath.item=%i, comicId=%i, [comicImages count]=%i, [comicImages objectForKey:indexPath]=%@", [self.comics count], indexPath.item, comic.comicId, [comicImages count], [comicImages objectForKey:indexPath]);
 
