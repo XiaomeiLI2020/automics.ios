@@ -23,6 +23,7 @@
 @property int panelCounter;
 @property NSString* comicName;
 
+
 @property NSURL* url;
 @property int thumbPage;
 @property CGFloat lastContentOffsetX;

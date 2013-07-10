@@ -215,10 +215,50 @@ NSString *mCellID = @"GROUP_CELL";
          [userDefaults setObject:[NSNumber numberWithInt:currentUser.userId] forKey:@"user_id"];
          [userDefaults synchronize];
         
-        [userLoader submitSQLRequestUpdateCurrentGroup:currentUser.currentGroup.hashId andUserId:currentUser.userId];
+        //[userLoader submitSQLRequestUpdateCurrentGroup:currentUser.currentGroup.hashId andUserId:currentUser.userId];
+        //[userLoader submitRequestPostChangeGroup:currentUser.userId andNewGroupHashId:currentUser.currentGroup.hashId];
+        [userLoader submitRequestPostSetCurrentGroup:currentUser.userId andNewGroupHashId:currentUser.currentGroup.hashId];
 
     }
     
+}
+
+-(void)UserLoader:(UserLoader*)loader didSetCurrentGroup:(User*)currentUser{
+
+    if(currentUser!=nil)
+    {
+        NSLog(@"GroupJoinViewController.didSetCurrentGroup.currentUser.userId=%i", currentUser.userId);
+        NSLog(@"GroupJoinViewController.didSetCurrentGroup.currentUser.groupHashId=%@", currentUser.currentGroup.hashId);
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:currentUser.currentGroup.hashId forKey:@"current_group_hash"];
+        [userDefaults setObject:[NSNumber numberWithInt:currentUser.userId] forKey:@"user_id"];
+        [userDefaults synchronize];
+        
+        [userLoader submitSQLRequestUpdateCurrentGroup:currentUser.currentGroup.hashId andUserId:currentUser.userId];
+        
+    }
+    
+}
+
+-(void)UserLoader:(UserLoader*)userLoader didChangeGroup:(User*)currentUser{
+    if(currentUser!=nil)
+    {
+        NSLog(@"GroupJoinViewController.currentUser.userId=%i", currentUser.userId);
+        if(currentUser.currentGroup!=nil)
+        {
+            NSLog(@"GroupJoinViewController.currentUser.currentGroup.hashId=%@", currentUser.currentGroup.hashId);
+            if(currentUser.currentGroup.hashId!=nil)
+            {
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                [userDefaults setObject:currentUser.currentGroup.hashId forKey:@"current_group_hash"];
+                [userDefaults synchronize];
+                
+                [self.userLoader submitSQLRequestUpdateCurrentGroup:currentUser.currentGroup.hashId andUserId:currentUser.userId];
+                
+            }
+        }
+    }
 }
 
 #pragma mark - UIAlertViewDelegate
@@ -464,26 +504,7 @@ failure:^(NSError *error) {
 }
 
 
-#pragma mark- UserLoaderDelegate
--(void)UserLoader:(UserLoader*)userLoader didChangeGroup:(User*)currentUser{
-    if(currentUser!=nil)
-    {
-        NSLog(@"GroupJoinViewController.currentUser.userId=%i", currentUser.userId);
-        if(currentUser.currentGroup!=nil)
-        {
-            NSLog(@"GroupJoinViewController.currentUser.currentGroup.hashId=%@", currentUser.currentGroup.hashId);
-            if(currentUser.currentGroup.hashId!=nil)
-            {
-                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                [userDefaults setObject:currentUser.currentGroup.hashId forKey:@"current_group_hash"];
-                [userDefaults synchronize];
-                
-                [self.userLoader submitSQLRequestUpdateCurrentGroup:currentUser.currentGroup.hashId andUserId:currentUser.userId];
-                
-            }
-        }
-    }
-}
+
 
 
 

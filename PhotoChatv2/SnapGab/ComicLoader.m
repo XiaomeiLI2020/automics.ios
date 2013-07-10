@@ -17,6 +17,7 @@
 int const kGetGroupComics = 0;
 int const kGetComic = 1;
 int const kPostComic = 2;
+int const kGetRefreshedComics = 3;
 BOOL comicsDownloaded = NO;
 dispatch_queue_t backgroundQueue;
 @synthesize delegate;
@@ -51,6 +52,9 @@ dispatch_queue_t backgroundQueue;
 
 
 -(void)submitRequestRefreshComicsForGroup{
+    
+    comicRequestType = kGetRefreshedComics;
+    
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
     
@@ -63,7 +67,7 @@ dispatch_queue_t backgroundQueue;
     if([self isReachable])
     {
         //NSLog(@"comics refreshed from the server");
-        comicRequestType = kGetGroupComics;
+
         comicsDownloaded = YES;
         NSURLRequest* urlRequest = [self prepareComicRequestForGroup];
         [self submitComicRequest:urlRequest];
@@ -233,6 +237,9 @@ dispatch_queue_t backgroundQueue;
             case kPostComic:
                 [self handlePostComicResponse];
                 break;
+            case kGetRefreshedComics:
+                [self handleGetComicsForGroupResponse];
+                break;
         }
     }
 }
@@ -248,12 +255,14 @@ dispatch_queue_t backgroundQueue;
         //dispatch_async(backgroundQueue, ^(void) {
         //    [self submitSQLRequestSaveComics:comics];
         //});
+        if([comics count]>0)
+        {
+            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+            NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+            
+            [self submitSQLRequestSaveComicsForGroup:comics andGroupHashId:currentGroupHashId];
+        }//end if([comics count]>0)
    
-        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
-        
-        [self submitSQLRequestSaveComicsForGroup:comics andGroupHashId:currentGroupHashId];
-        
         if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComics:)])
             [self.delegate ComicLoader:self didLoadComics:comics];
 

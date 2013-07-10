@@ -39,6 +39,7 @@
 @synthesize lastContentOffsetX;
 @synthesize comicName;
 
+
 BOOL _bubblesAdded;
 BOOL _resourcesAdded;
 
@@ -64,6 +65,7 @@ Placement* currentPlacement;
 
 
 NSArray *comicPanelList;
+NSArray *comicPanelThumbnailIds;
 NSArray *resourceList;
 NSArray *placementList;
 
@@ -87,6 +89,7 @@ BOOL thumbMode;
     
     panels = [[NSArray alloc] init];
     comicPanelList = [[NSArray alloc] init];
+    comicPanelThumbnailIds = [[NSArray alloc] init];
     resourceList = [[NSArray alloc] init];
     placementList = [[NSArray alloc] init];
     downloadedPanels = [[NSMutableArray alloc] init];
@@ -132,8 +135,9 @@ BOOL thumbMode;
     if(page>0)
         page--;
     
-    if(page < [downloadedPhotos count])
+    if(page>=0 && page < [downloadedPhotos count])
     {
+        
         NSNumber* yesObj = [NSNumber numberWithBool:YES];
         [downloadedPhotos replaceObjectAtIndex:page withObject:yesObj];
     }
@@ -156,70 +160,78 @@ BOOL thumbMode;
     //NSLog(@"addNewPanelToComic.currentPage=%i", currentPage);
     [activityIndicator startAnimating];
     
-    Panel* panel = [panels objectAtIndex:page];
-    if(panel!=nil)
+    if(page>=0 && page<[panels count])
     {
-        //Add panel to the comic panelList
-        comicPanelList = [self arrayByAddingObject:comicPanelList andObject:panel];
-        
-        numComicPanels= [comicPanelList count];
-        //NSLog(@"add panel.panelId=%i to comic. comicPanelCounter=%i", panel.panelId, comicPanelCounter);
-        currentPage = [comicPanelList count] -1;
-        //NSLog(@"addNewPanelToComic.currentPage=%i", currentPage);
-        
-        //remove clickLabel if there are panels in thumbnail scrollView
-        if([comicPanelList count]>0)
+        Panel* panel = [panels objectAtIndex:page];
+        if(panel!=nil)
         {
-            if(postButton.enabled == NO)
+            
+            //Add panel to the comic panelList
+            comicPanelList = [self arrayByAddingObject:comicPanelList andObject:panel];
+            comicPanelThumbnailIds = [self arrayByAddingObject:comicPanelThumbnailIds andObject:[NSNumber numberWithInt:page]];
+            
+            numComicPanels= [comicPanelList count];
+            //NSLog(@"add panel.panelId=%i to comic. comicPanelCounter=%i", panel.panelId, comicPanelCounter);
+            currentPage = [comicPanelList count] -1;
+            //NSLog(@"addNewPanelToComic.currentPage=%i", currentPage);
+            
+            //remove clickLabel if there are panels in thumbnail scrollView
+            if([comicPanelList count]>0)
             {
-                //NSLog(@"panelScrollView added.");
-                [clickLabel removeFromSuperview];
-                //[self.view addSubview:panelScrollView];
-                postButton.enabled = YES;
+                if(postButton.enabled == NO)
+                {
+                    //NSLog(@"panelScrollView added.");
+                    [clickLabel removeFromSuperview];
+                    //[self.view addSubview:panelScrollView];
+                    postButton.enabled = YES;
+                }
+                
             }
             
-        }
-        
-        //Update the number of items in comic scrollview
-        panelScrollView.numItems = [comicPanelList count];
-        //Display images in comic scrollview
-        [panelScrollView layoutItems];
-        //Scroll to the most recently added panel in the comicScrollView
-        [panelScrollView scrollItemToVisible:currentPage];
-        
-        
-        UIImage *image = [UIImage imageNamed:panel.photo.imageURL];
-        //Add image to the imageview
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-        [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
-                  placeholderImage:nil];
-        imageView.frame = CGRectMake(currentPage*panelScrollObjWidth, 0, panelScrollObjWidth, panelScrollObjWidth);
-        imageView.tag = currentPage;
-        
-        [activityIndicator stopAnimating];
-        // add image to the panel scrollview
-        [panelScrollView addSubview:imageView];
-        //NSLog(@"addNewPanelToComic.subView added to panelScrollView. [panelScrollView.subviews count]= %i", [panelScrollView.subviews count]);
+            //Update the number of items in comic scrollview
+            panelScrollView.numItems = [comicPanelList count];
+            //Display images in comic scrollview
+            [panelScrollView layoutItems];
+            //Scroll to the most recently added panel in the comicScrollView
+            [panelScrollView scrollItemToVisible:currentPage];
+            
+         
+             UIImage *image = [UIImage imageNamed:panel.photo.imageURL];
+             //Add image to the imageview
+             UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+             [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
+             placeholderImage:nil];
+             imageView.frame = CGRectMake(currentPage*panelScrollObjWidth, 0, panelScrollObjWidth, panelScrollObjWidth);
+             imageView.tag = currentPage;
+             
+             [activityIndicator stopAnimating];
+             // add image to the panel scrollview
+             [panelScrollView addSubview:imageView];
+             //NSLog(@"addNewPanelToComic.subView added to panelScrollView. [panelScrollView.subviews count]= %i", [panelScrollView.subviews count]);
+             
+             //NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
+             //[downloadedPanels addObject:panelDownloaded];
+             
+             //Add bubbles and resources to the new panel's view
+             //[panelsLoader submitRequestGetPanelWithId:panel.panelId];
+             
+             comicPanelCounter++;
+             if([comicPanelList count]==1)
+             {
+             [self alignPageInPanelScrollView];
+             }
+             
+             if([comicPanelList count]>1)
+             {
+             [self displayPageInPanelScrollView:currentPage-1];
+             }
+             
+             
+        }//end if(panel!=nil)
 
-        //NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
-        //[downloadedPanels addObject:panelDownloaded];
-        
-        //Add bubbles and resources to the new panel's view
-        //[panelsLoader submitRequestGetPanelWithId:panel.panelId];
-        
-        comicPanelCounter++;
-        if([comicPanelList count]==1)
-        {
-            [self alignPageInPanelScrollView];
-        }
+    }//end if(page>=0 && page<[panels count])
     
-        if([comicPanelList count]>1)
-        {
-            [self displayPageInPanelScrollView:currentPage-1];
-        }
-    
-    }
-
+   
 }
 
 
@@ -344,11 +356,12 @@ BOOL thumbMode;
         
         currentPage= page;
         
-        //NSLog(@"alignPageInPanelScrollView.currentPage=%i", currentPage);
+        //NSLog(@"alignPageInPanelScrollView.currentPage=%i, selectedThumbnailIndex=%i", currentPage, selectedThumbnailIndex);
         
         if(currentPage>=0 && currentPage<[comicPanelList count])
         {
             currentPanel = [comicPanelList objectAtIndex:currentPage];
+            
             
             if(currentPanel!=nil)
             {
@@ -385,24 +398,30 @@ BOOL thumbMode;
                 
                 //NSLog(@"alignPageInPhotoTableView. downloadedPanels objectAtIndex:currentPage.currentPage=%i, [self.panels count]=%i", currentPage, [self.panels count]);
                 //Check if the panel alongwith placements and annotations have already been downloaded
-                BOOL panelDownloaded = [[downloadedPanels objectAtIndex:currentPage] boolValue];
-                //NSLog(@"alignPageInPanelScrollView.thumbMode=%d. Panel#%i downloaded=%d.", thumbMode, currentPage, panelDownloaded);
-                if(!panelDownloaded)
+                //BOOL panelDownloaded = [[downloadedPanels objectAtIndex:currentPage] boolValue];
+                int selectedThumbnailIndex = [[comicPanelThumbnailIds objectAtIndex:currentPage] intValue];
+                //NSLog(@"alignPageInPanelScrollView.selectedThumbnailIndex=%i.", selectedThumbnailIndex);
+                if(selectedThumbnailIndex>=0 && selectedThumbnailIndex<[downloadedPanels count])
                 {
-                    //NSLog(@"alignPageInPanelScrollView. Panel#%i download called.", currentPage);
-                    //Download annotations and placements of the panel
-                    [panelsLoader submitRequestGetPanelWithId:currentPanel.panelId];
-                }
-                else
-                {
-                    //NSLog(@"annotations already downloaded are added.");
-                    [self loadAnnotations:currentPanel];
-                    //NSLog(@"placements already downloaded.");
-                    [self loadPlacements:currentPanel];
-                }//end else
+                    //BOOL panelDownloaded = [[downloadedPanels objectAtIndex:selectedThumbnailIndex] boolValue];
+                    BOOL panelDownloaded = [[downloadedPanels objectAtIndex:selectedThumbnailIndex] boolValue];
+                    //NSLog(@"alignPageInPanelScrollView.thumbMode=%d. Panel#%i downloaded=%d.", thumbMode, currentPage, panelDownloaded);
+                    if(!panelDownloaded)
+                    {
+                        //NSLog(@"alignPageInPanelScrollView. Panel#%i download called.", currentPage);
+                        //Download annotations and placements of the panel
+                        [panelsLoader submitRequestGetPanelWithId:currentPanel.panelId];
+                    }
+                    else
+                    {
+                        //NSLog(@"annotations already downloaded are added.");
+                        [self loadAnnotations:currentPanel];
+                        //NSLog(@"placements already downloaded.");
+                        [self loadPlacements:currentPanel];
+                    }//end else
+                }//end if(selectedThumbnailIndex>=0 && selectedThumbnailIndex<[downloadedPanels count])
                 
-            
-                
+
                 if(currentPage==[comicPanelList count]-1)
                 {
                     [self displayPageInPanelScrollView:currentPage-1];
@@ -430,7 +449,9 @@ BOOL thumbMode;
                     }//end for
                     
                 }//end if([panels count]>3)
+                 
             }//end if currentPanel!=nil
+             
         }//end if currentPage>=0
 
         
@@ -1015,7 +1036,7 @@ BOOL thumbMode;
                     break;
                 }
             }
-            NSLog(@"indicatorExists[%i]=%d", index, indicatorExists);
+            //NSLog(@"indicatorExists[%i]=%d", index, indicatorExists);
             
             if(!indicatorExists)
             {
@@ -1071,7 +1092,7 @@ BOOL thumbMode;
                         UIActivityIndicatorView* aIndicator = (UIActivityIndicatorView*) subView;
                         [aIndicator stopAnimating];
                         //[aIndicator removeFromSuperview];
-                        NSLog(@"displayThumbnails.indicator#%i stopped", index);
+                        //NSLog(@"displayThumbnails.indicator#%i stopped", index);
                         break;
                     }//end if
                 }//end for

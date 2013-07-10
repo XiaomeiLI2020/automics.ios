@@ -48,10 +48,10 @@
 
 - (IBAction)cancelPressed:(id)sender {
     
-    //comicName = self.comicTextField.text;
+    comicName = self.comicTextField.text;
     //if(groupName!=nil && ![groupName isEqualToString:@""])
     {
-        //self.comicTextField.text = nil;
+        self.comicTextField.text = nil;
         
         /*
          UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];

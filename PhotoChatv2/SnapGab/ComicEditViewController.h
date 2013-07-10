@@ -23,6 +23,7 @@
 @property int thumbPage;
 @property NSArray* panelList;
 @property NSArray* comicPanelList;
+@property NSArray *comicPanelThumbnailIds;
 @property NSMutableArray* downloadedComicPanels;
 @property NSMutableArray* downloadedPanels;
 @property NSMutableArray* downloadedPhotos;

@@ -46,19 +46,37 @@ NSString *kComicCellID = @"COMIC_CELL";
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-    
+
+
     [self setupDataDownloadLists];
-    [self loadComics];
+    //[self loadComics];
+
 
 }
 
-/*
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    /*
+    //[self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    //[self.collectionView removeFromSuperview];
+    
+    self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
+    [self.collectionView setCollectionViewLayout:[[ComicCollectionViewLayout alloc] init]];
+    
+    
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    
+    
+    [self setupDataDownloadLists];
+     */
+    [self loadComics];
+    
 }
-*/
+
 
 -(id)initWithCoder:(NSCoder*)aDecoder
 {

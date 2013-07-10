@@ -493,6 +493,7 @@
 				48D0806816D4EA6D00346465 /* Model */,
 				48CAFD2316CE761700D8EB4C /* API */,
 				D8B4A36B1709C370002E6D75 /* MKNetworkKit */,
+				D894C18E178D6E78001805EF /* CustomSegue */,
 				48D0EA8016CD4B8600FE11E2 /* images */,
 				D8F30B1916CA7E8F001CF4B5 /* PhotoChat.entitlements */,
 				1D8D508C165FADC700C9817C /* PhotoChat */,
@@ -531,12 +532,6 @@
 			children = (
 				D8932C7A16D7ED7B007D97A9 /* GUIConstant.h */,
 				D8932C7B16D7ED7B007D97A9 /* GUIConstant.m */,
-				D894C18217840A50001805EF /* CustomPopSegue.h */,
-				D894C18317840A50001805EF /* CustomPopSegue.m */,
-				D894C18517845B1D001805EF /* CustomRootSegue.h */,
-				D894C18617845B1E001805EF /* CustomRootSegue.m */,
-				D894C177177AE505001805EF /* CustomSegue.h */,
-				D894C178177AE505001805EF /* CustomSegue.m */,
 				D852C5561714BB79004C408E /* ThumbnailView.h */,
 				D852C5571714BB79004C408E /* ThumbnailView.m */,
 				D88FF66D16C9080400C0A2A8 /* Resource */,
@@ -834,6 +829,20 @@
 				D8A098A7167F497100762DB0 /* ResourceView.m */,
 			);
 			name = Resource;
+			sourceTree = "<group>";
+		};
+		D894C18E178D6E78001805EF /* CustomSegue */ = {
+			isa = PBXGroup;
+			children = (
+				D894C18217840A50001805EF /* CustomPopSegue.h */,
+				D894C18317840A50001805EF /* CustomPopSegue.m */,
+				D894C18517845B1D001805EF /* CustomRootSegue.h */,
+				D894C18617845B1E001805EF /* CustomRootSegue.m */,
+				D894C177177AE505001805EF /* CustomSegue.h */,
+				D894C178177AE505001805EF /* CustomSegue.m */,
+			);
+			name = CustomSegue;
+			path = SnapGab;
 			sourceTree = "<group>";
 		};
 		D8B4A36B1709C370002E6D75 /* MKNetworkKit */ = {

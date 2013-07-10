@@ -41,6 +41,7 @@
 @synthesize placementList;
 @synthesize lastContentOffsetX;
 @synthesize comicName;
+@synthesize comicPanelThumbnailIds;
 
 BOOL _bubblesAdded;
 BOOL _resourcesAdded;
@@ -64,6 +65,7 @@ ResourceLoader* resourceLoader;
 Panel* currentPanel;
 Comic* currentComic;
 Placement* currentPlacement;
+
 
 NSString* urlImageString;
 UILabel* clickLabel;
@@ -193,6 +195,7 @@ UILabel* clickLabel;
             
             //Add panel to the comic panelList
             comicPanelList = [self arrayByAddingObject:comicPanelList andObject:panel];
+            comicPanelThumbnailIds = [self arrayByAddingObject:comicPanelThumbnailIds andObject:[NSNumber numberWithInt:page]];
             
             //Add boolean object to the downloadedPanels panelList
             //NSNumber* noObj = [NSNumber numberWithBool:NO];
@@ -401,8 +404,13 @@ UILabel* clickLabel;
                 panelId = currentPanel.panelId;
                 if(panelId>0)
                 {
+                    /*
+                    int selectedThumbnailIndex = [[comicPanelThumbnailIds objectAtIndex:currentPage] intValue];
+                    BOOL panelDownloaded = [[downloadedPanels objectAtIndex:selectedThumbnailIndex] boolValue];
+                    //NSLog(@"alignPageInPanelScrollView.thumbMode=%d. Panel#%i downloaded=%d.", thumbMode, currentPage, panelDownloaded);
+                   */
 
-                    //Check if the panel alongwith placements and annotations have already been downloaded                    
+                    //Check if the panel alongwith placements and annotations have already been downloaded
                     if(currentPanel.placements==nil && currentPanel.annotations==nil)
                     {
                         //Download annotations and placements of the panel
@@ -410,6 +418,8 @@ UILabel* clickLabel;
                     }
                     else
                     {
+                        NSLog(@"assets already downloaded");
+                        
                         UIImageView *imageView = [[UIImageView alloc] init];
                         [imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:nil];
                         imageView.frame = CGRectMake(currentPage*panelScrollObjWidth, 0, panelScrollObjWidth, panelScrollObjHeight);
@@ -438,6 +448,8 @@ UILabel* clickLabel;
                         }//end if
 
                     }//end else
+                    
+                    
                 }//end if panelId>0
             }//end if currentPanel!=nil
 
@@ -1753,7 +1765,7 @@ UILabel* clickLabel;
                 }
                 
             }
-            else
+            else if(placementCounter==(numPlacements-1))
             {
                 //NSLog(@"all placements downloaded.thumbMode=%d", thumbMode);
                 //Declaring a panel downloaded after all placements are downloaded

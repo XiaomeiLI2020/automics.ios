@@ -251,10 +251,10 @@ int thumbnailsCompleted;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    //NSLog(@"PanelViewController.viewDidLoad");
+    NSLog(@"PanelViewController.viewDidLoad");
 
-    [self initiateDataSet];
-    [self initiateScrollViews];
+    //[self initiateDataSet];
+    //[self initiateScrollViews];
     
 
     activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -263,33 +263,55 @@ int thumbnailsCompleted;
 	[self.view addSubview: activityIndicator];
     [activityIndicator startAnimating];
 
-    //[panelsLoader submitRequestGetPanelsForGroup:1];
-    [panelsLoader submitRequestGetPanelsForGroup];
+    //[panelsLoader submitRequestGetPanelsForGroup];
 
 
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    //NSLog(@"viewWillAppear");
+    [super viewWillAppear:YES];
+    
+    for (UIView *subview in self.view.subviews)
+    {
+        if([subview isMemberOfClass:[SpeechBubbleView class]] || [subview isMemberOfClass:[ResourceView class]]
+           || [subview isMemberOfClass:[MainScrollSelector class]])
+        {
+            [subview removeFromSuperview];
+        }
+    }
+    
+    [self initiateDataSet];
+    [self initiateScrollViews];
+    
+    [panelsLoader submitRequestGetPanelsForGroup];
+
+}
 
 
 - (void)viewDidAppear:(BOOL)animated
 {
     //NSLog(@"viewDidAppear");
     [super viewDidAppear:YES];
+ 
+    /*
+    for (UIView *subview in self.view.subviews)
+    {
+        if([subview isMemberOfClass:[SpeechBubbleView class]] || [subview isMemberOfClass:[ResourceView class]]
+           || [subview isMemberOfClass:[MainScrollSelector class]])
+        {
+            [subview removeFromSuperview];
+        }
+    }
+    */
+    
     /*
     [self initiateDataSet];
     [self initiateScrollViews];
     
-    
-    activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-	activityIndicator.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
-	activityIndicator.center = self.view.center;
-	[self.view addSubview: activityIndicator];
-    [activityIndicator startAnimating];
-    
-    //[panelsLoader submitRequestGetPanelsForGroup:1];
     [panelsLoader submitRequestGetPanelsForGroup];
-*/
-    
+    */
 }
 
 
@@ -1603,6 +1625,9 @@ int thumbnailsCompleted;
     
     panels= panelsLocal;
     numPanels = [panelsLocal count];
+    NSLog(@"didLoadPanels.numPanels=%i", numPanels);
+    if(numPanels==0)
+        [activityIndicator stopAnimating];
     
     //if(numPanels>0)
     //    [activityIndicator startAnimating];

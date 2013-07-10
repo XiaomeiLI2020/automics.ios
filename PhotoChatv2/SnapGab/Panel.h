@@ -19,4 +19,5 @@
 @property NSArray* annotations;
 @property NSMutableArray* resources;
 @property UIImage* thumbnail;
+
 @end

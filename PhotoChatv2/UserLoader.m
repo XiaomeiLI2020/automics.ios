@@ -26,6 +26,7 @@ int const kLeaveGroup = 4;
 int const kGetUser = 5;
 int const kPostDeviceToken = 6;
 int const kPostNotification = 7;
+int const kPostSetCurrentGroup = 8;
 
 NSString* leaveGroupHashId;
 @synthesize delegate;
@@ -259,6 +260,31 @@ NSString* leaveGroupHashId;
 
 }
 
+-(void)submitRequestPostSetCurrentGroup:(int)userId andNewGroupHashId:(NSString*)hashId
+{
+    if(userId>0 && hashId!=nil && ![hashId isEqualToString:@""])
+    {
+        userRequestType = kPostSetCurrentGroup;
+        
+        NSString *userURL = [APIWrapper getURLForPostUserWithId:userId];
+        NSLog(@"submitRequestPostSetCurrentGroup.userURL=%@", userURL);
+        NSString* authenticatedUserURL = [self authenticatedGetURL:userURL];
+        NSLog(@"submitRequestPostSetCurrentGroup.authenticatedUserURL=%@", authenticatedUserURL);
+        NSURL* url = [NSURL URLWithString:authenticatedUserURL];
+        
+        NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
+        [urlRequest setHTTPMethod:@"POST"];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        
+        [self setChangeGroupPostData:hashId InURLRequest:urlRequest];
+        [self submitUserRequest:urlRequest];
+        
+    }//end if
+    
+
+}
+
 -(void)submitRequestPostChangeGroup:(int)userId andNewGroupHashId:(NSString*)hashId;
 {
     if(userId>0 && hashId!=nil && ![hashId isEqualToString:@""])
@@ -467,6 +493,35 @@ NSString* leaveGroupHashId;
     
 }
 
+-(void)handlePostForSetCurrentGroupResponse
+{
+    
+    NSError* error;
+    //NSString *requestString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
+    //NSLog(@"handlePostForJoinGroupResponse.requestData: %@", requestString);
+    
+    if(self.downloadedData.length > 0)
+    {
+        NSDictionary* userdict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+        NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
+        NSLog(@"handlePostForSetCurrentGroupResponse.changeGroupData=%@", responseString);
+        if (userdict != nil)
+        {
+            User *user = [UserJSONHandler getUserFromUserJSON:userdict];
+            
+            if ([self.delegate respondsToSelector:@selector(UserLoader:didSetCurrentGroup:)])
+                [self.delegate UserLoader:self didSetCurrentGroup:user];
+            
+        }
+        else{
+            [self reportErrorToDelegate:error];
+        }
+        
+    }
+    
+}
+
+
 
 -(void)handlePostForLoginUserResponse
 {
@@ -485,7 +540,7 @@ NSString* leaveGroupHashId;
             User* user = [UserJSONHandler getUserFromUserJSON:userdict];
             if(user!=nil && user.userId>0)
             {
-                NSLog(@"user.userId=%i", user.userId);
+                //NSLog(@"user.userId=%i", user.userId);
                 if ([self.delegate respondsToSelector:@selector(UserLoader:didLoginUser:)])
                     [self.delegate UserLoader:self didLoginUser:user];
             }//end if(user!=nil && user.userId>0)
@@ -623,6 +678,10 @@ NSString* leaveGroupHashId;
             case kPostNotification:
                 [self handlePostNotification];
                 break;
+            case kPostSetCurrentGroup:
+                [self handlePostForSetCurrentGroupResponse];
+                break;
+                
                 
         }
     }

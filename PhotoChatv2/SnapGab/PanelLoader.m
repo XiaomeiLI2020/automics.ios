@@ -260,14 +260,19 @@ int currentNumPanels = 0;
     if (jsonArray != nil){
         NSArray* panels = [PanelJSONHandler convertPanelsJSONIntoPanels:jsonArray];
         //NSLog(@"handleGetPanelsForGroupResponse. [panels count]=%i", [panels count]);
-        if(panels!=nil && [panels count]>0)
+        //if(panels!=nil && [panels count]>0)
+        if(panels!=nil)
         {
-            currentNumPanels = [panels count];
-            //NSLog(@"handleGetPanelsForGroupResponse. [panels count]=%i", [panels count]);
-            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-            NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
-            
-            [self submitSQLRequestSavePanelsForGroup:panels andGroupHashId:currentGroupHashId];
+            if([panels count]>0)
+            {
+                currentNumPanels = [panels count];
+                //NSLog(@"handleGetPanelsForGroupResponse. [panels count]=%i", [panels count]);
+                NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+                NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+                
+                [self submitSQLRequestSavePanelsForGroup:panels andGroupHashId:currentGroupHashId];
+                
+            }//end if([panels count]>0)
             
             if([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanels:)])
                 [self.delegate PanelLoader:self didLoadPanels:panels];
