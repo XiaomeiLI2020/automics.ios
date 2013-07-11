@@ -48,17 +48,7 @@
 
 - (IBAction)cancelPressed:(id)sender {
     
-    comicName = self.comicTextField.text;
-    //if(groupName!=nil && ![groupName isEqualToString:@""])
-    {
-        self.comicTextField.text = nil;
-        
-        /*
-         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
-         ThemeViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ThemeViewController"];
-         [self presentViewController:viewController animated:YES completion:nil];
-         */
-    }
+    self.comicTextField.text = nil;
 
 }
 

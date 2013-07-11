@@ -397,10 +397,10 @@ BOOL thumbMode;
                 thumbMode = NO;
                 
                 //NSLog(@"alignPageInPhotoTableView. downloadedPanels objectAtIndex:currentPage.currentPage=%i, [self.panels count]=%i", currentPage, [self.panels count]);
+                
                 //Check if the panel alongwith placements and annotations have already been downloaded
-                //BOOL panelDownloaded = [[downloadedPanels objectAtIndex:currentPage] boolValue];
+                //Find the corresponding thumbnail image of a panel in the comic
                 int selectedThumbnailIndex = [[comicPanelThumbnailIds objectAtIndex:currentPage] intValue];
-                //NSLog(@"alignPageInPanelScrollView.selectedThumbnailIndex=%i.", selectedThumbnailIndex);
                 if(selectedThumbnailIndex>=0 && selectedThumbnailIndex<[downloadedPanels count])
                 {
                     //BOOL panelDownloaded = [[downloadedPanels objectAtIndex:selectedThumbnailIndex] boolValue];

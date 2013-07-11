@@ -61,19 +61,8 @@
 }
 
 - (IBAction)cancelPressed:(id)sender {
-    
-    groupName = self.groupTextField.text;
-    //if(groupName!=nil && ![groupName isEqualToString:@""])
-    {
-        self.groupTextField.text = nil;
 
-        /*
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
-        ThemeViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ThemeViewController"];
-        [self presentViewController:viewController animated:YES completion:nil];
-       */
-    }
-
+    self.groupTextField.text = nil;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)theTextField {

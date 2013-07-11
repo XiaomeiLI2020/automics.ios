@@ -418,7 +418,7 @@ UILabel* clickLabel;
                     }
                     else
                     {
-                        NSLog(@"assets already downloaded");
+                        //NSLog(@"assets already downloaded");
                         
                         UIImageView *imageView = [[UIImageView alloc] init];
                         [imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:nil];
@@ -678,7 +678,7 @@ UILabel* clickLabel;
                     break;
                 }
             }
-            NSLog(@"indicatorExists[%i]=%d", index, indicatorExists);
+            //NSLog(@"indicatorExists[%i]=%d", index, indicatorExists);
             
             if(!indicatorExists)
             {
@@ -734,7 +734,7 @@ UILabel* clickLabel;
                         UIActivityIndicatorView* aIndicator = (UIActivityIndicatorView*) subView;
                         [aIndicator stopAnimating];
                         //[aIndicator removeFromSuperview];
-                        NSLog(@"displayThumbnails.indicator#%i stopped", index);
+                        //NSLog(@"displayThumbnails.indicator#%i stopped", index);
                         break;
                     }//end if
                 }//end for

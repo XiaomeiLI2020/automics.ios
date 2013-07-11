@@ -1625,7 +1625,7 @@ int thumbnailsCompleted;
     
     panels= panelsLocal;
     numPanels = [panelsLocal count];
-    NSLog(@"didLoadPanels.numPanels=%i", numPanels);
+    //NSLog(@"didLoadPanels.numPanels=%i", numPanels);
     if(numPanels==0)
         [activityIndicator stopAnimating];
     

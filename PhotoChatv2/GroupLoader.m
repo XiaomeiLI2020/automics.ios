@@ -277,8 +277,8 @@ BOOL groupsDownloaded = NO;
     NSLog(@"handlePostGroupResponse.groupPostData: %@", responseString);
     
     if (groupdict != nil){
-        NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
-        NSLog(@"GroupData: %@", responseString);
+        //NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
+        //NSLog(@"GroupData: %@", responseString);
         Group* group = [GroupJSONHandler convertGroupJSONIntoGroup:groupdict];
         if(group!=nil)
         {
@@ -286,7 +286,7 @@ BOOL groupsDownloaded = NO;
             [groups addObject:group];
             [self submitSQLRequestSaveGroups:groups];
             
-            NSLog(@"group.name=%@, hashId=%@, id=%i", group.name, group.hashId, group.groupId);
+            //NSLog(@"group.name=%@, hashId=%@, id=%i", group.name, group.hashId, group.groupId);
             if ([self.delegate respondsToSelector:@selector(GroupLoader:didSaveGroup:)])
                 [self.delegate GroupLoader:self didSaveGroup:group];
         }//end if
@@ -315,13 +315,13 @@ BOOL groupsDownloaded = NO;
     NSLog(@"handlePostGroupMembershipResponse.groupPostData: %@", responseString);
     
     if (groupdict != nil){
-        NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
-        NSLog(@"GroupData: %@", responseString);
+        //NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
+        //NSLog(@"GroupData: %@", responseString);
         Group* group = [GroupJSONHandler convertGroupJSONIntoGroup:groupdict];
         if(group!=nil)
         {
             
-            NSLog(@"group.name=%@, hashId=%@, id=%i", group.name, group.hashId, group.groupId);
+            //NSLog(@"group.name=%@, hashId=%@, id=%i", group.name, group.hashId, group.groupId);
             if ([self.delegate respondsToSelector:@selector(GroupLoader:didJoinGroup:)])
                 [self.delegate GroupLoader:self didJoinGroup:group];
         }//end if

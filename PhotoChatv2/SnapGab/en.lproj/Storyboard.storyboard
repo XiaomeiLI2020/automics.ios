@@ -471,7 +471,7 @@
                                 <rect key="frame" x="94" y="4" width="128" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 <connections>
                                     <outlet property="delegate" destination="HQA-Ky-Csc" id="ht0-i6-oO9"/>
                                 </connections>
@@ -1704,14 +1704,14 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="Owm-u3-bHi"/>
+        <segue reference="Wbe-Kn-xnz"/>
         <segue reference="kZ1-sQ-Xvc"/>
-        <segue reference="jBs-q8-pBL"/>
-        <segue reference="MWk-cz-y72"/>
         <segue reference="oWI-Zy-sTF"/>
         <segue reference="P1E-0g-8Qy"/>
-        <segue reference="Wbe-Kn-xnz"/>
-        <segue reference="wEz-tR-Suf"/>
+        <segue reference="MWk-cz-y72"/>
         <segue reference="2ae-nG-hzI"/>
-        <segue reference="bhg-Cl-FT4"/>
+        <segue reference="rdz-9E-0C6"/>
+        <segue reference="6zG-tL-ydW"/>
     </inferredMetricsTieBreakers>
 </document>

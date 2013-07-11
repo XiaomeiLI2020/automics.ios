@@ -279,7 +279,7 @@ NSString *kComicCellID = @"COMIC_CELL";
     [cell setComic:comic];
     
     //cell.label.text=@"";
-    NSLog(@"collectionView cellForItemAtIndexPath.[self.comics count]=%i, indexPath.item=%i, comicId=%i, [comicImages count]=%i, [comicImages objectForKey:indexPath]=%@", [self.comics count], indexPath.item, comic.comicId, [comicImages count], [comicImages objectForKey:indexPath]);
+    //NSLog(@"collectionView cellForItemAtIndexPath.[self.comics count]=%i, indexPath.item=%i, comicId=%i, [comicImages count]=%i, [comicImages objectForKey:indexPath]=%@", [self.comics count], indexPath.item, comic.comicId, [comicImages count], [comicImages objectForKey:indexPath]);
 
     //if([comicImages count]>0)
     {
@@ -309,7 +309,7 @@ NSString *kComicCellID = @"COMIC_CELL";
                 }
                 
             }
-            NSLog(@"animation stopped. indexPath.item=%i", indexPath.item);
+            //NSLog(@"animation stopped. indexPath.item=%i", indexPath.item);
             if(cell.activityView!=nil)
                 [cell.activityView stopAnimating];
             //NSLog(@"animation stopped.");
@@ -361,7 +361,7 @@ NSString *kComicCellID = @"COMIC_CELL";
             }//end if([comic.panels count]>0)
             else if([comic.panels count] == 0)
             {
-                NSLog(@"collectionView cellForItemAtIndexPath. [comicImages objectForKey:indexPath] is nil");
+                //NSLog(@"collectionView cellForItemAtIndexPath. [comicImages objectForKey:indexPath] is nil");
                 [self setDefaultImageForIndexPath:indexPath];
                 //dispatch_async(dispatch_get_main_queue(), ^(void) {
                 [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
@@ -413,7 +413,7 @@ NSString *kComicCellID = @"COMIC_CELL";
     NSIndexPath *indexPath = (NSIndexPath*)obj;
     [panelLoadersInProgress removeObjectForKey:indexPath];
     
-    NSLog(@"didLoadPanel. panel.panelId=%i, indexPath.item=%i", panel.panelId, indexPath.item);
+    //NSLog(@"didLoadPanel. panel.panelId=%i, indexPath.item=%i", panel.panelId, indexPath.item);
     if (panel.photo.imageURL != nil && panel.photo.photoId>0){
         
         UIImageView *imageView = [[UIImageView alloc] init];
@@ -426,7 +426,7 @@ NSString *kComicCellID = @"COMIC_CELL";
         BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
         
 
-        NSLog(@"didLoadPanel. Panel[%i].[%@] File exists=%d", panel.panelId, imageName, fileExists);
+        //NSLog(@"didLoadPanel. Panel[%i].[%@] File exists=%d", panel.panelId, imageName, fileExists);
         if(!fileExists)
         {
             [comicImages setObject:panel.photo.imageURL forKey:indexPath];
