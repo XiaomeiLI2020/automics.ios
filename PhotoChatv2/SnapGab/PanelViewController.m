@@ -40,6 +40,7 @@
 @synthesize panels;
 @synthesize sessionToken;
 @synthesize activityIndicator;
+@synthesize editButton;
 
 BOOL _bubblesAdded;
 BOOL _resourcesAdded;
@@ -251,8 +252,17 @@ int thumbnailsCompleted;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    NSLog(@"PanelViewController.viewDidLoad");
+    //NSLog(@"PanelViewController.viewDidLoad");
+    
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    [self.view addSubview:backgroundImage];
+    [self.view sendSubviewToBack:backgroundImage];
 
+    
+    editButton.clipsToBounds = YES;
+    //editButton.layer.borderColor=[UIColor whiteColor].CGColor;
+    //editButton.layer.borderWidth=2.0f;
+    
     //[self initiateDataSet];
     //[self initiateScrollViews];
     

@@ -40,6 +40,10 @@
 	// Do any additional setup after loading the view.
     //self.imageView.image = self.image;
     
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    [self.view addSubview:backgroundImage];
+    [self.view sendSubviewToBack:backgroundImage];
+    
     comicLoader = [[ComicLoader alloc] init];
     comicLoader.delegate = self;
     

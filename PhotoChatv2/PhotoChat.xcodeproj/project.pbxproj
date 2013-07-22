@@ -107,6 +107,25 @@
 		D8A098A8167F497100762DB0 /* ResourceView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A098A7167F497100762DB0 /* ResourceView.m */; };
 		D8A098AB167F4B5600762DB0 /* resource1.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A098A9167F4B5500762DB0 /* resource1.png */; };
 		D8A098AC167F4B5600762DB0 /* resource2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A098AA167F4B5600762DB0 /* resource2.png */; };
+		D8A4BC1F17998D950028DEB7 /* IPHONE COMIC SAMPLE.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC1617998D950028DEB7 /* IPHONE COMIC SAMPLE.jpg */; };
+		D8A4BC2017998D950028DEB7 /* accept@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC1717998D950028DEB7 /* accept@x2.png */; };
+		D8A4BC2117998D950028DEB7 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC1817998D950028DEB7 /* background.png */; };
+		D8A4BC2217998D950028DEB7 /* camera@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC1917998D950028DEB7 /* camera@x2.png */; };
+		D8A4BC2317998D950028DEB7 /* comic icon@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC1A17998D950028DEB7 /* comic icon@x2.png */; };
+		D8A4BC2417998D950028DEB7 /* edit@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC1B17998D950028DEB7 /* edit@x2.png */; };
+		D8A4BC2517998D950028DEB7 /* gallery@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC1C17998D950028DEB7 /* gallery@x2.png */; };
+		D8A4BC2617998D950028DEB7 /* groups@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC1D17998D950028DEB7 /* groups@x2.png */; };
+		D8A4BC2717998D950028DEB7 /* menu@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC1E17998D950028DEB7 /* menu@x2.png */; };
+		D8A4BC2B17998DA70028DEB7 /* new@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC2817998DA70028DEB7 /* new@x2.png */; };
+		D8A4BC2C17998DA70028DEB7 /* titlebar.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC2917998DA70028DEB7 /* titlebar.png */; };
+		D8A4BC2D17998DA70028DEB7 /* toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC2A17998DA70028DEB7 /* toolbar.png */; };
+		D8A4BC36179AA6E70028DEB7 /* titlebar-BLANK@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC2F179AA6E70028DEB7 /* titlebar-BLANK@x2.png */; };
+		D8A4BC37179AA6E70028DEB7 /* titlebar@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC30179AA6E70028DEB7 /* titlebar@x2.png */; };
+		D8A4BC38179AA6E70028DEB7 /* DELETE@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC31179AA6E70028DEB7 /* DELETE@x2.png */; };
+		D8A4BC39179AA6E70028DEB7 /* toolbar-BLANK@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC32179AA6E70028DEB7 /* toolbar-BLANK@x2.png */; };
+		D8A4BC3A179AA6E70028DEB7 /* toolbar-COMICS@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC33179AA6E70028DEB7 /* toolbar-COMICS@x2.png */; };
+		D8A4BC3B179AA6E70028DEB7 /* toolbar-GROUPS@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC34179AA6E70028DEB7 /* toolbar-GROUPS@x2.png */; };
+		D8A4BC3C179AA6E70028DEB7 /* toolbar-IMAGES@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D8A4BC35179AA6E70028DEB7 /* toolbar-IMAGES@x2.png */; };
 		D8A94ED216B82CD40075617B /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A94ED116B82CD40075617B /* MKAnnotationView+WebCache.m */; };
 		D8A94EDF16B82E9B0075617B /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A94ED916B82E9B0075617B /* SDImageCache.m */; };
 		D8A94EE016B82E9B0075617B /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A94EDD16B82E9B0075617B /* SDWebImageDecoder.m */; };
@@ -354,6 +373,25 @@
 		D8A098A7167F497100762DB0 /* ResourceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceView.m; sourceTree = "<group>"; };
 		D8A098A9167F4B5500762DB0 /* resource1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resource1.png; sourceTree = "<group>"; };
 		D8A098AA167F4B5600762DB0 /* resource2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resource2.png; sourceTree = "<group>"; };
+		D8A4BC1617998D950028DEB7 /* IPHONE COMIC SAMPLE.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "IPHONE COMIC SAMPLE.jpg"; path = "appimages/IPHONE COMIC SAMPLE.jpg"; sourceTree = "<group>"; };
+		D8A4BC1717998D950028DEB7 /* accept@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "accept@x2.png"; path = "appimages/accept@x2.png"; sourceTree = "<group>"; };
+		D8A4BC1817998D950028DEB7 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = appimages/background.png; sourceTree = "<group>"; };
+		D8A4BC1917998D950028DEB7 /* camera@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "camera@x2.png"; path = "appimages/camera@x2.png"; sourceTree = "<group>"; };
+		D8A4BC1A17998D950028DEB7 /* comic icon@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "comic icon@x2.png"; path = "appimages/comic icon@x2.png"; sourceTree = "<group>"; };
+		D8A4BC1B17998D950028DEB7 /* edit@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "edit@x2.png"; path = "appimages/edit@x2.png"; sourceTree = "<group>"; };
+		D8A4BC1C17998D950028DEB7 /* gallery@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "gallery@x2.png"; path = "appimages/gallery@x2.png"; sourceTree = "<group>"; };
+		D8A4BC1D17998D950028DEB7 /* groups@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "groups@x2.png"; path = "appimages/groups@x2.png"; sourceTree = "<group>"; };
+		D8A4BC1E17998D950028DEB7 /* menu@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu@x2.png"; path = "appimages/menu@x2.png"; sourceTree = "<group>"; };
+		D8A4BC2817998DA70028DEB7 /* new@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "new@x2.png"; path = "appimages/new@x2.png"; sourceTree = "<group>"; };
+		D8A4BC2917998DA70028DEB7 /* titlebar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = titlebar.png; path = appimages/titlebar.png; sourceTree = "<group>"; };
+		D8A4BC2A17998DA70028DEB7 /* toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar.png; path = appimages/toolbar.png; sourceTree = "<group>"; };
+		D8A4BC2F179AA6E70028DEB7 /* titlebar-BLANK@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "titlebar-BLANK@x2.png"; path = "appimages/titlebar-BLANK@x2.png"; sourceTree = SOURCE_ROOT; };
+		D8A4BC30179AA6E70028DEB7 /* titlebar@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "titlebar@x2.png"; path = "appimages/titlebar@x2.png"; sourceTree = SOURCE_ROOT; };
+		D8A4BC31179AA6E70028DEB7 /* DELETE@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DELETE@x2.png"; path = "appimages/DELETE@x2.png"; sourceTree = SOURCE_ROOT; };
+		D8A4BC32179AA6E70028DEB7 /* toolbar-BLANK@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-BLANK@x2.png"; path = "appimages/toolbar-BLANK@x2.png"; sourceTree = SOURCE_ROOT; };
+		D8A4BC33179AA6E70028DEB7 /* toolbar-COMICS@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-COMICS@x2.png"; path = "appimages/toolbar-COMICS@x2.png"; sourceTree = SOURCE_ROOT; };
+		D8A4BC34179AA6E70028DEB7 /* toolbar-GROUPS@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-GROUPS@x2.png"; path = "appimages/toolbar-GROUPS@x2.png"; sourceTree = SOURCE_ROOT; };
+		D8A4BC35179AA6E70028DEB7 /* toolbar-IMAGES@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar-IMAGES@x2.png"; path = "appimages/toolbar-IMAGES@x2.png"; sourceTree = SOURCE_ROOT; };
 		D8A94ED016B82CD40075617B /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		D8A94ED116B82CD40075617B /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		D8A94ED816B82E9B0075617B /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
@@ -751,6 +789,7 @@
 		48D0EA8016CD4B8600FE11E2 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				D8A4BC1517998D840028DEB7 /* appimages */,
 				D894C17C177D8556001805EF /* refresh.png */,
 				D852C55317134A62004C408E /* thumb.png */,
 				48D58FFC1704A93B002ACF3E /* groupCellBackground.png */,
@@ -843,6 +882,32 @@
 			);
 			name = CustomSegue;
 			path = SnapGab;
+			sourceTree = "<group>";
+		};
+		D8A4BC1517998D840028DEB7 /* appimages */ = {
+			isa = PBXGroup;
+			children = (
+				D8A4BC34179AA6E70028DEB7 /* toolbar-GROUPS@x2.png */,
+				D8A4BC35179AA6E70028DEB7 /* toolbar-IMAGES@x2.png */,
+				D8A4BC2F179AA6E70028DEB7 /* titlebar-BLANK@x2.png */,
+				D8A4BC30179AA6E70028DEB7 /* titlebar@x2.png */,
+				D8A4BC31179AA6E70028DEB7 /* DELETE@x2.png */,
+				D8A4BC32179AA6E70028DEB7 /* toolbar-BLANK@x2.png */,
+				D8A4BC33179AA6E70028DEB7 /* toolbar-COMICS@x2.png */,
+				D8A4BC2817998DA70028DEB7 /* new@x2.png */,
+				D8A4BC2917998DA70028DEB7 /* titlebar.png */,
+				D8A4BC2A17998DA70028DEB7 /* toolbar.png */,
+				D8A4BC1617998D950028DEB7 /* IPHONE COMIC SAMPLE.jpg */,
+				D8A4BC1717998D950028DEB7 /* accept@x2.png */,
+				D8A4BC1817998D950028DEB7 /* background.png */,
+				D8A4BC1917998D950028DEB7 /* camera@x2.png */,
+				D8A4BC1A17998D950028DEB7 /* comic icon@x2.png */,
+				D8A4BC1B17998D950028DEB7 /* edit@x2.png */,
+				D8A4BC1C17998D950028DEB7 /* gallery@x2.png */,
+				D8A4BC1D17998D950028DEB7 /* groups@x2.png */,
+				D8A4BC1E17998D950028DEB7 /* menu@x2.png */,
+			);
+			name = appimages;
 			sourceTree = "<group>";
 		};
 		D8B4A36B1709C370002E6D75 /* MKNetworkKit */ = {
@@ -1048,6 +1113,25 @@
 				48E46D62170EE57100771C80 /* groupDefaultCellBackground.jpg in Resources */,
 				4866F5A01712F62A0031330D /* menu.png in Resources */,
 				D894C17D177D8556001805EF /* refresh.png in Resources */,
+				D8A4BC1F17998D950028DEB7 /* IPHONE COMIC SAMPLE.jpg in Resources */,
+				D8A4BC2017998D950028DEB7 /* accept@x2.png in Resources */,
+				D8A4BC2117998D950028DEB7 /* background.png in Resources */,
+				D8A4BC2217998D950028DEB7 /* camera@x2.png in Resources */,
+				D8A4BC2317998D950028DEB7 /* comic icon@x2.png in Resources */,
+				D8A4BC2417998D950028DEB7 /* edit@x2.png in Resources */,
+				D8A4BC2517998D950028DEB7 /* gallery@x2.png in Resources */,
+				D8A4BC2617998D950028DEB7 /* groups@x2.png in Resources */,
+				D8A4BC2717998D950028DEB7 /* menu@x2.png in Resources */,
+				D8A4BC2B17998DA70028DEB7 /* new@x2.png in Resources */,
+				D8A4BC2C17998DA70028DEB7 /* titlebar.png in Resources */,
+				D8A4BC2D17998DA70028DEB7 /* toolbar.png in Resources */,
+				D8A4BC36179AA6E70028DEB7 /* titlebar-BLANK@x2.png in Resources */,
+				D8A4BC37179AA6E70028DEB7 /* titlebar@x2.png in Resources */,
+				D8A4BC38179AA6E70028DEB7 /* DELETE@x2.png in Resources */,
+				D8A4BC39179AA6E70028DEB7 /* toolbar-BLANK@x2.png in Resources */,
+				D8A4BC3A179AA6E70028DEB7 /* toolbar-COMICS@x2.png in Resources */,
+				D8A4BC3B179AA6E70028DEB7 /* toolbar-GROUPS@x2.png in Resources */,
+				D8A4BC3C179AA6E70028DEB7 /* toolbar-IMAGES@x2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

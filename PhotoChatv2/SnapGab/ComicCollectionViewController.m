@@ -39,6 +39,17 @@ NSString *kComicCellID = @"COMIC_CELL";
     //NSLog(@"ComicCollectionViewController.viewDidLoad.");
     [super viewDidLoad];
     
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    [self.view addSubview:backgroundImage];
+    [self.view sendSubviewToBack:backgroundImage];
+    
+    
+    [self.toolbarView sendSubviewToBack:self.toolbarImage];
+    /*
+    UIImageView *toolbarImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"toolbar.png"]];
+    [self.toolbarView addSubview:toolbarImage];
+    [self.toolbarView sendSubviewToBack:toolbarImage];
+    */
 
     self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
     [self.collectionView setCollectionViewLayout:[[ComicCollectionViewLayout alloc] init]];

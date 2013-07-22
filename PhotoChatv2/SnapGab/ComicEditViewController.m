@@ -290,6 +290,10 @@ UILabel* clickLabel;
 	// Do any additional setup after loading the view.
     
     //NSLog(@"viewDidLoad");
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    [self.view addSubview:backgroundImage];
+    [self.view sendSubviewToBack:backgroundImage];
+    
 
     [self initiateScrollViews];
     

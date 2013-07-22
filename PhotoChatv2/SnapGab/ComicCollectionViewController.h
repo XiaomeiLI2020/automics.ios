@@ -13,6 +13,8 @@
 
 @interface ComicCollectionViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource,ComicLoaderDelegate, PanelLoaderDelegate, ImageDownloaderDelegate>
 
+@property (weak, nonatomic) IBOutlet UIImageView *toolbarImage;
+@property (weak, nonatomic) IBOutlet UIView *toolbarView;
 @property IBOutlet UICollectionView* collectionView;
 
 - (IBAction)refreshed:(id)sender;

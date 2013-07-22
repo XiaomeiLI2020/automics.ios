@@ -37,6 +37,12 @@ NSString *mCellID = @"GROUP_CELL";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    [self.view addSubview:backgroundImage];
+    [self.view sendSubviewToBack:backgroundImage];
+    
+    
     alertShown = NO;
     userLoader = [[UserLoader alloc] init];
     userLoader.delegate = self;

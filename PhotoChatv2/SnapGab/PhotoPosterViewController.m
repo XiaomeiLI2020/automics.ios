@@ -57,6 +57,10 @@ bool alertShown;
 	// Do any additional setup after loading the view.
     //NSLog(@"Post.viewDidLoad.");
     
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    [self.view addSubview:backgroundImage];
+    [self.view sendSubviewToBack:backgroundImage];
+    
     // Add panels scrollview
     CGRect panelFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
     CGSize panelSize = CGSizeMake(panelWidth, panelHeight);

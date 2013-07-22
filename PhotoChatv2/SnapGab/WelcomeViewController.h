@@ -14,6 +14,8 @@ BOOL initialized = false;
 @interface WelcomeViewController:UIViewController
 <GroupLoaderDelegate, UIAlertViewDelegate>
 
+
+@property (weak, nonatomic) IBOutlet UIButton *groupButton;
 @property (weak, nonatomic) IBOutlet UIButton *imageButton;
 @property (weak, nonatomic) IBOutlet UIButton *comicCollectionButton;
 @property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;

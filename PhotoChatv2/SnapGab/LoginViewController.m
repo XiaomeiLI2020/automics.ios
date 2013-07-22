@@ -30,6 +30,11 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    [self.view addSubview:backgroundImage];
+    [self.view sendSubviewToBack:backgroundImage];
+    
     user = [[User alloc] init];
     userLoader = [[UserLoader alloc] init];
     userLoader.delegate = self;

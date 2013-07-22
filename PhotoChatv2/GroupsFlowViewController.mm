@@ -33,6 +33,12 @@ NSString *kCellID = @"GROUP_CELL";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    [self.view addSubview:backgroundImage];
+    [self.view sendSubviewToBack:backgroundImage];
+    
+    
     [self loadGroups];
     self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
     photoLoadersInProgress = [[NSMutableDictionary alloc] init];

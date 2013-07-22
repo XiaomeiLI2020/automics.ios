@@ -76,6 +76,10 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     //NSLog(@"viewWillAppear.");
     [super viewWillAppear:animated];
+    
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    [self.view addSubview:backgroundImage];
+    [self.view sendSubviewToBack:backgroundImage];
 
 
     

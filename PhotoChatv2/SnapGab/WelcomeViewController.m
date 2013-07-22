@@ -10,6 +10,7 @@
 #import "TextTableCell.h"
 #import "DataLoader.h"
 #import "User.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface WelcomeViewController ()
 @end
@@ -19,6 +20,7 @@ GroupLoader* groupLoader;
 @implementation WelcomeViewController
 @synthesize imageButton;
 @synthesize comicCollectionButton;
+@synthesize groupButton;
 
 BOOL alertShown;
 
@@ -37,6 +39,31 @@ BOOL alertShown;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
+    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    [self.view addSubview:backgroundImage];
+    [self.view sendSubviewToBack:backgroundImage];
+    
+    
+    imageButton.frame = CGRectMake(130.0, 150.0, 80.0, 80.0);
+    imageButton.clipsToBounds = YES;
+    imageButton.layer.cornerRadius = 40;//half of the width
+    imageButton.layer.borderColor=[UIColor whiteColor].CGColor;
+    imageButton.layer.borderWidth=2.0f;
+    
+
+    comicCollectionButton.frame = CGRectMake(130.0, 240.0, 80.0, 80.0);
+    comicCollectionButton.clipsToBounds = YES;
+    comicCollectionButton.layer.cornerRadius = 40;//half of the width
+    comicCollectionButton.layer.borderColor=[UIColor whiteColor].CGColor;
+    comicCollectionButton.layer.borderWidth=2.0f;
+    
+    groupButton.frame = CGRectMake(130.0, 330.0, 80.0, 80.0);
+    groupButton.clipsToBounds = YES;
+    groupButton.layer.cornerRadius = 40;//half of the width
+    groupButton.layer.borderColor=[UIColor whiteColor].CGColor;
+    groupButton.layer.borderWidth=2.0f;
+    
+    
     alertShown = NO;
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];

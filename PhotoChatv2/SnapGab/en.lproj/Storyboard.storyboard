@@ -41,10 +41,6 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="logo.png" id="Fc5-wT-tHW">
-                                <rect key="frame" x="8" y="0.0" width="305" height="126"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="ylb-r6-4IE" userLabel="Email">
                                 <rect key="frame" x="115" y="148" width="176" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -63,8 +59,12 @@
                                     <outlet property="delegate" destination="yR9-Y8-Uir" id="g2I-J1-rIB"/>
                                 </connections>
                             </textField>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="titlebar.png" id="afK-g2-XCW">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="58"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.40000000000000002" green="0.59999999999999998" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="bMz-5g-oMB"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
@@ -85,12 +85,6 @@
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Trepic!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Tkc-9Y-P4w">
-                                <rect key="frame" x="130" y="8" width="61" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="sME-kJ-zvI">
                                 <rect key="frame" x="246" y="4" width="69" height="30"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -106,7 +100,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="vmW-dd-9YL">
-                                <rect key="frame" x="130" y="194" width="80" height="47"/>
+                                <rect key="frame" x="128" y="154" width="78" height="47"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Images">
@@ -121,7 +115,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Wkt-W9-Euj">
-                                <rect key="frame" x="130" y="248" width="80" height="47"/>
+                                <rect key="frame" x="128" y="208" width="80" height="47"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Comics">
@@ -136,7 +130,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="TPq-Sj-AuT">
-                                <rect key="frame" x="130" y="142" width="78" height="48"/>
+                                <rect key="frame" x="130" y="262" width="78" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Groups">
@@ -152,12 +146,16 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ctr-yX-u8W">
-                                <rect key="frame" x="20" y="72" width="285" height="27"/>
+                                <rect key="frame" x="20" y="114" width="285" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="titlebar.png" id="b7I-RI-Brd">
+                                <rect key="frame" x="0.0" y="41" width="320" height="59"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -165,37 +163,23 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="comicCollectionButton" destination="Wkt-W9-Euj" id="cPS-l2-ITy"/>
+                        <outlet property="groupButton" destination="TPq-Sj-AuT" id="BsP-ag-1wP"/>
                         <outlet property="imageButton" destination="vmW-dd-9YL" id="KM2-nd-YNV"/>
                         <outlet property="welcomeLabel" destination="Ctr-yX-u8W" id="Zgi-I8-SOB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S5s-fK-zpW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-100" y="-976"/>
+            <point key="canvasLocation" x="-470" y="-1828"/>
         </scene>
         <!--GroupViewController-->
         <scene sceneID="kTn-A1-IPd">
             <objects>
                 <viewController id="W4t-y8-2nd" userLabel="GroupViewController" customClass="GroupMainViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hBe-FT-jhH">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" id="fjN-ch-ONm">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" red="0.36159899639999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
-                                <items>
-                                    <navigationItem title="Groups" id="qda-j7-tpl">
-                                        <barButtonItem key="leftBarButtonItem" title="Menu" id="xTp-wi-oQR">
-                                            <connections>
-                                                <action selector="backButtonClick:" destination="baH-GS-9Zg" id="LJD-vw-D26"/>
-                                                <segue destination="Y5y-GU-y3Z" kind="custom" customClass="CustomPopSegue" id="jRh-s1-3eS"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bTQ-85-i3g">
                                 <rect key="frame" x="100" y="116" width="137" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -256,6 +240,28 @@
                                     <segue destination="wkZ-6a-B0S" kind="custom" identifier="mainToJoin" customClass="CustomSegue" id="bdw-Ip-If8"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3e8-rp-Iho">
+                                <rect key="frame" x="0.0" y="2" width="70" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" image="menu@x2.png">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="Y5y-GU-y3Z" kind="custom" identifier="groupsToMenu" customClass="CustomPopSegue" id="UHm-Wr-wfu"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Groups" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Op1-4q-sYC">
+                                <rect key="frame" x="138" y="6" width="60" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -268,33 +274,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hmu-jt-D12" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-160" y="-1871"/>
+            <point key="canvasLocation" x="154" y="-2488"/>
         </scene>
         <!--GroupJoinViewController-->
         <scene sceneID="D6l-BR-yAB">
             <objects>
                 <viewController id="wkZ-6a-B0S" userLabel="GroupJoinViewController" customClass="GroupJoinViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="re7-3r-Jb1">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" id="XcU-HK-44G">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" red="0.36159899639999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
-                                <items>
-                                    <navigationItem title="Select Group" id="LG7-9i-hY9">
-                                        <barButtonItem key="leftBarButtonItem" title="Groups" id="X9Q-JT-ltu">
-                                            <connections>
-                                                <action selector="backButtonClick:" destination="baH-GS-9Zg" id="PM0-6A-BVW"/>
-                                                <segue destination="W4t-y8-2nd" kind="custom" identifier="jointogroupsmenu" customClass="CustomPopSegue" id="wEz-tR-Suf"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="G3B-vv-3YM">
-                                <rect key="frame" x="0.0" y="44" width="320" height="416"/>
+                                <rect key="frame" x="0.0" y="44" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="wee-hD-AMn">
@@ -317,7 +308,7 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="groupCellBackground.png" id="ejC-aW-sMp">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="groups@x2.png" id="ejC-aW-sMp">
                                                     <rect key="frame" x="3" y="2" width="126" height="126"/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="3DQ-gr-aBR">
@@ -343,6 +334,32 @@
                                     <outlet property="delegate" destination="wkZ-6a-B0S" id="yUe-ex-4AH"/>
                                 </connections>
                             </collectionView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="toolbar-BLANK@x2.png" id="bkU-lg-7SX">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Select Group" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3Y5-k2-JLJ">
+                                <rect key="frame" x="112" y="10" width="133" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ByB-V9-Jjr">
+                                <rect key="frame" x="2" y="5" width="66" height="42"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Groups">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="W4t-y8-2nd" kind="custom" identifier="jointogroupsmenu" customClass="CustomPopSegue" id="4jb-3j-sFx"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -353,7 +370,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xJN-qs-NDD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1520" y="-1792"/>
+            <point key="canvasLocation" x="1199" y="-2633"/>
         </scene>
         <!--ComicDetailsViewController-->
         <scene sceneID="O6h-Sc-0O7">
@@ -379,11 +396,11 @@
                                     <segue destination="j9X-cF-RKP" kind="custom" customClass="CustomPopSegue" id="5i4-Kp-FDj"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ydg-60-tfz">
-                                <rect key="frame" x="264" y="2" width="48" height="28"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ydg-60-tfz">
+                                <rect key="frame" x="276" y="2" width="32" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="panel-edit.png">
+                                <state key="normal" image="edit@x2.png">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -412,7 +429,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lpc-Xa-vNH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1666" y="-1252"/>
+            <point key="canvasLocation" x="-1700" y="-986"/>
         </scene>
         <!--ComicEditViewController-->
         <scene sceneID="NEd-p3-Ij7">
@@ -437,11 +454,11 @@
                                     <segue destination="j9X-cF-RKP" kind="custom" identifier="editToComics" customClass="CustomPopSegue" id="FLK-nH-OGJ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="AdM-q5-Isj">
-                                <rect key="frame" x="230" y="6" width="34" height="31"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="AdM-q5-Isj">
+                                <rect key="frame" x="244" y="2" width="32" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="delete.png">
+                                <state key="normal" image="DELETE@x2.png">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -452,11 +469,11 @@
                                     <action selector="deletePanel:" destination="HQA-Ky-Csc" eventType="touchUpInside" id="xex-ur-GW9"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="4Te-Nq-ef4">
-                                <rect key="frame" x="274" y="-1" width="46" height="44"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4Te-Nq-ef4">
+                                <rect key="frame" x="280" y="2" width="32" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="post-panel.png">
+                                <state key="normal" image="accept@x2.png">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -513,11 +530,11 @@
                                     <segue destination="GFb-Oc-X3m" kind="custom" customClass="CustomPopSegue" id="lKu-mN-daf"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="QeJ-hM-gcD">
-                                <rect key="frame" x="262" y="0.0" width="54" height="37"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="QeJ-hM-gcD">
+                                <rect key="frame" x="279" y="2" width="32" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="post-panel.png">
+                                <state key="normal" image="accept@x2.png">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -528,11 +545,11 @@
                                     <segue destination="YTa-38-WW0" kind="custom" identifier="comicPosterView" customClass="CustomSegue" id="eqx-Lk-Ciz"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="IHw-JT-54N">
-                                <rect key="frame" x="228" y="2" width="38" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="IHw-JT-54N">
+                                <rect key="frame" x="238" y="2" width="32" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="delete.png">
+                                <state key="normal" image="DELETE@x2.png">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -560,7 +577,7 @@
             <objects>
                 <viewController storyboardIdentifier="ComicNameViewController" id="GFb-Oc-X3m" userLabel="ComicNameViewController" customClass="ComicNameViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="BEx-xH-q4c">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" id="VKM-Ni-LMr">
@@ -642,11 +659,11 @@
             <objects>
                 <viewController id="j9X-cF-RKP" customClass="ComicCollectionViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="asI-XG-G9d">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="52S-g1-jAi">
-                                <rect key="frame" x="0.0" y="44" width="320" height="416"/>
+                                <rect key="frame" x="0.0" y="44" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <collectionViewLayout key="collectionViewLayout" id="LWs-dz-Wf2" customClass="ComicCollectionViewLayout"/>
@@ -658,7 +675,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="129" height="148"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="comicCell.png" id="X3s-1D-5Vk">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="comic icon@x2.png" id="X3s-1D-5Vk">
                                                     <rect key="frame" x="0.0" y="0.0" width="129" height="130"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </imageView>
@@ -694,31 +711,25 @@
                                     <outlet property="delegate" destination="j9X-cF-RKP" id="Dci-Hn-5b2"/>
                                 </connections>
                             </collectionView>
-                            <view contentMode="scaleToFill" id="aOa-rV-llv">
+                            <view contentMode="scaleToFill" id="aOa-rV-llv" userLabel="View-Toolbar">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Comics" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="p2v-4O-6iz">
-                                        <rect key="frame" x="129" y="11" width="62" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" id="zZ9-ml-VtP">
-                                        <rect key="frame" x="279" y="8" width="29" height="29"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zZ9-ml-VtP">
+                                        <rect key="frame" x="274" y="2" width="32" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <state key="normal" image="new@x2.png"/>
                                         <connections>
                                             <segue destination="GFb-Oc-X3m" kind="custom" identifier="ComicAddName" customClass="CustomSegue" id="Wbe-Kn-xnz"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="DZZ-PY-KAd">
-                                        <rect key="frame" x="7" y="7" width="73" height="31"/>
+                                        <rect key="frame" x="7" y="2" width="70" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal" image="menu.png">
+                                        <state key="normal" image="menu@x2.png">
                                             <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -729,21 +740,10 @@
                                             <segue destination="Y5y-GU-y3Z" kind="custom" identifier="comicstomenu1" customClass="CustomRootSegue" id="08I-Ip-Xo0"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CsH-BX-YkK">
-                                        <rect key="frame" x="248" y="7" width="26" height="28"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="toolbar.png" id="bhX-cO-h7F">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal" image="refresh.png">
-                                            <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <state key="highlighted">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="refreshed:" destination="j9X-cF-RKP" eventType="touchUpInside" id="x7h-5f-DaA"/>
-                                        </connections>
-                                    </button>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.36159899639999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
@@ -753,35 +753,22 @@
                     <navigationItem key="navigationItem" id="Sep-Ww-hw6"/>
                     <connections>
                         <outlet property="collectionView" destination="52S-g1-jAi" id="taq-FO-EAo"/>
+                        <outlet property="toolbarImage" destination="bhX-cO-h7F" id="L0F-ee-Cx6"/>
+                        <outlet property="toolbarView" destination="aOa-rV-llv" id="O2N-jX-gWY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Stk-cj-JUb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2920" y="-811"/>
+            <point key="canvasLocation" x="-2520" y="-689"/>
         </scene>
         <!--GroupAddViewController-->
         <scene sceneID="4FE-z2-g3h">
             <objects>
                 <viewController id="hm6-36-FWL" userLabel="GroupAddViewController" customClass="GroupAddViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lJl-v2-MTv">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" id="ZW9-Ru-5U8">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" red="0.36159899639999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
-                                <items>
-                                    <navigationItem title="Group Name" id="S11-01-bEh">
-                                        <barButtonItem key="leftBarButtonItem" title="Groups" id="THa-gL-EtU">
-                                            <connections>
-                                                <action selector="backButtonClick:" destination="baH-GS-9Zg" id="aym-60-Zf8"/>
-                                                <segue destination="W4t-y8-2nd" kind="custom" customClass="CustomPopSegue" id="6zG-tL-ydW"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Aug-Jy-ayp">
                                 <rect key="frame" x="181" y="194" width="103" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -828,18 +815,43 @@
                                     <outlet property="delegate" destination="hm6-36-FWL" id="LTc-8K-ER7"/>
                                 </connections>
                             </textField>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="toolbar-BLANK@x2.png" id="5DD-bB-vS2">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Group Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aeh-Zh-qJS">
+                                <rect key="frame" x="112" y="12" width="115" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="iAV-iv-vpY">
+                                <rect key="frame" x="1" y="3" width="66" height="42"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Groups">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="W4t-y8-2nd" kind="custom" customClass="CustomPopSegue" id="d1S-p5-aQD"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="kdF-p4-KP3"/>
                     <connections>
                         <outlet property="groupTextField" destination="dua-Oe-SMn" id="aQP-d2-LKI"/>
-                        <segue destination="YHP-t6-eB2" kind="custom" customClass="CustomSegue" id="rdz-9E-0C6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4qb-pS-1ca" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="850" y="-2233"/>
+            <point key="canvasLocation" x="1422" y="-2227"/>
         </scene>
         <!--PanelViewController-->
         <scene sceneID="NU1-xg-px1">
@@ -850,10 +862,10 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="w1A-kx-vfA">
-                                <rect key="frame" x="2" y="2" width="70" height="30"/>
+                                <rect key="frame" x="2" y="2" width="70" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="back-icon.png">
+                                <state key="normal" image="menu@x2.png">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" cyan="0.426665146" magenta="0.2291571624" yellow="0.0011596679690000001" black="0.0" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
                                 </state>
@@ -864,11 +876,11 @@
                                     <segue destination="Y5y-GU-y3Z" kind="custom" identifier="panelstomenu" customClass="CustomRootSegue" id="MWk-cz-y72"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Uby-hF-3kl">
-                                <rect key="frame" x="228" y="2" width="46" height="29"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Uby-hF-3kl">
+                                <rect key="frame" x="236" y="2" width="32" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="panel-edit.png">
+                                <state key="normal" image="edit@x2.png">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -879,11 +891,11 @@
                                     <segue destination="Kqi-7j-Tke" kind="custom" identifier="editPanel" customClass="CustomSegue" id="cbF-ky-Fhx"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="HYk-RT-LGP">
-                                <rect key="frame" x="276" y="0.0" width="38" height="31"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="HYk-RT-LGP">
+                                <rect key="frame" x="276" y="2" width="32" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="add-image.png">
+                                <state key="normal" image="new@x2.png">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -941,11 +953,11 @@
                                 <rect key="frame" x="0.0" y="40" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="whh-GX-ZLe">
-                                <rect key="frame" x="260" y="2" width="55" height="36"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="whh-GX-ZLe">
+                                <rect key="frame" x="280" y="2" width="32" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="post-panel.png">
+                                <state key="normal" image="accept@x2.png">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -981,7 +993,7 @@
             <objects>
                 <viewController storyboardIdentifier="ThemeViewController" id="YHP-t6-eB2" userLabel="ThemeViewController" customClass="ThemeViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PXp-no-b92" userLabel="ThemeView">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" id="Ab1-6T-KD8">
@@ -1000,7 +1012,7 @@
                                 </items>
                             </navigationBar>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="nEL-kd-Tg7">
-                                <rect key="frame" x="0.0" y="44" width="320" height="416"/>
+                                <rect key="frame" x="0.0" y="44" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="HFE-Q2-9rS">
@@ -1066,7 +1078,7 @@
             <objects>
                 <viewController storyboardIdentifier="ThemePreviewViewController" id="pdh-hy-8P0" userLabel="ThemePreviewViewController" customClass="ThemePreviewViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7h0-Yr-HRl">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" id="ZqK-Oa-3y2">
@@ -1090,7 +1102,7 @@
                                 </items>
                             </navigationBar>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="yDe-tx-9Ya">
-                                <rect key="frame" x="0.0" y="44" width="320" height="416"/>
+                                <rect key="frame" x="0.0" y="44" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="W1D-sW-NcU">
@@ -1161,10 +1173,10 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" id="ATL-z9-E3K">
                                 <rect key="frame" x="0.0" y="40" width="320" height="320"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Vh5-KH-a6T">
-                                <rect key="frame" x="162" y="1" width="47" height="36"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Vh5-KH-a6T">
+                                <rect key="frame" x="203" y="1" width="32" height="32"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Snap" image="camera.png">
+                                <state key="normal" title="Snap" image="camera@x2.png">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -1175,10 +1187,10 @@
                                     <action selector="takeSnap:" destination="sz3-Ry-XZA" eventType="touchUpInside" id="fou-Dr-5TP"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="x5A-kW-CiC">
-                                <rect key="frame" x="215" y="2" width="47" height="35"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="x5A-kW-CiC">
+                                <rect key="frame" x="241" y="2" width="32" height="32"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Roll" image="gallery.png">
+                                <state key="normal" title="Roll" image="gallery@x2.png">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -1204,11 +1216,11 @@
                                     <segue destination="xKX-9l-Tt1" kind="custom" identifier="backImages" customClass="CustomPopSegue" id="lbd-Gx-frY"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ULz-3m-jMF">
-                                <rect key="frame" x="260" y="2" width="55" height="36"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ULz-3m-jMF">
+                                <rect key="frame" x="282" y="2" width="32" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" image="post-panel.png">
+                                <state key="normal" image="accept@x2.png">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -1328,11 +1340,11 @@
             <objects>
                 <viewController id="baH-GS-9Zg" customClass="GroupsFlowViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DXJ-o0-yvN">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="ab3-Ba-e3i">
-                                <rect key="frame" x="0.0" y="44" width="320" height="416"/>
+                                <rect key="frame" x="0.0" y="44" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="BJQ-jy-CaB">
@@ -1355,7 +1367,7 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="groupCellBackground.png" id="C9C-Ag-JmR">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="groups@x2.png" id="C9C-Ag-JmR">
                                                     <rect key="frame" x="3" y="2" width="126" height="126"/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="chL-aq-TCV">
@@ -1381,21 +1393,32 @@
                                     <outlet property="delegate" destination="baH-GS-9Zg" id="Rii-XX-rG2"/>
                                 </connections>
                             </collectionView>
-                            <navigationBar contentMode="scaleToFill" id="AmH-lv-JpB">
-                                <rect key="frame" x="-2" y="-2" width="322" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" red="0.36159899639999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
-                                <items>
-                                    <navigationItem title="Invite Friends" id="YT9-M8-fG4">
-                                        <barButtonItem key="leftBarButtonItem" title="Groups" id="vLS-M3-s0r">
-                                            <connections>
-                                                <action selector="backButtonClick:" destination="baH-GS-9Zg" id="1md-Tp-RHv"/>
-                                                <segue destination="W4t-y8-2nd" kind="custom" identifier="invitetogroupsmenu" customClass="CustomPopSegue" id="qhc-Tl-amR"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="toolbar-BLANK@x2.png" id="8nQ-P4-C1M">
+                                <rect key="frame" x="-2" y="1" width="322" height="47"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Invite Friends" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0xc-v9-9uc">
+                                <rect key="frame" x="110" y="10" width="133" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="aLg-sM-n65">
+                                <rect key="frame" x="2" y="3" width="66" height="42"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Groups">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="W4t-y8-2nd" kind="custom" identifier="invitetogroupsmenu" customClass="CustomPopSegue" id="BNm-mV-Fru"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
@@ -1406,33 +1429,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sot-EH-n2e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2249" y="-1400"/>
+            <point key="canvasLocation" x="775" y="-2646"/>
         </scene>
         <!--GroupLeaveViewController-->
         <scene sceneID="tkv-RG-33B">
             <objects>
                 <viewController id="GQX-6k-f2q" userLabel="GroupLeaveViewController" customClass="GroupLeaveViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jar-tE-7bp">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" id="h9q-gi-2lX">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" red="0.36159899639999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
-                                <items>
-                                    <navigationItem title="Leave Group" id="glD-No-W1a">
-                                        <barButtonItem key="leftBarButtonItem" title="Groups" id="VUu-cw-J1D">
-                                            <connections>
-                                                <action selector="backButtonClick:" destination="baH-GS-9Zg" id="5JS-Pt-fr0"/>
-                                                <segue destination="W4t-y8-2nd" kind="custom" identifier="leavetogroupsmenu" customClass="CustomPopSegue" id="Bsr-ag-bgE"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="grX-mh-crh">
-                                <rect key="frame" x="0.0" y="44" width="320" height="416"/>
+                                <rect key="frame" x="0.0" y="44" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="TiK-83-rBb">
@@ -1455,7 +1463,7 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="groupCellBackground.png" id="1zP-Y4-fge">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="groups@x2.png" id="1zP-Y4-fge">
                                                     <rect key="frame" x="3" y="2" width="126" height="126"/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="BJw-ue-SIC">
@@ -1481,6 +1489,32 @@
                                     <outlet property="delegate" destination="GQX-6k-f2q" id="wLt-RN-9aZ"/>
                                 </connections>
                             </collectionView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="toolbar-BLANK@x2.png" id="B53-8m-gxW">
+                                <rect key="frame" x="0.0" y="-2" width="320" height="49"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Leave Group" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YE2-s1-rDG">
+                                <rect key="frame" x="112" y="10" width="116" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="efi-GG-uge">
+                                <rect key="frame" x="1" y="2" width="66" height="42"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Groups">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="W4t-y8-2nd" kind="custom" identifier="leavetogroupsmenu" customClass="CustomPopSegue" id="tdK-yH-zWg"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -1491,7 +1525,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YwC-T1-0ZX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="465" y="-2295"/>
+            <point key="canvasLocation" x="1045" y="-1792"/>
         </scene>
         <!--MainNavigationController-->
         <scene sceneID="l7E-uP-SR9">
@@ -1514,18 +1548,20 @@
         </scene>
     </scenes>
     <resources>
-        <image name="add-image.png" width="81" height="70"/>
+        <image name="DELETE@x2.png" width="40" height="40"/>
+        <image name="accept@x2.png" width="40" height="40"/>
         <image name="back-icon.png" width="107" height="44"/>
-        <image name="camera.png" width="122" height="87"/>
-        <image name="comicCell.png" width="129" height="129"/>
-        <image name="delete.png" width="38" height="32"/>
-        <image name="gallery.png" width="47" height="43"/>
+        <image name="camera@x2.png" width="100" height="93"/>
+        <image name="comic icon@x2.png" width="260" height="260"/>
+        <image name="edit@x2.png" width="40" height="40"/>
+        <image name="gallery@x2.png" width="100" height="100"/>
         <image name="groupCellBackground.png" width="126" height="126"/>
-        <image name="logo.png" width="222" height="114"/>
-        <image name="menu.png" width="157" height="55"/>
-        <image name="panel-edit.png" width="81" height="48"/>
-        <image name="post-panel.png" width="91" height="74"/>
-        <image name="refresh.png" width="85" height="89"/>
+        <image name="groups@x2.png" width="260" height="260"/>
+        <image name="menu@x2.png" width="307" height="177"/>
+        <image name="new@x2.png" width="40" height="40"/>
+        <image name="titlebar.png" width="640" height="176"/>
+        <image name="toolbar-BLANK@x2.png" width="640" height="88"/>
+        <image name="toolbar.png" width="640" height="86"/>
     </resources>
     <classes>
         <class className="ComicAddViewController" superclassName="UIViewController">
@@ -1548,6 +1584,8 @@
             <relationships>
                 <relationship kind="action" name="refreshed:"/>
                 <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
+                <relationship kind="outlet" name="toolbarImage" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="toolbarView" candidateClass="UIView"/>
             </relationships>
         </class>
         <class className="ComicCollectionViewLayout" superclassName="UICollectionViewFlowLayout">
@@ -1693,6 +1731,7 @@
                 <relationship kind="action" name="groupsPressed:"/>
                 <relationship kind="action" name="logoutPressed:"/>
                 <relationship kind="outlet" name="comicCollectionButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="groupButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="imageButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="welcomeLabel" candidateClass="UILabel"/>
             </relationships>
@@ -1701,17 +1740,16 @@
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Owm-u3-bHi"/>
+        <segue reference="5i4-Kp-FDj"/>
         <segue reference="Wbe-Kn-xnz"/>
+        <segue reference="08I-Ip-Xo0"/>
+        <segue reference="bAh-In-1Hp"/>
+        <segue reference="Q3d-Fe-clA"/>
         <segue reference="kZ1-sQ-Xvc"/>
-        <segue reference="oWI-Zy-sTF"/>
-        <segue reference="P1E-0g-8Qy"/>
-        <segue reference="MWk-cz-y72"/>
-        <segue reference="2ae-nG-hzI"/>
-        <segue reference="rdz-9E-0C6"/>
-        <segue reference="6zG-tL-ydW"/>
+        <segue reference="lbd-Gx-frY"/>
+        <segue reference="woI-Op-NZA"/>
     </inferredMetricsTieBreakers>
 </document>

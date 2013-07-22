@@ -84,28 +84,10 @@ dispatch_queue_t backgroundQueue;
 }
 
 -(void)submitRequestGetComicsForGroup{
-    /*
-     //if([self submitSQLRequestCountComicsForGroup:groupId]==0)
-     //if(!comicsDownloaded)
-     {
-     comicRequestType = kGetGroupComics;
-     comicsDownloaded = YES;
-     NSURLRequest* urlRequest = [self prepareComicRequestForGroup:groupId];
-     [self submitComicRequest:urlRequest];
-     }
-     
-     
-     else
-     {
-     //NSLog(@"[self submitSQLRequestCountComicsForGroup:groupId]=%i", [self submitSQLRequestCountComicsForGroup:groupId]);
-     
-     NSArray* comics = [self convertComicsSQLIntoComics:groupId];
-     NSLog(@"comics downloaded from the database =%i.", [comics count]);
-     if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComics:)])
-     [self.delegate ComicLoader:self didLoadComics:comics];
-     }
-     */
+
+    [self submitRequestRefreshComicsForGroup];
     
+    /*
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
     
@@ -132,7 +114,7 @@ dispatch_queue_t backgroundQueue;
         if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComics:)])
             [self.delegate ComicLoader:self didLoadComics:comics];
     }
-    
+    */
 }
 
 -(void)submitRequestGetComicWithId:(int)comicId{
