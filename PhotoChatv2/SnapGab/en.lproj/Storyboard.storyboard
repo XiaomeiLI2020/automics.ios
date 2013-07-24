@@ -181,7 +181,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bTQ-85-i3g">
-                                <rect key="frame" x="100" y="116" width="137" height="42"/>
+                                <rect key="frame" x="100" y="119" width="137" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Create new group">
@@ -196,7 +196,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Wcq-3A-ldR">
-                                <rect key="frame" x="100" y="213" width="137" height="42"/>
+                                <rect key="frame" x="100" y="216" width="137" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Invite">
@@ -211,7 +211,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="eqB-TQ-uiW">
-                                <rect key="frame" x="100" y="261" width="137" height="44"/>
+                                <rect key="frame" x="100" y="264" width="137" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Leave">
@@ -226,7 +226,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Lbg-S4-4JX">
-                                <rect key="frame" x="100" y="165" width="137" height="44"/>
+                                <rect key="frame" x="100" y="168" width="137" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Select group">
@@ -262,11 +262,19 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Current group:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Nkx-dI-zA8">
+                                <rect key="frame" x="28" y="58" width="285" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.40601688619999998" green="0.64136773349999998" blue="0.87409174440000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="mr5-eA-S5b"/>
                     <connections>
+                        <outlet property="currentGroupLabel" destination="Nkx-dI-zA8" id="qmj-1r-IuL"/>
                         <outlet property="inviteButton" destination="Wcq-3A-ldR" id="G32-yh-oTp"/>
                         <outlet property="joinGroup" destination="Lbg-S4-4JX" id="F4K-LN-X9L"/>
                         <outlet property="leaveButton" destination="eqB-TQ-uiW" id="2cF-zl-hNs"/>
@@ -1642,6 +1650,7 @@
         <class className="GroupJoinViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupJoinViewController.h"/>
             <relationships>
+                <relationship kind="action" name="backButtonClick:"/>
                 <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
             </relationships>
         </class>
@@ -1654,6 +1663,7 @@
         <class className="GroupMainViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupMainViewController.h"/>
             <relationships>
+                <relationship kind="outlet" name="currentGroupLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="inviteButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="joinGroup" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="leaveButton" candidateClass="UIButton"/>
@@ -1743,13 +1753,13 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="woI-Op-NZA"/>
+        <segue reference="snA-Gb-6Qz"/>
         <segue reference="5i4-Kp-FDj"/>
         <segue reference="Wbe-Kn-xnz"/>
-        <segue reference="08I-Ip-Xo0"/>
-        <segue reference="bAh-In-1Hp"/>
-        <segue reference="Q3d-Fe-clA"/>
         <segue reference="kZ1-sQ-Xvc"/>
-        <segue reference="lbd-Gx-frY"/>
-        <segue reference="woI-Op-NZA"/>
+        <segue reference="bAh-In-1Hp"/>
+        <segue reference="UHm-Wr-wfu"/>
+        <segue reference="Q3d-Fe-clA"/>
     </inferredMetricsTieBreakers>
 </document>

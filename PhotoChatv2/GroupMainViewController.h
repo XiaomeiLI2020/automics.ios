@@ -12,6 +12,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *inviteButton;
 @property (weak, nonatomic) IBOutlet UIButton *leaveButton;
 @property (weak, nonatomic) IBOutlet UIButton *joinGroup;
-
+@property (weak, nonatomic) IBOutlet UILabel *currentGroupLabel;
 
 @end

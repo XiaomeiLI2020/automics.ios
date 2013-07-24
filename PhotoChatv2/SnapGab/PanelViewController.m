@@ -1392,6 +1392,29 @@ int thumbnailsCompleted;
     }//end if
 
     
+    
+    
+    if([[segue identifier] isEqualToString:@"panelstomenu"])
+    {
+        //NSLog(@"panelstomenu");
+        /*
+        //To prevent the app from crashing when thumbnail resources are being downloaded
+        NSMutableArray* panelsMutable = [[NSMutableArray alloc] initWithArray:self.panels];
+        [panelsMutable removeAllObjects];
+        self.panels = panelsMutable;
+        
+        panelsMutable = [[NSMutableArray alloc] initWithArray:downloadedPanels];
+        [panelsMutable removeAllObjects];
+        downloadedPanels = panelsMutable;
+        
+        panelsMutable = [[NSMutableArray alloc] initWithArray:downloadedPhotos];
+        [panelsMutable removeAllObjects];
+        downloadedPhotos = panelsMutable;
+        */
+        [self.panelScrollView removeFromSuperview];
+        [self.thumbnailScrollView removeFromSuperview];
+    }
+    
     if([[segue identifier] isEqualToString:@"editPanel"])
     {
         if([self.panels count]>0 && [self.panels count]>currentPage)

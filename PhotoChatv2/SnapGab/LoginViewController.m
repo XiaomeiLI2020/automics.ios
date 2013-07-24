@@ -8,7 +8,6 @@
 
 #import "LoginViewController.h"
 #import "APIWrapper.h"
-#import "GroupLoader.h"
 
 
 @interface LoginViewController ()
@@ -43,7 +42,7 @@
 
     [dataLoader initiateSQL];
     int userId = [dataLoader submitSQLRequestCheckLoggedInUser];
-    NSLog(@"LoginViewController.userId=%i", userId);
+    NSLog(@"LoginViewController.ViewDidLoad.userId=%i", userId);
     if(userId>0)
     {
         NSArray* users = [dataLoader convertUsersSQLIntoUsers:userId];
@@ -52,7 +51,7 @@
             User* currentUser = [users objectAtIndex:0];
             if(currentUser!=nil)
             {
-                NSLog(@"LoginViewController.user.currentGroup.hashId=%@", currentUser.currentGroup.hashId);
+                NSLog(@"LoginViewController..ViewDidLoad.user.currentGroup.hashId=%@", currentUser.currentGroup.hashId);
                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                 [userDefaults setObject:currentUser.email forKey:@"email"];
                 [userDefaults setObject:currentUser.currentSession.token forKey:@"session"];
@@ -62,6 +61,16 @@
                 
 
                 [userLoader submitRequestPostDeviceToken];
+                
+                //Store current_group_hash into the app's database
+                if(currentUser.currentGroup.hashId!=nil)
+                {
+                    
+                    GroupLoader* groupLoader = [[GroupLoader alloc] init];
+                    groupLoader.delegate = self;
+                    [groupLoader submitRequestGetGroupForHashId:currentUser.currentGroup.hashId];
+                }
+                
 
                 UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
                 UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"WelcomeViewController"];
@@ -400,7 +409,9 @@
         //Store current_group_hash into the app's database
         if(user.currentGroup.hashId!=nil)
         {
+            
             GroupLoader* groupLoader = [[GroupLoader alloc] init];
+            groupLoader.delegate = self;
             [groupLoader submitRequestGetGroupForHashId:currentUser.currentGroup.hashId];
         }
         
@@ -411,5 +422,15 @@
     }//end if(user!=nil)
 }
 
+#pragma mark GroupLoader methods
+-(void)GroupLoader:(GroupLoader*)loader didLoadGroup:(Group *)group{
+    if(group!=nil)
+    {
+        //NSLog(@"LoginViewController.group.name=%@", group.name);
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:group.name forKey:@"current_group_name"];
+        [userDefaults synchronize];
+    }
+}
 
 @end

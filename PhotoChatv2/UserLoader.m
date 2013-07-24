@@ -267,7 +267,7 @@ NSString* leaveGroupHashId;
         userRequestType = kPostSetCurrentGroup;
         
         NSString *userURL = [APIWrapper getURLForPostUserWithId:userId];
-        NSLog(@"submitRequestPostSetCurrentGroup.userURL=%@", userURL);
+        //NSLog(@"submitRequestPostSetCurrentGroup.userURL=%@", userURL);
         NSString* authenticatedUserURL = [self authenticatedGetURL:userURL];
         NSLog(@"submitRequestPostSetCurrentGroup.authenticatedUserURL=%@", authenticatedUserURL);
         NSURL* url = [NSURL URLWithString:authenticatedUserURL];

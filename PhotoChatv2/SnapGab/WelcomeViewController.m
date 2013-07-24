@@ -38,6 +38,8 @@ BOOL alertShown;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+
 
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
     [self.view addSubview:backgroundImage];
@@ -222,7 +224,7 @@ BOOL alertShown;
     if([title isEqualToString:@"Confirm"])
     {
         alertShown = NO;
-        NSLog(@"Confirm pressed");
+        //NSLog(@"Confirm pressed");
         
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:nil forKey:@"session"];
@@ -244,7 +246,9 @@ BOOL alertShown;
         databasePathStatic = databasePath;
         //NSLog(@"databasePath=%@, databasePathStatic=%@ ", databasePath, databasePathStatic);
         NSFileManager *filemgr = [NSFileManager defaultManager];
-        if([filemgr fileExistsAtPath:databasePath])
+        BOOL fileExists = [filemgr fileExistsAtPath:databasePath];
+        //NSLog(@"WelcomeViewController.filexExists=%d", fileExists);
+        if(fileExists)
         {
             [filemgr removeItemAtPath:databasePath error:&err];
             if(err)

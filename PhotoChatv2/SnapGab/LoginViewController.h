@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "UserLoader.h"
 #import "User.h"
+#import "GroupLoader.h"
 //@class WelcomeViewController;
 //#import "WelcomeViewController.h"
 
 @interface LoginViewController : UIViewController
-<UITextFieldDelegate, UserLoaderDelegate>
+<UITextFieldDelegate, UserLoaderDelegate, GroupLoaderDelegate>
 
 @property NSString* sessionToken;
 

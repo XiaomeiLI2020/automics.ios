@@ -3193,7 +3193,7 @@ sqlite3* database;
         //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
         {
             
-            NSString *selectSQL = [NSString stringWithFormat: @"SELECT groupId, name, themeId FROM groups where grouphashId=%@", groupHashId];
+            NSString *selectSQL = [NSString stringWithFormat: @"SELECT groupId, name, themeId FROM groups where grouphashId=\"%@\"", groupHashId];
             const char *sqlStatement = [selectSQL UTF8String];
             //const char* sqlStatement = "SELECT groupid, name, grouphashid, themeid FROM groups where grouphashid=";
             sqlite3_stmt *statement;
@@ -3235,7 +3235,7 @@ sqlite3* database;
         //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
         {
             
-            NSString *selectSQL = [NSString stringWithFormat: @"SELECT groupid, name, themeid FROM groups where grouphashid=%@", groupHashId];
+            NSString *selectSQL = [NSString stringWithFormat: @"SELECT groupid, name, themeid FROM groups where grouphashid=\"%@\"", groupHashId];
             const char *sqlStatement = [selectSQL UTF8String];
             //const char* sqlStatement = "SELECT groupid, name, grouphashid, themeid FROM groups where grouphashid=";
             sqlite3_stmt *statement;

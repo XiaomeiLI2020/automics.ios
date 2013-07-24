@@ -17,6 +17,7 @@
 @synthesize joinGroup;
 @synthesize inviteButton;
 @synthesize leaveButton;
+@synthesize currentGroupLabel;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -72,9 +73,13 @@
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSString* groupHashId= [prefs objectForKey:@"current_group_hash"];
-    NSLog(@"GroupMainViewController.viewWillAppear.current_group_hash=%@", groupHashId);
+    NSString* groupName= [prefs objectForKey:@"current_group_name"];
+    NSLog(@"GroupMainViewController.viewWillAppear.current_group_hash=%@, current_group_name=%@", groupHashId, groupName);
     if(groupHashId==nil)
     {
+        self.currentGroupLabel.text= @"";
+        self.currentGroupLabel.numberOfLines = 0; //will wrap text in new line
+        [self.currentGroupLabel sizeToFit];
         
         inviteButton.enabled = NO;
         inviteButton.alpha = 0.4;
@@ -86,6 +91,11 @@
         
     }
     else{
+        
+        self.currentGroupLabel.text= [NSString stringWithFormat: @"Current group: %@", groupName];
+        self.currentGroupLabel.numberOfLines = 0; //will wrap text in new line
+        [self.currentGroupLabel sizeToFit];
+        
         inviteButton.enabled = YES;
         inviteButton.alpha = 1;
         
