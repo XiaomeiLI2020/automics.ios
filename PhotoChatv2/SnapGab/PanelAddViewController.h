@@ -10,10 +10,11 @@
 #import "MainScrollSelector.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "ResourceLoader.h"
+#import "PanelPopupWindow.h"
 
 @interface PanelAddViewController : UIViewController
 
-<UINavigationControllerDelegate, UIScrollViewDelegate, UIImagePickerControllerDelegate, ResourceLoaderDelegate>
+<UINavigationControllerDelegate, UIScrollViewDelegate, UIImagePickerControllerDelegate, ResourceLoaderDelegate, PanelPopupWindowDelegate>
 {
     BOOL newMedia;
     int subviewId;
@@ -25,17 +26,17 @@
 @property (strong, nonatomic) UIImagePickerController *imagePicker;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
-
+@property BOOL initialized;
 @property NSURL* url;
 @property BOOL startWithCamera;
 @property CGSize imageSize;
-
-
 @property BOOL keyboardIsShown;
 
 @property MainScrollSelector *panelScrollView;
 @property MainScrollSelector *thumbnailScrollView;
 @property (retain) NSMutableArray* resourceList;
+@property (weak, nonatomic) IBOutlet UIButton *postButton;
+- (IBAction)postPanel:(id)sender;
 
 - (IBAction)takeSnap:(id)sender;
 - (IBAction)showPhotos:(id)sender;

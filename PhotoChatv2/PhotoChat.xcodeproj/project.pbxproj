@@ -146,6 +146,7 @@
 		D8B4A3971709C835002E6D75 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8B4A3961709C835002E6D75 /* SystemConfiguration.framework */; };
 		D8B4A3991709C83E002E6D75 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8B4A3981709C83E002E6D75 /* Security.framework */; };
 		D8B4A39C1709C985002E6D75 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B4A39B1709C985002E6D75 /* Reachability.m */; };
+		D8BED98E17A1855400000F1D /* PanelPopupWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = D8BED98D17A1855400000F1D /* PanelPopupWindow.m */; };
 		D8BF848E1757BC87007F642E /* ThemePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8BF848D1757BC86007F642E /* ThemePreviewViewController.m */; };
 		D8C64132170D7BE90008074E /* AutomicsEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C64131170D7BE90008074E /* AutomicsEngine.m */; };
 		D8C73A9216C2D3C300C8D3E0 /* back-images.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C73A9116C2D3C300C8D3E0 /* back-images.png */; };
@@ -434,6 +435,8 @@
 		D8B4A3981709C83E002E6D75 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		D8B4A39A1709C985002E6D75 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = MKNetworkKit/Reachability/Reachability.h; sourceTree = "<group>"; };
 		D8B4A39B1709C985002E6D75 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = MKNetworkKit/Reachability/Reachability.m; sourceTree = "<group>"; };
+		D8BED98C17A1855300000F1D /* PanelPopupWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelPopupWindow.h; sourceTree = "<group>"; };
+		D8BED98D17A1855400000F1D /* PanelPopupWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelPopupWindow.m; sourceTree = "<group>"; };
 		D8BF848C1757BC85007F642E /* ThemePreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemePreviewViewController.h; sourceTree = "<group>"; };
 		D8BF848D1757BC86007F642E /* ThemePreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemePreviewViewController.m; sourceTree = "<group>"; };
 		D8C64130170D7BE80008074E /* AutomicsEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutomicsEngine.h; sourceTree = "<group>"; };
@@ -745,6 +748,8 @@
 		48CED3CE16B923FF00EF4CD3 /* Panel */ = {
 			isa = PBXGroup;
 			children = (
+				D8BED98C17A1855300000F1D /* PanelPopupWindow.h */,
+				D8BED98D17A1855400000F1D /* PanelPopupWindow.m */,
 				D804612B16E126F400F80CAB /* PanelAddViewController.h */,
 				D804612C16E126F400F80CAB /* PanelAddViewController.m */,
 				D804612D16E126F400F80CAB /* PanelEditViewController.h */,
@@ -1238,6 +1243,7 @@
 				D894C18417840A50001805EF /* CustomPopSegue.m in Sources */,
 				D894C18717845B20001805EF /* CustomRootSegue.m in Sources */,
 				D894C18A1785E1D9001805EF /* ComicNameViewController.m in Sources */,
+				D8BED98E17A1855400000F1D /* PanelPopupWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

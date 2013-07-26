@@ -8,6 +8,7 @@
 
 #import "PanelEditViewController.h"
 #import "PanelViewController.h"
+#import "PanelAddViewController.h"
 #import "UIImageView+WebCache.h"
 #import "SpeechBubbleView.h"
 #import "ResourceView.h"
@@ -18,6 +19,7 @@
 #import "ImageDownloader.h"
 #import "GUIConstant.h"
 #import "Annotation.h"
+
 
 #import <QuartzCore/QuartzCore.h>
 #import "ThumbnailView.h"
@@ -253,6 +255,8 @@ int thumbnailsCompleted;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     //NSLog(@"PanelViewController.viewDidLoad");
+    
+
     
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
     [self.view addSubview:backgroundImage];
@@ -1327,6 +1331,13 @@ int thumbnailsCompleted;
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
    
+    if([[segue identifier] isEqualToString:@"addPanelView"])
+    {
+        PanelAddViewController *pavc = (PanelAddViewController *)[segue destinationViewController];
+        pavc.initialized = NO;
+        
+    }
+    
     //NSLog(@"PanelViewController.segue called.[self.panels count]=%i", [self.panels count]);
     if([self.panels count]>0)
     {
@@ -1414,6 +1425,9 @@ int thumbnailsCompleted;
         [self.panelScrollView removeFromSuperview];
         [self.thumbnailScrollView removeFromSuperview];
     }
+    
+
+    
     
     if([[segue identifier] isEqualToString:@"editPanel"])
     {

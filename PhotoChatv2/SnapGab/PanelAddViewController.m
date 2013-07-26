@@ -15,6 +15,7 @@
 #import "GUIConstant.h"
 #import "APIWrapper.h"
 
+
 #import "Resource.h"
 
 @interface PanelAddViewController ()
@@ -32,9 +33,11 @@
 @synthesize keyboardIsShown;
 @synthesize thumbnailScrollView;
 @synthesize panelScrollView;
+@synthesize initialized;
+@synthesize postButton;
 
 ResourceLoader *resourceLoader;
-
+PanelPopupWindow *panelPopupWindow;
 
 int resourceCounter;
 NSString* resourceImageURL;
@@ -74,8 +77,19 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    //NSLog(@"viewWillAppear.");
+    NSLog(@"PanelAddViewControlelr.viewWillAppear.");
     [super viewWillAppear:animated];
+    
+    //[MTPopupWindow showWindowWithHTMLFile:@"info.html"];
+    
+    if(!self.initialized)
+    {
+        panelPopupWindow= [PanelPopupWindow showWindow];
+        panelPopupWindow.delegate = self;
+        self.initialized = YES;
+    }
+
+    
     
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
     [self.view addSubview:backgroundImage];
@@ -83,10 +97,23 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 
     
-    if(self.imageView.image) return; //If image already loaded - do not reload it (since load moved from viewDidLoad)
-    
+    if(self.imageView.image)
+    {
+       
+        postButton.enabled = YES;
+        postButton.alpha = 1.0;
+        
+        return; //If image already loaded - do not reload it (since load moved from viewDidLoad)
+    }
+    else if(!self.imageView.image)
+    {
 
-    
+        postButton.enabled = NO;
+        postButton.alpha = 0.4;
+    }
+//        NSLog(@"No image selected.");
+
+    /*
     [self.imageView setImageWithURL:self.url
                    placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]
                             success:^(UIImage *image) {
@@ -115,7 +142,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                                                       otherButtonTitles:nil];
                                 [alert show];
                             }];
-
+*/
 
     [thumbnailScrollView layoutAssets];
 
@@ -552,6 +579,12 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     
+    if(panelPopupWindow!=nil)
+    {
+        [panelPopupWindow closePopupWindow];
+    }
+    
+    if(!self.imageView.image) return;
     
     if([[segue identifier] isEqualToString:@"postNewPanel"]){
         PhotoPosterViewController *ppvc = (PhotoPosterViewController *)[segue destinationViewController];
@@ -607,6 +640,56 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         }//end for
     } //end if
 
+}
+
+- (IBAction)postPanel:(id)sender {
+
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
+    PhotoPosterViewController *ppvc = [storyboard instantiateViewControllerWithIdentifier:@"PhotoPosterViewController"];
+    ppvc.image = self.imageView.image;
+    ppvc.editMode = NO;
+    //ppvc.editedPhoto=currentPanel.photo;
+    
+    for (UIView *subview in self.view.subviews)
+    {
+        //upload speech bubbles with the photo
+        if([subview isMemberOfClass:[SpeechBubbleView class]])
+        {
+            SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
+            SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
+            new_sbv.userInteractionEnabled = NO;
+            [ppvc.view addSubview:new_sbv];
+        }//end if
+        
+        //upload resources with the photo
+        if([subview isMemberOfClass:[ResourceView class]])
+        {
+            
+            ResourceView* sbv =(ResourceView*)subview;
+            if(sbv.angle!=0.00)
+                sbv.transform = CGAffineTransformMakeRotation(0.00);
+            
+            //NSLog(@"added pre-rotation resource.frame=%@", NSStringFromCGRect(sbv.frame));
+            //NSLog(@"added pre-rotation sbv.angle=%f", sbv.angle);
+            //CGRect originalRect = CGRectMake(sbv.originalOrigin.x, sbv.originalOrigin.y, sbv.bounds.size.width, sbv.bounds.size.height);
+            //ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:originalRect andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
+            ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
+            //new_sbv.originalFrame = sbv.frame;
+            new_sbv.originalFrame = CGRectMake(sbv.frame.origin.x, sbv.frame.origin.y, sbv.frame.size.width, sbv.frame.size.height);
+            
+            if(sbv.angle!=0.00)
+                sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
+            //new_sbv.transform = CGAffineTransformMakeRotation(0.0);
+            //NSLog(@"added post-rotation newresource.frame=%@", NSStringFromCGRect(new_sbv.frame));
+            //NSLog(@"added post-rotation newresource.bounds%@", NSStringFromCGRect(new_sbv.bounds));
+            
+            new_sbv.userInteractionEnabled = NO;
+            //new_sbv.alpha = 0;
+            [ppvc.view addSubview:new_sbv];
+        }//end if
+    }//end for
+    
+     [self.navigationController pushViewController:ppvc animated:YES];
 }
 
 - (IBAction)takeSnap:(id)sender {
@@ -762,6 +845,64 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     return [NSArray arrayWithArray:newArray];
 }
 
+- (void)openGallery {
+    
+    //NSLog(@"showphotos called.");
+    if ([UIImagePickerController isSourceTypeAvailable:
+         UIImagePickerControllerSourceTypeSavedPhotosAlbum])
+    {
+        
+        //Instantiate ImagePickerController
+        imagePicker = [[UIImagePickerController alloc] init];
+        
+        //Configure the ImagePickerController to show photo library
+        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        
+        
+        imagePicker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeImage, nil];
+        
+        //imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum ];
+        
+        //Assign delegate object to ImagePickerController's delegate property
+        imagePicker.delegate = self;
+        
+        imagePicker.allowsEditing = YES;
+        [self presentViewController:imagePicker animated:YES completion:nil];
+        newMedia = NO;
+    }//end if
+}
+
+-(void)openCamera
+{
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        
+        //Instantiate ImagePickerController
+        imagePicker = [[UIImagePickerController alloc] init];
+        
+        //Configure the ImagePickerController for media capture
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        
+        //Set mediaTypes to images
+        imagePicker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeImage, nil];
+        imagePicker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+        //imagePicker.toolbarHidden = YES;
+        
+        
+        //Assign delegate object to ImagePickerController's delegate property
+        imagePicker.delegate = self;
+        
+        imagePicker.allowsEditing = YES;
+        //imagePicker.allowsEditing = NO;
+        
+        [self presentViewController:imagePicker animated:YES completion:nil];
+        
+        newMedia = YES;
+        
+    }//end if
+}
+
+
 #pragma mark ResourceLoader functions.
 -(void)ResourceLoader:(ResourceLoader*)loader didFailWithError:(NSError*)error{
     //NSLog(@"resource failed to load.");
@@ -818,6 +959,21 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResource:(Resource*)resource
 {
     //NSLog(@"Resource downloaded");
+}
+
+#pragma mark PanelPopupWindow functions.
+-(void)didSelectSource:(int)sourceId{
+    //NSLog(@"resource failed to load.");
+    NSLog(@"PanelAddViewController.didSelectSource.sourceId=%i", sourceId);
+    if(sourceId==0)
+    {
+        [self openGallery];
+    }
+    if(sourceId==1)
+    {
+        [self openCamera];
+    }
+    
 }
 
 
