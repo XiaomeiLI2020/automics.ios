@@ -12,6 +12,7 @@
 #import "GroupCollectionViewLayout.h"
 #import "DataLoader.h"
 #import "UIImageView+WebCache.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface GroupLeaveViewController ()
 
@@ -395,7 +396,12 @@ NSString *pCellID = @"GROUP_CELL";
                 [cell.imageView setImage:[UIImage imageWithContentsOfFile:object]];
                 //[cell.imageView setImage:[UIImage imageNamed:object]];
             }
-        }
+        }//end if
+        
+        [cell.imageView.layer setBorderColor:[[UIColor blackColor] CGColor]];
+        cell.imageView.layer.borderWidth=2.0f;
+        cell.imageView.clipsToBounds = YES;
+        
         
         [cell.activityIndicator stopAnimating];
     }else{

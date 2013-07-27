@@ -13,6 +13,7 @@
 #import "QREncoder.h"
 #import "GroupQRView.h"
 #import "UIImageView+WebCache.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface GroupsFlowViewController ()
 @property NSArray* groups;
@@ -202,6 +203,13 @@ NSString *kCellID = @"GROUP_CELL";
                 //[cell.imageView setImage:[UIImage imageNamed:object]];
             }
         }
+        [cell.imageView.layer setBorderColor:[[UIColor blackColor] CGColor]];
+        cell.imageView.layer.borderWidth=2.0f;
+        cell.imageView.clipsToBounds = YES;
+        
+        
+
+        
         
         [cell.activityIndicator stopAnimating];
     }else{

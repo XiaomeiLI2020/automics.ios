@@ -14,6 +14,8 @@
 - (IBAction)cancelPressed:(id)sender;
 - (IBAction)confirmPressed:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextField *comicTextField;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet UIButton *confirmButton;
 
 
 @property NSString* comicName;

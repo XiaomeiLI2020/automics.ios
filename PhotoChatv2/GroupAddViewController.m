@@ -8,6 +8,7 @@
 
 #import "GroupAddViewController.h"
 #import "ThemeViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface GroupAddViewController ()
 
@@ -18,6 +19,8 @@
 
 @synthesize groupName;
 @synthesize groupLoader;
+@synthesize cancelButton;
+@synthesize selectThemeButton;
 
 - (void)viewDidLoad
 {
@@ -28,6 +31,16 @@
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
     
+    
+    [self.cancelButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.cancelButton.layer.borderWidth=2.0f;
+    self.cancelButton.clipsToBounds = YES;
+    self.cancelButton.layer.cornerRadius = 10;//half of the width
+    
+    [self.selectThemeButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.selectThemeButton.layer.borderWidth=2.0f;
+    self.selectThemeButton.clipsToBounds = YES;
+    self.selectThemeButton.layer.cornerRadius = 10;//half of the width
     
     groupLoader = [[GroupLoader alloc] init];
     groupLoader.delegate=self;

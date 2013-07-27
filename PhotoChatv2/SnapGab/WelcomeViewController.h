@@ -19,6 +19,8 @@ BOOL initialized = false;
 @property (weak, nonatomic) IBOutlet UIButton *imageButton;
 @property (weak, nonatomic) IBOutlet UIButton *comicCollectionButton;
 @property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
+@property (weak, nonatomic) IBOutlet UIButton *logoutButton;
+@property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
 
 - (IBAction)logoutPressed:(id)sender;
 - (IBAction)groupsPressed:(id)sender;

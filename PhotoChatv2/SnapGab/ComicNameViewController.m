@@ -8,6 +8,7 @@
 
 #import "ComicNameViewController.h"
 #import "ComicAddViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface ComicNameViewController ()
 
@@ -16,6 +17,8 @@
 @implementation ComicNameViewController
 
 @synthesize comicName;
+@synthesize cancelButton;
+@synthesize confirmButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -34,6 +37,16 @@
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
+    
+    [self.cancelButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.cancelButton.layer.borderWidth=2.0f;
+    self.cancelButton.clipsToBounds = YES;
+    self.cancelButton.layer.cornerRadius = 10;//half of the width
+    
+    [self.confirmButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.confirmButton.layer.borderWidth=2.0f;
+    self.confirmButton.clipsToBounds = YES;
+    self.confirmButton.layer.cornerRadius = 10;//half of the width
 }
 
 - (void)viewDidUnload

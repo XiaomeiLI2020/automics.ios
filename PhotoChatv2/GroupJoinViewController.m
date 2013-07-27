@@ -12,6 +12,7 @@
 #import "GroupCollectionViewLayout.h"
 #import "DataLoader.h"
 #import "UIImageView+WebCache.h"
+#import <QuartzCore/QuartzCore.h>
 //#import "QREncoder.h"
 //#import "GroupQRView.h"
 
@@ -500,6 +501,11 @@ failure:^(NSError *error) {
                 //[cell.imageView setImage:[UIImage imageNamed:object]];
             }
         }//end if([object isKindOfClass:[NSString class]])
+        
+        [cell.imageView.layer setBorderColor:[[UIColor blackColor] CGColor]];
+        cell.imageView.layer.borderWidth=2.0f;
+        cell.imageView.clipsToBounds = YES;
+        
 
         [cell.activityIndicator stopAnimating];
     }else{

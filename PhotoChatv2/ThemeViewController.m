@@ -13,6 +13,7 @@
 #import "GroupCollectionViewLayout.h"
 #import "ThemePreviewViewController.h"
 #import "UIImageView+WebCache.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface ThemeViewController ()
 
@@ -337,7 +338,9 @@ float themeScrollViewHeight = 80.0;
             }
         }
         
-
+        [cell.imageView.layer setBorderColor:[[UIColor blackColor] CGColor]];
+        cell.imageView.layer.borderWidth=2.0f;
+        cell.imageView.clipsToBounds = YES;
         
         //cell.imageView.image = [themeImages objectForKey:indexPath];
         [cell.activityIndicator stopAnimating];

@@ -22,6 +22,8 @@ GroupLoader* groupLoader;
 @synthesize imageButton;
 @synthesize comicCollectionButton;
 @synthesize groupButton;
+@synthesize logoutButton;
+@synthesize logoImageView;
 
 BOOL alertShown;
 
@@ -46,24 +48,32 @@ BOOL alertShown;
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
     
+    //[self.view sendSubviewToBack:logoImageView];
+    
+    
+    [self.logoutButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.logoutButton.layer.borderWidth=2.0f;
+    self.logoutButton.clipsToBounds = YES;
+    self.logoutButton.layer.cornerRadius = 10;//half of the width
+    [self.view bringSubviewToFront:logoutButton];
     
     imageButton.frame = CGRectMake(130.0, 150.0, 80.0, 80.0);
     imageButton.clipsToBounds = YES;
     imageButton.layer.cornerRadius = 40;//half of the width
-    imageButton.layer.borderColor=[UIColor whiteColor].CGColor;
+    imageButton.layer.borderColor=[UIColor blackColor].CGColor;
     imageButton.layer.borderWidth=2.0f;
     
 
     comicCollectionButton.frame = CGRectMake(130.0, 240.0, 80.0, 80.0);
     comicCollectionButton.clipsToBounds = YES;
     comicCollectionButton.layer.cornerRadius = 40;//half of the width
-    comicCollectionButton.layer.borderColor=[UIColor whiteColor].CGColor;
+    comicCollectionButton.layer.borderColor=[UIColor blackColor].CGColor;
     comicCollectionButton.layer.borderWidth=2.0f;
     
     groupButton.frame = CGRectMake(130.0, 330.0, 80.0, 80.0);
     groupButton.clipsToBounds = YES;
     groupButton.layer.cornerRadius = 40;//half of the width
-    groupButton.layer.borderColor=[UIColor whiteColor].CGColor;
+    groupButton.layer.borderColor=[UIColor blackColor].CGColor;
     groupButton.layer.borderWidth=2.0f;
     
     
@@ -74,9 +84,10 @@ BOOL alertShown;
     //NSString* groupHashId= [prefs objectForKey:@"current_group_hash"];
 
     
-    self.welcomeLabel.text= [NSString stringWithFormat: @"Logged in as %@", email];
+    self.welcomeLabel.text= [NSString stringWithFormat: @"Logged in as: %@", email];
     self.welcomeLabel.numberOfLines = 0; //will wrap text in new line
     [self.welcomeLabel sizeToFit];
+    [self.welcomeLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     
     
     //Create databse for the app

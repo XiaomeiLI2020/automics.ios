@@ -13,6 +13,7 @@
 #import "ComicCollectionViewLayout.h"
 #import "ComicDetailsViewController.h"
 #import "UIImageView+WebCache.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface ComicCollectionViewController ()
 @property NSArray* comics;
@@ -320,6 +321,11 @@ NSString *kComicCellID = @"COMIC_CELL";
                 }
                 
             }
+            
+            [cell.imageView.layer setBorderColor:[[UIColor blackColor] CGColor]];
+            cell.imageView.layer.borderWidth=2.0f;
+            cell.imageView.clipsToBounds = YES;
+            
             //NSLog(@"animation stopped. indexPath.item=%i", indexPath.item);
             if(cell.activityView!=nil)
                 [cell.activityView stopAnimating];

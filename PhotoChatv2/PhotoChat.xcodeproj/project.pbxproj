@@ -147,6 +147,7 @@
 		D8B4A3991709C83E002E6D75 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8B4A3981709C83E002E6D75 /* Security.framework */; };
 		D8B4A39C1709C985002E6D75 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B4A39B1709C985002E6D75 /* Reachability.m */; };
 		D8BED98E17A1855400000F1D /* PanelPopupWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = D8BED98D17A1855400000F1D /* PanelPopupWindow.m */; };
+		D8BED99117A2CC3200000F1D /* TransitDisplayDEMO-KCFonts.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D8BED99017A2CC3200000F1D /* TransitDisplayDEMO-KCFonts.ttf */; };
 		D8BF848E1757BC87007F642E /* ThemePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8BF848D1757BC86007F642E /* ThemePreviewViewController.m */; };
 		D8C64132170D7BE90008074E /* AutomicsEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C64131170D7BE90008074E /* AutomicsEngine.m */; };
 		D8C73A9216C2D3C300C8D3E0 /* back-images.png in Resources */ = {isa = PBXBuildFile; fileRef = D8C73A9116C2D3C300C8D3E0 /* back-images.png */; };
@@ -437,6 +438,7 @@
 		D8B4A39B1709C985002E6D75 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = MKNetworkKit/Reachability/Reachability.m; sourceTree = "<group>"; };
 		D8BED98C17A1855300000F1D /* PanelPopupWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelPopupWindow.h; sourceTree = "<group>"; };
 		D8BED98D17A1855400000F1D /* PanelPopupWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelPopupWindow.m; sourceTree = "<group>"; };
+		D8BED99017A2CC3200000F1D /* TransitDisplayDEMO-KCFonts.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "TransitDisplayDEMO-KCFonts.ttf"; path = "Font/TransitDisplayDEMO-KCFonts.ttf"; sourceTree = SOURCE_ROOT; };
 		D8BF848C1757BC85007F642E /* ThemePreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemePreviewViewController.h; sourceTree = "<group>"; };
 		D8BF848D1757BC86007F642E /* ThemePreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemePreviewViewController.m; sourceTree = "<group>"; };
 		D8C64130170D7BE80008074E /* AutomicsEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutomicsEngine.h; sourceTree = "<group>"; };
@@ -595,6 +597,7 @@
 				D8F30B0F16C949E5001CF4B5 /* TextTableCell.m */,
 				1D8D50A8165FAE9700C9817C /* WelcomeViewController.h */,
 				1D8D50A9165FAE9700C9817C /* WelcomeViewController.m */,
+				D8BED99017A2CC3200000F1D /* TransitDisplayDEMO-KCFonts.ttf */,
 				1D8D508D165FADC700C9817C /* Supporting Files */,
 			);
 			name = PhotoChat;
@@ -1137,6 +1140,7 @@
 				D8A4BC3A179AA6E70028DEB7 /* toolbar-COMICS@x2.png in Resources */,
 				D8A4BC3B179AA6E70028DEB7 /* toolbar-GROUPS@x2.png in Resources */,
 				D8A4BC3C179AA6E70028DEB7 /* toolbar-IMAGES@x2.png in Resources */,
+				D8BED99117A2CC3200000F1D /* TransitDisplayDEMO-KCFonts.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

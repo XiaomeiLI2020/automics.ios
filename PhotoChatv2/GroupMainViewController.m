@@ -7,6 +7,7 @@
 //
 
 #import "GroupMainViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface GroupMainViewController ()
 
@@ -14,6 +15,7 @@
 
 @implementation GroupMainViewController
 
+@synthesize createButton;
 @synthesize joinGroup;
 @synthesize inviteButton;
 @synthesize leaveButton;
@@ -37,6 +39,27 @@
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
+    
+    
+    [self.createButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.createButton.layer.borderWidth=2.0f;
+    self.createButton.clipsToBounds = YES;
+    self.createButton.layer.cornerRadius = 10;//half of the width
+    
+    [self.joinGroup.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.joinGroup.layer.borderWidth=2.0f;
+    self.joinGroup.clipsToBounds = YES;
+    self.joinGroup.layer.cornerRadius = 10;//half of the width
+    
+    [self.leaveButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.leaveButton.layer.borderWidth=2.0f;
+    self.leaveButton.clipsToBounds = YES;
+    self.leaveButton.layer.cornerRadius = 10;//half of the width
+    
+    [self.inviteButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.inviteButton.layer.borderWidth=2.0f;
+    self.inviteButton.clipsToBounds = YES;
+    self.inviteButton.layer.cornerRadius = 10;//half of the width
     
     /*
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];

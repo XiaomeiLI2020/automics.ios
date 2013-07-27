@@ -145,11 +145,14 @@ static CGSize kWindowMarginSize;
     _bgView = [[UIView alloc] init];
     [v addSubview: _bgView];
     //[_bgView layoutMaximizeInView:v withInset:0];
-    [_bgView setFrame:CGRectMake(20.0, 100.0, 300.0, 300.0)];
+    [_bgView setFrame:CGRectMake(20.0, 100.0, 280.0, 280.0)];
     
     
-    UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(100.0, 10.0, 150.0, 20.0)];
+    UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(80.0, 10.0, 150.0, 20.0)];
+    
     label.text= [NSString stringWithFormat: @"Select Source"];
+    //[label setFont:[UIFont fontWithName:@"Transit Display" size:20]];
+    [label setFont:[UIFont boldSystemFontOfSize:17]];
     label.numberOfLines = 0; //will wrap text in new line
     [label sizeToFit];
     [self addSubview:label];

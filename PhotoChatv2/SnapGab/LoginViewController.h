@@ -17,9 +17,12 @@
 <UITextFieldDelegate, UserLoaderDelegate, GroupLoaderDelegate>
 
 @property NSString* sessionToken;
+@property (weak, nonatomic) IBOutlet UILabel *emailLabel;
+@property (weak, nonatomic) IBOutlet UILabel *passwordLabel;
 
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet UIButton *loginButton;
 
 - (IBAction)loginPressed:(id)sender;
 

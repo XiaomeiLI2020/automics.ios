@@ -15,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *groupTextField;
 @property NSString* groupName;
 @property GroupLoader* groupLoader;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet UIButton *selectThemeButton;
 
 - (IBAction)selectTheme:(id)sender;
 - (IBAction)cancelPressed:(id)sender;

@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "APIWrapper.h"
+#import <QuartzCore/QuartzCore.h>
 
 
 @interface LoginViewController ()
@@ -21,6 +22,9 @@
 @synthesize user;
 @synthesize dataLoader;
 
+@synthesize emailLabel;
+@synthesize passwordLabel;
+@synthesize loginButton;
 
 //NSString* hashId=@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12";
 
@@ -33,6 +37,15 @@
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
+    
+    
+    [self.loginButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.loginButton.layer.borderWidth=2.0f;
+    self.loginButton.clipsToBounds = YES;
+    self.loginButton.layer.cornerRadius = 10;//half of the width
+    
+    [self.emailLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    [self.passwordLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     
     user = [[User alloc] init];
     userLoader = [[UserLoader alloc] init];
