@@ -10,6 +10,7 @@
 
 @interface GroupMainViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UILabel *groupsLabel;
 @property (weak, nonatomic) IBOutlet UIButton *inviteButton;
 @property (weak, nonatomic) IBOutlet UIButton *leaveButton;
 @property (weak, nonatomic) IBOutlet UIButton *joinGroup;

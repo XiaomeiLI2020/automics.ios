@@ -21,11 +21,14 @@
 @synthesize groupLoader;
 @synthesize cancelButton;
 @synthesize selectThemeButton;
+BOOL alertShown;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    alertShown = NO;
     
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
     [self.view addSubview:backgroundImage];
@@ -36,11 +39,13 @@
     self.cancelButton.layer.borderWidth=2.0f;
     self.cancelButton.clipsToBounds = YES;
     self.cancelButton.layer.cornerRadius = 10;//half of the width
+    [self.cancelButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     
     [self.selectThemeButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
     self.selectThemeButton.layer.borderWidth=2.0f;
     self.selectThemeButton.clipsToBounds = YES;
     self.selectThemeButton.layer.cornerRadius = 10;//half of the width
+    [self.selectThemeButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     
     groupLoader = [[GroupLoader alloc] init];
     groupLoader.delegate=self;
@@ -72,10 +77,29 @@
         group.name = groupName;
         [groupLoader submitRequestPostGroup:group];
         
+        if(!alertShown)
+        {
+            alertShown = YES;
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle: @"Group Created"
+                                  message: [NSString stringWithFormat:@"You have created group %@", group.name]
+                                  delegate: self
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
+            [alert show];
+            
+        }
+
+        
+
+        
+        /*
+        
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Storyboard" bundle:nil];
         ThemeViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ThemeViewController"];
         //[self presentViewController:viewController animated:YES completion:nil];
         [self.navigationController pushViewController:viewController animated:YES];
+         */
     }
 }
 
@@ -131,5 +155,16 @@
     NSLog(@"Became group member");
 }
 
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"OK"])
+    {
+        alertShown = NO;
+        NSArray* viewControllers = self.navigationController.viewControllers;
+        [self.navigationController popToViewController:[viewControllers objectAtIndex:1] animated:YES];
+    }
+}
 
 @end

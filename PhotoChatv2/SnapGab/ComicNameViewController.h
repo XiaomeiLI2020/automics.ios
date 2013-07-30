@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIButton *confirmButton;
 
+@property (weak, nonatomic) IBOutlet UILabel *comicNameLabel;
 
 @property NSString* comicName;
 

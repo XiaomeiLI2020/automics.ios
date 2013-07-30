@@ -240,6 +240,7 @@ NSString *pCellID = @"GROUP_CELL";
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     GroupCollectionViewCell* selectedGroupCell = (GroupCollectionViewCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
     Group *group = [selectedGroupCell getGroup];
+
     
     if(!alertShown)
     {
@@ -374,6 +375,7 @@ NSString *pCellID = @"GROUP_CELL";
     [cell setGroup:group];
     //cell.label.text = group.name;
     
+    [cell.label setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     if ([groupImages objectForKey:indexPath] != nil)
     {
         

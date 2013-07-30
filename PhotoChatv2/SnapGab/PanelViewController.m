@@ -43,6 +43,7 @@
 @synthesize sessionToken;
 @synthesize activityIndicator;
 @synthesize editButton;
+@synthesize imagesLabel;
 
 BOOL _bubblesAdded;
 BOOL _resourcesAdded;
@@ -262,6 +263,7 @@ int thumbnailsCompleted;
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
 
+    [self.imagesLabel setFont:[UIFont fontWithName: @"Transit Display" size:28]];
     
     editButton.clipsToBounds = YES;
     //editButton.layer.borderColor=[UIColor whiteColor].CGColor;

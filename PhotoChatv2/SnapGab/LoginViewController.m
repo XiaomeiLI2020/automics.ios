@@ -43,6 +43,7 @@
     self.loginButton.layer.borderWidth=2.0f;
     self.loginButton.clipsToBounds = YES;
     self.loginButton.layer.cornerRadius = 10;//half of the width
+    [loginButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     
     [self.emailLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     [self.passwordLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];

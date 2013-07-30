@@ -35,10 +35,11 @@ NSString *kCellID = @"GROUP_CELL";
 {
     [super viewDidLoad];
     
+
     UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
-    
+
     
     [self loadGroups];
     self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
@@ -142,6 +143,7 @@ NSString *kCellID = @"GROUP_CELL";
 }
 
 -(UIImage*)generateQRCodeImageForURL:(NSString*)url{
+    NSLog(@"generateQRCodeImageForURL.url=%@", url);
     DataMatrix *qrMatrix = [QREncoder encodeWithECLevel:QR_ECLEVEL_AUTO version:QR_VERSION_AUTO string:url];
     UIImage* qrcodeImage = [QREncoder renderDataMatrix:qrMatrix imageDimension:250];
     return qrcodeImage;
@@ -166,6 +168,8 @@ NSString *kCellID = @"GROUP_CELL";
     GroupCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCellID forIndexPath:indexPath];
     Group *group = [_groups objectAtIndex:indexPath.item];
     [cell setGroup:group];
+    
+    [cell.label setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     //cell.label.text = group.name;
     /*
     if ([groupImages objectForKey:indexPath] != nil){
@@ -203,13 +207,12 @@ NSString *kCellID = @"GROUP_CELL";
                 //[cell.imageView setImage:[UIImage imageNamed:object]];
             }
         }
+        
+      
         [cell.imageView.layer setBorderColor:[[UIColor blackColor] CGColor]];
         cell.imageView.layer.borderWidth=2.0f;
         cell.imageView.clipsToBounds = YES;
-        
-        
-
-        
+       
         
         [cell.activityIndicator stopAnimating];
     }else{

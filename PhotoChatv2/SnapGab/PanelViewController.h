@@ -19,6 +19,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *editButton;
 @property MainScrollSelector *panelScrollView;
 @property MainScrollSelector *thumbnailScrollView;
+@property (weak, nonatomic) IBOutlet UILabel *imagesLabel;
 
 
 @property NSString* sessionToken;

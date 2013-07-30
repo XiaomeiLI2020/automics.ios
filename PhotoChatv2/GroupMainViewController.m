@@ -20,6 +20,7 @@
 @synthesize inviteButton;
 @synthesize leaveButton;
 @synthesize currentGroupLabel;
+@synthesize groupsLabel;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -40,26 +41,31 @@
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
     
+    [groupsLabel setFont:[UIFont fontWithName: @"Transit Display" size:24]];
     
     [self.createButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
     self.createButton.layer.borderWidth=2.0f;
     self.createButton.clipsToBounds = YES;
     self.createButton.layer.cornerRadius = 10;//half of the width
+    [createButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     
     [self.joinGroup.layer setBorderColor:[[UIColor blackColor] CGColor]];
     self.joinGroup.layer.borderWidth=2.0f;
     self.joinGroup.clipsToBounds = YES;
     self.joinGroup.layer.cornerRadius = 10;//half of the width
+    [joinGroup.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     
     [self.leaveButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
     self.leaveButton.layer.borderWidth=2.0f;
     self.leaveButton.clipsToBounds = YES;
     self.leaveButton.layer.cornerRadius = 10;//half of the width
+    [leaveButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     
     [self.inviteButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
     self.inviteButton.layer.borderWidth=2.0f;
     self.inviteButton.clipsToBounds = YES;
     self.inviteButton.layer.cornerRadius = 10;//half of the width
+    [inviteButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     
     /*
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -103,6 +109,8 @@
         self.currentGroupLabel.text= @"";
         self.currentGroupLabel.numberOfLines = 0; //will wrap text in new line
         [self.currentGroupLabel sizeToFit];
+        [self.currentGroupLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+        
         
         inviteButton.enabled = NO;
         inviteButton.alpha = 0.4;
@@ -118,6 +126,7 @@
         self.currentGroupLabel.text= [NSString stringWithFormat: @"Current group: %@", groupName];
         self.currentGroupLabel.numberOfLines = 0; //will wrap text in new line
         [self.currentGroupLabel sizeToFit];
+        [self.currentGroupLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
         
         inviteButton.enabled = YES;
         inviteButton.alpha = 1;

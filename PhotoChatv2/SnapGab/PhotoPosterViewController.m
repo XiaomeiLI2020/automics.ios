@@ -399,10 +399,15 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     if([title isEqualToString:@"OK"])
     {
 
+        //UIViewController *sourceViewController = (UIViewController*)[self ;
+        //UIViewController *destinationViewController = (UIViewController*)[self destinationViewController];
+        
+        NSArray* viewControllers = self.navigationController.viewControllers;
+        [self.navigationController popToViewController:[viewControllers objectAtIndex:1] animated:YES];
         
         //alertShown = NO;
         //[self performSegueWithIdentifier:@"postToView" sender:self];
-        [self.navigationController popViewControllerAnimated:YES];
+        //[self.navigationController popViewControllerAnimated:YES];
         
         //[self dismissViewControllerAnimated:YES completion:nil];
     }//end if

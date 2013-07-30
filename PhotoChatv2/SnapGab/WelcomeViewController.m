@@ -56,12 +56,15 @@ BOOL alertShown;
     self.logoutButton.clipsToBounds = YES;
     self.logoutButton.layer.cornerRadius = 10;//half of the width
     [self.view bringSubviewToFront:logoutButton];
+    [logoutButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     
     imageButton.frame = CGRectMake(130.0, 150.0, 80.0, 80.0);
     imageButton.clipsToBounds = YES;
     imageButton.layer.cornerRadius = 40;//half of the width
     imageButton.layer.borderColor=[UIColor blackColor].CGColor;
     imageButton.layer.borderWidth=2.0f;
+    [imageButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:26]];
+    
     
 
     comicCollectionButton.frame = CGRectMake(130.0, 240.0, 80.0, 80.0);
@@ -69,13 +72,14 @@ BOOL alertShown;
     comicCollectionButton.layer.cornerRadius = 40;//half of the width
     comicCollectionButton.layer.borderColor=[UIColor blackColor].CGColor;
     comicCollectionButton.layer.borderWidth=2.0f;
+    [comicCollectionButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:26]];
     
     groupButton.frame = CGRectMake(130.0, 330.0, 80.0, 80.0);
     groupButton.clipsToBounds = YES;
     groupButton.layer.cornerRadius = 40;//half of the width
     groupButton.layer.borderColor=[UIColor blackColor].CGColor;
     groupButton.layer.borderWidth=2.0f;
-    
+    [groupButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:26]];
     
     alertShown = NO;
     
@@ -85,6 +89,7 @@ BOOL alertShown;
 
     
     self.welcomeLabel.text= [NSString stringWithFormat: @"Logged in as: %@", email];
+    self.welcomeLabel.text=@"";
     self.welcomeLabel.numberOfLines = 0; //will wrap text in new line
     [self.welcomeLabel sizeToFit];
     [self.welcomeLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];

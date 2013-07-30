@@ -465,13 +465,14 @@ failure:^(NSError *error) {
     Group *group = [_groups objectAtIndex:indexPath.item];
     [cell setGroup:group];
     
+    [cell.label setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSString* groupHashIdLocal= [prefs objectForKey:@"current_group_hash"];
     
     //Display the name of current group in italic font
     if([groupHashIdLocal isEqualToString:group.hashId])
     {
-        cell.label.font = [UIFont italicSystemFontOfSize:18.0f];
+        //cell.label.font = [UIFont italicSystemFontOfSize:18.0f];
     }//end if([groupHashIdLocal isEqualToString:group.hashId])
     
     //cell.label.font = [UIFont italicSystemFontOfSize:16.0f];
