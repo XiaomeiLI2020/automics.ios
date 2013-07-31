@@ -175,16 +175,7 @@ UILabel* clickLabel;
         Panel* panel = [panelList objectAtIndex:page];
         if(panel!=nil)
         {
-            if([comicPanelList count]==0)
-            {
-                if(postButton.enabled == NO)
-                {
-                    //NSLog(@"panelScrollView added.");
-                    [clickLabel removeFromSuperview];
-                    //[self.view addSubview:panelScrollView];
-                    postButton.enabled = YES;
-                }
-            }
+
             
             //NSLog(@"addNewPanelToComic.panel.panelId=%i", panel.panelId);
             
@@ -196,6 +187,22 @@ UILabel* clickLabel;
             //Add panel to the comic panelList
             comicPanelList = [self arrayByAddingObject:comicPanelList andObject:panel];
             comicPanelThumbnailIds = [self arrayByAddingObject:comicPanelThumbnailIds andObject:[NSNumber numberWithInt:page]];
+            
+            
+            if([comicPanelList count]>0)
+            {
+                if(postButton.enabled == NO)
+                {
+                    //NSLog(@"panelScrollView added.");
+                    [clickLabel removeFromSuperview];
+                    //[self.view addSubview:panelScrollView];
+                    if([comicPanelList count]>1)
+                    {
+                        postButton.enabled = YES;
+                    }
+ 
+                }
+            }
             
             //Add boolean object to the downloadedPanels panelList
             //NSNumber* noObj = [NSNumber numberWithBool:NO];
@@ -1119,6 +1126,14 @@ UILabel* clickLabel;
                         }
                         else if([comicPanelList count]>0)
                         {
+                            
+                            if([comicPanelList count]>1)
+                            {
+                                postButton.enabled = YES;
+                            }
+                            else{
+                                postButton.enabled = NO;
+                            }
                             //If last panel was removed
                             if(itemRemoved==[comicPanelList count])
                             {

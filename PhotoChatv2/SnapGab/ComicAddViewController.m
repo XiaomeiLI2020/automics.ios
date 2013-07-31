@@ -183,10 +183,15 @@ BOOL thumbMode;
                     //NSLog(@"panelScrollView added.");
                     [clickLabel removeFromSuperview];
                     //[self.view addSubview:panelScrollView];
-                    postButton.enabled = YES;
-                }
+                    
+                    if([comicPanelList count]>1)
+                    {
+                        postButton.enabled = YES; 
+                    }//end if([comicPanelList count]>1)
+
+                }//end if(postButton.enabled == NO)
                 
-            }
+            }//end if([comicPanelList count]>0)
             
             //Update the number of items in comic scrollview
             panelScrollView.numItems = [comicPanelList count];

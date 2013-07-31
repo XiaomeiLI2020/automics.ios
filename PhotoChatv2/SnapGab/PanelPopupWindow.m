@@ -136,6 +136,8 @@ static CGSize kWindowMarginSize;
  */
 -(void)showInView:(UIView*)v
 {
+    
+    
     //add the dim layer behind the popup
     _dimView = [[UIView alloc] init];
     [v addSubview: _dimView];
@@ -148,7 +150,7 @@ static CGSize kWindowMarginSize;
     [_bgView setFrame:CGRectMake(20.0, 100.0, 280.0, 280.0)];
     
     
-    UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(80.0, 10.0, 150.0, 30.0)];
+    UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(100.0, 10.0, 150.0, 30.0)];
     
     label.text= [NSString stringWithFormat: @"Select Source"];
     //[label setFont:[UIFont fontWithName:@"Transit Display" size:20]];
@@ -170,14 +172,14 @@ static CGSize kWindowMarginSize;
     galleryButton.tag = 0;
     [galleryButton addTarget:self action:@selector(selectSource:) forControlEvents:UIControlEventTouchDown];
     [galleryButton setImage:galleryImage forState:UIControlStateNormal];
-    galleryButton.frame = CGRectMake(80.0, 60.0, 60.0, 60.0);
+    galleryButton.frame = CGRectMake(100.0, 60.0, 60.0, 60.0);
     [self addSubview:galleryButton];
 
     UIButton *cameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
     cameraButton.tag = 1;
     [cameraButton addTarget:self action:@selector(selectSource:) forControlEvents:UIControlEventTouchDown];
     [cameraButton setImage:cameraImage forState:UIControlStateNormal];
-    cameraButton.frame = CGRectMake(80.0, 140.0, 60.0, 60.0);
+    cameraButton.frame = CGRectMake(100.0, 140.0, 60.0, 60.0);
     [self addSubview:cameraButton];
 
     //make the close button

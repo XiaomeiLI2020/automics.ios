@@ -226,21 +226,39 @@ bool alertShown;
                 
                 NSURLRequest* urlRequest = [panelsLoader preparePanelRequestForPostPanel:panel];
                 [self startOperation:urlRequest postDataRequestType:1];
+                
+                /*
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [self startOperation:urlRequest postDataRequestType:1];
+                });
+                */
+                
                 //[self startPanelOperation:urlRequest panelPlacements:placementsArray panelAnnotations:annotationsArray postDataRequestType:1];
                 
                 //[panelsLoader submitRequestPostPanel:panel];
             }//end if
         }//end if
         
-    }
-    else
+    }//end if(editMode)
+    else if(!editMode)
     {
         //Upload a new photo if a new panel is being added
         NSURLRequest* urlRequest = [photoLoader preparePhotoRequestForPostPhoto:photo];
         //[self startOperation:urlRequest postDataRequestType:0];
         [self startPanelOperation:urlRequest panelPlacements:placementsArray panelAnnotations:annotationsArray postDataRequestType:0];
+        
+        /*
+        AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+        dispatch_async(appDelegate.databaseQueue, ^{
+            
+            [self startPanelOperation:urlRequest panelPlacements:placementsArray panelAnnotations:annotationsArray postDataRequestType:0];
+        });
+*/
+        
+        
         //[photoLoader submitRequestPostPhoto:photo];
-    }
+    }//end else if(!editMode)
      
     self.progressView.progress = 0.0f;
     self.progressView.alpha = 1.0f;
