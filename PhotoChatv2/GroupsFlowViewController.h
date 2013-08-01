@@ -14,6 +14,8 @@
 
 @property IBOutlet UICollectionView *collectionView;
 -(IBAction)backButtonClick:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *groupsButton;
+@property (weak, nonatomic) IBOutlet UILabel *inviteLabel;
 
 @end
 

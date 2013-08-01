@@ -22,6 +22,7 @@
 @property int currentPage;
 @property int panelCounter;
 @property NSString* comicName;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
 
 
 @property NSURL* url;

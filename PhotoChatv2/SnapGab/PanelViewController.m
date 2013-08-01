@@ -44,6 +44,7 @@
 @synthesize activityIndicator;
 @synthesize editButton;
 @synthesize imagesLabel;
+@synthesize menuButton;
 
 BOOL _bubblesAdded;
 BOOL _resourcesAdded;
@@ -259,11 +260,30 @@ int thumbnailsCompleted;
     
 
     
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    UIImageView *backgroundImage;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    if (screenBounds.size.height == 568) {
+        //NSLog(@"This is iPhone 5");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background@x5.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 568)];
+    }
+    else
+    {
+        //NSLog(@"This is iPhone 4");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 480)];
+    }
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
 
     [self.imagesLabel setFont:[UIFont fontWithName: @"Transit Display" size:28]];
+    
+    [menuButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    menuButton.layer.borderWidth=4.0f;
+    menuButton.clipsToBounds = YES;
+    menuButton.layer.cornerRadius = 10;//half of the width
+    [menuButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    menuButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     editButton.clipsToBounds = YES;
     //editButton.layer.borderColor=[UIColor whiteColor].CGColor;

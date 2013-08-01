@@ -29,6 +29,8 @@
 @synthesize imageDownloadersInProgress;
 @synthesize groupImages;
 @synthesize userLoader;
+@synthesize selectGroupLabel;
+@synthesize groupsButton;
 
 BOOL alertShown;
 NSString* groupHashId;
@@ -39,10 +41,30 @@ NSString *mCellID = @"GROUP_CELL";
 {
     [super viewDidLoad];
     
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    UIImageView *backgroundImage;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    if (screenBounds.size.height == 568) {
+        //NSLog(@"This is iPhone 5");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background@x5.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 568)];
+    }
+    else
+    {
+        //NSLog(@"This is iPhone 4");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 480)];
+    }
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
     
+    [self.groupsButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.groupsButton.layer.borderWidth=4.0f;
+    self.groupsButton.clipsToBounds = YES;
+    self.groupsButton.layer.cornerRadius = 10;//half of the width
+    [self.groupsButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    groupsButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
+    
+    [selectGroupLabel setFont:[UIFont fontWithName: @"Transit Display" size:28]];
     
     alertShown = NO;
     userLoader = [[UserLoader alloc] init];
@@ -504,7 +526,7 @@ failure:^(NSError *error) {
         }//end if([object isKindOfClass:[NSString class]])
         
         [cell.imageView.layer setBorderColor:[[UIColor blackColor] CGColor]];
-        cell.imageView.layer.borderWidth=2.0f;
+        cell.imageView.layer.borderWidth=4.0f;
         cell.imageView.clipsToBounds = YES;
         
 

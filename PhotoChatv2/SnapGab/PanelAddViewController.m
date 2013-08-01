@@ -14,9 +14,8 @@
 #import "PanelEditViewController.h"
 #import "GUIConstant.h"
 #import "APIWrapper.h"
-
-
 #import "Resource.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface PanelAddViewController ()
 
@@ -35,6 +34,8 @@
 @synthesize panelScrollView;
 @synthesize initialized;
 @synthesize postButton;
+@synthesize imagesButton;
+
 
 ResourceLoader *resourceLoader;
 PanelPopupWindow *panelPopupWindow;
@@ -91,11 +92,28 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
     
     
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    UIImageView *backgroundImage;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    if (screenBounds.size.height == 568) {
+        //NSLog(@"This is iPhone 5");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background@x5.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 568)];
+    }
+    else
+    {
+        //NSLog(@"This is iPhone 4");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 480)];
+    }
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
 
-
+    [imagesButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    imagesButton.layer.borderWidth=4.0f;
+    imagesButton.clipsToBounds = YES;
+    imagesButton.layer.cornerRadius = 10;//half of the width
+    [imagesButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    imagesButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     if(self.imageView.image)
     {

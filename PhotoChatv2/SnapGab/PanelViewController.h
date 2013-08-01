@@ -20,7 +20,7 @@
 @property MainScrollSelector *panelScrollView;
 @property MainScrollSelector *thumbnailScrollView;
 @property (weak, nonatomic) IBOutlet UILabel *imagesLabel;
-
+@property (weak, nonatomic) IBOutlet UIButton *menuButton;
 
 @property NSString* sessionToken;
 @property int currentPage;

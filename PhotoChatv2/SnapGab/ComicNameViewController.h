@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *comicTextField;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIButton *confirmButton;
+@property (weak, nonatomic) IBOutlet UIButton *comicsButton;
+@property (weak, nonatomic) IBOutlet UILabel *typeNameLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *comicNameLabel;
 

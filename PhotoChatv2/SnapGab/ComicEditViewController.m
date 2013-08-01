@@ -17,6 +17,7 @@
 #import "ResourceImageView.h"
 #import "ImageDownloader.h"
 #import "Annotation.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface ComicEditViewController ()
 
@@ -42,12 +43,14 @@
 @synthesize lastContentOffsetX;
 @synthesize comicName;
 @synthesize comicPanelThumbnailIds;
+@synthesize backButton;
 
 BOOL _bubblesAdded;
 BOOL _resourcesAdded;
 BOOL _thumbnailsAdded;
 BOOL thumbMode;
 BOOL initialized;
+BOOL alertShown;
 
 int panelId;
 int numPanels;
@@ -57,6 +60,7 @@ int comicPanelCounter;
 int numPlacements;
 int placementCounter;
 int thumbnailIndex;
+int clickedPanelIndex;
 
 PanelLoader* panelsLoader;
 ComicLoader* comicLoader;
@@ -69,6 +73,12 @@ Placement* currentPlacement;
 
 NSString* urlImageString;
 UILabel* clickLabel;
+
+
+int iaddAlertView = 0;
+int ideleteAlertView = 1;
+int ibackAlertView = 2;
+
 
 -(void) initiateDataSet
 {
@@ -146,20 +156,29 @@ UILabel* clickLabel;
         [downloadedPhotos replaceObjectAtIndex:page withObject:yesObj];
     }
 
+    if(!alertShown)
+    {
+        clickedPanelIndex = page;
+        alertShown = YES;
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Add panel"
+                                                          message:@"You are adding this panel."
+                                                         delegate:self
+                                                cancelButtonTitle:@"Confirm"
+                                                otherButtonTitles:@"Cancel", nil];
+        message.tag=iaddAlertView;
+        [message show];
+    }
+    
+    
+    /*
     //NSLog(@"singleTap. page= %i", page);
     //Remove bubbles and resources from the current view
     [self removeAllBubbles];
     [self removeAllResources];
     
-    /*
-    //remove clickLabel if there are panels in thumbnail scrollView
-    if([comicPanelList count]==0)
-    {
-        [clickLabel removeFromSuperview];
-    }
-     */
     //Add a panel to the comic
     [self addNewPanelToComic:page];
+     */
 }
 
 -(void)didReceiveMemoryWarning{
@@ -297,10 +316,30 @@ UILabel* clickLabel;
 	// Do any additional setup after loading the view.
     
     //NSLog(@"viewDidLoad");
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    UIImageView *backgroundImage;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    if (screenBounds.size.height == 568) {
+        //NSLog(@"This is iPhone 5");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background@x5.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 568)];
+    }
+    else
+    {
+        //NSLog(@"This is iPhone 4");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 480)];
+    }
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
     
+    alertShown = NO;
+    
+    [self.backButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.backButton.layer.borderWidth=4.0f;
+    self.backButton.clipsToBounds = YES;
+    self.backButton.layer.cornerRadius = 10;//half of the width
+    [self.backButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    self.backButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
 
     [self initiateScrollViews];
     
@@ -1249,6 +1288,51 @@ UILabel* clickLabel;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if(alertView.tag==ideleteAlertView)
+    {
+        if([title isEqualToString:@"Delete"])
+        {
+            //NSLog(@"Button 1 was selected.");
+            alertShown = NO;
+            [self deletePanelConfirmed];
+        }
+    }//end if(alertView.tag==deleteAlertView)
+    
+    if(alertView.tag==iaddAlertView)
+    {
+        if([title isEqualToString:@"Confirm"])
+        {
+            //if(page!=currentPage)
+            {
+                [self removeAllBubbles];
+                [self removeAllResources];
+            }
+            //Add a panel to the comic
+            [self addNewPanelToComic:clickedPanelIndex];
+            alertShown = NO;
+            return;
+        }
+    }//end if(alertView.tag==addAlertView)
+    
+    if(alertView.tag==ibackAlertView)
+    {
+        if([title isEqualToString:@"Confirm"])
+        {
+            NSLog(@"backAlertView.Confirm pressed");
+            alertShown = NO;
+            [self.navigationController popViewControllerAnimated:YES];
+            //[self dismissViewControllerAnimated:YES completion:nil];
+            return;
+        }
+    }//end if(alertView.tag==backAlertView)
+    
+    if([title isEqualToString:@"Cancel"])
+    {
+        //NSLog(@"Button 2 was selected.");
+        alertShown = NO;
+        return;
+    }
+    /*
     if([title isEqualToString:@"Delete"])
     {
         [self deletePanelConfirmed];
@@ -1257,6 +1341,7 @@ UILabel* clickLabel;
     {
         return;
     }
+     */
 }
 
 
@@ -1483,6 +1568,29 @@ UILabel* clickLabel;
     return [NSArray arrayWithArray:newArray];
 }
 
+- (void)longPressGestureCaptured:(UILongPressGestureRecognizer*)gesture
+{
+    //NSLog(@"longPressGesture");
+    if([comicPanelList count] >0)
+    {
+        if(!alertShown)
+        {
+            alertShown = YES;
+            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Delete Image"
+                                                              message:@"Delete image from the comic."
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Delete"
+                                                    otherButtonTitles:@"Cancel", nil];
+            message.tag = ideleteAlertView;
+            [message show];
+        }
+        
+        
+    }
+    
+}
+
+
 #pragma mark PanelLoader functions.
 -(void)PanelLoader:(PanelLoader*)loader didFailWithError:(NSError*)error{
     NSLog(@"Panel failed to load.");
@@ -1554,6 +1662,12 @@ UILabel* clickLabel;
         //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
         singleTap.cancelsTouchesInView = NO;
         [thumbnailScrollView addGestureRecognizer:singleTap];
+        
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureCaptured:)];
+        //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
+        longPress.cancelsTouchesInView = NO;
+        [panelScrollView addGestureRecognizer:longPress];
+        
         
         [self alignPageInThumbnailScrollView];
     }//end if(numPanels>0)
@@ -1970,4 +2084,19 @@ UILabel* clickLabel;
 }
 
 
+- (IBAction)backButtonClicked:(id)sender {
+    
+    if(!alertShown)
+    {
+        alertShown = YES;
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Lose changes?"
+                                                          message:@"You will lose all changes."
+                                                         delegate:self
+                                                cancelButtonTitle:@"Confirm"
+                                                otherButtonTitles:@"Cancel", nil];
+        message.tag=ibackAlertView;
+        [message show];
+    }
+
+}
 @end

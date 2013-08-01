@@ -20,5 +20,8 @@
 
 - (IBAction)selectTheme:(id)sender;
 - (IBAction)cancelPressed:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *groupsButton;
+@property (weak, nonatomic) IBOutlet UILabel *groupNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *typeGroupLabel;
 
 @end

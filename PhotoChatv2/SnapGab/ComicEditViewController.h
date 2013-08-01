@@ -32,9 +32,12 @@
 @property CGFloat lastContentOffsetX;
 @property NSString* comicName;
 
-- (IBAction)deletePanel:(id)sender;
 
+- (IBAction)deletePanel:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *postButton;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
+
+- (IBAction)backButtonClicked:(id)sender;
 
 @property NSMutableArray *panelArray;
 @property int comicId;

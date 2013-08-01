@@ -34,16 +34,30 @@
 	// Do any additional setup after loading the view.
     
     
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    UIImageView *backgroundImage;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    if (screenBounds.size.height == 568) {
+        //NSLog(@"This is iPhone 5");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background@x5.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 568)];
+    }
+    else
+    {
+        //NSLog(@"This is iPhone 4");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 480)];
+    }
+    
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
     
     
     [self.loginButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
-    self.loginButton.layer.borderWidth=2.0f;
+    self.loginButton.layer.borderWidth=4.0f;
     self.loginButton.clipsToBounds = YES;
     self.loginButton.layer.cornerRadius = 10;//half of the width
     [loginButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    loginButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     [self.emailLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     [self.passwordLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];

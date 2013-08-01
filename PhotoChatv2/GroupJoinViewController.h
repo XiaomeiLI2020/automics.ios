@@ -17,5 +17,7 @@
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property UserLoader* userLoader;
+@property (weak, nonatomic) IBOutlet UIButton *groupsButton;
+@property (weak, nonatomic) IBOutlet UILabel *selectGroupLabel;
 
 @end

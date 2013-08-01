@@ -18,6 +18,7 @@
 #import "GUIConstant.h"
 #import "Resource.h"
 #import "Annotation.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface PanelEditViewController ()
 
@@ -40,6 +41,11 @@
 @synthesize currentPage;
 @synthesize subviewId;
 @synthesize originalFrame;
+@synthesize imageLabel;
+@synthesize imagesButton;
+
+
+BOOL alertShown;
 
 ResourceLoader *resourceLoader;
 
@@ -83,16 +89,37 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     //NSLog(@"viewWillAppear.");
     [super viewWillAppear:animated];
     
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    UIImageView *backgroundImage;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    if (screenBounds.size.height == 568) {
+        //NSLog(@"This is iPhone 5");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background@x5.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 568)];
+    }
+    else
+    {
+        //NSLog(@"This is iPhone 4");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 480)];
+    }
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
     
+    [imagesButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    imagesButton.layer.borderWidth=4.0f;
+    imagesButton.clipsToBounds = YES;
+    imagesButton.layer.cornerRadius = 10;//half of the width
+    [imagesButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    imagesButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
+    
+    alertShown = NO;
 
     if(self.imageView.image) return; //If image already loaded - do not reload it (since load moved from viewDidLoad)
     
-    self.imageLabel.text= [NSString stringWithFormat: @"Image#%i", currentPage+1];
+    self.imageLabel.text= [NSString stringWithFormat: @"Image %i", currentPage+1];
     self.imageLabel.numberOfLines = 0; //will wrap text in new line
     [self.imageLabel sizeToFit];
+    [self.imageLabel setFont:[UIFont fontWithName: @"Transit Display" size:28]];
 
     imageView.frame = CGRectMake(0.0, 0.0, panelWidth, panelHeight);
     imageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -729,6 +756,42 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResource:(Resource*)resource
 {
     //NSLog(@"Resource downloaded");
+}
+
+
+
+- (IBAction)imagesButtonPressed:(id)sender {
+    
+    if(!alertShown)
+    {
+        alertShown = YES;
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Lose changes?"
+                                                          message:@"You will lose all changes."
+                                                         delegate:self
+                                                cancelButtonTitle:@"Confirm"
+                                                otherButtonTitles:@"Cancel", nil];
+        [message show];
+    }
+
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"Confirm"])
+    {
+        alertShown = NO;
+        [self.navigationController popViewControllerAnimated:YES];
+        //[self dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
+    
+    if([title isEqualToString:@"Cancel"])
+    {
+        //NSLog(@"Button 2 was selected.");
+        alertShown = NO;
+        return;
+    }
 }
 
 

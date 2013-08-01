@@ -23,6 +23,7 @@
 
 @property (strong, nonatomic) IBOutlet UIButton *editPressed;
 @property (weak, nonatomic) IBOutlet UILabel *comicNameLabel;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
 
 @property int comicId;
 @property UIActivityIndicatorView *activityIndicator;

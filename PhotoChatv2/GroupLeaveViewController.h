@@ -15,7 +15,8 @@
 <UICollectionViewDelegate, UICollectionViewDataSource, GroupLoaderDelegate, PhotoLoaderDelegate, ImageDownloaderDelegate, UIAlertViewDelegate, UserLoaderDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-
+@property (weak, nonatomic) IBOutlet UIButton *groupsButton;
+@property (weak, nonatomic) IBOutlet UILabel *leaveGroupLabel;
 
 @property UserLoader* userLoader;
 

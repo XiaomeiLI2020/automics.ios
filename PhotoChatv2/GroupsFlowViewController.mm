@@ -27,7 +27,8 @@
 @synthesize photoLoadersInProgress;
 @synthesize imageDownloadersInProgress;
 @synthesize groupImages;
-
+@synthesize groupsButton;
+@synthesize inviteLabel;
 
 NSString *kCellID = @"GROUP_CELL";
 
@@ -36,10 +37,30 @@ NSString *kCellID = @"GROUP_CELL";
     [super viewDidLoad];
     
 
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    UIImageView *backgroundImage;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    if (screenBounds.size.height == 568) {
+        //NSLog(@"This is iPhone 5");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background@x5.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 568)];
+    }
+    else
+    {
+        //NSLog(@"This is iPhone 4");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 480)];
+    }
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
 
+    [self.groupsButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.groupsButton.layer.borderWidth=4.0f;
+    self.groupsButton.clipsToBounds = YES;
+    self.groupsButton.layer.cornerRadius = 10;//half of the width
+    [self.groupsButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    groupsButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
+    
+    [inviteLabel setFont:[UIFont fontWithName: @"Transit Display" size:28]];
     
     [self loadGroups];
     self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
@@ -137,6 +158,7 @@ NSString *kCellID = @"GROUP_CELL";
     GroupQRView *qrView = [[[NSBundle mainBundle] loadNibNamed:@"GroupQRView" owner:self options:nil] objectAtIndex:0];
     qrView.qrImageView.image = qrcodeImage;
     qrView.label.text = group.name;
+    //qrView.label.text = url;
     CGSize size = qrView.frame.size;
     qrView.frame = CGRectMake(abs(self.collectionView.frame.size.width / 2.0 - size.width/2.0), abs(self.collectionView.frame.size.height / 2.0 - size.height/2.0), size.width, size.height);
     [self.view addSubview:qrView];
@@ -210,7 +232,7 @@ NSString *kCellID = @"GROUP_CELL";
         
       
         [cell.imageView.layer setBorderColor:[[UIColor blackColor] CGColor]];
-        cell.imageView.layer.borderWidth=2.0f;
+        cell.imageView.layer.borderWidth=4.0f;
         cell.imageView.clipsToBounds = YES;
        
         

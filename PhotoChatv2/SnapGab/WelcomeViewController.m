@@ -43,8 +43,22 @@ BOOL alertShown;
 	// Do any additional setup after loading the view.
     
 
+    UIImageView *backgroundImage;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    if (screenBounds.size.height == 568) {
+        //NSLog(@"This is iPhone 5");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background@x5.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 568)];
+    }
+    else
+    {
+        //NSLog(@"This is iPhone 4");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 480)];
+    }
+    
 
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
     
@@ -52,34 +66,37 @@ BOOL alertShown;
     
     
     [self.logoutButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
-    self.logoutButton.layer.borderWidth=2.0f;
+    self.logoutButton.layer.borderWidth=4.0f;
     self.logoutButton.clipsToBounds = YES;
     self.logoutButton.layer.cornerRadius = 10;//half of the width
     [self.view bringSubviewToFront:logoutButton];
     [logoutButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    logoutButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     imageButton.frame = CGRectMake(130.0, 150.0, 80.0, 80.0);
     imageButton.clipsToBounds = YES;
     imageButton.layer.cornerRadius = 40;//half of the width
     imageButton.layer.borderColor=[UIColor blackColor].CGColor;
-    imageButton.layer.borderWidth=2.0f;
+    imageButton.layer.borderWidth=4.0f;
     [imageButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:26]];
-    
+    imageButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
 
     comicCollectionButton.frame = CGRectMake(130.0, 240.0, 80.0, 80.0);
     comicCollectionButton.clipsToBounds = YES;
     comicCollectionButton.layer.cornerRadius = 40;//half of the width
     comicCollectionButton.layer.borderColor=[UIColor blackColor].CGColor;
-    comicCollectionButton.layer.borderWidth=2.0f;
+    comicCollectionButton.layer.borderWidth=4.0f;
     [comicCollectionButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:26]];
+    comicCollectionButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     groupButton.frame = CGRectMake(130.0, 330.0, 80.0, 80.0);
     groupButton.clipsToBounds = YES;
     groupButton.layer.cornerRadius = 40;//half of the width
     groupButton.layer.borderColor=[UIColor blackColor].CGColor;
-    groupButton.layer.borderWidth=2.0f;
+    groupButton.layer.borderWidth=4.0f;
     [groupButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:26]];
+    groupButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     alertShown = NO;
     

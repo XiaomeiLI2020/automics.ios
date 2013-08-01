@@ -21,6 +21,7 @@
 @synthesize leaveButton;
 @synthesize currentGroupLabel;
 @synthesize groupsLabel;
+@synthesize menuButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -37,35 +38,59 @@
 	// Do any additional setup after loading the view.
    
     
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    UIImageView *backgroundImage;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    if (screenBounds.size.height == 568) {
+        //NSLog(@"This is iPhone 5");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background@x5.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 568)];
+    }
+    else
+    {
+        //NSLog(@"This is iPhone 4");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 480)];
+    }
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
     
     [groupsLabel setFont:[UIFont fontWithName: @"Transit Display" size:24]];
     
+    
+    [menuButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    menuButton.layer.borderWidth=4.0f;
+    menuButton.clipsToBounds = YES;
+    menuButton.layer.cornerRadius = 10;//half of the width
+    [menuButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    menuButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
+    
     [self.createButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
-    self.createButton.layer.borderWidth=2.0f;
+    self.createButton.layer.borderWidth=4.0f;
     self.createButton.clipsToBounds = YES;
     self.createButton.layer.cornerRadius = 10;//half of the width
     [createButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    createButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     [self.joinGroup.layer setBorderColor:[[UIColor blackColor] CGColor]];
-    self.joinGroup.layer.borderWidth=2.0f;
+    self.joinGroup.layer.borderWidth=4.0f;
     self.joinGroup.clipsToBounds = YES;
     self.joinGroup.layer.cornerRadius = 10;//half of the width
     [joinGroup.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    joinGroup.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     [self.leaveButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
-    self.leaveButton.layer.borderWidth=2.0f;
+    self.leaveButton.layer.borderWidth=4.0f;
     self.leaveButton.clipsToBounds = YES;
     self.leaveButton.layer.cornerRadius = 10;//half of the width
     [leaveButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    leaveButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     [self.inviteButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
-    self.inviteButton.layer.borderWidth=2.0f;
+    self.inviteButton.layer.borderWidth=4.0f;
     self.inviteButton.clipsToBounds = YES;
     self.inviteButton.layer.cornerRadius = 10;//half of the width
     [inviteButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    inviteButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     /*
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];

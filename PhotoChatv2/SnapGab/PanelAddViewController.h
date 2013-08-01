@@ -31,6 +31,7 @@
 @property BOOL startWithCamera;
 @property CGSize imageSize;
 @property BOOL keyboardIsShown;
+@property (weak, nonatomic) IBOutlet UIButton *imagesButton;
 
 @property MainScrollSelector *panelScrollView;
 @property MainScrollSelector *thumbnailScrollView;

@@ -15,14 +15,15 @@
 #import "Panel.h"
 
 @interface PanelEditViewController : UIViewController
-<UIScrollViewDelegate, PanelLoaderDelegate, ResourceLoaderDelegate, ImageDownloaderDelegate>
+<UIScrollViewDelegate, PanelLoaderDelegate, ResourceLoaderDelegate, ImageDownloaderDelegate, UIAlertViewDelegate>
 
 
 @property MainScrollSelector *thumbnailScrollView;
 @property MainScrollSelector *panelScrollView;
-
+@property (weak, nonatomic) IBOutlet UIButton *imagesButton;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *imageLabel;
+- (IBAction)imagesButtonPressed:(id)sender;
 
 @property int currentPage;
 @property int subviewId;

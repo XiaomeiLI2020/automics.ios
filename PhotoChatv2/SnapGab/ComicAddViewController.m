@@ -17,6 +17,7 @@
 #import "ImageDownloader.h"
 #import "Annotation.h"
 #import "ThumbnailView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface ComicAddViewController ()
 
@@ -38,13 +39,12 @@
 @synthesize activityIndicator;
 @synthesize lastContentOffsetX;
 @synthesize comicName;
-
+@synthesize backButton;
 
 BOOL _bubblesAdded;
 BOOL _resourcesAdded;
 
 int panelId;
-
 int numPanels;
 int panelCounter;
 
@@ -54,6 +54,7 @@ int comicPanelCounter;
 int numPlacements;
 int placementCounter;
 int thumbnailIndex;
+int clickedPanelIndex;
 
 PanelLoader* panelsLoader;
 ComicLoader* comicLoader;
@@ -75,6 +76,11 @@ NSMutableArray* downloadedPanels;
 NSMutableArray* downloadedPhotos;
 
 BOOL thumbMode;
+BOOL alertShown;
+
+int addAlertView = 0;
+int deleteAlertView = 1;
+int backAlertView = 2;
 
 -(void) initiateDataSet
 {
@@ -107,8 +113,11 @@ BOOL thumbMode;
     _bubblesAdded = NO;
     _resourcesAdded = NO;
     thumbMode = NO;
+    alertShown = NO;
     
     lastContentOffsetX = 0.0;
+    clickedPanelIndex = 0;
+    
 }
 
 
@@ -123,6 +132,28 @@ BOOL thumbMode;
     [self.view addSubview:clickLabel];
 }
 
+
+- (void)longPressGestureCaptured:(UILongPressGestureRecognizer*)gesture
+{
+    //NSLog(@"longPressGesture");
+    if([comicPanelList count] >0)
+    {
+        if(!alertShown)
+        {
+            alertShown = YES;
+            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Delete Image"
+                                                              message:@"Delete image from the comic."
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Delete"
+                                                    otherButtonTitles:@"Cancel", nil];
+            message.tag = deleteAlertView;
+            [message show];
+        }
+        
+        
+    }
+
+}
 
 - (void)singleTapGestureCaptured:(UITapGestureRecognizer *)gesture
 {
@@ -142,7 +173,20 @@ BOOL thumbMode;
         [downloadedPhotos replaceObjectAtIndex:page withObject:yesObj];
     }
 
+    if(!alertShown)
+    {
+        clickedPanelIndex = page;
+        alertShown = YES;
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Add panel"
+                                                          message:@"You are adding this panel."
+                                                         delegate:self
+                                                cancelButtonTitle:@"Confirm"
+                                                otherButtonTitles:@"Cancel", nil];
+        message.tag=addAlertView;
+        [message show];
+    }
     
+    /*
     //currentPage++;
     //NSLog(@"singleTap. page= %i", page);
     //Remove bubbles and resources from the current view
@@ -153,6 +197,7 @@ BOOL thumbMode;
     }
     //Add a panel to the comic
     [self addNewPanelToComic:page];
+     */
 }
 
 -(void)addNewPanelToComic:(int)page
@@ -270,9 +315,31 @@ BOOL thumbMode;
 	// Do any additional setup after loading the view.
     
     //NSLog(@"viewDidLoad");
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    UIImageView *backgroundImage;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    if (screenBounds.size.height == 568) {
+        //NSLog(@"This is iPhone 5");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background@x5.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 568)];
+    }
+    else
+    {
+        //NSLog(@"This is iPhone 4");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 480)];
+    }
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
+    
+    
+    [self.backButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.backButton.layer.borderWidth=4.0f;
+    self.backButton.clipsToBounds = YES;
+    self.backButton.layer.cornerRadius = 10;//half of the width
+    [self.backButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    self.backButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
+    
+    
     
     [self initiateScrollViews];
     
@@ -343,6 +410,13 @@ BOOL thumbMode;
         //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
         singleTap.cancelsTouchesInView = NO;
         [thumbnailScrollView addGestureRecognizer:singleTap];
+        
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureCaptured:)];
+        //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
+        longPress.cancelsTouchesInView = NO;
+        [panelScrollView addGestureRecognizer:longPress];
+        
+        
 
     }//end if(numPanels>0)
     
@@ -740,29 +814,74 @@ BOOL thumbMode;
 {
     if([comicPanelList count] >0)
     {
+        if(!alertShown)
+        {
+            alertShown = YES;
+            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Delete Image"
+                                                              message:@"Delete image from the comic."
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Delete"
+                                                    otherButtonTitles:@"Cancel", nil];
+            message.tag = deleteAlertView;
+            [message show];
+        }
         
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Delete Image"
-                                                          message:@"Delete image from the comic."
-                                                         delegate:self
-                                                cancelButtonTitle:@"Delete"
-                                                otherButtonTitles:@"Cancel", nil];
-        [message show];
+
     }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
-    if([title isEqualToString:@"Delete"])
+    
+    if(alertView.tag==deleteAlertView)
     {
-        //NSLog(@"Button 1 was selected.");
-        [self deletePanelConfirmed];
-    }
+        if([title isEqualToString:@"Delete"])
+        {
+            //NSLog(@"Button 1 was selected.");
+            alertShown = NO;
+            [self deletePanelConfirmed];
+        }
+    }//end if(alertView.tag==deleteAlertView)
+
+    if(alertView.tag==addAlertView)
+    {
+        if([title isEqualToString:@"Confirm"])
+        {
+            //if(page!=currentPage)
+            {
+                [self removeAllBubbles];
+                [self removeAllResources];
+            }
+            //Add a panel to the comic
+            [self addNewPanelToComic:clickedPanelIndex];
+            alertShown = NO;
+            return;
+        }
+    }//end if(alertView.tag==addAlertView)
+    
+    if(alertView.tag==backAlertView)
+    {
+        if([title isEqualToString:@"Confirm"])
+        {
+            NSLog(@"backAlertView.Confirm pressed");
+            alertShown = NO;
+            [self.navigationController popViewControllerAnimated:YES];
+            //[self dismissViewControllerAnimated:YES completion:nil];
+            return;
+        }
+    }//end if(alertView.tag==backAlertView)
+    
     if([title isEqualToString:@"Cancel"])
     {
         //NSLog(@"Button 2 was selected.");
+        alertShown = NO;
         return;
     }
+    
+
+    
+    
 }
 
 -(void)deletePanelConfirmed
@@ -1654,7 +1773,20 @@ BOOL thumbMode;
 }
 
 -(IBAction)comicsButtonCicked:(id)sender{
-    [self dismissViewControllerAnimated:YES completion:nil];
+    //NSLog(@"comicsButtonCicked");
+    if(!alertShown)
+    {
+        alertShown = YES;
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Lose changes?"
+                                                          message:@"You will lose all changes."
+                                                         delegate:self
+                                                cancelButtonTitle:@"Confirm"
+                                                otherButtonTitles:@"Cancel", nil];
+        message.tag=backAlertView;
+        [message show];
+    }
+
+    //[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

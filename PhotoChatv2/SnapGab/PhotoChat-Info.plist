@@ -4,12 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>TransitDisplayDEMO-KCFonts.ttf</string>
-	</array>
-	<key>CFBundleIconFile</key>
-	<string></string>
 	<key>CFBundleDisplayName</key>
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleExecutable</key>
@@ -22,8 +16,8 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>Icon.png</string>
-				<string>Icon@2x.png</string>
+				<string>GOJicon@x1.png</string>
+				<string>GOJicon@2x.png</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>
@@ -49,6 +43,10 @@
 	<string></string>
 	<key>NSSupportsSuddenTermination</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>TransitDisplayDEMO-KCFonts.ttf</string>
+	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Storyboard</string>
 	<key>UIPrerenderedIcon</key>

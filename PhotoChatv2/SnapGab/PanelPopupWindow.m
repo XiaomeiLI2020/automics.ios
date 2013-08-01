@@ -137,7 +137,7 @@ static CGSize kWindowMarginSize;
 -(void)showInView:(UIView*)v
 {
     
-    
+    self.layer.borderWidth=4.0f;
     //add the dim layer behind the popup
     _dimView = [[UIView alloc] init];
     [v addSubview: _dimView];

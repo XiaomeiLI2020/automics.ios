@@ -99,6 +99,11 @@
 		D892741816E658260061FA14 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = D892741716E658260061FA14 /* User.m */; };
 		D89317801765C78B00CC6A39 /* GroupLeaveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D893177F1765C78B00CC6A39 /* GroupLeaveViewController.m */; };
 		D8932C7C16D7ED7B007D97A9 /* GUIConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = D8932C7B16D7ED7B007D97A9 /* GUIConstant.m */; };
+		D89346F117AA774F00FF20DD /* split-background.png in Resources */ = {isa = PBXBuildFile; fileRef = D89346F017AA774F00FF20DD /* split-background.png */; };
+		D89346F317AA782400FF20DD /* GOJtitle.png in Resources */ = {isa = PBXBuildFile; fileRef = D89346F217AA782400FF20DD /* GOJtitle.png */; };
+		D89346F517AA7B8300FF20DD /* background@x5.png in Resources */ = {isa = PBXBuildFile; fileRef = D89346F417AA7B8300FF20DD /* background@x5.png */; };
+		D89346F717AA7D3600FF20DD /* GOJicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D89346F617AA7D3600FF20DD /* GOJicon@2x.png */; };
+		D89346F917AA7E7F00FF20DD /* GOJicon@x1.png in Resources */ = {isa = PBXBuildFile; fileRef = D89346F817AA7E7F00FF20DD /* GOJicon@x1.png */; };
 		D894C179177AE505001805EF /* CustomSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D894C178177AE505001805EF /* CustomSegue.m */; };
 		D894C17D177D8556001805EF /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = D894C17C177D8556001805EF /* refresh.png */; };
 		D894C18417840A50001805EF /* CustomPopSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D894C18317840A50001805EF /* CustomPopSegue.m */; };
@@ -362,6 +367,11 @@
 		D893177F1765C78B00CC6A39 /* GroupLeaveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupLeaveViewController.m; sourceTree = "<group>"; };
 		D8932C7A16D7ED7B007D97A9 /* GUIConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GUIConstant.h; path = ../GUIConstant.h; sourceTree = "<group>"; };
 		D8932C7B16D7ED7B007D97A9 /* GUIConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GUIConstant.m; path = ../GUIConstant.m; sourceTree = "<group>"; };
+		D89346F017AA774F00FF20DD /* split-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "split-background.png"; path = "appimages/split-background.png"; sourceTree = SOURCE_ROOT; };
+		D89346F217AA782400FF20DD /* GOJtitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GOJtitle.png; path = appimages/GOJtitle.png; sourceTree = SOURCE_ROOT; };
+		D89346F417AA7B8300FF20DD /* background@x5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "background@x5.png"; path = "appimages/background@x5.png"; sourceTree = "<group>"; };
+		D89346F617AA7D3600FF20DD /* GOJicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GOJicon@2x.png"; path = "appimages/GOJicon@2x.png"; sourceTree = "<group>"; };
+		D89346F817AA7E7F00FF20DD /* GOJicon@x1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GOJicon@x1.png"; path = "appimages/GOJicon@x1.png"; sourceTree = "<group>"; };
 		D894C177177AE505001805EF /* CustomSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSegue.h; sourceTree = "<group>"; };
 		D894C178177AE505001805EF /* CustomSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSegue.m; sourceTree = "<group>"; };
 		D894C17C177D8556001805EF /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = SOURCE_ROOT; };
@@ -895,6 +905,11 @@
 		D8A4BC1517998D840028DEB7 /* appimages */ = {
 			isa = PBXGroup;
 			children = (
+				D89346F817AA7E7F00FF20DD /* GOJicon@x1.png */,
+				D89346F617AA7D3600FF20DD /* GOJicon@2x.png */,
+				D89346F417AA7B8300FF20DD /* background@x5.png */,
+				D89346F217AA782400FF20DD /* GOJtitle.png */,
+				D89346F017AA774F00FF20DD /* split-background.png */,
 				D8A4BC34179AA6E70028DEB7 /* toolbar-GROUPS@x2.png */,
 				D8A4BC35179AA6E70028DEB7 /* toolbar-IMAGES@x2.png */,
 				D8A4BC2F179AA6E70028DEB7 /* titlebar-BLANK@x2.png */,
@@ -1141,6 +1156,11 @@
 				D8A4BC3B179AA6E70028DEB7 /* toolbar-GROUPS@x2.png in Resources */,
 				D8A4BC3C179AA6E70028DEB7 /* toolbar-IMAGES@x2.png in Resources */,
 				D8BED99117A2CC3200000F1D /* TransitDisplayDEMO-KCFonts.ttf in Resources */,
+				D89346F117AA774F00FF20DD /* split-background.png in Resources */,
+				D89346F317AA782400FF20DD /* GOJtitle.png in Resources */,
+				D89346F517AA7B8300FF20DD /* background@x5.png in Resources */,
+				D89346F717AA7D3600FF20DD /* GOJicon@2x.png in Resources */,
+				D89346F917AA7E7F00FF20DD /* GOJicon@x1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

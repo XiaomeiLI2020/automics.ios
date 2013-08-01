@@ -21,6 +21,10 @@
 @synthesize groupLoader;
 @synthesize cancelButton;
 @synthesize selectThemeButton;
+@synthesize groupsButton;
+@synthesize groupNameLabel;
+@synthesize typeGroupLabel;
+
 BOOL alertShown;
 
 - (void)viewDidLoad
@@ -30,22 +34,45 @@ BOOL alertShown;
     
     alertShown = NO;
     
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    UIImageView *backgroundImage;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    if (screenBounds.size.height == 568) {
+        //NSLog(@"This is iPhone 5");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background@x5.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 568)];
+    }
+    else
+    {
+        //NSLog(@"This is iPhone 4");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 480)];
+    }
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
     
+    [self.groupsButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.groupsButton.layer.borderWidth=4.0f;
+    self.groupsButton.clipsToBounds = YES;
+    self.groupsButton.layer.cornerRadius = 10;//half of the width
+    [self.groupsButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    groupsButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
+    
+    [groupNameLabel setFont:[UIFont fontWithName: @"Transit Display" size:28]];
+    [typeGroupLabel setFont:[UIFont fontWithName: @"Transit Display" size:28]];
     
     [self.cancelButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
     self.cancelButton.layer.borderWidth=2.0f;
     self.cancelButton.clipsToBounds = YES;
     self.cancelButton.layer.cornerRadius = 10;//half of the width
     [self.cancelButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    cancelButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     [self.selectThemeButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
     self.selectThemeButton.layer.borderWidth=2.0f;
     self.selectThemeButton.clipsToBounds = YES;
     self.selectThemeButton.layer.cornerRadius = 10;//half of the width
     [self.selectThemeButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    selectThemeButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     groupLoader = [[GroupLoader alloc] init];
     groupLoader.delegate=self;

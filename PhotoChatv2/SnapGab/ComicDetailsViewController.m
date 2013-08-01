@@ -13,10 +13,10 @@
 #import "ResourceView.h"
 #import "Comic.h"
 #import "GUIConstant.h"
-
 #import "ResourceImageView.h"
 #import "ImageDownloader.h"
 #import "Annotation.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface ComicDetailsViewController ()
 
@@ -29,7 +29,8 @@
 @synthesize currentPage;
 @synthesize activityIndicator;
 @synthesize comicName;
-
+@synthesize comicNameLabel;
+@synthesize backButton;
 
 BOOL _bubblesAdded;
 BOOL _resourcesAdded;
@@ -92,9 +93,31 @@ NSString* urlImageString;
 	// Do any additional setup after loading the view.
     
     //NSLog(@"viewDidLoad");
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    UIImageView *backgroundImage;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    if (screenBounds.size.height == 568) {
+        //NSLog(@"This is iPhone 5");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background@x5.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 568)];
+    }
+    else
+    {
+        //NSLog(@"This is iPhone 4");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 480)];
+    }
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
+    
+    
+    [comicNameLabel setFont:[UIFont fontWithName: @"Transit Display" size:28]];
+    
+    [self.backButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.backButton.layer.borderWidth=4.0f;
+    self.backButton.clipsToBounds = YES;
+    self.backButton.layer.cornerRadius = 10;//half of the width
+    [self.backButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    self.backButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     [self initiateScrollViews];
     

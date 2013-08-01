@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *toolbarImage;
 @property (weak, nonatomic) IBOutlet UIView *toolbarView;
 @property IBOutlet UICollectionView* collectionView;
+@property (weak, nonatomic) IBOutlet UILabel *comicsLabel;
+@property (weak, nonatomic) IBOutlet UIButton *menuButton;
 
 - (IBAction)refreshed:(id)sender;
 

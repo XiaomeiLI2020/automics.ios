@@ -20,6 +20,8 @@
 @synthesize cancelButton;
 @synthesize confirmButton;
 @synthesize comicNameLabel;
+@synthesize comicsButton;
+@synthesize typeNameLabel;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -35,23 +37,46 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    UIImageView *backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+    UIImageView *backgroundImage;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    if (screenBounds.size.height == 568) {
+        //NSLog(@"This is iPhone 5");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background@x5.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 568)];
+    }
+    else
+    {
+        //NSLog(@"This is iPhone 4");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 480)];
+    }
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
     
-    [comicNameLabel setFont:[UIFont fontWithName: @"Transit Display" size:24]];
+    
+    [comicNameLabel setFont:[UIFont fontWithName: @"Transit Display" size:28]];
+    [typeNameLabel setFont:[UIFont fontWithName: @"Transit Display" size:28]];
+    
+    [self.comicsButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    self.comicsButton.layer.borderWidth=4.0f;
+    self.comicsButton.clipsToBounds = YES;
+    self.comicsButton.layer.cornerRadius = 10;//half of the width
+    [self.comicsButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    comicsButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     [self.cancelButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
-    self.cancelButton.layer.borderWidth=2.0f;
+    self.cancelButton.layer.borderWidth=4.0f;
     self.cancelButton.clipsToBounds = YES;
     self.cancelButton.layer.cornerRadius = 10;//half of the width
     [self.cancelButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    cancelButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     [self.confirmButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
-    self.confirmButton.layer.borderWidth=2.0f;
+    self.confirmButton.layer.borderWidth=4.0f;
     self.confirmButton.clipsToBounds = YES;
     self.confirmButton.layer.cornerRadius = 10;//half of the width
     [self.confirmButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    confirmButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
 }
 
 - (void)viewDidUnload

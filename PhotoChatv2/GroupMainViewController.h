@@ -16,5 +16,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *joinGroup;
 @property (weak, nonatomic) IBOutlet UILabel *currentGroupLabel;
 @property (weak, nonatomic) IBOutlet UIButton *createButton;
+@property (weak, nonatomic) IBOutlet UIButton *menuButton;
 
 @end
