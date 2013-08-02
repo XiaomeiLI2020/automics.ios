@@ -932,7 +932,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
     if(resources!=nil)
     {
-        //NSLog(@"didLoadResources.[resources count]=%i", [resources count]);
+        NSLog(@"didLoadResources.[resources count]=%i", [resources count]);
         
         if([resources count]>0)
         {

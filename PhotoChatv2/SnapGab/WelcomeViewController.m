@@ -9,6 +9,7 @@
 #import "WelcomeViewController.h"
 #import "TextTableCell.h"
 #import "DataLoader.h"
+#import "ResourceLoader.h"
 #import "User.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -266,6 +267,8 @@ BOOL alertShown;
         [userDefaults setObject:nil forKey:@"user_id"];
         [userDefaults synchronize];
         
+        [ResourceLoader setResourcesDownloaded:NO];
+        
         NSError *err;
         NSString *docsDir;
         NSArray *dirPaths;
@@ -295,6 +298,9 @@ BOOL alertShown;
             }
 
         }
+        
+
+        
         [self.navigationController popToRootViewControllerAnimated:YES];
         
         return;

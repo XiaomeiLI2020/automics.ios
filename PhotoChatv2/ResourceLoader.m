@@ -32,8 +32,12 @@ BOOL resourcesLoaded = NO;
 @synthesize obj;
 
 
++(void)setResourcesDownloaded:(BOOL)boolValue{
+    resourcesLoaded = boolValue;
+}
+
 -(void)submitRequestGetResourcesForTheme:(int)themeId{
-    //NSLog(@"resourcesLoaded=%d", resourcesLoaded);
+    NSLog(@"resourcesLoaded=%d", resourcesLoaded);
     if(!resourcesLoaded)
     {
         resourceRequestType = kGetThemeResources;

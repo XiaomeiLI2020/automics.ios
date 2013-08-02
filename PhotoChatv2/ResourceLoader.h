@@ -26,6 +26,7 @@ extern int numResources;
 -(void)submitRequestGetResourcesForTheme:(int)themeId;
 -(void)submitRequestGetResourceWithId:(int)resourceId;
 -(void)submitRequestGetResourceWithResourceId:(int)resourceId;
++(void)setResourcesDownloaded:(BOOL)resourcesDownloaded;
 
 @end
 
