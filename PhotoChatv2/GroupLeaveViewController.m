@@ -223,6 +223,28 @@ NSString *pCellID = @"GROUP_CELL";
     
 }
 
+-(void)UserLoader:(UserLoader*)loader didLeaveGroup:(NSString*)responseString{
+    
+    if([responseString isEqualToString:@"true"])
+    {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSString* currentGroupHashId = [userDefaults objectForKey:@"current_group_hash"];
+        int userId = [[userDefaults objectForKey:@"user_id"] integerValue];
+        NSLog(@"Left group.%@, currentGroupHashId=%@, userId=%i", groupHashId, currentGroupHashId, userId);
+        
+        //if left the current group
+        if([currentGroupHashId isEqualToString:groupHashId])
+        {
+            [userDefaults setObject:nil forKey:@"current_group_hash"];
+            //[userDefaults setObject:nil forKey:@"current_group_name"];
+            
+            //[userLoader submitRequestPostSetCurrentGroup:userId andNewGroupHashId:nil];
+        }
+
+    }
+    
+}
+
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -234,7 +256,8 @@ NSString *pCellID = @"GROUP_CELL";
         //NSString* sessionToken = [prefs objectForKey:@"session"];
         NSString* email = [prefs objectForKey:@"email"];
         NSString* password = [prefs objectForKey:@"password"];
-        NSString* groupHashId = [prefs objectForKey:@"current_group_hash"];
+        NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+        NSLog(@"currentGroupHashId=%@, selectedGroupHashId=%@", currentGroupHashId, groupHashId);
         
         User* user = [[User alloc] init];
         user.email = email;

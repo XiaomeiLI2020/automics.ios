@@ -37,6 +37,7 @@
 
 -(void)UserLoader:(UserLoader*)loader didFailWithError:(NSError*)error;
 -(void)UserLoader:(UserLoader*)loader didGenerateSession:(Session*)session;
+-(void)UserLoader:(UserLoader*)loader didLeaveGroup:(NSString*)responseString;
 -(void)UserLoader:(UserLoader*)loader didLoginUser:(User*)user;
 -(void)UserLoader:(UserLoader*)loader didJoinGroup:(User*)user;
 -(void)UserLoader:(UserLoader*)loader didSetCurrentGroup:(User*)user;

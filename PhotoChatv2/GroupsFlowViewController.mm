@@ -30,13 +30,15 @@
 @synthesize groupsButton;
 @synthesize inviteLabel;
 
+BOOL alertShown;
+
 NSString *kCellID = @"GROUP_CELL";
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-
+    alertShown = NO;
     UIImageView *backgroundImage;
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     if (screenBounds.size.height == 568) {
@@ -154,14 +156,34 @@ NSString *kCellID = @"GROUP_CELL";
     GroupCollectionViewCell* selectedGroupCell = (GroupCollectionViewCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
     Group *group = [selectedGroupCell getGroup];
     NSString *url = [APIWrapper getURLForJoinGroupWithHashId:[group hashId]];
+    
+    if(!alertShown)
+    {
+        alertShown = YES;
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle: [NSString stringWithFormat:@"Join %@", group.name]
+                              message: [NSString stringWithFormat:@"%@", url]
+                              delegate: self
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
+        [alert show];
+    }
+
+    
+    /*
     UIImage* qrcodeImage = [self generateQRCodeImageForURL:url];
     GroupQRView *qrView = [[[NSBundle mainBundle] loadNibNamed:@"GroupQRView" owner:self options:nil] objectAtIndex:0];
     qrView.qrImageView.image = qrcodeImage;
     qrView.label.text = group.name;
-    //qrView.label.text = url;
+    qrView.label.text = url;
+    qrView.label.numberOfLines = 0; //will wrap text in new line
+    
+    
     CGSize size = qrView.frame.size;
     qrView.frame = CGRectMake(abs(self.collectionView.frame.size.width / 2.0 - size.width/2.0), abs(self.collectionView.frame.size.height / 2.0 - size.height/2.0), size.width, size.height);
+    
     [self.view addSubview:qrView];
+     */
 }
 
 -(UIImage*)generateQRCodeImageForURL:(NSString*)url{
@@ -360,4 +382,16 @@ NSString *kCellID = @"GROUP_CELL";
     GroupCollectionViewCell* selectedGroupCell = (GroupCollectionViewCell*)[self.collectionView cellForItemAtIndexPath:shareGestureCellPath];
     NSLog(@"Selected group %@", [[selectedGroupCell getGroup] name]);
 }
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"OK"])
+    {
+        alertShown = NO;
+    }
+}
+
+
 @end

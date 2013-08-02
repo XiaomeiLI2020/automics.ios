@@ -10,7 +10,7 @@
 #import "GroupLoader.h"
 #import "PhotoLoader.h"
 
-@interface GroupsFlowViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource,GroupLoaderDelegate, PhotoLoaderDelegate, ImageDownloaderDelegate>
+@interface GroupsFlowViewController : UIViewController<UICollectionViewDelegate, UICollectionViewDataSource,GroupLoaderDelegate, PhotoLoaderDelegate, ImageDownloaderDelegate, UIAlertViewDelegate>
 
 @property IBOutlet UICollectionView *collectionView;
 -(IBAction)backButtonClick:(id)sender;

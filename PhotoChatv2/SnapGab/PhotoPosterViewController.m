@@ -342,27 +342,54 @@ bool alertShown;
     
     operation.postDataRequestType = postDataRequestType;
     operation.delegate = self;
-    [appDelegate.automicsEngine enqueueOperation:operation];
+    
+    
+    //Start an activity indicator here
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        //Call your function or whatever work that needs to be done
+        //Code in this part is run on a background thread
+        [appDelegate.automicsEngine enqueueOperation:operation];
+        
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            
+            //Stop your activity indicator or anything else with the GUI
+            //Code here is run on the main thread
+
+        });
+    });
+    
+    //[appDelegate.automicsEngine enqueueOperation:operation];
     //self.dataFeedConnection = [operation urlConnection];
     
-    NSLog(@"PhotoPosterView. startPanelOperation. reachable=%d", [panelsLoader isReachable]);
+    NSLog(@"PhotoPosterView.startPanelOperation. reachable=%d", [panelsLoader isReachable]);
     
     if(![panelsLoader isReachable])
     {
         UIAlertView *alert = [[UIAlertView alloc]
                               initWithTitle: @"Upload Failure"
-                              message: @"Please upload when network connection is available."
+                              message: @"Data will be uploaded when network connection is available."
                               delegate:self
                               cancelButtonTitle:@"OK"
                               otherButtonTitles:nil];
         [alert show];
     }//end if
     else if([panelsLoader isReachable]){
-        [operation onUploadProgressChanged:^(double progress) {
+        
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle: @"Upload Request"
+                              message: @"Data is being uploaded."
+                              delegate: self
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
+        [alert show];
+        
+        //[operation onUploadProgressChanged:^(double progress) {
             
             //NSLog(@"PhotoPosterView. startPanelOperation. reachable=%d", [panelsLoader isReachable]);
             //DLog(@"onUploadProgressChanged=%.2f", progress*100.0);
-            self.progressView.progress = (float)progress;
+            //self.progressView.progress = (float)progress;
             /*
              if(progress==1.0)
              {
@@ -375,7 +402,7 @@ bool alertShown;
              [alert show];
              }
              */
-        }];
+        //}];
 
     }
     

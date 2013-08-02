@@ -50,7 +50,6 @@
 		48D58FE11704A0B2002ACF3E /* GroupCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D58FE01704A0B2002ACF3E /* GroupCollectionViewCell.m */; };
 		48D58FE41704A0E6002ACF3E /* GroupCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D58FE31704A0E6002ACF3E /* GroupCollectionViewLayout.m */; };
 		48D58FE81704A119002ACF3E /* GroupQRView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D58FE61704A119002ACF3E /* GroupQRView.m */; };
-		48D58FE91704A119002ACF3E /* GroupQRView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FE71704A119002ACF3E /* GroupQRView.xib */; };
 		48D58FEC1704A145002ACF3E /* GroupDecorationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48D58FEB1704A145002ACF3E /* GroupDecorationView.m */; };
 		48D58FEE1704A1E7002ACF3E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48D58FED1704A1E7002ACF3E /* QuartzCore.framework */; };
 		48D58FF31704A23D002ACF3E /* groupDecoration.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D58FEF1704A23D002ACF3E /* groupDecoration.png */; };
@@ -104,6 +103,7 @@
 		D89346F517AA7B8300FF20DD /* background@x5.png in Resources */ = {isa = PBXBuildFile; fileRef = D89346F417AA7B8300FF20DD /* background@x5.png */; };
 		D89346F717AA7D3600FF20DD /* GOJicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D89346F617AA7D3600FF20DD /* GOJicon@2x.png */; };
 		D89346F917AA7E7F00FF20DD /* GOJicon@x1.png in Resources */ = {isa = PBXBuildFile; fileRef = D89346F817AA7E7F00FF20DD /* GOJicon@x1.png */; };
+		D89346FC17ABAEB600FF20DD /* GroupQRView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D89346FB17ABAEB500FF20DD /* GroupQRView.xib */; };
 		D894C179177AE505001805EF /* CustomSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D894C178177AE505001805EF /* CustomSegue.m */; };
 		D894C17D177D8556001805EF /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = D894C17C177D8556001805EF /* refresh.png */; };
 		D894C18417840A50001805EF /* CustomPopSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = D894C18317840A50001805EF /* CustomPopSegue.m */; };
@@ -281,7 +281,6 @@
 		48D58FE31704A0E6002ACF3E /* GroupCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GroupCollectionViewLayout.m; path = SnapGab/GroupCollectionViewLayout.m; sourceTree = "<group>"; };
 		48D58FE51704A119002ACF3E /* GroupQRView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GroupQRView.h; path = SnapGab/GroupQRView.h; sourceTree = "<group>"; };
 		48D58FE61704A119002ACF3E /* GroupQRView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GroupQRView.m; path = SnapGab/GroupQRView.m; sourceTree = "<group>"; };
-		48D58FE71704A119002ACF3E /* GroupQRView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GroupQRView.xib; path = SnapGab/GroupQRView.xib; sourceTree = "<group>"; };
 		48D58FEA1704A145002ACF3E /* GroupDecorationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GroupDecorationView.h; path = SnapGab/GroupDecorationView.h; sourceTree = "<group>"; };
 		48D58FEB1704A145002ACF3E /* GroupDecorationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GroupDecorationView.m; path = SnapGab/GroupDecorationView.m; sourceTree = "<group>"; };
 		48D58FED1704A1E7002ACF3E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -372,6 +371,7 @@
 		D89346F417AA7B8300FF20DD /* background@x5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "background@x5.png"; path = "appimages/background@x5.png"; sourceTree = "<group>"; };
 		D89346F617AA7D3600FF20DD /* GOJicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GOJicon@2x.png"; path = "appimages/GOJicon@2x.png"; sourceTree = "<group>"; };
 		D89346F817AA7E7F00FF20DD /* GOJicon@x1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GOJicon@x1.png"; path = "appimages/GOJicon@x1.png"; sourceTree = "<group>"; };
+		D89346FB17ABAEB500FF20DD /* GroupQRView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GroupQRView.xib; path = SnapGab/GroupQRView.xib; sourceTree = "<group>"; };
 		D894C177177AE505001805EF /* CustomSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSegue.h; sourceTree = "<group>"; };
 		D894C178177AE505001805EF /* CustomSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSegue.m; sourceTree = "<group>"; };
 		D894C17C177D8556001805EF /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = SOURCE_ROOT; };
@@ -680,7 +680,7 @@
 				48D58FDD1704A07D002ACF3E /* GroupsFlowViewController.mm */,
 				48D58FE51704A119002ACF3E /* GroupQRView.h */,
 				48D58FE61704A119002ACF3E /* GroupQRView.m */,
-				48D58FE71704A119002ACF3E /* GroupQRView.xib */,
+				D89346FB17ABAEB500FF20DD /* GroupQRView.xib */,
 				D8F4BE0B174FEBB900C4E93A /* ThemeViewController.h */,
 				D8F4BE0C174FEBB900C4E93A /* ThemeViewController.m */,
 				D8BF848C1757BC85007F642E /* ThemePreviewViewController.h */,
@@ -1128,7 +1128,6 @@
 				48F6278316D6442A0034A5A7 /* close_gold.png in Resources */,
 				48F6278416D6442A0034A5A7 /* rotate.png in Resources */,
 				48F6278516D6442A0034A5A7 /* scale.png in Resources */,
-				48D58FE91704A119002ACF3E /* GroupQRView.xib in Resources */,
 				48D58FF31704A23D002ACF3E /* groupDecoration.png in Resources */,
 				48D58FF41704A23D002ACF3E /* groupDecoration@2x.png in Resources */,
 				D852C55417134A62004C408E /* thumb.png in Resources */,
@@ -1161,6 +1160,7 @@
 				D89346F517AA7B8300FF20DD /* background@x5.png in Resources */,
 				D89346F717AA7D3600FF20DD /* GOJicon@2x.png in Resources */,
 				D89346F917AA7E7F00FF20DD /* GOJicon@x1.png in Resources */,
+				D89346FC17ABAEB600FF20DD /* GroupQRView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -262,7 +262,8 @@ NSString* leaveGroupHashId;
 
 -(void)submitRequestPostSetCurrentGroup:(int)userId andNewGroupHashId:(NSString*)hashId
 {
-    if(userId>0 && hashId!=nil && ![hashId isEqualToString:@""])
+    //if(userId>0 && hashId!=nil && ![hashId isEqualToString:@""])
+    if(userId>0)
     {
         userRequestType = kPostSetCurrentGroup;
         
@@ -622,6 +623,10 @@ NSString* leaveGroupHashId;
         if([responseString isEqualToString:@"true"])
         {
             [self submitSQLRequestLeaveGroup:leaveGroupHashId];
+            
+            if ([self.delegate respondsToSelector:@selector(UserLoader:didLeaveGroup:)])
+                [self.delegate UserLoader:self didLeaveGroup:responseString];
+            
         }
     }
     

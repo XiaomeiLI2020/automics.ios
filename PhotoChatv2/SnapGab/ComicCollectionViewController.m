@@ -578,7 +578,7 @@ NSString *kComicCellID = @"COMIC_CELL";
 
     if([[segue identifier] isEqualToString:@"comicstomenu1"])
     {
-        NSLog(@"prepareForSegue.comicstomenu1");
+        //NSLog(@"prepareForSegue.comicstomenu1");
         //[self cleanupData];
         //[self.collectionView removeFromSuperview];
         

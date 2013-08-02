@@ -266,6 +266,10 @@ NSString *mCellID = @"GROUP_CELL";
         
         [userLoader submitSQLRequestUpdateCurrentGroup:currentUser.currentGroup.hashId andUserId:currentUser.userId];
         
+        GroupLoader* groupLoader = [[GroupLoader alloc] init];
+        groupLoader.delegate = self;
+        [groupLoader submitRequestGetGroupForHashId:currentUser.currentGroup.hashId];
+        
     }
     
 }
@@ -559,7 +563,7 @@ failure:^(NSError *error) {
 -(void)GroupLoader:(GroupLoader *)groupLoader didLoadGroup:(Group*)group{
     if(group!=nil)
     {
-        //NSLog(@"LoginViewController.group.name=%@", group.name);
+        NSLog(@"GroupJoinViewController.group.name=%@", group.name);
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSString* currentGroupHash = [userDefaults objectForKey:@"current_group_hash"];
         int userId = [[userDefaults objectForKey:@"user_id"] intValue];
