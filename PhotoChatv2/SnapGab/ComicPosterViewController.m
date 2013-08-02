@@ -147,7 +147,7 @@
     {
         UIAlertView *alert = [[UIAlertView alloc]
                               initWithTitle: @"Upload Failure"
-                              message: @"Please upload when network connection is available."
+                              message: @"Data will be uploaded when network connection is available."
                               delegate:self
                               cancelButtonTitle:@"OK"
                               otherButtonTitles:nil];
