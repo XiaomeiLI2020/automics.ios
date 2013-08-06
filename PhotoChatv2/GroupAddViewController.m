@@ -102,6 +102,8 @@ BOOL alertShown;
         //Create a new group
         Group* group = [[Group alloc] init];
         group.name = groupName;
+        group.theme = [[Theme alloc] init];
+        group.theme.themeId = 2;
         [groupLoader submitRequestPostGroup:group];
         
         if(!alertShown)
@@ -166,7 +168,7 @@ BOOL alertShown;
 */
 #pragma mark - GroupLoaderDelegate
 -(void)GroupLoader:(GroupLoader*)groupLoader didSaveGroup:(Group*)group{
-    NSLog(@"Group saved=%@ ", group.hashId);
+    NSLog(@"GroupAddViewController.didSaveGroup. Group saved=%@ ", group.hashId);
     if(group!=nil)
     {
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -179,7 +181,7 @@ BOOL alertShown;
 }
 
 -(void)GroupLoader:(GroupLoader*)groupLoader didJoinGroup:(Group*)group{
-    NSLog(@"Became group member");
+    NSLog(@"GroupAddViewController.didJoinGroup.Became group member");
 }
 
 #pragma mark - UIAlertViewDelegate

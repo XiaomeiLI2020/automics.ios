@@ -240,9 +240,9 @@ sqlite3* database;
             char *errMsg;
             const char *groups_stmt = "CREATE TABLE IF NOT EXISTS GROUPS (GROUPHASHID TEXT PRIMARY KEY, GROUPID INTEGER, NAME TEXT, THEMEID INTEGER, ORGANISATIONID INTEGER, PANELSDOWNLOADED INTEGER, PHOTOSDOWNLOADED INTEGER, COMICSDOWNLOADED INTEGER)";
             
-            const char *organisations_stmt = "CREATE TABLE IF NOT EXISTS ORGANISATIONS (ORGANISATIONID INTEGER PRIMARY KEY, NAME TEXT)";
+            const char *organisations_stmt = "CREATE TABLE IF NOT EXISTS ORGANISATIONS (ORGANISATIONID INTEGER PRIMARY KEY, NAME TEXT, NUMTHEMES INTEGER)";
             
-            const char *themes_stmt = "CREATE TABLE IF NOT EXISTS THEMES (THEMEID INTEGER PRIMARY KEY, ORGANISATIONID INTEGER, NAME TEXT)";
+            const char *themes_stmt = "CREATE TABLE IF NOT EXISTS THEMES (THEMEID INTEGER PRIMARY KEY, ORGANISATIONID INTEGER, NAME TEXT, RESOURCESDOWNLOADED INTEGER)";
             
             const char *panels_stmt = "CREATE TABLE IF NOT EXISTS PANELS (PANELID INTEGER, GROUPHASHID TEXT,  PHOTOID INTEGER, PHOTOURL TEXT, NUMPLACEMENTS REAL, NUMANNOTATIONS REAL, PRIMARY KEY(PANELID, GROUPHASHID))";
             
@@ -341,6 +341,85 @@ sqlite3* database;
     
 }//end submitSQLRequestCreateTablesForApp
 
+-(int)submitSQLRequestCheckResourcesDownloadedForTheme:(int)themeId
+{
+    __block int rowCount=0;
+    //NSLog(@"DataLoader. submitSQLRequestCheckPanelsDownloadedForGroup. databaseUpdating=%d, groupHashId=%@", databaseUpdating, groupHashId);
+    if(databaseUpdating)
+    {
+        dispatch_async([self dispatchQueue], ^(void) {
+            
+            //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
+            {
+                //NSString *querySQL = [NSString stringWithFormat: @"SELECT address, phone FROM contacts WHERE name=\"%@\"", name.text];
+                NSString *retrieveSQL = [NSString stringWithFormat: @"select resourcesdownloaded from themes where themeId=%i", themeId];
+                //NSLog(@"submitSQLRequestCheckPanelsDownloadedForGroup.retrieveSQL=%@", retrieveSQL);
+                const char* sqlStatement = [retrieveSQL UTF8String];
+                sqlite3_stmt *statement;
+                
+                if( sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK )
+                {
+                    //Loop through all the returned rows (should be just one)
+                    //if(sqlite3_step(statement)!=SQLITE_ROW)
+                    //    NSLog(@"Rowcount is %d",rowCount);
+                    
+                    while(sqlite3_step(statement) == SQLITE_ROW )
+                    {
+                        rowCount = sqlite3_column_int(statement, 0);
+                        //NSLog(@"submitSQLRequestCheckPanelsDownloadedForGroup. Rowcount is %d",rowCount);
+                    }
+                }
+                else
+                {
+                    NSLog( @"submitSQLRequestCheckResourcesDownloadedForTheme.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
+                }
+                
+                // Finalize and close database.
+                sqlite3_finalize(statement);
+                //sqlite3_close(database);
+            }//end if(sqlite3_open([databasePath UTF8String], &database) == SQLITE_OK)
+            
+        });
+        
+    }//end if
+    else{
+        //dispatch_async([self dispatchQueue], ^(void) {
+        
+        //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
+        {
+            //NSString *querySQL = [NSString stringWithFormat: @"SELECT address, phone FROM contacts WHERE name=\"%@\"", name.text];
+            NSString *retrieveSQL = [NSString stringWithFormat: @"select resourcesdownloaded from themes where themeId=%i", themeId];
+            //NSLog(@"submitSQLRequestCheckPanelsDownloadedForGroup.retrieveSQL=%@", retrieveSQL);
+            const char* sqlStatement = [retrieveSQL UTF8String];
+            sqlite3_stmt *statement;
+            
+            if( sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK )
+            {
+                //Loop through all the returned rows (should be just one)
+                //if(sqlite3_step(statement)!=SQLITE_ROW)
+                //    NSLog(@"Rowcount is %d",rowCount);
+                while(sqlite3_step(statement) == SQLITE_ROW )
+                {
+                    rowCount = sqlite3_column_int(statement, 0);
+                    //NSLog(@"submitSQLRequestCheckPanelsDownloadedForGroup. Rowcount is %d",rowCount);
+                }
+            }
+            else
+            {
+                NSLog( @"submitSQLRequestCheckResourcesDownloadedForTheme.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
+            }
+            
+            // Finalize and close database.
+            sqlite3_finalize(statement);
+            //sqlite3_close(database);
+        }//end if(sqlite3_open([databasePath UTF8String], &database) == SQLITE_OK)
+        
+        //});
+        
+    }//end else
+    
+    return rowCount;
+}
 
 -(int)submitSQLRequestCheckPanelsDownloadedForGroup:(NSString*)groupHashId{
     
@@ -679,7 +758,7 @@ sqlite3* database;
             }
             else
             {
-                NSLog( @"submitSQLRequestCheckResourceExists.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
+                NSLog( @"submitSQLRequestCheckResourceExistsLocal.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
             }
             
             // Finalize and close database.
@@ -1910,7 +1989,7 @@ sqlite3* database;
         }
         else
         {
-            NSLog( @"Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
+            NSLog( @"submitSQLRequestCheckThemeExists.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
         }
         
         // Finalize and close database.
@@ -1920,6 +1999,192 @@ sqlite3* database;
     
     return rowCount;
 }
+
+-(int)submitSQLRequestCheckThemeExistsLocal:(int)themeId{
+    int rowCount=0;
+    
+    //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
+    {
+        NSString *insertSQL = [NSString stringWithFormat: @"select Count(*) from resources where themeId=%i", themeId];
+        //NSLog(@"insertSQL=%@", insertSQL);
+        const char *sqlStatement = [insertSQL UTF8String];
+        
+        //const char* sqlStatement = "SELECT COUNT(*) FROM resources where themeId=%i";
+        sqlite3_stmt *statement;
+        
+        if( sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK )
+        {
+            //Loop through all the returned rows (should be just one)
+            while( sqlite3_step(statement) == SQLITE_ROW )
+            {
+                rowCount = sqlite3_column_int(statement, 0);
+                //NSLog(@"Rowcount is %d",rowCount);
+            }
+        }
+        else
+        {
+            NSLog( @"submitSQLRequestCheckThemeExists.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
+        }
+        
+        // Finalize and close database.
+        sqlite3_finalize(statement);
+        //sqlite3_close(database);
+    }//end if(sqlite3_open([databasePath UTF8String], &database) == SQLITE_OK)
+    
+    return rowCount;
+}
+
+
+
+-(void)submitSQLRequestSaveResources:(NSArray*)resources andThemeId:(int)themeId
+{
+    if(resources!=nil){
+        if([resources count]>0){
+            dispatch_async([self dispatchQueue], ^(void) {
+                databaseUpdating = YES;
+                //NSLog(@"submitSQLRequestSaveResources. [resources count]=%i, dataBaseUpdating=%d", [resources count], databaseUpdating);
+                for(int i=0; i<[resources count]; i++)
+                {
+                    Resource* resource = [resources objectAtIndex:i];
+                    if(resource!=nil)
+                    {
+                        sqlite3_stmt    *statement;
+                        //const char *dbpath = [databasePathStatic UTF8String];
+                        
+                        int resourceExists = [self submitSQLRequestCheckResourceExistsLocal:resource.resourceId];
+                        
+                        if(resourceExists==0)
+                        {
+                            //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
+                            {
+                                NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO resources(resourceid, themeId, TYPE, PHOTOURL, THUMBURL) VALUES(%i, %i, \"%@\",\"%@\",\"%@\")", resource.resourceId, themeId, resource.type, resource.imageURL, resource.thumbURL];
+                                NSLog(@"insertSQL=%@", insertSQL);
+                                const char *insert_stmt = [insertSQL UTF8String];
+                                /*
+                                 sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
+                                 if (sqlite3_step(statement) == SQLITE_DONE)
+                                 {
+                                 //NSLog(@"Resource added");
+                                 
+                                 }
+                                 */
+                                if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
+                                {
+                                    while (sqlite3_step(statement) == SQLITE_DONE)
+                                    {
+                                        sqlite3_column_text(statement, 0);
+                                        
+                                    } //else
+                                }
+                                else {
+                                    //NSLog(@"Failed to add resource");
+                                }
+                                sqlite3_finalize(statement);
+                                //sqlite3_close(database);
+                            }
+                            
+                        }//end if(resourceExists==0)
+                    }//end if(resource!=nil)
+                    //[self submitSQLRequestSaveResource:resource.resourceId andThemeId:1 andType:resource.type andImageURL:resource.imageURL andThumbURL:resource.thumbURL];
+                }//end for(int i=0; i<[resources count]; i++)
+                databaseUpdating = NO;
+            });
+            
+            
+        }//end if([resources count]>0)
+    }//end if(resources!=nil)
+    
+}
+
+-(void)submitSQLRequestSaveAllResources:(NSArray*)resources andThemeId:(int)themeId
+{
+    if(resources!=nil){
+        if([resources count]>0){
+            dispatch_async([self dispatchQueue], ^(void) {
+                
+                sqlite3_stmt    *statement;
+                databaseUpdating = YES;
+                //NSLog(@"submitSQLRequestSaveResources. [resources count]=%i, dataBaseUpdating=%d", [resources count], databaseUpdating);
+                for(int i=0; i<[resources count]; i++)
+                {
+                    Resource* resource = [resources objectAtIndex:i];
+                    if(resource!=nil)
+                    {
+
+                        //const char *dbpath = [databasePathStatic UTF8String];
+                        
+                        int resourceExists = [self submitSQLRequestCheckResourceExistsLocal:resource.resourceId];
+                        
+                        if(resourceExists==0)
+                        {
+                            //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
+                            {
+                                NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO resources(resourceid, themeId, TYPE, PHOTOURL, THUMBURL) VALUES(%i, %i, \"%@\",\"%@\",\"%@\")", resource.resourceId, themeId, resource.type, resource.imageURL, resource.thumbURL];
+                                //NSLog(@"insertSQL=%@", insertSQL);
+                                const char *insert_stmt = [insertSQL UTF8String];
+                                /*
+                                 sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
+                                 if (sqlite3_step(statement) == SQLITE_DONE)
+                                 {
+                                 //NSLog(@"Resource added");
+                                 
+                                 }
+                                 */
+                                if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
+                                {
+                                    while (sqlite3_step(statement) == SQLITE_DONE)
+                                    {
+                                        sqlite3_column_text(statement, 0);
+                                        
+                                    } //else
+                                }
+                                else {
+                                    //NSLog(@"Failed to add resource");
+                                }
+                                sqlite3_finalize(statement);
+                                //sqlite3_close(database);
+                            }
+                            
+                        }//end if(resourceExists==0)
+                    }//end if(resource!=nil)
+                    //[self submitSQLRequestSaveResource:resource.resourceId andThemeId:1 andType:resource.type andImageURL:resource.imageURL andThumbURL:resource.thumbURL];
+                }//end for(int i=0; i<[resources count]; i++)
+                
+                NSString *insertSQL = [NSString stringWithFormat: @"update THEMES set resourcesdownLoaded=%i where themeId=%i", 1, themeId];
+                //NSLog(@"insertSQL=%@", insertSQL);
+                const char *insert_stmt = [insertSQL UTF8String];
+                /*
+                 sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
+                 if (sqlite3_step(statement) == SQLITE_DONE)
+                 {
+                 //NSLog(@"Panel updated");
+                 
+                 }
+                 */
+                if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
+                {
+                    while (sqlite3_step(statement) == SQLITE_DONE)
+                    {
+                        sqlite3_column_text(statement, 0);
+                        
+                    } //else
+                }
+                else {
+                    NSLog(@"submitSQLRequestSaveAllResources. Failed to update group.panelsDownloaded. Error is:  %s", sqlite3_errmsg(database));
+                }
+                sqlite3_finalize(statement);
+                //sqlite3_close(database);
+
+                databaseUpdating = NO;
+            });
+            
+            
+        }//end if([resources count]>0)
+    }//end if(resources!=nil)
+    
+}
+
+
 
 -(void)submitSQLRequestSaveResources:(NSArray*)resources{
     if(resources!=nil){
@@ -2377,15 +2642,20 @@ sqlite3* database;
                 {
                     sqlite3_stmt    *statement;
                     
+                    //Check if the group already exists in the database
                     int groupExists = [self submitSQLRequestCheckGroupExistsLocal:group.hashId];
                     if(groupExists==0)
                     {
-                        
-                        
                         //const char *dbpath = [databasePathStatic UTF8String];
                         //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
                         {
                             //const char *groups_stmt = "CREATE TABLE IF NOT EXISTS GROUPS (GROUPID INTEGER PRIMARY KEY, NAME TEXT, GROUPHASHID TEXT, THEMEID INTEGER, ORGANISATIONID INTEGER)";
+                            
+                            if(group.theme== nil || group.theme.themeId<1)
+                            {
+                                group.theme = [[Theme alloc] init];
+                                group.theme.themeId = 1;
+                            }
                             
                             NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO GROUPS (GROUPHASHID, GROUPID, NAME,  THEMEID, PANELSDOWNLOADED, PHOTOSDOWNLOADED, COMICSDOWNLOADED) VALUES (\"%@\",\"%i\",\"%@\",\"%i\", \"%i\", \"%i\", \"%i\")", group.hashId, group.groupId, group.name, group.theme.themeId, 0, 0, 0];
                             //NSLog(@"submitSQLRequestSaveGroups.insertSQL=%@", insertSQL);
@@ -3536,9 +3806,153 @@ sqlite3* database;
     });
 }
 
+-(void)submitSQLRequestSaveOrganisations:(NSArray*)organisations
+{
+    dispatch_async([self dispatchQueue], ^(void) {
+        
+        if(organisations!=nil && [organisations count]>0)
+        {
+            databaseUpdating = YES;
+            for(int i=0; i<[organisations count]; i++)
+            {
+                Organisation* organisation = [organisations objectAtIndex:i];
+                if(organisation!=nil && organisation.organisationId>0)
+                {
+                    sqlite3_stmt    *statement;
+                    //const char *dbpath = [databasePathStatic UTF8String];
+                    
+                    int organisationExists = [ self submitSQLRequestCheckOrganisationExistsLocal:organisation.organisationId];
+                    
+                    if(organisationExists==0)
+                    {
+                        //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
+                        {
+                            int numThemes = 0;
+                            if(organisation.themes!=nil)
+                            {
+                                numThemes = [organisation.themes count];
+                            }
+                            
+                            NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO organisations(organisationid, name, numthemes) VALUES(%i, \"%@\", %i)", organisation.organisationId, organisation.name, numThemes];
+                            //NSLog(@"insertSQL=%@", insertSQL);
+                            const char *insert_stmt = [insertSQL UTF8String];
+                            /*
+                             sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
+                             if (sqlite3_step(statement) == SQLITE_DONE)
+                             {
+                             //NSLog(@"Resource added");
+                             
+                             }
+                             */
+                            if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
+                            {
+                                while (sqlite3_step(statement) == SQLITE_DONE)
+                                {
+                                    sqlite3_column_text(statement, 0);
+                                    
+                                } //else
+                            }
+                            else {
+                                //NSLog(@"Failed to add resource");
+                            }
+                            sqlite3_finalize(statement);
+                            //sqlite3_close(database);
+                            
+                            
+                            if(numThemes>0)
+                            {
+                                for(int i=0; i <numThemes;i++)
+                                {
+                                    Theme* theme = [organisation.themes objectAtIndex:i];
+                                    if(theme!=nil)
+                                    {
+                                        int themeExists = [self submitSQLRequestCheckThemeExistsLocal:theme.themeId];
+                                        if(themeExists==0)
+                                        {
+                                            NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO themes(themeId, organisationid, name, resourcesdownloaded) VALUES(%i, %i, \"%@\", %i)", theme.themeId, organisation.organisationId, theme.name,0];
+                                            //NSLog(@"insertSQL=%@", insertSQL);
+                                            const char *insert_stmt = [insertSQL UTF8String];
+                                            /*
+                                             sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
+                                             if (sqlite3_step(statement) == SQLITE_DONE)
+                                             {
+                                             //NSLog(@"Resource added");
+                                             
+                                             }
+                                             */
+                                            if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
+                                            {
+                                                while (sqlite3_step(statement) == SQLITE_DONE)
+                                                {
+                                                    sqlite3_column_text(statement, 0);
+                                                    
+                                                } //else
+                                            }
+                                            else {
+                                                //NSLog(@"Failed to add resource");
+                                            }
+                                            sqlite3_finalize(statement);
+                                            //sqlite3_close(database);
+                                            
+                                        }//end if(themeExists==0)
+                                    }//end if(theme!=nil)
+                                }//end for(int i=0; i <numThemes;i++)
+                            }//end if(numThemes>0)
+                        }
+                        
+                    }//end if(organisationExists==0)
+                }//end if(organisation!=nil && organisation.organisationId>0)
+                
+            }//end for(int i=0; i<[organisations count]; i++)
+            databaseUpdating = NO;
+            
+        }//end if(organisations!=nil && [organisations count]>0)
+    });
+    
+  
+}
+
+-(int)submitSQLRequestCheckOrganisationExistsLocal:(int)organisationId{
+    __block int rowCount=0;
+    
+    //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
+    {
+        //NSString *querySQL = [NSString stringWithFormat: @"SELECT address, phone FROM contacts WHERE name=\"%@\"", name.text];
+        NSString *retrieveSQL = [NSString stringWithFormat: @"select count(*) from organisations where organisationId=%i", organisationId];
+        //NSLog(@"submitSQLRequestCheckPanelsDownloadedForGroup.retrieveSQL=%@", retrieveSQL);
+        const char* sqlStatement = [retrieveSQL UTF8String];
+        sqlite3_stmt *statement;
+        
+        if( sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK )
+        {
+            //Loop through all the returned rows (should be just one)
+            //if(sqlite3_step(statement)!=SQLITE_ROW)
+            //    NSLog(@"Rowcount is %d",rowCount);
+            
+            while(sqlite3_step(statement) == SQLITE_ROW )
+            {
+                rowCount = sqlite3_column_int(statement, 0);
+                //NSLog(@"submitSQLRequestCheckPanelsDownloadedForGroup. Rowcount is %d",rowCount);
+            }
+        }
+        else
+        {
+            NSLog( @"submitSQLRequestCheckOrganisationExistsLocal.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
+        }
+        
+        // Finalize and close database.
+        sqlite3_finalize(statement);
+        //sqlite3_close(database);
+    }//end else
+    return rowCount;
+}
+
+
+
+
 -(int)submitSQLRequestCheckUserExistsLocal:(int)userId{
     __block int rowCount=0;
-        
+    
         //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
         {
             //NSString *querySQL = [NSString stringWithFormat: @"SELECT address, phone FROM contacts WHERE name=\"%@\"", name.text];

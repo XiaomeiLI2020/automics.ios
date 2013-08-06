@@ -13,6 +13,7 @@
 
 @interface ResourceLoader : DataLoader
 @property id obj;
+@property int currentThemeId;
 extern int const kGetThemeResources;
 extern int const kGetResource;
 

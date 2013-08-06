@@ -22,6 +22,8 @@
 @synthesize currentGroupLabel;
 @synthesize groupsLabel;
 @synthesize menuButton;
+@synthesize groupLoader;
+@synthesize userLoader;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -148,6 +150,12 @@
     }
     else{
         
+        /*
+        groupLoader = [[GroupLoader alloc] init];
+        groupLoader.delegate = self;
+        [groupLoader submitRequestGetGroupForHashId:groupHashId];
+        */
+        
         self.currentGroupLabel.text= [NSString stringWithFormat: @"Current group: %@", groupName];
         self.currentGroupLabel.numberOfLines = 0; //will wrap text in new line
         [self.currentGroupLabel sizeToFit];
@@ -169,6 +177,30 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark- GroupLoaderDelegate
+
+-(void)GroupLoader:(GroupLoader *)groupLoader didLoadGroup:(Group*)group{
+    if(group!=nil)
+    {
+        NSLog(@"GroupMainViewController.group.name=%@, group.theme.themeId=%i", group.name, group.theme.themeId);
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSString* currentGroupHash = [userDefaults objectForKey:@"current_group_hash"];
+        int userId = [[userDefaults objectForKey:@"user_id"] intValue];
+        [userDefaults setObject:group.name forKey:@"current_group_name"];
+        //[userDefaults setObject:[NSNumber numberWithInt:group.theme.themeId] forKey:@"current_theme_id"];
+        if(group.theme.themeId<1)
+            [userDefaults setObject:[NSNumber numberWithInt:1] forKey:@"current_theme_id"];
+        else
+            [userDefaults setObject:[NSNumber numberWithInt:group.theme.themeId] forKey:@"current_theme_id"];
+        
+        [userDefaults synchronize];
+        
+        userLoader = [[UserLoader alloc] init];
+        userLoader.delegate = self;
+        [userLoader submitSQLRequestUpdateCurrentGroup:currentGroupHash andUserId:userId];
+    }
 }
 
 @end

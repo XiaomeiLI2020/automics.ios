@@ -293,7 +293,7 @@ NSString* leaveGroupHashId;
         userRequestType = kPostChangeGroup;
         
         NSString *userURL = [APIWrapper getURLForPostUserWithId:userId];
-        NSLog(@"submitRequestPostChangeGroup.userURL=%@", userURL);
+        //NSLog(@"submitRequestPostChangeGroup.userURL=%@", userURL);
         NSString* authenticatedUserURL = [self authenticatedGetURL:userURL];
         NSLog(@"submitRequestPostChangeGroup.authenticatedUserURL=%@", authenticatedUserURL);
         NSURL* url = [NSURL URLWithString:authenticatedUserURL];
@@ -314,7 +314,6 @@ NSString* leaveGroupHashId;
 {
     
     NSError *requestError;
-    
     NSArray *objects = [NSArray arrayWithObjects:groupHashId, nil];
     NSArray *keys = [NSArray arrayWithObjects:@"current_group_hash", nil];
     NSDictionary *questionDict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
@@ -324,7 +323,6 @@ NSString* leaveGroupHashId;
     
     // setting the body of the post to the reqeust
     [urlRequest setHTTPBody:jsonRequestData];
-    
 }
 
 

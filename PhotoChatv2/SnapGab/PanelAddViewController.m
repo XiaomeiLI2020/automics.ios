@@ -280,7 +280,11 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     //Add speechbubbles to thumbnail scrollview
     [self loadSpeechBubbles];
     
-    [resourceLoader submitRequestGetResourcesForTheme:1];
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    int currentThemeId= [[prefs objectForKey:@"current_theme_id"] integerValue];
+    NSLog(@"current_theme_id=%i", currentThemeId);
+    
+    [resourceLoader submitRequestGetResourcesForTheme:currentThemeId];
     
     [self registerForKeyboardNotifications];
     
@@ -800,15 +804,15 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
         BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
         
+        //NSLog(@"currentFile=%@ exists=%d", currentFile, fileExists);
         if(!fileExists)
         {
             UIImageView *resourceImageView = [[UIImageView alloc] init];
-            //[imageView setImageWithURL:[NSURL URLWithString:resource.thumbURL] placeholderImage:nil];
-            
-            [resourceImageView setImageWithURL:[NSURL URLWithString:resource.imageURL]
-                       placeholderImage:nil
+            //[resourceImageView setImageWithURL:[NSURL URLWithString:resource.imageURL] placeholderImage:nil];
+
+            [resourceImageView setImageWithURL:[NSURL URLWithString:[resource.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:nil
                                 success:^(UIImage *imageDownloaded) {
-                                    //NSLog(@"image successfully downloaded.");
+                                    //NSLog(@"image successfully downloaded.%@",resource.imageURL);
                                     
                                     [styleButton setImage:imageDownloaded forState:UIControlStateNormal];
                                     
@@ -932,7 +936,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
     if(resources!=nil)
     {
-        NSLog(@"didLoadResources.[resources count]=%i", [resources count]);
+        NSLog(@"PanelAddViewController.didLoadResources.[resources count]=%i", [resources count]);
         
         if([resources count]>0)
         {
@@ -953,6 +957,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         [thumbnailScrollView layoutAssets];
         //[self loadSpeechBubbles];
         
+         NSLog(@"PanelAddViewController.didLoadResources.[ decorator resources count]=%i", [resources count]);
         if([resources count]>0)
         {
             for(Resource* resource in resources)

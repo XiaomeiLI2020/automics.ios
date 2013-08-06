@@ -19,12 +19,16 @@
 
 GroupLoader* groupLoader;
 
+
 @implementation WelcomeViewController
 @synthesize imageButton;
 @synthesize comicCollectionButton;
 @synthesize groupButton;
 @synthesize logoutButton;
 @synthesize logoImageView;
+@synthesize organisationLoader;
+@synthesize organisations;
+@synthesize organisationCounter;
 
 BOOL alertShown;
 
@@ -43,6 +47,12 @@ BOOL alertShown;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    NSLog(@"WelcomeViewController.viewDidLoad");
+    organisationLoader = [[OrganisationLoader alloc] init];
+    organisationLoader.delegate = self;
+    [organisationLoader submitRequestGetOrganisations];
+    organisationCounter = 0;
+    organisations = [[NSArray alloc] init];
 
     UIImageView *backgroundImage;
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -74,7 +84,7 @@ BOOL alertShown;
     [logoutButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     logoutButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
-    imageButton.frame = CGRectMake(130.0, 150.0, 80.0, 80.0);
+    imageButton.frame = CGRectMake(125.0, 150.0, 80.0, 80.0);
     imageButton.clipsToBounds = YES;
     imageButton.layer.cornerRadius = 40;//half of the width
     imageButton.layer.borderColor=[UIColor blackColor].CGColor;
@@ -83,7 +93,7 @@ BOOL alertShown;
     imageButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
 
-    comicCollectionButton.frame = CGRectMake(130.0, 240.0, 80.0, 80.0);
+    comicCollectionButton.frame = CGRectMake(125.0, 240.0, 80.0, 80.0);
     comicCollectionButton.clipsToBounds = YES;
     comicCollectionButton.layer.cornerRadius = 40;//half of the width
     comicCollectionButton.layer.borderColor=[UIColor blackColor].CGColor;
@@ -91,7 +101,7 @@ BOOL alertShown;
     [comicCollectionButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:26]];
     comicCollectionButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
-    groupButton.frame = CGRectMake(130.0, 330.0, 80.0, 80.0);
+    groupButton.frame = CGRectMake(125.0, 330.0, 80.0, 80.0);
     groupButton.clipsToBounds = YES;
     groupButton.layer.cornerRadius = 40;//half of the width
     groupButton.layer.borderColor=[UIColor blackColor].CGColor;
@@ -224,6 +234,14 @@ BOOL alertShown;
     
 }
 
+-(NSArray*)arrayByReplacingObject:(NSArray*)array andObjectIndex:(int)index andNewObject:(Organisation*)organisation
+{
+    NSMutableArray *newArray = [NSMutableArray arrayWithArray:array];
+    [newArray replaceObjectAtIndex:index withObject:organisation];
+    //[newArray addObject:object];
+    return [NSArray arrayWithArray:newArray];
+}
+
 
 /*
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -315,6 +333,66 @@ BOOL alertShown;
     }//end if
 }//end alertView
 
+#pragma mark - OrganisationLoaderDelegate
+-(void)OrganisationLoader:(OrganisationLoader*)organisationLoader didLoadOrganisations:(NSArray*)organisationsLocal{
+    NSLog(@"WelcomeViewController.didLoadOrganisations.[organisations count]=%i", [organisationsLocal count]);
+    self.organisations = organisationsLocal;
+
+    Organisation* organisation = [self.organisations objectAtIndex:0];
+    if(organisation!=nil)
+    {
+        //NSLog(@"organisation.organisationId=%i, name=%@", organisation.organisationId, organisation.name);
+        if(organisation.organisationId>0)
+        {
+            //[self.organisationLoader submitRequestGetThemesForOrganisation:organisation.organisationId];
+            [self.organisationLoader submitRequestGetOrganisation:organisation.organisationId];
+        }
+    }//end if(organisation!=nil)
+}
+-(void)OrganisationLoader:(OrganisationLoader*)organisationLoader didLoadOrganisation:(Organisation*)organisation{
+    if(organisation!=nil)
+    {
+        self.organisations = [self arrayByReplacingObject:self.organisations andObjectIndex:organisationCounter andNewObject:organisation];
+        NSLog(@"WelcomeViewController.didLoadOrganisation. id=%i, name=%@, [themes count]=%i", organisation.organisationId, organisation.name, [organisation.themes count]);
+        /*
+        if([organisation.themes count]>0)
+        {
+            for(int i=0; i<[organisation.themes count]; i++)
+            {
+                Theme* theme = [organisation.themes objectAtIndex:i];
+                if(theme!=nil)
+                {
+                    NSLog(@"theme.name=%@, theme.id=%i", theme.name, theme.themeId);
+                }
+            }
+
+        }
+        */
+        
+        organisationCounter++;
+        if(organisationCounter<[self.organisations count])
+        {
+            Organisation* organisation = [organisations objectAtIndex:organisationCounter];
+            if(organisation!=nil)
+            {
+                //NSLog(@"organisation.organisationId=%i, name=%@", organisation.organisationId, organisation.name);
+                if(organisation.organisationId>0)
+                {
+                    [self.organisationLoader submitRequestGetOrganisation:organisation.organisationId];
+                }//end if
+            }//end if(organisation!=nil)
+
+        }//end if(organisationCounter<[self.organisations count])
+        else if(organisationCounter==[self.organisations count])
+        {
+            //All organisations with themes downloaded
+            [self.organisationLoader submitSQLRequestSaveOrganisations:self.organisations];
+            
+        }//end else
+        
+    }//end if(organisation!=nil)
+
+}
 
 
 @end

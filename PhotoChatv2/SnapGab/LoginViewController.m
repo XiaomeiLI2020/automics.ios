@@ -454,9 +454,13 @@
 -(void)GroupLoader:(GroupLoader*)loader didLoadGroup:(Group *)group{
     if(group!=nil)
     {
-        //NSLog(@"LoginViewController.group.name=%@", group.name);
+        //NSLog(@"LoginViewController.group.name=%@, group.theme.themeId=%i", group.name, group.theme.themeId);
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:group.name forKey:@"current_group_name"];
+        if(group.theme.themeId<1)
+            [userDefaults setObject:[NSNumber numberWithInt:1] forKey:@"current_theme_id"];
+        else
+            [userDefaults setObject:[NSNumber numberWithInt:group.theme.themeId] forKey:@"current_theme_id"];
         [userDefaults synchronize];
     }
 }

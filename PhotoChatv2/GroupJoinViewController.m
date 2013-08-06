@@ -277,7 +277,7 @@ NSString *mCellID = @"GROUP_CELL";
 -(void)UserLoader:(UserLoader*)userLoader didChangeGroup:(User*)currentUser{
     if(currentUser!=nil)
     {
-        NSLog(@"GroupJoinViewController.didChangeGroup.currentUser.userId=%i", currentUser.userId);
+        //NSLog(@"GroupJoinViewController.didChangeGroup.currentUser.userId=%i", currentUser.userId);
         if(currentUser.currentGroup!=nil)
         {
             NSLog(@"GroupJoinViewController.didChangeGroup.currentUser.currentGroup.hashId=%@", currentUser.currentGroup.hashId);
@@ -324,9 +324,10 @@ NSString *mCellID = @"GROUP_CELL";
         //NSLog(@"email=%@, password=%@", user.email, user.password);
         //[userLoader submitRequestPostGenerateSessionToken:user];
         
-        if(currentGroupHash==NULL)
+        if(currentGroupHash==nil)
             [userLoader submitRequestPostJoinGroup:sessionToken andGroupHashId:groupHashId];
-        else{
+        else if(currentGroupHash!=nil)
+        {
             
             if(userId>0)
                 [userLoader submitRequestPostChangeGroup:userId andNewGroupHashId:groupHashId];
@@ -548,11 +549,6 @@ failure:^(NSError *error) {
 }
 
 
-
-
-
-
-
 #pragma mark- GroupLoaderDelegate
 -(void)GroupLoader:(GroupLoader *)groupLoader didLoadGroups:(NSArray *)groups{
     //NSLog(@"[groups count]=%i", [groups count]);
@@ -563,11 +559,17 @@ failure:^(NSError *error) {
 -(void)GroupLoader:(GroupLoader *)groupLoader didLoadGroup:(Group*)group{
     if(group!=nil)
     {
-        NSLog(@"GroupJoinViewController.group.name=%@", group.name);
+        NSLog(@"GroupJoinViewController.group.name=%@, group.theme.themeId=%i", group.name, group.theme.themeId);
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSString* currentGroupHash = [userDefaults objectForKey:@"current_group_hash"];
         int userId = [[userDefaults objectForKey:@"user_id"] intValue];
         [userDefaults setObject:group.name forKey:@"current_group_name"];
+        //[userDefaults setObject:[NSNumber numberWithInt:group.theme.themeId] forKey:@"current_theme_id"];
+        if(group.theme.themeId<1)
+            [userDefaults setObject:[NSNumber numberWithInt:1] forKey:@"current_theme_id"];
+        else
+            [userDefaults setObject:[NSNumber numberWithInt:group.theme.themeId] forKey:@"current_theme_id"];
+        
         [userDefaults synchronize];
         
         [self.userLoader submitSQLRequestUpdateCurrentGroup:currentGroupHash andUserId:userId];

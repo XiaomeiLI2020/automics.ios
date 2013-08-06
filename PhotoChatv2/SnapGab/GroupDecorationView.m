@@ -18,7 +18,7 @@ const NSString *kViewKind = @"GroupDecorationView";
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        [self setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"groupDecoration"]]];
+        //[self setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"groupDecoration"]]];
     }
     return self;
 }

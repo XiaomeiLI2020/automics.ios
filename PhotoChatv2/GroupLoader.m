@@ -121,7 +121,7 @@ BOOL groupsDownloaded = NO;
     NSData* data = [NSJSONSerialization dataWithJSONObject:groupdict options:NSJSONWritingPrettyPrinted error:&error];
     
     NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"groupPostData: %@", responseString);
+    NSLog(@"setGroupPostData.groupPostData: %@", responseString);
     [urlRequest setHTTPBody:data];
 }
 
@@ -222,7 +222,7 @@ BOOL groupsDownloaded = NO;
     NSData* data = [NSJSONSerialization dataWithJSONObject:jsonDict options:NSJSONWritingPrettyPrinted error:&error];
 
     NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"groupPostData: %@", responseString);
+    NSLog(@"prepareRequestPostMemberShipForGroup.groupPostData: %@", responseString);
     [urlRequest setHTTPBody:data];
     
     //[self setGroupPostData:group InURLRequest:urlRequest];

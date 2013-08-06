@@ -244,13 +244,6 @@ int thumbnailsCompleted;
     lastContentOffSet= CGPointMake(0.0, 0.0);
 }
 
-/*
-- (void)viewWillAppear:(BOOL)animated
-{
-    NSLog(@"viewWillAppear.");
-    [super viewWillAppear:animated];
-}
- */
 
 - (void)viewDidLoad
 {
@@ -292,13 +285,13 @@ int thumbnailsCompleted;
     //[self initiateDataSet];
     //[self initiateScrollViews];
     
-
+    /*
     activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	activityIndicator.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
 	activityIndicator.center = self.view.center;
 	[self.view addSubview: activityIndicator];
     [activityIndicator startAnimating];
-
+*/
     //[panelsLoader submitRequestGetPanelsForGroup];
 
 
@@ -321,6 +314,12 @@ int thumbnailsCompleted;
     [self initiateDataSet];
     [self initiateScrollViews];
     
+    activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	activityIndicator.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
+	activityIndicator.center = self.view.center;
+	[self.view addSubview: activityIndicator];
+    [activityIndicator startAnimating];
+    
     [panelsLoader submitRequestGetPanelsForGroup];
 
 }
@@ -328,7 +327,7 @@ int thumbnailsCompleted;
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    //NSLog(@"viewDidAppear");
+    //NSLog(@"PanelViewController.viewDidAppear");
     [super viewDidAppear:YES];
  
     /*
@@ -958,6 +957,7 @@ int thumbnailsCompleted;
                 imageView.frame = CGRectMake(index*thumbnailWidth, 0, thumbnailWidth, thumbnailHeight);
                 //[imageView setImage:thumbnailPanel.thumbnail];
                 photoDownloaded = [[downloadedPhotos objectAtIndex:index] boolValue];
+                //NSLog(@"Panel without resources shown. index=%i", index);
                 if(!photoDownloaded)
                 {
                     //NSLog(@"Panel without resources shown. index=%i", index);
@@ -1694,7 +1694,7 @@ int thumbnailsCompleted;
     
     panels= panelsLocal;
     numPanels = [panelsLocal count];
-    //NSLog(@"didLoadPanels.numPanels=%i", numPanels);
+    NSLog(@"PanelViewController.didLoadPanels.numPanels=%i", numPanels);
     if(numPanels==0)
         [activityIndicator stopAnimating];
     
@@ -1705,6 +1705,7 @@ int thumbnailsCompleted;
     //[photoLoader submitRequestGetPhotosForGroup:@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12"];
     //NSLog(@"didLoadPanels.numPanels=%i", numPanels);
     //initialzed array to boolean NO. No panel downloaded yet.
+
     for (int i=0; i<numPanels;i++)
     {
         NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
@@ -1720,6 +1721,7 @@ int thumbnailsCompleted;
         [activityIndicator stopAnimating];
         
     }
+
 }
 
 -(void)PanelLoader:(PanelLoader *)loader didLoadRefreshedPanels:(NSArray*)panelsLocal{

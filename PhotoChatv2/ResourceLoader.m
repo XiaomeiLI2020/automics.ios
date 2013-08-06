@@ -30,6 +30,7 @@ BOOL resourcesLoaded = NO;
 @synthesize delegate;
 @synthesize resourceRequestType;
 @synthesize obj;
+@synthesize currentThemeId;
 
 
 +(void)setResourcesDownloaded:(BOOL)boolValue{
@@ -37,7 +38,32 @@ BOOL resourcesLoaded = NO;
 }
 
 -(void)submitRequestGetResourcesForTheme:(int)themeId{
-    NSLog(@"resourcesLoaded=%d", resourcesLoaded);
+    //NSLog(@"resourcesLoaded=%d", resourcesLoaded);
+    
+    self.currentThemeId = themeId;
+    int resourcesDownloaded = [self submitSQLRequestCheckResourcesDownloadedForTheme:themeId];
+    NSLog(@"resourcesDownloaded=%i", resourcesDownloaded);
+    if(resourcesDownloaded==0)
+    {
+        resourceRequestType = kGetThemeResources;
+        NSURLRequest* urlRequest = [self prepareResourceRequestForTheme:themeId];
+        [self submitResourceRequest:urlRequest];
+    }
+    else if(resourcesDownloaded==1)
+    {
+        NSArray* resources = [self convertResourcesSQLIntoResources:themeId];
+        //NSLog(@"submitRequestGetResourcesForTheme.Resources downloaded from the database.themeId=%i, [resources count]=%i", themeId, [resources count]);
+        if(resources!=nil && [resources count]>0)
+        {
+            //NSLog(@"submitRequestGetResourcesForTheme.[resources count]=%i", [resources count]);
+            if([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:)])
+                [self.delegate ResourceLoader:self didLoadResources:resources];
+            if ([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:forObject:)])
+                [self.delegate ResourceLoader:self didLoadResources:resources forObject:obj];
+        }//end if(resources!=nil && [resources count]>0)
+    }
+    
+    /*
     if(!resourcesLoaded)
     {
         resourceRequestType = kGetThemeResources;
@@ -60,6 +86,7 @@ BOOL resourcesLoaded = NO;
         }//end if(resources!=nil && [resources count]>0)
     }//end else if(resourcesLoaded)
 
+     */
 }
 
 -(void)submitRequestGetResourceWithId:(int)resourceId{
@@ -159,7 +186,9 @@ BOOL resourcesLoaded = NO;
         //Update numPanels
         numResources = [jsonArray count];
         NSArray* resources = [ResourceJSONHandler getResourcesFromResourcesJSON:jsonArray];
-        [self submitSQLRequestSaveResources:resources];
+        //[self submitSQLRequestSaveResources:resources];
+        //[self submitSQLRequestSaveResources:resources andThemeId:currentThemeId];
+        [self submitSQLRequestSaveAllResources:resources andThemeId:currentThemeId];
         //NSLog(@"handleGetResourcesForThemeResponse.#of resources =%i", [resources count]);
         if([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:)])
             [self.delegate ResourceLoader:self didLoadResources:resources];

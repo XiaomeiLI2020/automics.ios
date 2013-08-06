@@ -50,6 +50,12 @@ NSString *databasePathStatic;
 -(void)initiateSQL;
 -(void)submitSQLRequestCreateTablesForApp;
 
+//Organisations: Insert into database
+-(void)submitSQLRequestSaveOrganisations:(NSArray*)organisations;
+
+//Themes: Insert into database
+//-(void)submitSQLRequestSavePanelsForGroup:(NSArray*)panels andGroupHashId:(NSString*)groupHashId;
+
 //Panels: Insert into database
 -(void)submitSQLRequestSavePanelsForGroup:(NSArray*)panels andGroupHashId:(NSString*)groupHashId;
 //-(void)submitSQLRequestSaveAssetsForPanel:(int)panelId andPlacements:(NSArray*)placements andAnnotations:(NSArray*)annotations;
@@ -85,10 +91,13 @@ NSString *databasePathStatic;
 
 //Resources: Insert into database
 -(void)submitSQLRequestSaveResource:(int)resourceId andThemeId:(int)themeId andType:(NSString*)type andImageURL:(NSString*)imageURL andThumbURL:(NSString*)thumbURL;
--(void)submitSQLRequestSaveResources:(NSArray*)resources;
+//-(void)submitSQLRequestSaveResources:(NSArray*)resources;
+-(void)submitSQLRequestSaveResources:(NSArray*)resources andThemeId:(int)themeId;
+-(void)submitSQLRequestSaveAllResources:(NSArray*)resources andThemeId:(int)themeId;
 
 //Resources: Retrieve from database
 -(int)submitSQLRequestCheckThemeExists:(int)themeId;
+-(int)submitSQLRequestCheckResourcesDownloadedForTheme:(int)themeId;
 -(int)submitSQLRequestCheckResourceExists:(int)resourceId;
 -(NSArray*)convertResourcesSQLIntoResources:(int)themeId;
 -(NSArray*)convertResourceSQLIntoResource:(int)resourceId;

@@ -303,8 +303,11 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     //Add speechbubbles to thumbnail scrollview
     [self addSpeechBubblesToScrollView];
     
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    int currentThemeId= [[prefs objectForKey:@"current_theme_id"] integerValue];
+    //NSLog(@"current_theme_id=%i", currentThemeId);
     //Add resources to thumbnail scrollview
-    [resourceLoader submitRequestGetResourcesForTheme:1];
+    [resourceLoader submitRequestGetResourcesForTheme:currentThemeId];
     
     [self registerForKeyboardNotifications];
     
@@ -650,8 +653,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             UIImageView *resourceImageView = [[UIImageView alloc] init];
             //[imageView setImageWithURL:[NSURL URLWithString:resource.thumbURL] placeholderImage:nil];
             
-            [resourceImageView setImageWithURL:[NSURL URLWithString:resource.imageURL]
-                              placeholderImage:nil
+            [resourceImageView setImageWithURL:[NSURL URLWithString:[resource.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:nil
                                        success:^(UIImage *imageDownloaded) {
                                            //NSLog(@"image successfully downloaded.");
                                            

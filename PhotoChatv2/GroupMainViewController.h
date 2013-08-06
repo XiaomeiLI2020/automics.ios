@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GroupLoader.h"
+#import "UserLoader.h"
 
-@interface GroupMainViewController : UIViewController
+@interface GroupMainViewController : UIViewController <GroupLoaderDelegate, UserLoaderDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *groupsLabel;
 @property (weak, nonatomic) IBOutlet UIButton *inviteButton;
@@ -17,5 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *currentGroupLabel;
 @property (weak, nonatomic) IBOutlet UIButton *createButton;
 @property (weak, nonatomic) IBOutlet UIButton *menuButton;
+@property GroupLoader* groupLoader;
+@property UserLoader* userLoader;
 
 @end
