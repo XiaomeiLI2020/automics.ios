@@ -283,9 +283,10 @@ BOOL alertShown;
         [userDefaults setObject:nil forKey:@"session"];
         [userDefaults setObject:nil forKey:@"current_group_hash"];
         [userDefaults setObject:nil forKey:@"user_id"];
+        [userDefaults setObject:nil forKey:@"current_theme_id"];  
         [userDefaults synchronize];
         
-        [ResourceLoader setResourcesDownloaded:NO];
+        //[ResourceLoader setResourcesDownloaded:NO];
         
         NSError *err;
         NSString *docsDir;

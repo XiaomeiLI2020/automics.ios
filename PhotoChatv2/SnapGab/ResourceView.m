@@ -108,7 +108,7 @@ CGRect originalBounds;
         // Initialization code
         
         MAX_SIZE = 600.0;
-        MIN_SIZE = 90.0;
+        MIN_SIZE = 80.0;
         
         if(resourceSent!=nil)
         {
@@ -567,7 +567,7 @@ CGRect originalBounds;
         //self.scale = _imageView.bounds.size.width/originalWidth;
         self.scale = newDiagonal/originalDiagonal;
         
-        NSLog(@"MAX_SCALE=%f, MIN_SCALE=%f, _previousScale=%f, currentScale=%g, scaleStep=%f, self.scale=%f", MAX_SCALE, MIN_SCALE, _previousScale, currentScale, scaleStep, self.scale);
+        //NSLog(@"MAX_SCALE=%f, MIN_SCALE=%f, _previousScale=%f, currentScale=%g, scaleStep=%f, self.scale=%f", MAX_SCALE, MIN_SCALE, _previousScale, currentScale, scaleStep, self.scale);
 
     }
     

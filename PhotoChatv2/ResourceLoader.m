@@ -42,17 +42,17 @@ BOOL resourcesLoaded = NO;
     
     self.currentThemeId = themeId;
     int resourcesDownloaded = [self submitSQLRequestCheckResourcesDownloadedForTheme:themeId];
-    NSLog(@"resourcesDownloaded=%i", resourcesDownloaded);
+    NSLog(@"resourcesDownloaded=%i, self.currentThemeId=%i", resourcesDownloaded, self.currentThemeId);
     if(resourcesDownloaded==0)
     {
         resourceRequestType = kGetThemeResources;
-        NSURLRequest* urlRequest = [self prepareResourceRequestForTheme:themeId];
+        NSURLRequest* urlRequest = [self prepareResourceRequestForTheme:self.currentThemeId];
         [self submitResourceRequest:urlRequest];
     }
     else if(resourcesDownloaded==1)
     {
-        NSArray* resources = [self convertResourcesSQLIntoResources:themeId];
-        //NSLog(@"submitRequestGetResourcesForTheme.Resources downloaded from the database.themeId=%i, [resources count]=%i", themeId, [resources count]);
+        NSArray* resources = [self convertResourcesSQLIntoResources:self.currentThemeId];
+        NSLog(@"submitRequestGetResourcesForTheme.Resources downloaded from the database.themeId=%i, [resources count]=%i", self.currentThemeId, [resources count]);
         if(resources!=nil && [resources count]>0)
         {
             //NSLog(@"submitRequestGetResourcesForTheme.[resources count]=%i", [resources count]);
@@ -188,7 +188,9 @@ BOOL resourcesLoaded = NO;
         NSArray* resources = [ResourceJSONHandler getResourcesFromResourcesJSON:jsonArray];
         //[self submitSQLRequestSaveResources:resources];
         //[self submitSQLRequestSaveResources:resources andThemeId:currentThemeId];
-        [self submitSQLRequestSaveAllResources:resources andThemeId:currentThemeId];
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        int themeId= [[prefs objectForKey:@"current_theme_id"] integerValue];
+        [self submitSQLRequestSaveAllResources:resources andThemeId:themeId];
         //NSLog(@"handleGetResourcesForThemeResponse.#of resources =%i", [resources count]);
         if([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResources:)])
             [self.delegate ResourceLoader:self didLoadResources:resources];
@@ -206,7 +208,14 @@ BOOL resourcesLoaded = NO;
     //NSLog(@"resourcedict=%i", [resourcedict count]);
     if (resourcedict != nil){
         Resource *resource = [ResourceJSONHandler getResourceFromResourceJSON:resourcedict];
-        [self submitSQLRequestSaveResource:resource.resourceId andThemeId:1 andType:resource.type andImageURL:resource.imageURL andThumbURL:resource.thumbURL];
+        
+        NSMutableArray* resources = [[NSMutableArray alloc] init];
+        [resources addObject:resource];
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        int themeId= [[prefs objectForKey:@"current_theme_id"] integerValue];
+        [self submitSQLRequestSaveResources:resources andThemeId:themeId];
+        
+        //[self submitSQLRequestSaveResource:resource.resourceId andThemeId:themeId andType:resource.type andImageURL:resource.imageURL andThumbURL:resource.thumbURL];
         
         if ([self.delegate respondsToSelector:@selector(ResourceLoader:didLoadResource:)])
             [self.delegate ResourceLoader:self didLoadResource:resource];

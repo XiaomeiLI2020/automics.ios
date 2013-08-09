@@ -22,13 +22,18 @@ int const kPostGroup = 2;
 int const kPostThemeForGroup = 3;
 int const kPostMembershipForGroup = 4;
 
-BOOL groupsDownloaded = NO;
+//BOOL groupsDownloaded = NO;
 
 @synthesize groupRequestType;
 @synthesize delegate;
 
 -(void)submitRequestGetGroups{
-    if(!groupsDownloaded && [self isReachable])
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    int userId = [[prefs objectForKey:@"user_id"] integerValue];
+    
+    int groupsDownloaded = [self submitSQLRequestCheckGroupsDownloaded:userId];
+    if(groupsDownloaded==0 && [self isReachable])
     {
         groupRequestType = kGetGroups;
         groupsDownloaded = YES;
@@ -243,6 +248,10 @@ BOOL groupsDownloaded = NO;
         if(groups!=nil && [groups count]>0)
         {
             [self submitSQLRequestSaveGroups:groups];
+            
+            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+            int userId = [[prefs objectForKey:@"user_id"] integerValue];
+            [self submitSQLRequestUpdateGroupsDownloaded:1 andUserId:userId];
             if ([self.delegate respondsToSelector:@selector(GroupLoader:didLoadGroups:)])
                 [self.delegate GroupLoader:self didLoadGroups:groups];
         }

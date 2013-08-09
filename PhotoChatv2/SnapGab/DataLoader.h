@@ -115,10 +115,12 @@ NSString *databasePathStatic;
 //Users: Insert into database
 -(void)submitSQLRequestSaveUsers:(NSArray*)users;
 -(void)submitSQLRequestUpdateCurrentGroup:(NSString*)groupHashId andUserId:(int)userId;
+-(void)submitSQLRequestUpdateGroupsDownloaded:(int)groupsDownloaded andUserId:(int)userId;
 
 //Users: Retrieve from database
 -(int)submitSQLRequestCheckUserExists:(int)userId;
 -(int)submitSQLRequestCheckUserLoggedOut:(int)userId;
+-(int)submitSQLRequestCheckGroupsDownloaded:(int)userId;
 -(int)submitSQLRequestCheckLoggedInUser;
 -(NSArray*)convertUsersSQLIntoUsers:(int)userId;
 

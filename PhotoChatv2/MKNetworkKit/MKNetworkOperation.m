@@ -30,6 +30,7 @@
 #import "PanelJSONHandler.h"
 #import "ComicJSONHandler.h"
 #import "ComicLoader.h"
+#import "UserLoader.h"
 
 #ifdef __OBJC_GC__
 #error MKNetworkKit does not support Objective-C Garbage Collection
@@ -1537,9 +1538,14 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
         NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
         [panelLoader submitSQLRequestSavePanelsForGroup:panels andGroupHashId:currentGroupHashId];
         
+        //Post a notification when a panel has been successfully added.
+        UserLoader* userLoader = [[UserLoader alloc] init];
+        [userLoader submitRequestPostNotification:@"New image uploaded."];
+    
         //DLog(@"PhotoPosterView.Panel didUploadPanel");
         if ([self.delegate respondsToSelector:@selector(MKNetworkOperation:didUploadPanel:)])
             [self.delegate MKNetworkOperation:self didUploadPanel:responseString];
+      
 
     }
     else{

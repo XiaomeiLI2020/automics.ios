@@ -111,9 +111,10 @@ int placementCounter;
                 
             */
 
+                    [self loadPlacements:panel];
                     [self loadAnnotations:panel];
                     //NSLog(@"panelId=%i.annotations already downloaded are added.", panel.panelId);
-                    [self loadPlacements:panel];
+
                     /*
                     dispatch_async(dispatch_get_main_queue(), ^(void) {
                         snapshot = [self imageWithView:self];
@@ -231,8 +232,8 @@ int placementCounter;
             for(Annotation* annotation in panel.annotations)
             {
                 //NSLog(@"annotation=%@", annotation.text);
-                CGRect xywh = CGRectMake(annotation.xOffset/20.0,
-                                         annotation.yOffset/20.0,0,0);
+                CGRect xywh = CGRectMake(annotation.xOffset/5.0,
+                                         annotation.yOffset/5.0,0,0);
                 
                 NSString* text = annotation.text;
                 int styleId = annotation.bubbleStyle;
@@ -248,7 +249,7 @@ int placementCounter;
                 sbv.frame = scrollFrame;
                 */
                 
-                sbv.transform = CGAffineTransformScale(sbv.transform, 0.5, 0.5);
+                sbv.transform = CGAffineTransformScale(sbv.transform, 0.2, 0.2);
 
                 
                 sbv.userInteractionEnabled = NO;
@@ -298,8 +299,8 @@ int placementCounter;
                                 Placement* placement = [panel.placements objectAtIndex:placementCounter];
                                 if(placement!=nil)
                                 {
-                                    resourceFrame = CGRectMake(placement.xOffset/8.0,
-                                                               placement.yOffset/8.0,
+                                    resourceFrame = CGRectMake(placement.xOffset/4.0,
+                                                               placement.yOffset/4.0,
                                                                decoratorWidth, decoratorHeight);
                                     defaultScale = placement.scale/4.0;
                                     defaultAngle = placement.angle;

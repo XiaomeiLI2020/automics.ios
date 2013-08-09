@@ -18,7 +18,7 @@ int const kGetGroupComics = 0;
 int const kGetComic = 1;
 int const kPostComic = 2;
 int const kGetRefreshedComics = 3;
-BOOL comicsDownloaded = NO;
+//BOOL comicsDownloaded = NO;
 dispatch_queue_t backgroundQueue;
 @synthesize delegate;
 @synthesize comicRequestType;
@@ -47,9 +47,7 @@ dispatch_queue_t backgroundQueue;
             [self.delegate ComicLoader:self didLoadComics:comics];
     }
      */
- 
 }
-
 
 -(void)submitRequestRefreshComicsForGroup{
     

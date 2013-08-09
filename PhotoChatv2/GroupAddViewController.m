@@ -104,6 +104,8 @@ BOOL alertShown;
         group.name = groupName;
         group.theme = [[Theme alloc] init];
         group.theme.themeId = 2;
+        group.organisation = [[Organisation alloc] init];
+        group.organisation.organisationId=1;
         [groupLoader submitRequestPostGroup:group];
         
         if(!alertShown)

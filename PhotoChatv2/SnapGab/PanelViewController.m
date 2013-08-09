@@ -636,10 +636,11 @@ int thumbnailsCompleted;
                 }
                 else
                 {
-                    //NSLog(@"annotations already downloaded are added.");
-                    [self loadAnnotations:currentPanel];
                     //NSLog(@"placements already downloaded.");
                     [self loadPlacements:currentPanel];
+                    //NSLog(@"annotations already downloaded are added.");
+                    [self loadAnnotations:currentPanel];
+
                     
                     [thumbnailScrollView scrollItemToVisible:(currentPage)];
                     //if([self.panels count]<=4)
@@ -957,6 +958,11 @@ int thumbnailsCompleted;
                 imageView.frame = CGRectMake(index*thumbnailWidth, 0, thumbnailWidth, thumbnailHeight);
                 //[imageView setImage:thumbnailPanel.thumbnail];
                 photoDownloaded = [[downloadedPhotos objectAtIndex:index] boolValue];
+                if(currentPage==[self.panels count]-1)
+                {
+                    //NSLog(@"new thumbnail to be added. photoDownloaded=%d, thumbnailPanel.photo.imageURL=%@", photoDownloaded, thumbnailPanel.photo.imageURL);
+                }
+
                 //NSLog(@"Panel without resources shown. index=%i", index);
                 if(!photoDownloaded)
                 {
@@ -1038,6 +1044,10 @@ int thumbnailsCompleted;
                 
                 imageView.tag = index;
                 [thumbnailScrollView addSubview:imageView];
+                if(currentPage==[self.panels count]-1)
+                {
+                    //NSLog(@"new panel's thumbnail added. [self.panels count]=%i, currentPage=%i", [self.panels count], currentPage);
+                }
 
                 for(UIView* subView in thumbnailScrollView.subviews)
                 {
@@ -1738,6 +1748,9 @@ int thumbnailsCompleted;
 
     //NSLog(@"PanelViewController.didLoadRefreshedPanels. currentPanels=%i, [panelsLocal count]=%i", [panels count], [panelsLocal count]);
     //NSMutableArray *newPanels = [NSMutableArray arrayWithCapacity:[panels count] + [panelsLocal count]];
+    [self removeAllBubbles];
+    [self removeAllResources];
+    
     initialized = NO;
     NSMutableArray *newPanels = [[NSMutableArray alloc] initWithArray:panels];
     [newPanels addObjectsFromArray:panelsLocal];
@@ -1825,7 +1838,8 @@ int thumbnailsCompleted;
         //NSLog(@"Panel downloaded %i. currentPanel.annotations.count=%i", panel.panelId, [currentPanel.annotations count]);
         //NSLog(@"Panel downloaded %i. currentPanel.placements.count=%i", panel.panelId, [currentPanel.placements count]);
         
-
+        /*
+         
         if(panel.annotations!=nil)
         {
             panelInArray.annotations = panel.annotations;
@@ -1858,7 +1872,12 @@ int thumbnailsCompleted;
 
             }//end if([panel.annotations count]>0)
         }//end if(panel.annotations!=nil)
+        */
         
+        if(panel.annotations!=nil)
+        {
+            panelInArray.annotations = panel.annotations;
+        }//end if(panel.annotations!=nil)
         
         if(panel.placements!=nil)
         {
@@ -1886,6 +1905,38 @@ int thumbnailsCompleted;
             {
                 //Declare a panel downloaded
                 NSNumber* yesObj = [NSNumber numberWithBool:YES];
+                
+                if(panel.annotations!=nil)
+                {
+                    if([panel.annotations count]>0)
+                    {
+                        for(Annotation* annotation in panel.annotations)
+                        {
+                            //NSLog(@"annotation=%@", annotation.text);
+                            CGRect xywh = CGRectMake(annotation.xOffset,
+                                                     annotation.yOffset,0,0);
+                            
+                            NSString* text = annotation.text;
+                            int styleId = annotation.bubbleStyle;
+                            
+                            if(!thumbMode)
+                            {
+                                //NSLog(@"Annotation added. currentPage=%i", currentPage);
+                                SpeechBubbleView* sbv = [[SpeechBubbleView alloc] initWithFrame:xywh andText:text andStyle:styleId];
+                                sbv.userInteractionEnabled = NO;
+                                sbv.alpha = 0.0f;
+                                [self.view addSubview:sbv];
+                                [UIView transitionWithView:self.view
+                                                  duration:0.25
+                                                   options:UIViewAnimationOptionLayoutSubviews
+                                                animations:^ { sbv.alpha = 1.0f; }
+                                                completion:nil];
+                            }//end if(!thumbMode)
+                        }//end for
+                        
+                    }//end if([panel.annotations count]>0)
+                }//end if(panel.annotations!=nil)
+                
                 if(!thumbMode)
                 {
                     //Declate a panel has been downloaded
@@ -2103,6 +2154,38 @@ int thumbnailsCompleted;
                 //NSLog(@"didLoadResources.all placements downloaded.thumbMode=%d", thumbMode);
                 //Declaring a panel downloaded after all placements are downloaded
                 NSNumber* yesObj = [NSNumber numberWithBool:YES];
+                
+                if(resourcePanel.annotations!=nil)
+                {
+                    if([resourcePanel.annotations count]>0)
+                    {
+                        for(Annotation* annotation in resourcePanel.annotations)
+                        {
+                            //NSLog(@"annotation=%@", annotation.text);
+                            CGRect xywh = CGRectMake(annotation.xOffset,
+                                                     annotation.yOffset,0,0);
+                            
+                            NSString* text = annotation.text;
+                            int styleId = annotation.bubbleStyle;
+                            
+                            if(!thumbMode)
+                            {
+                                //NSLog(@"Annotation added. currentPage=%i", currentPage);
+                                SpeechBubbleView* sbv = [[SpeechBubbleView alloc] initWithFrame:xywh andText:text andStyle:styleId];
+                                sbv.userInteractionEnabled = NO;
+                                sbv.alpha = 0.0f;
+                                [self.view addSubview:sbv];
+                                [UIView transitionWithView:self.view
+                                                  duration:0.25
+                                                   options:UIViewAnimationOptionLayoutSubviews
+                                                animations:^ { sbv.alpha = 1.0f; }
+                                                completion:nil];
+                            }//end if(!thumbMode)
+                        }//end for
+                        
+                    }//end if([panel.annotations count]>0)
+                }//end if(panel.annotations!=nil)
+                
                 if(!thumbMode)
                 {
                     //Declare a panel downloaded

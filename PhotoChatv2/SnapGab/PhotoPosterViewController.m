@@ -294,9 +294,24 @@ bool alertShown;
                                      ];
     
     operation.postDataRequestType = postDataRequestType;
-    operation.delegate = self;
-    [appDelegate.automicsEngine enqueueOperation:operation];
-    //self.dataFeedConnection = [operation urlConnection];
+    //operation.delegate = self;
+    //[appDelegate.automicsEngine enqueueOperation:operation];
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        //Call your function or whatever work that needs to be done
+        //Code in this part is run on a background thread
+        [appDelegate.automicsEngine enqueueOperation:operation];
+        
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            
+            //Stop your activity indicator or anything else with the GUI
+            //Code here is run on the main thread
+            
+        });
+    });
+    
+    
     NSLog(@"PhotoPosterView. startOperation. reachable=%d", [panelsLoader isReachable]);
     
     if(![panelsLoader isReachable])
@@ -311,12 +326,23 @@ bool alertShown;
     }//end if
     else if([panelsLoader isReachable])
     {
+        /*
         [operation onUploadProgressChanged:^(double progress) {
             
             //DLog(@"onUploadProgressChanged=%.2f, progress=%f", progress*100.0, progress);
             self.progressView.progress = (float)progress;
             
         }];
+         */
+        
+        
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle: @"Upload Request"
+                              message: @"Data is being uploaded."
+                              delegate: self
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
+        [alert show];
     }//end else
 
 
@@ -460,7 +486,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
         //UIViewController *destinationViewController = (UIViewController*)[self destinationViewController];
         
         NSArray* viewControllers = self.navigationController.viewControllers;
-        [self.navigationController popToViewController:[viewControllers objectAtIndex:1] animated:YES];
+        [self.navigationController popToViewController:[viewControllers objectAtIndex:2] animated:YES];
         
         //alertShown = NO;
         //[self performSegueWithIdentifier:@"postToView" sender:self];

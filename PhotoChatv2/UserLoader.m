@@ -87,7 +87,7 @@ NSString* leaveGroupHashId;
     NSString* session = [prefs objectForKey:@"session"];
     
     NSString *notificationURL = [APIWrapper getURLForPostNotification];
-    NSLog(@"submitRequestPostNotification.notificationURL=%@", notificationURL);
+    NSLog(@"UserLoader.submitRequestPostNotification.notificationURL=%@, message=%@", notificationURL, message);
     NSURL* url = [NSURL URLWithString:notificationURL];
     
     

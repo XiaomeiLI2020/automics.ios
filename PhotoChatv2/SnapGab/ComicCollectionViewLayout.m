@@ -14,17 +14,25 @@
 
 @implementation ComicCollectionViewLayout
 
+
 -(id)init{
+
     self = [super init];
     if (self)
     {
+
         self.scrollDirection = UICollectionViewScrollDirectionVertical;
         self.itemSize = (CGSize) {COMIC_ITEM_WIDTH, COMIC_ITEM_HEIGHT};
         self.sectionInset = UIEdgeInsetsMake(4,10, 14, 10);
         self.minimumInteritemSpacing = 10;
         self.minimumLineSpacing = 10;
+     
     }
     return self;
 }
+
+
+
+
 
 @end

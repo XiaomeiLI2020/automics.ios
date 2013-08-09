@@ -262,7 +262,7 @@ sqlite3* database;
             
             const char *comicpanels_stmt = "CREATE TABLE IF NOT EXISTS COMICPANELS (COMICID INTEGER, GROUPHASHID TEXT, PANELID INTEGER, PANELPOSITION INTEGER, PRIMARY KEY(COMICID, GROUPHASHID, PANELPOSITION))";
             
-            const char *users_stmt = "CREATE TABLE IF NOT EXISTS USERS (USERID INTEGER PRIMARY KEY, NAME TEXT, EMAIL TEXT, PASSWORD TEXT, CURRENT_GROUP_HASH TEXT, SESSION_TOKEN TEXT, LOGOUT INTEGER)";
+            const char *users_stmt = "CREATE TABLE IF NOT EXISTS USERS (USERID INTEGER PRIMARY KEY, NAME TEXT, EMAIL TEXT, PASSWORD TEXT, CURRENT_GROUP_HASH TEXT, SESSION_TOKEN TEXT, LOGOUT INTEGER, GROUPSDOWNLOADED INTEGER)";
             
             if (sqlite3_exec(database, groups_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
             {
@@ -2058,7 +2058,7 @@ sqlite3* database;
                             //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
                             {
                                 NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO resources(resourceid, themeId, TYPE, PHOTOURL, THUMBURL) VALUES(%i, %i, \"%@\",\"%@\",\"%@\")", resource.resourceId, themeId, resource.type, resource.imageURL, resource.thumbURL];
-                                NSLog(@"insertSQL=%@", insertSQL);
+                                //NSLog(@"insertSQL=%@", insertSQL);
                                 const char *insert_stmt = [insertSQL UTF8String];
                                 /*
                                  sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
@@ -2099,7 +2099,9 @@ sqlite3* database;
 -(void)submitSQLRequestSaveAllResources:(NSArray*)resources andThemeId:(int)themeId
 {
     if(resources!=nil){
-        if([resources count]>0){
+        if([resources count]>0)
+        {
+            //NSLog(@"submitSQLRequestSaveAllResources.[resources count]=%i", [resources count]);
             dispatch_async([self dispatchQueue], ^(void) {
                 
                 sqlite3_stmt    *statement;
@@ -2137,8 +2139,9 @@ sqlite3* database;
                                         sqlite3_column_text(statement, 0);
                                         
                                     } //else
-                                }
-                                else {
+                                }//end if
+                                else
+                                {
                                     //NSLog(@"Failed to add resource");
                                 }
                                 sqlite3_finalize(statement);
@@ -2146,6 +2149,9 @@ sqlite3* database;
                             }
                             
                         }//end if(resourceExists==0)
+                        
+                        //else
+                            //NSLog(@"Resource#%i already exists.", i);
                     }//end if(resource!=nil)
                     //[self submitSQLRequestSaveResource:resource.resourceId andThemeId:1 andType:resource.type andImageURL:resource.imageURL andThumbURL:resource.thumbURL];
                 }//end for(int i=0; i<[resources count]; i++)
@@ -2765,13 +2771,15 @@ sqlite3* database;
 -(NSArray*)convertResourcesSQLIntoResources:(int)themeId{
     
     NSMutableArray* resources = [[NSMutableArray alloc] init];
+    __block int numResources = 0;
+
     if(databaseUpdating)
     {
         dispatch_async([self dispatchQueue], ^(void) {
         //const char* sqlStatement = "SELECT photoid, photourl FROM PANELS where panelId";
         //RESOURCEID INTEGER NOT NULL PRIMARY KEY, THEMEID INTEGER NOT NULL, NAME TEXT, TYPE TEXT, PHOTOURL TEXT, THUMBURL TEXT
         NSString *selectSQL = [NSString stringWithFormat: @"SELECT resourceId, type, PHOTOURL, THUMBURL FROM Resources where themeId=%i", themeId];
-        //NSLog(@"selectSQL=%@", selectSQL);
+        NSLog(@"selectSQL=%@", selectSQL);
         const char *sqlStatement = [selectSQL UTF8String];
         sqlite3_stmt *statement;
         
@@ -2787,7 +2795,11 @@ sqlite3* database;
                 resource.thumbURL = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
                 
                 [resources addObject:resource];
+                numResources++;
+                //NSLog(@"convertResourcesSQLIntoResources.Resource added. numResources=%i", numResources);
+                
             }//end while
+            //NSLog(@"while loop finished.");
         }//end if
         else
         {
@@ -2799,19 +2811,27 @@ sqlite3* database;
         //sqlite3_close(database);
         });
     }//end if
-    else{
+    else
+    
+    {
         //const char* sqlStatement = "SELECT photoid, photourl FROM PANELS where panelId";
         //RESOURCEID INTEGER NOT NULL PRIMARY KEY, THEMEID INTEGER NOT NULL, NAME TEXT, TYPE TEXT, PHOTOURL TEXT, THUMBURL TEXT
         NSString *selectSQL = [NSString stringWithFormat: @"SELECT resourceId, type, PHOTOURL, THUMBURL FROM Resources where themeId=%i", themeId];
+        //NSString *selectSQL = [NSString stringWithFormat: @"SELECT * FROM Resources where themeId=%i", themeId];
         //NSLog(@"selectSQL=%@", selectSQL);
-        const char *sqlStatement = [selectSQL UTF8String];
+        //const char *sqlStatement = [selectSQL UTF8String];
+        const char *sqlStatement = [selectSQL cStringUsingEncoding:NSUTF8StringEncoding];
+
+        
         sqlite3_stmt *statement;
         
         if(sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK )
         {
+            //sqlite3_bind_int(statement, 1, 0);
             //Loop through all the returned rows (should be just one)
             while( sqlite3_step(statement) == SQLITE_ROW )
             {
+                
                 Resource* resource= [[Resource alloc] init];
                 resource.resourceId = sqlite3_column_int(statement, 0);
                 resource.type = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
@@ -2819,11 +2839,15 @@ sqlite3* database;
                 resource.thumbURL = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
                 
                 [resources addObject:resource];
+               
+                numResources++;
+                //NSLog(@"convertResourcesSQLIntoResources.Resource added. numResources=%i", numResources);
             }//end while
+            //NSLog(@"while loop finished.");
         }//end if
         else
         {
-            NSLog( @"Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
+            NSLog( @"convertResourcesSQLIntoResources.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
         }
         
         // Finalize and close database.
@@ -3720,6 +3744,49 @@ sqlite3* database;
      return comics;
 }
 
+-(void)submitSQLRequestUpdateGroupsDownloaded:(int)groupsDownloaded andUserId:(int)userId
+{
+    dispatch_async([self dispatchQueue], ^(void) {
+        
+        sqlite3_stmt    *statement;
+        //const char *dbpath = [databasePathStatic UTF8String];
+        if(userId>0)
+        {
+            databaseUpdating = YES;
+            int userExists = [self submitSQLRequestCheckUserExistsLocal:userId];
+            if(userExists>0)
+            {
+                
+                NSString *insertSQL = [NSString stringWithFormat: @"update users set GROUPSDOWNLOADED=%i where userId=%i", groupsDownloaded, userId];
+                //NSLog(@"insertSQL=%@", insertSQL);
+                const char *insert_stmt = [insertSQL UTF8String];
+                if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
+                {
+                    while (sqlite3_step(statement) == SQLITE_DONE)
+                    {
+                        sqlite3_column_text(statement, 0);
+                        
+                    } //else
+                }
+                
+                else
+                {
+                    NSLog(@"submitSQLRequestUpdateGroupsDownloaded.Failed to update currentgroup where userId=%i. Error is:  %s", userId, sqlite3_errmsg(database));
+                }
+                sqlite3_finalize(statement);
+                
+            }//
+            
+            
+            databaseUpdating = NO;
+        }//end if([users count]>0)
+        
+    });
+
+    
+}
+
+
 -(void)submitSQLRequestUpdateCurrentGroup:(NSString*)groupHashId andUserId:(int)userId
 {
     dispatch_async([self dispatchQueue], ^(void) {
@@ -3778,7 +3845,7 @@ sqlite3* database;
                     //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
                     {
 
-                        NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO USERS (USERID, EMAIL, CURRENT_GROUP_HASH, SESSION_TOKEN, LOGOUT) VALUES (%i,\"%@\", \"%@\",\"%@\", %i)", user.userId, user.email, user.currentGroup.hashId, user.currentSession.token, 0];
+                        NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO USERS (USERID, EMAIL, CURRENT_GROUP_HASH, SESSION_TOKEN, LOGOUT, GROUPSDOWNLOADED) VALUES (%i,\"%@\", \"%@\",\"%@\", %i, %i)", user.userId, user.email, user.currentGroup.hashId, user.currentSession.token, 0, 0];
                         //NSLog(@"insertSQL=%@", insertSQL);
                         const char *insert_stmt = [insertSQL UTF8String];
                         if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
@@ -4064,6 +4131,86 @@ sqlite3* database;
     
     
     return rowCount;
+}
+
+
+-(int)submitSQLRequestCheckGroupsDownloaded:(int)userId
+{
+    __block int rowCount=0;
+    
+    //NSLog(@"DataLoader. submitSQLRequestCheckPanelsDownloadedForGroup. databaseUpdating=%d, groupHashId=%@", databaseUpdating, groupHashId);
+    if(databaseUpdating)
+    {
+        dispatch_async([self dispatchQueue], ^(void) {
+            
+            //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
+            {
+                //NSString *querySQL = [NSString stringWithFormat: @"SELECT address, phone FROM contacts WHERE name=\"%@\"", name.text];
+                NSString *retrieveSQL = [NSString stringWithFormat: @"select GROUPSDOWNLOADED from users where userid=%i", userId];
+                //NSLog(@"submitSQLRequestCheckPanelsDownloadedForGroup.retrieveSQL=%@", retrieveSQL);
+                const char* sqlStatement = [retrieveSQL UTF8String];
+                sqlite3_stmt *statement;
+                
+                if( sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK )
+                {
+                    //Loop through all the returned rows (should be just one)
+                    //if(sqlite3_step(statement)!=SQLITE_ROW)
+                    //    NSLog(@"Rowcount is %d",rowCount);
+                    
+                    while(sqlite3_step(statement) == SQLITE_ROW )
+                    {
+                        rowCount = sqlite3_column_int(statement, 0);
+                        //NSLog(@"submitSQLRequestCheckPanelsDownloadedForGroup. Rowcount is %d",rowCount);
+                    }
+                }
+                else
+                {
+                    NSLog( @"submitSQLRequestCheckGroupsDownloaded.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
+                }
+                
+                // Finalize and close database.
+                sqlite3_finalize(statement);
+                //sqlite3_close(database);
+            }//end if(sqlite3_open([databasePath UTF8String], &database) == SQLITE_OK)
+            
+        });
+        
+    }//end if
+    else{
+        //dispatch_async([self dispatchQueue], ^(void) {
+        
+        //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
+        {
+            //NSString *querySQL = [NSString stringWithFormat: @"SELECT address, phone FROM contacts WHERE name=\"%@\"", name.text];
+            NSString *retrieveSQL = [NSString stringWithFormat: @"select GROUPSDOWNLOADED from users where userid=%i", userId];
+            //NSLog(@"submitSQLRequestCheckPanelsDownloadedForGroup.retrieveSQL=%@", retrieveSQL);
+            const char* sqlStatement = [retrieveSQL UTF8String];
+            sqlite3_stmt *statement;
+            
+            if( sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK )
+            {
+                //Loop through all the returned rows (should be just one)
+                //if(sqlite3_step(statement)!=SQLITE_ROW)
+                //    NSLog(@"Rowcount is %d",rowCount);
+                
+                while(sqlite3_step(statement) == SQLITE_ROW )
+                {
+                    rowCount = sqlite3_column_int(statement, 0);
+                    //NSLog(@"submitSQLRequestCheckPanelsDownloadedForGroup. Rowcount is %d",rowCount);
+                }
+            }
+            else
+            {
+                NSLog( @"submitSQLRequestCheckGroupsDownloaded.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
+            }
+            
+            // Finalize and close database.
+            sqlite3_finalize(statement);
+            //sqlite3_close(database);
+        }//end else
+    }//end else
+    
+    return rowCount; 
 }
 
 -(int)submitSQLRequestCheckUserLoggedOut:(int)userId{

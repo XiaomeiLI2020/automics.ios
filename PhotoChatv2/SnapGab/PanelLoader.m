@@ -83,6 +83,7 @@ int currentNumPanels = 0;
 
 }
 
+
 /*
 -(void)submitRequestRefreshGetPanelsForGroup:(int)oldNmPanels{
     //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -304,7 +305,7 @@ int currentNumPanels = 0;
             
             //int previousNumPanels = [self submitSQLRequestCountPanelsForGroup:currentGroupHashId];
             
-            //NSLog(@"PanelLoader.handleRefreshGetPanelsForGroupResponse. currentNumPanels=%i, [new panels count]=%i" , currentNumPanels, [panels count]);
+            NSLog(@"PanelLoader.handleRefreshGetPanelsForGroupResponse. currentNumPanels=%i, [new panels count]=%i" , currentNumPanels, [panels count]);
             
             if(currentNumPanels==[panels count])
             {
@@ -322,6 +323,8 @@ int currentNumPanels = 0;
                         [panelsNew addObject:panel];
                     }
                 }//end for(int i=currentNumPanels; i<[panels count];i++)
+                
+                NSLog(@"PanelLoader.handleRefreshGetPanelsForGroupResponse. [panelsNew count]=%i" ,[panelsNew count]);
                 
                 [self submitSQLRequestSavePanelsForGroup:panelsNew andGroupHashId:currentGroupHashId];
                 currentNumPanels = [panels count];
