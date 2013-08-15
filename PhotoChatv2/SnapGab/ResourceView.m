@@ -129,30 +129,12 @@ CGRect originalBounds;
             //NSLog(@"original self.bounds%@", NSStringFromCGRect(self.bounds));
             originalOrigin = frame.origin;
             
-            
-            //NSData *imageURL = [NSData dataWithContentsOfURL:[NSURL URLWithString:resource.imageURL]];
-            //UIImage *image = [UIImage imageWithData:imageURL];
-            
-            /*
-             UIImageView *imageView = [[UIImageView alloc] init];
-             [imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
-             */
-            
-            /*
-             NSLog(@"original imageview.frame=%@", NSStringFromCGRect(_imageView.frame));
-             NSLog(@"original imageview.bounds%@", NSStringFromCGRect(_imageView.bounds));
-             NSLog(@"original self.scale=%f", self.scale);
-             NSLog(@"original self.angle=%f", self.angle);
-             */
-            
-            //_imageView = [[UIImageView alloc] initWithImage:image];
+
             _imageView = [[UIImageView alloc] init];
             __weak UIImageView *imageView_ = _imageView;
             
             __weak ResourceView *self_ = self;
-            //[_imageView setImageWithURL:[NSURL URLWithString:resource.imageURL]
-            //           placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]];
-            
+
             NSFileManager* fileMgr = [NSFileManager defaultManager];
             //NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
             NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -160,23 +142,27 @@ CGRect originalBounds;
             NSString* imageName = [NSString stringWithFormat:@"resourcePhoto%i.png", resource.resourceId];
             NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
             BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
+            //NSLog(@"ResourceView. File %@ exists=%d", currentFile, fileExists);
+            //NSLog(@"resource.imageURL=%@", resource.imageURL);
+        
             
             if(!fileExists)
             {
                 
-                [_imageView setImageWithURL:[NSURL URLWithString:resource.imageURL]
+                [_imageView setImageWithURL:[NSURL URLWithString:[resource.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
                            placeholderImage:nil
                                     success:^(UIImage *imageDownloaded) {
-                                        //NSLog(@"image successfully downloaded.");
+                                        //NSLog(@"%@ successfully downloaded.", imageName);
                                         
+
                                         NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
                                         [data1 writeToFile:currentFile atomically:YES];
-                                        
-                                        //_imageView.userInteractionEnabled = NO;
+
                                         imageView_.userInteractionEnabled = NO;
                                         //NSLog(@"original _imageView.image.size=%@", NSStringFromCGSize(imageDownloaded.size));
                                         //originalImageSize = imageDownloaded.size;
-                                        originalBounds = CGRectMake(0.0, 0.0,imageDownloaded.size.width,imageDownloaded.size.height);
+                                        //originalBounds = CGRectMake(0.0, 0.0,imageDownloaded.size.width,imageDownloaded.size.height);
+                                        originalBounds = CGRectMake(0.0, 0.0,imageDownloaded.size.width/2.0,imageDownloaded.size.height/2.0);
                                         originalWidth = CGRectGetWidth(originalBounds);
                                         originalHeight = CGRectGetHeight(originalBounds);
                                         originalDiagonal = sqrtf(CGRectGetHeight(originalBounds)*CGRectGetHeight(originalBounds) +
@@ -184,6 +170,7 @@ CGRect originalBounds;
                                         
                                         //NSLog(@"imageView_.originalBounds=%@", NSStringFromCGRect(originalBounds));
                                         //NSLog(@"imageView_.frame=%@", NSStringFromCGRect(imageView_.frame));
+                                        //NSLog(@"originalHeight=%f, originalWidth=%f", originalHeight, originalWidth);
                                         //NSLog(@"self_.originalBounds=%@", NSStringFromCGRect(self_.bounds));
                                         //NSLog(@"self_.frame=%@", NSStringFromCGRect(self_.frame));
                                         
@@ -197,9 +184,9 @@ CGRect originalBounds;
                                             self_.MIN_SCALE = self_.MIN_SIZE/originalWidth;
                                         }
                                         
-                                        //[imageView_ setFrame:CGRectMake(0.0,0.0,originalWidth, originalHeight)];
-                                        //[imageView_ setFrame:CGRectMake(0.0,0.0,originalWidth*self_.scale, originalHeight*self_.scale)];
-                                        [imageView_ setFrame:CGRectMake(0.0,0.0,imageDownloaded.size.width*self_.scale, imageDownloaded.size.height*self_.scale)];
+
+                                        //[imageView_ setFrame:CGRectMake(0.0,0.0,imageDownloaded.size.width*self_.scale, imageDownloaded.size.height*self_.scale)];
+                                        [imageView_ setFrame:CGRectMake(0.0,0.0,originalWidth*self_.scale, originalHeight*self_.scale)];
                                         [self_ addSubview:imageView_];
                                         
                                         
@@ -249,7 +236,7 @@ CGRect originalBounds;
                                     }];
 
             }//end if(!fileExists)
-            
+
             else if(fileExists)
             {
                 UIImage* image= [UIImage imageWithContentsOfFile:currentFile];
@@ -259,7 +246,8 @@ CGRect originalBounds;
                 _imageView.userInteractionEnabled = NO;
                 //NSLog(@"original _imageView.image.size=%@", NSStringFromCGSize(imageDownloaded.size));
                 //originalImageSize = imageDownloaded.size;
-                originalBounds = CGRectMake(0.0, 0.0,image.size.width,image.size.height);
+                //originalBounds = CGRectMake(0.0, 0.0,image.size.width,image.size.height);
+                originalBounds = CGRectMake(0.0, 0.0,image.size.width/2.0,image.size.height/2.0);
                 originalWidth = CGRectGetWidth(originalBounds);
                 originalHeight = CGRectGetHeight(originalBounds);
                 originalDiagonal = sqrtf(CGRectGetHeight(originalBounds)*CGRectGetHeight(originalBounds) +
@@ -280,9 +268,8 @@ CGRect originalBounds;
                     self_.MIN_SCALE = self_.MIN_SIZE/originalWidth;
                 }
                 
-                //[imageView_ setFrame:CGRectMake(0.0,0.0,originalWidth, originalHeight)];
-                //[imageView_ setFrame:CGRectMake(0.0,0.0,originalWidth*self_.scale, originalHeight*self_.scale)];
-                [_imageView setFrame:CGRectMake(0.0,0.0,image.size.width*self_.scale, image.size.height*self_.scale)];
+                //[_imageView setFrame:CGRectMake(0.0,0.0,image.size.width*self_.scale, image.size.height*self_.scale)];
+                [_imageView setFrame:CGRectMake(0.0,0.0,originalWidth*self_.scale, originalHeight*self_.scale)];
                 [self_ addSubview:_imageView];
                 
                 
@@ -327,122 +314,8 @@ CGRect originalBounds;
                 [self_ addGestureRecognizer:resourceTapRecognizer];
 
             }//end if(fileExists)
-            
-            
-            /*
-            if(!fileExists)
-            {
-             
-                [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
-                          placeholderImage:nil
-                                   success:^(UIImage *imageDownloaded) {
-             
-                                       image = imageDownloaded;
-                                       _imageView.frame = CGRectMake(0.0, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
-                                       [self addSubview:_imageView];
-             
-                                       NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
-                                       [data1 writeToFile:currentFile atomically:YES];
-             
-                                   }
-                                   failure:^(NSError *error) {
-                                       NSLog(@"displayPageinPanelScrollView.Failed to load image");
-                                   }];
-            }//end if(!fileExists)
-            else if(fileExists)
-            {
-             
-                //NSLog(@"displayPageinPanelScrollView. Loading image from file=%@", imageName);
-                //NSError* err;
-                //[fileMgr removeItemAtPath:currentFile error:&err];
-                [imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
-                //[imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
-            }//end if(fileExists)
-    
-            */
-            /*
-            
-            [_imageView setImageWithURL:[NSURL URLWithString:resource.imageURL]
-                           placeholderImage:nil
-                                    success:^(UIImage *imageDownloaded) {
-                                        //NSLog(@"image successfully downloaded.");
-                                        
-                                        //_imageView.userInteractionEnabled = NO;
-                                        imageView_.userInteractionEnabled = NO;
-                                        //NSLog(@"original _imageView.image.size=%@", NSStringFromCGSize(imageDownloaded.size));
-                                        //originalImageSize = imageDownloaded.size;
-                                        originalBounds = CGRectMake(0.0, 0.0,imageDownloaded.size.width,imageDownloaded.size.height);
-                                        originalWidth = CGRectGetWidth(originalBounds);
-                                        originalHeight = CGRectGetHeight(originalBounds);
-                                        originalDiagonal = sqrtf(CGRectGetHeight(originalBounds)*CGRectGetHeight(originalBounds) +
-                                                                 CGRectGetWidth(originalBounds)*CGRectGetWidth(originalBounds) );
-                                        
-                                        //NSLog(@"imageView_.originalBounds=%@", NSStringFromCGRect(originalBounds));
-                                        //NSLog(@"imageView_.frame=%@", NSStringFromCGRect(imageView_.frame));
-                                        //NSLog(@"self_.originalBounds=%@", NSStringFromCGRect(self_.bounds));
-                                        //NSLog(@"self_.frame=%@", NSStringFromCGRect(self_.frame));
-                                      
-                                        if(originalHeight<=originalWidth)
-                                        {
-                                            self_.MAX_SCALE = self_.MAX_SIZE/originalHeight;
-                                            self_.MIN_SCALE = self_.MIN_SIZE/originalHeight;
-                                        }
-                                        else{
-                                            self_.MAX_SCALE = self_.MAX_SIZE/originalWidth;
-                                            self_.MIN_SCALE = self_.MIN_SIZE/originalWidth;
-                                        }
-                                        
-                                        //[imageView_ setFrame:CGRectMake(0.0,0.0,originalWidth, originalHeight)];
-                                        //[imageView_ setFrame:CGRectMake(0.0,0.0,originalWidth*self_.scale, originalHeight*self_.scale)];
-                                        [imageView_ setFrame:CGRectMake(0.0,0.0,imageDownloaded.size.width*self_.scale, imageDownloaded.size.height*self_.scale)];
-                                        [self_ addSubview:imageView_];
-                                        
-                                        
-                                        
-                                        if([self_.resource.type isEqual:@"d"])
-                                        {
 
-                                            CGRect selfFrame = self_.frame;
-                                            selfFrame.size = imageView_.frame.size;
-                                            self_.frame = selfFrame;
-                                           
-                                            //NSLog(@"before rotation,imageView_.imageView_.Bounds=%@", NSStringFromCGRect(imageView_.bounds));
-                                            //NSLog(@"before rotation,imageView_.frame=%@", NSStringFromCGRect(imageView_.frame));
-                                            //NSLog(@"before rotation,self_.originalBounds=%@", NSStringFromCGRect(self_.bounds));
-                                            //NSLog(@"before rotation,self_.frame=%@", NSStringFromCGRect(self_.frame));
-                                            
-                                            self_.transform = CGAffineTransformMakeRotation(self_.angle);
-                                            
-                                            //NSLog(@"after rotation,imageView_.bounds=%@", NSStringFromCGRect(imageView_.bounds));
-                                            //NSLog(@"after rotation,imageView_.frame=%@", NSStringFromCGRect(imageView_.frame));
-                                            //NSLog(@"after rotation,self_.originalBounds=%@", NSStringFromCGRect(self_.bounds));
-                                            //NSLog(@"after rotation,self_.frame=%@", NSStringFromCGRect(self_.frame));
-                                             
-                                        }
-                                        
-                                        else if([self_.type isEqual:@"f"])
-                                        {
-                                            
-                                            [imageView_ setFrame:CGRectMake(0.0,0.0,self_.frame.size.width, self_.frame.size.height)];
-                                            //_imageView.frame = self.frame;
-                                        }
-                                        
-                                        
-                                        self_.alertShown = NO;
-                                        self_.longPressed = NO;
-                                        self_.actionPerformed = NO;
-                                        
-                                        
-                                        resourceTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self_ action:@selector(handleTapGesture:)];
-                                        //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
-                                        resourceTapRecognizer.cancelsTouchesInView = NO;
-                                        [self_ addGestureRecognizer:resourceTapRecognizer];
-                                        
-                                    }
-                                    failure:^(NSError *error) {
-                                        NSLog(@"Failed to load resource image.");
-                                    }];
-            */
+
         }//end if resource!=nil
     }//end if self
     return self;    

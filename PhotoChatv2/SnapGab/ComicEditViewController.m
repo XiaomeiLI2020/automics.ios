@@ -163,8 +163,8 @@ int ibackAlertView = 2;
         UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Add panel"
                                                           message:@"You are adding this panel."
                                                          delegate:self
-                                                cancelButtonTitle:@"Confirm"
-                                                otherButtonTitles:@"Cancel", nil];
+                                                cancelButtonTitle:@"Cancel"
+                                                otherButtonTitles:@"Confirm", nil];
         message.tag=iaddAlertView;
         [message show];
     }
@@ -1279,8 +1279,8 @@ int ibackAlertView = 2;
         UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Delete Image"
                                                           message:@"Delete image from the comic."
                                                          delegate:self
-                                                cancelButtonTitle:@"Delete"
-                                                otherButtonTitles:@"Cancel", nil];
+                                                cancelButtonTitle:@"Cancel"
+                                                otherButtonTitles:@"Delete", nil];
         [message show];
     }
 }
@@ -1579,8 +1579,8 @@ int ibackAlertView = 2;
             UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Delete Image"
                                                               message:@"Delete image from the comic."
                                                              delegate:self
-                                                    cancelButtonTitle:@"Delete"
-                                                    otherButtonTitles:@"Cancel", nil];
+                                                    cancelButtonTitle:@"Cancel"
+                                                    otherButtonTitles:@"Delete", nil];
             message.tag = ideleteAlertView;
             [message show];
         }
@@ -2092,8 +2092,8 @@ int ibackAlertView = 2;
         UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Lose changes?"
                                                           message:@"You will lose all changes."
                                                          delegate:self
-                                                cancelButtonTitle:@"Confirm"
-                                                otherButtonTitles:@"Cancel", nil];
+                                                cancelButtonTitle:@"Cancel"
+                                                otherButtonTitles:@"Confirm", nil];
         message.tag=ibackAlertView;
         [message show];
     }

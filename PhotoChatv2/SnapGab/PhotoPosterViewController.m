@@ -481,20 +481,19 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     
     if([title isEqualToString:@"OK"])
     {
-
+        //alertShown = NO;
         //UIViewController *sourceViewController = (UIViewController*)[self ;
         //UIViewController *destinationViewController = (UIViewController*)[self destinationViewController];
         
         NSArray* viewControllers = self.navigationController.viewControllers;
         [self.navigationController popToViewController:[viewControllers objectAtIndex:2] animated:YES];
-        
-        //alertShown = NO;
+
         //[self performSegueWithIdentifier:@"postToView" sender:self];
         //[self.navigationController popViewControllerAnimated:YES];
-        
         //[self dismissViewControllerAnimated:YES completion:nil];
-    }//end if
-}//end alertView
+    }//end if([title isEqualToString:@"OK"])
+    
+}//end alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 
 #pragma mark PanelLoader functions.
 -(void)PanelLoader:(PanelLoader *)loader didSavePanel:(NSString*)response{
@@ -565,9 +564,8 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     if(photo!=nil)
     {
         int photoId = photo.photoId;
-        
         //NSLog(@"Photo uploaded.photoId=%i", photoId);
-        if(photoId > 0)
+        if(photoId>0)
         {
             Panel *panel = [[Panel alloc] init];
             panel.photo = photo;
@@ -581,11 +579,12 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
             NSURLRequest* urlRequest = [panelsLoader preparePanelRequestForPostPanel:panel];
             [self startOperation:urlRequest postDataRequestType:1];
             //[panelsLoader submitRequestPostPanel:panel];
-        }//end if
-    }//end if
+        }//end if(photoId>0)
+    }//end if(photo!=nil)
 }
 
 -(void)MKNetworkOperation:(MKNetworkOperation *)loader didUploadPanel:(NSString*)response{
+    /*
     NSLog(@"PhotoPosterView.MKNetworkOperation.didUploadPanel.Panel saved: %@", response);
     
     //Post a notification when a panel has been successfully added.
@@ -599,11 +598,11 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
                             cancelButtonTitle:@"OK"
                             otherButtonTitles:nil];
     [message show];
+     */
 }
 
 -(void)MKNetworkOperation:(MKNetworkOperation*)operation operationFailed:(NSString*)responseString{
     NSLog(@"PhotoPosterView.MKNetworkOperation.PhotoPosterViewController.operationFailedWithError: %@", responseString);
-    /*
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Upload Failure"
                           message: @"Upload will resume when network connection is available."
@@ -615,64 +614,9 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
         [alert show];
         //alertShown = YES;
     }
-     */
-
 }
 
-/*
-//-(void)MKNetworkEngine:(MKNetworkEngine*)automicsEngine didFreezeOperation:(NSString*)responseString;
 
-//-(void)MKNetworkEngine:(MKNetworkEngine*)automicsEngine didFreezeOperation:(NSString*)responseString
--(void)MKNetworkEngine:(MKNetworkEngine*)automicsEngine didFreezeOperation:(NSString*)responseString
-{
-    NSLog(@"automicsEngine didFreezeOperation: %@", responseString);
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle: @"Upload Failure"
-                          message: @"Upload will resume when network connection is available."
-                          delegate:self
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil];
-    [alert show];
-}
-*/
 
-#pragma rendering subviews into an image
-- (UIImage*)imageFromView:(UIView*)view
-{
-    // Create a graphics context with the target size
-    // On iOS 4 and later, use UIGraphicsBeginImageContextWithOptions to take the scale into consideration
-    // On iOS prior to 4, fall back to use UIGraphicsBeginImageContext
-    CGSize imageSize = [view bounds].size;
-    if (NULL != UIGraphicsBeginImageContextWithOptions)
-        UIGraphicsBeginImageContextWithOptions(imageSize, NO, 0);
-    else
-        UIGraphicsBeginImageContext(imageSize);
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    // -renderInContext: renders in the coordinate space of the layer,
-    // so we must first apply the layer's geometry to the graphics context
-    CGContextSaveGState(context);
-    // Center the context around the view's anchor point
-    CGContextTranslateCTM(context, [view center].x, [view center].y);
-    // Apply the view's transform about the anchor point
-    CGContextConcatCTM(context, [view transform]);
-    // Offset by the portion of the bounds left of and above the anchor point
-    CGContextTranslateCTM(context, -[view bounds].size.width * [[view layer] anchorPoint].x,
-                          -[view bounds].size.height * [[view layer] anchorPoint].y);
-    
-    // Render the layer hierarchy to the current context
-    [[view layer] renderInContext:context];
-    
-    // Restore the context
-    CGContextRestoreGState(context);
-    
-    // Retrieve the screenshot image
-    UIImage *imageWhole = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
-    return imageWhole;
-}
 
 @end

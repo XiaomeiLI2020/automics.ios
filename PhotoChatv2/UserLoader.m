@@ -156,7 +156,7 @@ NSString* leaveGroupHashId;
     NSString* session = [prefs objectForKey:@"session"];
     
     NSString *userURL = [APIWrapper getURLForPostUserWithId:userId];
-    NSLog(@"submitRequestPostDeviceToken.userURL=%@", userURL);
+    //NSLog(@"submitRequestPostDeviceToken.userURL=%@", userURL);
     NSURL* url = [NSURL URLWithString:userURL];
 
     /*

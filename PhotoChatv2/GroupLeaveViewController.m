@@ -296,8 +296,8 @@ NSString *pCellID = @"GROUP_CELL";
                                   initWithTitle: @"Leave Group"
                                   message: [NSString stringWithFormat:@"You will leave %@", group.name]
                                   delegate: self
-                                  cancelButtonTitle:@"Confirm"
-                                  otherButtonTitles:@"Cancel", nil];
+                                  cancelButtonTitle:@"Cancel"
+                                  otherButtonTitles:@"Confirm", nil];
             [alert show];
             alertShown = YES;
         }//end if([userLoader isReachable])

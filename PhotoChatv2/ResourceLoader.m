@@ -52,7 +52,7 @@ BOOL resourcesLoaded = NO;
     else if(resourcesDownloaded==1)
     {
         NSArray* resources = [self convertResourcesSQLIntoResources:self.currentThemeId];
-        NSLog(@"submitRequestGetResourcesForTheme.Resources downloaded from the database.themeId=%i, [resources count]=%i", self.currentThemeId, [resources count]);
+        //NSLog(@"submitRequestGetResourcesForTheme.Resources downloaded from the database.themeId=%i, [resources count]=%i", self.currentThemeId, [resources count]);
         if(resources!=nil && [resources count]>0)
         {
             //NSLog(@"submitRequestGetResourcesForTheme.[resources count]=%i", [resources count]);
@@ -104,16 +104,18 @@ BOOL resourcesLoaded = NO;
     //NSLog(@"ResourceLoader.submitRequestGetResourceWithResourceId. Resource#%i resourceExists=%i", resourceId, resourceExists);
     if(resourceExists==0)
     {
-        //NSLog(@"Resource is not in the database yet.");
+        //NSLog(@"ResourceLoader.submitRequestGetResourceWithResourceId.Resource#%i is not in the database yet.", resourceId);
         resourceRequestType = kGetResource;
         NSURLRequest* urlRequest = [self prepareResourceRequestForGetResourceWithResourceId:resourceId];
         [self submitResourceRequest:urlRequest];
     }
+
     //If the resource is downloadeded
     else if(resourceExists>0)
     {
         //NSLog(@"ResourceLoader.submitRequestGetResourceWithResourceId.Resource downloaded from the database.");
         NSArray* resources = [self convertResourceSQLIntoResource:resourceId];
+        //NSLog(@"[resources count]=%i", [resources count]);
         if(resources!=nil && [resources count]>0)
         {
             Resource* resource = [resources objectAtIndex:0];
@@ -123,6 +125,7 @@ BOOL resourcesLoaded = NO;
             }//end if(resource!=nil)
         }//end if(resources!=nil)
     }
+
     /*
     resourceRequestType = kGetResource;
     NSURLRequest* urlRequest = [self prepareResourceRequestForGetResourceWithResourceId:resourceId];
@@ -157,6 +160,7 @@ BOOL resourcesLoaded = NO;
 
 -(NSURLRequest*)prepareResourceRequestForGetResourceWithResourceId:(int)resourceId{
     NSString* resourceURL = [APIWrapper getURLForGetResourceWithResourceId:resourceId];
+    //NSLog(@"prepareResourceRequestForGetResourceWithResourceId.resourceId=%i, resourceURL=%@", resourceId, resourceURL);
     NSURL* url = [NSURL URLWithString:resourceURL];
     return [NSURLRequest requestWithURL:url];
 }

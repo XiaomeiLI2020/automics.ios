@@ -1542,10 +1542,11 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
         UserLoader* userLoader = [[UserLoader alloc] init];
         [userLoader submitRequestPostNotification:@"New image uploaded."];
     
+        /*
         //DLog(@"PhotoPosterView.Panel didUploadPanel");
         if ([self.delegate respondsToSelector:@selector(MKNetworkOperation:didUploadPanel:)])
             [self.delegate MKNetworkOperation:self didUploadPanel:responseString];
-      
+      */
 
     }
     else{

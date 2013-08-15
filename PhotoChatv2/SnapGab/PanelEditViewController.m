@@ -770,8 +770,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Lose changes?"
                                                           message:@"You will lose all changes."
                                                          delegate:self
-                                                cancelButtonTitle:@"Confirm"
-                                                otherButtonTitles:@"Cancel", nil];
+                                                cancelButtonTitle:@"Cancel"
+                                                otherButtonTitles:@"Confirm", nil];
         [message show];
     }
 

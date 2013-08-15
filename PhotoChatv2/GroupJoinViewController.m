@@ -381,8 +381,8 @@ NSString *mCellID = @"GROUP_CELL";
                                       initWithTitle: @"Select Group"
                                       message: [NSString stringWithFormat:@"You have selected %@", group.name]
                                       delegate: self
-                                      cancelButtonTitle:@"Confirm"
-                                      otherButtonTitles:@"Cancel", nil];
+                                      cancelButtonTitle:@"Cancel"
+                                      otherButtonTitles:@"Confirm", nil];
                 [alert show];
                 alertShown = YES;
                 

@@ -9,7 +9,6 @@
 #import "WelcomeViewController.h"
 #import "TextTableCell.h"
 #import "DataLoader.h"
-#import "ResourceLoader.h"
 #import "User.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -47,7 +46,7 @@ BOOL alertShown;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    NSLog(@"WelcomeViewController.viewDidLoad");
+    //NSLog(@"WelcomeViewController.viewDidLoad");
     organisationLoader = [[OrganisationLoader alloc] init];
     organisationLoader.delegate = self;
     [organisationLoader submitRequestGetOrganisations];
@@ -161,7 +160,8 @@ BOOL alertShown;
     [super viewDidAppear:animated];
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSString* groupHashId= [prefs objectForKey:@"current_group_hash"];
-    NSLog(@"WelcomeViewController.viewDidAppear.groupHashId=%@", groupHashId);
+    //int currentThemeId= [[prefs objectForKey:@"current_theme_id"] integerValue];
+    //NSLog(@"WelcomeViewController.viewDidAppear.groupHashId=%@", groupHashId);
     
     //welcomeLabel
     //NSString* userId= [prefs objectForKey:@"user_id"];
@@ -185,6 +185,8 @@ BOOL alertShown;
         //groupLoader = [[GroupLoader alloc] init];
         //[groupLoader submitRequestGetGroupForHashId:groupHashId];
     }
+
+
     
 }
 
@@ -286,8 +288,6 @@ BOOL alertShown;
         [userDefaults setObject:nil forKey:@"current_theme_id"];  
         [userDefaults synchronize];
         
-        //[ResourceLoader setResourcesDownloaded:NO];
-        
         NSError *err;
         NSString *docsDir;
         NSArray *dirPaths;
@@ -309,11 +309,11 @@ BOOL alertShown;
             [filemgr removeItemAtPath:databasePath error:&err];
             if(err)
             {
-                NSLog(@"File Manager: %@ %d %@", [err domain], [err code], [[err userInfo] description]);
+                NSLog(@"WelcomeViewController.File Manager: %@ %d %@", [err domain], [err code], [[err userInfo] description]);
             }
             else
             {
-                //NSLog(@"File %@ deleted.", appName);
+                NSLog(@"WelcomeViewController.File %@ deleted.", appName);
             }
 
         }
@@ -336,7 +336,7 @@ BOOL alertShown;
 
 #pragma mark - OrganisationLoaderDelegate
 -(void)OrganisationLoader:(OrganisationLoader*)organisationLoader didLoadOrganisations:(NSArray*)organisationsLocal{
-    NSLog(@"WelcomeViewController.didLoadOrganisations.[organisations count]=%i", [organisationsLocal count]);
+    //NSLog(@"WelcomeViewController.didLoadOrganisations.[organisations count]=%i", [organisationsLocal count]);
     self.organisations = organisationsLocal;
 
     Organisation* organisation = [self.organisations objectAtIndex:0];
@@ -354,7 +354,8 @@ BOOL alertShown;
     if(organisation!=nil)
     {
         self.organisations = [self arrayByReplacingObject:self.organisations andObjectIndex:organisationCounter andNewObject:organisation];
-        NSLog(@"WelcomeViewController.didLoadOrganisation. id=%i, name=%@, [themes count]=%i", organisation.organisationId, organisation.name, [organisation.themes count]);
+        //NSLog(@"WelcomeViewController.didLoadOrganisation. id=%i, name=%@, [themes count]=%i", organisation.organisationId, organisation.name, [organisation.themes count]);
+       
         /*
         if([organisation.themes count]>0)
         {
@@ -394,6 +395,8 @@ BOOL alertShown;
     }//end if(organisation!=nil)
 
 }
+
+
 
 
 @end

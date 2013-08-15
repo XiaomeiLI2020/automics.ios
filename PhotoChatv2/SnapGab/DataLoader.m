@@ -104,6 +104,8 @@ sqlite3* database;
 
 -(void)initiateSQL
 {
+    
+    //NSLog(@"DataLoader.initiateSQL.");
     //NSError *err;
     NSString *docsDir;
     NSArray *dirPaths;
@@ -145,14 +147,14 @@ sqlite3* database;
             //NSLog(@"sqlite shutdown.");
         }
         else{
-            NSLog(@"sqlite not shutdown.");
+            NSLog(@"DataLoader.InitiateSQL. sqlite not shutdown.");
         }
         
         int retCode = sqlite3_config(SQLITE_CONFIG_SERIALIZED);
         if (retCode == SQLITE_OK) {
             //NSLog(@"Can now use sqlite on multiple threads, using the same connection");
         } else {
-            NSLog(@"Setting sqlite thread safe mode to serialized failed!!! return code: %d", retCode);
+            NSLog(@"DataLoader.InitiateSQL. Setting sqlite thread safe mode to serialized failed!!! return code: %d", retCode);
         }
         
         if(sqlite3_initialize()==SQLITE_OK)
@@ -160,7 +162,7 @@ sqlite3* database;
             //NSLog(@"sqlite initialized.");
         }
         else{
-            NSLog(@"sqlite not initialized.");
+            NSLog(@"DataLoader.InitiateSQL. sqlite not initialized.");
         }
         if(sqlite3_open(dbpath, &database) == SQLITE_OK)
         {
@@ -173,6 +175,7 @@ sqlite3* database;
 }
 
 -(void)submitSQLRequestCreateTablesForApp{
+    NSLog(@"DataLoader.submitSQLRequestCreateTablesForApp");
     NSError *err;
     NSString *docsDir;
     NSArray *dirPaths;
@@ -196,17 +199,18 @@ sqlite3* database;
         [filemgr removeItemAtPath:databasePath error:&err];
         if(err)
         {
-            NSLog(@"File Manager: %@ %d %@", [err domain], [err code], [[err userInfo] description]);
+            NSLog(@"DataLoader.submitSQLRequestCreateTablesForApp. File Manager: %@ %d %@", [err domain], [err code], [[err userInfo] description]);
         }
         else
         {
-            //NSLog(@"File %@ deleted.", appName);
+            //NSLog(@"DataLoader.submitSQLRequestCreateTablesForApp. File %@ deleted.", appName);
         }
     }//end if([filemgr fileExistsAtPath:databasePath])
     
     
     if([filemgr fileExistsAtPath:databasePath] == NO)
     {
+        NSLog(@"DataLoader.submitSQLRequestCreateTablesForApp. tables created");
 		const char *dbpath = [databasePath UTF8String];
         
         //sqlite3_shutdown();
@@ -252,7 +256,9 @@ sqlite3* database;
             
             //const char *photos_stmt = "CREATE TABLE IF NOT EXISTS PHOTOS (PHOTOID INTEGER PRIMARY KEY, GROUPHASHID TEXT, PHOTOURL TEXT, THUMBURL TEXT, DESCRIPTION TEXT, WIDTH REAL, HEIGHT REAL)";
             
-            const char *resources_stmt = "CREATE TABLE IF NOT EXISTS RESOURCES (RESOURCEID INTEGER, THEMEID INTEGER, NAME TEXT, TYPE TEXT, PHOTOURL TEXT, THUMBURL TEXT, PRIMARY KEY(RESOURCEID, THEMEID))";
+            //const char *resources_stmt = "CREATE TABLE IF NOT EXISTS RESOURCES (RESOURCEID INTEGER, THEMEID INTEGER, NAME TEXT, TYPE TEXT, PHOTOURL TEXT, THUMBURL TEXT, PRIMARY KEY(RESOURCEID, THEMEID))";
+            
+            const char *resources_stmt = "CREATE TABLE IF NOT EXISTS RESOURCES (RESOURCEID INTEGER PRIMARY KEY, THEMEID INTEGER, NAME TEXT, TYPE TEXT, PHOTOURL TEXT, THUMBURL TEXT)";
             
             const char *placements_stmt = "CREATE TABLE PLACEMENTS (PLACEMENTID INTEGER, PANELID INTEGER, GROUPHASHID TEXT, RESOURCEID INTEGER, XOFF REAL, YOFF REAL, SCALE REAL, ANGLE REAL, ZINDEX INTEGER, PRIMARY KEY(PLACEMENTID, PANELID, GROUPHASHID))";
             
@@ -2042,7 +2048,7 @@ sqlite3* database;
         if([resources count]>0){
             dispatch_async([self dispatchQueue], ^(void) {
                 databaseUpdating = YES;
-                //NSLog(@"submitSQLRequestSaveResources. [resources count]=%i, dataBaseUpdating=%d", [resources count], databaseUpdating);
+                //NSLog(@"DataLoader.submitSQLRequestSaveResources. [resources count]=%i, dataBaseUpdating=%d", [resources count], databaseUpdating);
                 for(int i=0; i<[resources count]; i++)
                 {
                     Resource* resource = [resources objectAtIndex:i];
@@ -2057,7 +2063,7 @@ sqlite3* database;
                         {
                             //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
                             {
-                                NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO resources(resourceid, themeId, TYPE, PHOTOURL, THUMBURL) VALUES(%i, %i, \"%@\",\"%@\",\"%@\")", resource.resourceId, themeId, resource.type, resource.imageURL, resource.thumbURL];
+                                NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO resources(resourceId, themeId, TYPE, PHOTOURL, THUMBURL) VALUES(%i, %i, \"%@\",\"%@\",\"%@\")", resource.resourceId, themeId, resource.type, resource.imageURL, resource.thumbURL];
                                 //NSLog(@"insertSQL=%@", insertSQL);
                                 const char *insert_stmt = [insertSQL UTF8String];
                                 /*

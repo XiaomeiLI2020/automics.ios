@@ -49,7 +49,7 @@ int placementCounter;
                 [self addSubview:imageView];
 */
                 
-                __weak UIImageView* _imageView = imageView;
+            __weak UIImageView* _imageView = imageView;
            
             NSFileManager* fileMgr = [NSFileManager defaultManager];
             //NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
@@ -58,78 +58,50 @@ int placementCounter;
             NSString* imageName = [NSString stringWithFormat:@"panelPhoto%i.png", panel.photo.photoId];
             NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
             BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
-                        //NSLog(@"displayPageinPanelScrollView. Panel[%i].[%@] File exists=%d", panel.panelId, imageName, fileExists);
+            NSLog(@"ThumbnailView. Panel[%i].[%@] File exists=%d", panel.panelId, imageName, fileExists);
             if(!fileExists)
             {
                 
-                [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
+                [imageView setImageWithURL:[NSURL URLWithString:[panel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
                           placeholderImage:nil
                                    success:^(UIImage *imageDownloaded) {
 
                                        image = imageDownloaded;
                                        _imageView.frame = CGRectMake(0.0, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
+                                       //[_imageView setImage:imageDownloaded];
                                        [self addSubview:_imageView];
                                        
-                                       NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
-                                       [data1 writeToFile:currentFile atomically:YES];
                                        
+                                       //NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                       //[data1 writeToFile:currentFile atomically:YES];
+                                       //NSLog(@"ThumbnailView. File[%@] saved", currentFile);
                                    }
                                    failure:^(NSError *error) {
-                                       NSLog(@"displayPageinPanelScrollView.Failed to load image");
+                                       NSLog(@"ThumbnailView.Failed to load image");
                                    }];
             }//end if(!fileExists)
 
             else if(fileExists)
             {
-                
-                //NSLog(@"displayPageinPanelScrollView. Loading image from file=%@", imageName);
-                //NSError* err;
-                //[fileMgr removeItemAtPath:currentFile error:&err];
+
                 UIImage* imageDownloaded = [UIImage imageWithContentsOfFile:currentFile];
                 [imageView setImage:imageDownloaded];
                 image = imageDownloaded;
                 imageView.frame = CGRectMake(0.0, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
                 [self addSubview:imageView];
                 
-                
-                //[imageView setImage:[UIImage imageNamed:currentFile]];
-                //[imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
             }//end if(fileExists)
+
+       
+            [self loadPlacements:panel];
+            [self loadAnnotations:panel];
+            snapshot = [self imageWithView:self];
+            NSLog(@"ThumbnailView.thumbnail#%i generated",panel.panelId);
            
-            
-            /*
-                 [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
-                                       success:^(UIImage *imageDownloaded) {
-                                            image = imageDownloaded;
-                                           _imageView.frame = CGRectMake(0.0, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
-                                           [self addSubview:_imageView];
-                                           //NSLog(@"image added to screenshot.");
-                                       }
-                                       failure:^(NSError *error) {
-                                           NSLog(@"ThumnailView.Failed to load thumbnail image. panelId=%i", panel.panelId);
-                                       }];
-                
-            */
-
-                    [self loadPlacements:panel];
-                    [self loadAnnotations:panel];
-                    //NSLog(@"panelId=%i.annotations already downloaded are added.", panel.panelId);
-
-                    /*
-                    dispatch_async(dispatch_get_main_queue(), ^(void) {
-                        snapshot = [self imageWithView:self];
-                    });
-                     */
-                    snapshot = [self imageWithView:self];
-
-
-            
         }//end if panel!=nil
 
-    }//end if
+    }//end if(self)
     return self;
-
-    
 }
 
 - (id)initWithFrame:(CGRect)frame andURL:(NSString*)imageURL{

@@ -33,6 +33,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    //NSLog(@"LoginViewController.viewDidLoad");
     
     UIImageView *backgroundImage;
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -62,15 +63,47 @@
     [self.emailLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     [self.passwordLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     
+    
     user = [[User alloc] init];
     userLoader = [[UserLoader alloc] init];
     userLoader.delegate = self;
     dataLoader = [[DataLoader alloc] init];
+
+    //Initiate SQLite database
+    [dataLoader initiateSQL];
+    
+    int userId = 0;
+    
+    //NSError* err;
+    NSString *docsDir;
+    NSArray *dirPaths;
+    NSString* appName = [NSString stringWithFormat: @"automics.sql"];
+    //databaseQueue = dispatch_queue_create("automics.database", NULL);
+    
+    // Get the documents directory
+    dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    docsDir = [dirPaths objectAtIndex:0];
+    // Build the path to the database file
+    NSString* databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent:appName]];
+    //NSLog(@"databasePath=%@, databasePathStatic=%@ ", databasePath, databasePathStatic);
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    
+    BOOL fileExists = [fileMgr fileExistsAtPath:databasePath];
+    NSLog(@"LoginViewController.ViewDidLoad.fileExists=%d", fileExists);
     
 
-    [dataLoader initiateSQL];
-    int userId = [dataLoader submitSQLRequestCheckLoggedInUser];
+    if(fileExists)
+    {
+        userId = [dataLoader submitSQLRequestCheckLoggedInUser];
+        //NSLog(@"LoginViewController.ViewDidLoad.userId=%i", userId);
+        
+    }//end if
+
+    
+
+    //int userId = [dataLoader submitSQLRequestCheckLoggedInUser];
     NSLog(@"LoginViewController.ViewDidLoad.userId=%i", userId);
+    
     if(userId>0)
     {
         NSArray* users = [dataLoader convertUsersSQLIntoUsers:userId];
@@ -79,7 +112,7 @@
             User* currentUser = [users objectAtIndex:0];
             if(currentUser!=nil)
             {
-                NSLog(@"LoginViewController..ViewDidLoad.user.currentGroup.hashId=%@", currentUser.currentGroup.hashId);
+                //NSLog(@"LoginViewController..ViewDidLoad.user.currentGroup.hashId=%@", currentUser.currentGroup.hashId);
                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                 [userDefaults setObject:currentUser.email forKey:@"email"];
                 [userDefaults setObject:currentUser.currentSession.token forKey:@"session"];
