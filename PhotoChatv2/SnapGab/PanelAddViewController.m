@@ -217,8 +217,10 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             CGRect resourceFrame;// = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
             if([type isEqual:@"d"])
             {
-                resourceFrame = CGRectMake(100.0, 100.0, decoratorWidth, decoratorHeight);
-                
+                //resourceFrame = CGRectMake(100.0, 100.0, decoratorWidth, decoratorHeight);
+                resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, decoratorWidth, decoratorHeight);
+                //resourceFrame = CGRectMake(0.0, 0.0, decoratorWidth, decoratorHeight);
+               
             }
             if([type isEqual:@"f"])
             {
@@ -229,7 +231,10 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             //NSLog(@"addResourceWithId.resourceFrame=%@", NSStringFromCGRect(resourceFrame));
             //ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:resource.imageURL andType:type andId:resource.resourceId];
             ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource andScale:1.0 andAngle:0.0];
-            
+
+            //rv.center = self.view.center;
+            rv.center = self.imageView.center;
+
             [self.view addSubview:rv];
         }//end if resource!=nil
     }//end if
@@ -253,7 +258,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         CGRect rect1 = styleButton.frame;
         rect1.size.height = assetHeight;
         rect1.size.width = assetWidth;
-        styleButton.frame = rect1;
+        //styleButton.frame = rect1;
+        styleButton.frame = CGRectMake(i*assetScrollXOrigin, assetScrollYOrigin, assetWidth, assetHeight);
         styleButton.tag = i;	// tag our images for later use when we place them in serial fashion
         
         [styleButton addTarget:self action:@selector(addBubbleWithId:) forControlEvents:UIControlEventTouchDown];
@@ -838,7 +844,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         CGRect rect1 = styleButton.frame;
         rect1.size.height = assetHeight;
         rect1.size.width = assetWidth;
-        styleButton.frame = rect1;
+        //styleButton.frame = rect1;
+        styleButton.frame = CGRectMake((numSpeechBubbles+resourceCounter)*assetScrollXOrigin, assetScrollYOrigin, assetWidth, assetHeight);
         //styleButton.tag = resourceId;	// tag our images for later use when we place them in serial fashion
         styleButton.tag = resourceCounter;	// tag our images for later use when we place them in serial fashion
         

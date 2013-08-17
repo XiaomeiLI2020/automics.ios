@@ -473,7 +473,6 @@ NSString *kComicCellID = @"COMIC_CELL";
             [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]
                       placeholderImage:nil
                                success:^(UIImage *imageDownloaded) {
-                                   //UIImageWriteToSavedPhotosAlbum(imageDownloaded, nil, nil, nil);
                                    
                                    //[comicImages setObject:imageDownloaded forKey:indexPath];
                                    

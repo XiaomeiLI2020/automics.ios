@@ -80,7 +80,7 @@
      [alert show];
     //[(MainViewController*)self.window.rootViewController.presentedViewController updateNumImages]; //and if not presented?
     */
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"newPanelNotification" object:nil];
+    //[[NSNotificationCenter defaultCenter] postNotificationName:@"newPanelNotification" object:nil];
 }
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
@@ -98,6 +98,7 @@
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
+    /*
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Failed to get token, error:"
                           message: [NSString stringWithFormat:@"%@", error]
@@ -105,6 +106,9 @@
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
     [alert show];
+     */
+    
+    NSLog(@"AppDelegate. Failed to get token, error: %@", error);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

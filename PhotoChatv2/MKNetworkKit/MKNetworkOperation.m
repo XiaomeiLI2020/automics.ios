@@ -1508,7 +1508,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
     NSDictionary* paneldict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
     DLog(@"panelData: %@", responseString);
-    
+    NSLog(@"panelData: %@", responseString);
     /*
      if(paneldict != nil)
      {
@@ -1574,11 +1574,16 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
         NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
         [comicLoader submitSQLRequestSaveComicsForGroup:comics andGroupHashId:currentGroupHashId];
 
+        UserLoader* userLoader = [[UserLoader alloc] init];
+        [userLoader submitRequestPostNotification:@"New comic uploaded."];
+        /*
         NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
         //NSLog(@"comicData=%@", responseString);
         
         if ([self.delegate respondsToSelector:@selector(MKNetworkOperation:didUploadComic:)])
             [self.delegate MKNetworkOperation:self didUploadComic:responseString];
+        */
+        
     }else{
         
         NSString* responseString = @"Comic failed to upload.";

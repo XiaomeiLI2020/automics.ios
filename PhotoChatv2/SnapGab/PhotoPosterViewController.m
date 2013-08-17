@@ -38,6 +38,7 @@
 @synthesize annotationsArray;
 @synthesize editedPhoto;
 @synthesize panelScrollView;
+@synthesize saveImageLabel;
 
 BOOL panelUploaded;
 bool alertShown;
@@ -72,6 +73,12 @@ bool alertShown;
     }
     [self.view addSubview:backgroundImage];
     [self.view sendSubviewToBack:backgroundImage];
+    
+    saveImageLabel.text= [NSString stringWithFormat: @"Save an image"];
+    saveImageLabel.numberOfLines = 0; //will wrap text in new line
+    [saveImageLabel sizeToFit];
+    [saveImageLabel setFont:[UIFont fontWithName: @"Transit Display" size:28]];
+    saveImageLabel.frame = CGRectMake(120.0, 2.0, 100.0, 34.0);
     
     // Add panels scrollview
     CGRect panelFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);

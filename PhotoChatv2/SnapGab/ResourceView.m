@@ -107,7 +107,7 @@ CGRect originalBounds;
     if (self) {
         // Initialization code
         
-        MAX_SIZE = 600.0;
+        MAX_SIZE = 320.0;
         MIN_SIZE = 80.0;
         
         if(resourceSent!=nil)
@@ -390,7 +390,7 @@ CGRect originalBounds;
 
 - (void)scalePiece:(UIPinchGestureRecognizer*)gestureRecognizer
 {
-    //NSLog(@"scalePiece");
+    NSLog(@"scalePiece");
     //NSLog(@"Scale: %f", [gestureRecognizer scale]);
     if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
         //_previousScale = _scale;

@@ -157,12 +157,25 @@ NSString *kCellID = @"GROUP_CELL";
     Group *group = [selectedGroupCell getGroup];
     NSString *url = [APIWrapper getURLForJoinGroupWithHashId:[group hashId]];
     
+    //Shortening URL using bit.Ly login and API key
+    NSString* bitLyLogin = @"urashid";
+    NSString* bitLyAPIKey = @"R_4f9848d25ed8180c65991be731251456";
+    
+    NSString *shortenedURL = url;
+    GroupLoader* groupLoader = [[GroupLoader alloc] init];
+    if([groupLoader isReachable])
+    {
+        shortenedURL = [NSString stringWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://api.bit.ly/v3/shorten?login=%@&apikey=%@&longUrl=%@&format=txt", bitLyLogin, bitLyAPIKey, url]] encoding:NSUTF8StringEncoding error:nil];
+    }
+
+    //NSLog(@"collectionView didSelectItemAtIndexPath.shortenedURL=%@", shortenedURL);
+    
     if(!alertShown)
     {
         alertShown = YES;
         UIAlertView *alert = [[UIAlertView alloc]
                               initWithTitle: [NSString stringWithFormat:@"Join %@", group.name]
-                              message: [NSString stringWithFormat:@"%@", url]
+                              message: [NSString stringWithFormat:@"%@", shortenedURL]
                               delegate: self
                               cancelButtonTitle:@"OK"
                               otherButtonTitles:nil];
@@ -188,6 +201,7 @@ NSString *kCellID = @"GROUP_CELL";
 
 -(UIImage*)generateQRCodeImageForURL:(NSString*)url{
     NSLog(@"generateQRCodeImageForURL.url=%@", url);
+    
     DataMatrix *qrMatrix = [QREncoder encodeWithECLevel:QR_ECLEVEL_AUTO version:QR_VERSION_AUTO string:url];
     UIImage* qrcodeImage = [QREncoder renderDataMatrix:qrMatrix imageDimension:250];
     return qrcodeImage;

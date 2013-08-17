@@ -396,6 +396,9 @@
     userEmail = self.emailTextField.text;
     userPassword = self.passwordTextField.text;
     
+    //userEmail = @"test1@test.com";
+    //userPassword = @"Password";
+    
     /*
     if(userEmail!=nil)
         userEmail = @"urashid@lincoln.ac.uk";

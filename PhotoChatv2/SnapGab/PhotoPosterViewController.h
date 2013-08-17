@@ -28,6 +28,7 @@
 @property Photo* editedPhoto;
 @property NSMutableArray* placementsArray;
 @property NSMutableArray* annotationsArray;
+@property (weak, nonatomic) IBOutlet UILabel *saveImageLabel;
 
 @property MainScrollSelector *panelScrollView;
 

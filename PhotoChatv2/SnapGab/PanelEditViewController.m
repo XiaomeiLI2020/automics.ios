@@ -120,6 +120,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     self.imageLabel.numberOfLines = 0; //will wrap text in new line
     [self.imageLabel sizeToFit];
     [self.imageLabel setFont:[UIFont fontWithName: @"Transit Display" size:28]];
+    self.imageLabel.frame = CGRectMake(120.0, 2.0, 100.0, 34.0);
 
     imageView.frame = CGRectMake(0.0, 0.0, panelWidth, panelHeight);
     imageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -219,7 +220,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         CGRect rect1 = styleButton.frame;
         rect1.size.height = assetHeight;
         rect1.size.width = assetWidth;
-        styleButton.frame = rect1;
+        //styleButton.frame = rect1;
+        styleButton.frame = CGRectMake(i*assetScrollXOrigin, assetScrollYOrigin, assetWidth, assetHeight);
         styleButton.tag = i;	// tag our images for later use when we place them in serial fashion
         
         [styleButton addTarget:self action:@selector(addBubbleWithId:) forControlEvents:UIControlEventTouchDown];
@@ -236,8 +238,6 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
     self.thumbnailScrollView.delegate=self;
     [thumbnailScrollView layoutAssets];
-
-
 }
 
 - (void)addBubbleWithId:(id)sender
@@ -266,7 +266,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             CGRect resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
             if([type isEqual:@"d"])
             {
-                resourceFrame = CGRectMake(100, 100, decoratorWidth, decoratorHeight);
+                //resourceFrame = CGRectMake(100, 100, decoratorWidth, decoratorHeight);
+                resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, decoratorWidth, decoratorHeight);
                 
             }
             if([type isEqual:@"f"])
@@ -278,7 +279,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             //ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:resource.imageURL andType:type andId:resource.resourceId];
             //ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:resource.imageURL andType:type andId:resource.resourceId andScale:1.0];
             ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource andScale:1.0 andAngle:0.0];
-
+            
+            rv.center = self.imageView.center;
             [self.view addSubview:rv];
         }//end if resource!=nil
     }//end if
@@ -680,7 +682,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         CGRect rect1 = styleButton.frame;
         rect1.size.height = assetHeight;
         rect1.size.width = assetWidth;
-        styleButton.frame = rect1;
+        //styleButton.frame = rect1;
+        styleButton.frame = CGRectMake((numSpeechBubbles+resourceCounter)*assetScrollXOrigin, assetScrollYOrigin, assetWidth, assetHeight);
         //styleButton.tag = resource.resourceId;	// tag our images for later use when we place them in serial fashion
         styleButton.tag = resourceCounter;	// tag our images for later use when we place them in serial fashion
         

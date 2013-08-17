@@ -967,7 +967,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Image" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Fu0-Ds-UbM">
-                                <rect key="frame" x="119" y="4" width="132" height="34"/>
+                                <rect key="frame" x="119" y="2" width="100" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -1246,7 +1246,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Save an image" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Grt-dd-Hhi">
-                                <rect key="frame" x="114" y="0.0" width="127" height="34"/>
+                                <rect key="frame" x="114" y="2" width="127" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -1259,12 +1259,13 @@
                     <connections>
                         <outlet property="imageView" destination="Cje-XN-8KM" id="jAm-e4-ZZF"/>
                         <outlet property="progressView" destination="kLa-ex-Sov" id="lnF-qm-3DA"/>
+                        <outlet property="saveImageLabel" destination="Grt-dd-Hhi" id="Ien-Xf-VJ4"/>
                         <segue destination="xKX-9l-Tt1" kind="custom" identifier="postToView" customClass="CustomSegue" id="snA-Gb-6Qz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0H2-gz-B1m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4269" y="-1999"/>
+            <point key="canvasLocation" x="3957" y="-2000"/>
         </scene>
         <!--ComicPosterViewController-->
         <scene sceneID="0Jt-XC-ADr">
@@ -1531,12 +1532,12 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="lbd-Gx-frY"/>
-        <segue reference="Wbe-Kn-xnz"/>
         <segue reference="jBs-q8-pBL"/>
-        <segue reference="UHm-Wr-wfu"/>
+        <segue reference="MWk-cz-y72"/>
+        <segue reference="snA-Gb-6Qz"/>
+        <segue reference="Wbe-Kn-xnz"/>
+        <segue reference="eqx-Lk-Ciz"/>
         <segue reference="tdK-yH-zWg"/>
         <segue reference="Q3d-Fe-clA"/>
-        <segue reference="eqx-Lk-Ciz"/>
     </inferredMetricsTieBreakers>
 </document>

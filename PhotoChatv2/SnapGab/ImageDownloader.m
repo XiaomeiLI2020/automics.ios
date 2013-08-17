@@ -44,12 +44,31 @@
 
 #pragma mark NSURLConnectionDelegate functions.
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
-    NSLog(@"imageDownloader.connectionDidFinishLoading.[self.downloadedData.length]=%i", self.downloadedData.length);
+    //NSLog(@"imageDownloader.connectionDidFinishLoading.[self.downloadedData.length]=%i", self.downloadedData.length);
     [super connectionDidFinishLoading:connection];
     downloading = NO;
     image = [UIImage imageWithData:self.downloadedData];
+    
+    id filePath = self.obj;
+    if([filePath isKindOfClass:[NSString class]])
+    {
+        NSFileManager* fileMgr = [NSFileManager defaultManager];
+        BOOL fileExists = [fileMgr fileExistsAtPath:filePath];
+        //NSLog(@"imageDownloader. [%@] File exists=%d", filePath, fileExists);
+        if(!fileExists)
+        {
+            NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(image)];
+            [data1 writeToFile:filePath atomically:YES];
+            //NSLog(@"imageDownloader. saving file=%@", filePath);
+        }
+    }
+    
     if ([self.delegate respondsToSelector:@selector(imageDownloader:didLoadImage:forObject:)]){
         [self.delegate imageDownloader:self didLoadImage:image forObject:obj];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(imageDownloader:didLoadImage:)]){
+        [self.delegate imageDownloader:self didLoadImage:image];
     }
 }
 
