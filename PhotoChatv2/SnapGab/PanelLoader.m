@@ -300,8 +300,19 @@ int currentNumPanels = 0;
             //[self submitSQLRequestSavePanels:panels];
             //});
             //NSLog(@"handleGetPanelsForGroupResponse. [panels count]=%i", [panels count]);
+            
+
+            
             NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
             NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+            
+            /*
+            NSArray* currentPanels = [self convertPanelsSQLIntoPanels:currentGroupHashId];
+            if(currentPanels!=nil)
+            {
+                currentNumPanels = [currentPanels count];
+            }
+            */
             
             //int previousNumPanels = [self submitSQLRequestCountPanelsForGroup:currentGroupHashId];
             
@@ -316,7 +327,7 @@ int currentNumPanels = 0;
             {
                 
                 NSMutableArray* panelsNew = [[NSMutableArray alloc] init];
-                for(int i=currentNumPanels; i<[panels count];i++)
+                for(int i=(currentNumPanels); i<[panels count];i++)
                 {
                     Panel* panel = [panels objectAtIndex:i];
                     if(panel!=nil){

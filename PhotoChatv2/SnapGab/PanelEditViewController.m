@@ -214,14 +214,18 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         
         
         //UIImageView *sbView = [[UIImageView alloc] initWithImage:image];
-        UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
+        //UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
+        UIButton *styleButton = [[UIButton alloc] initWithFrame:CGRectMake(i*assetScrollXOrigin, assetScrollYOrigin, assetWidth, assetHeight)];
         [styleButton setBackgroundImage:image forState:UIControlStateNormal];
         
+        /*
         CGRect rect1 = styleButton.frame;
         rect1.size.height = assetHeight;
         rect1.size.width = assetWidth;
         //styleButton.frame = rect1;
         styleButton.frame = CGRectMake(i*assetScrollXOrigin, assetScrollYOrigin, assetWidth, assetHeight);
+        */
+        
         styleButton.tag = i;	// tag our images for later use when we place them in serial fashion
         
         [styleButton addTarget:self action:@selector(addBubbleWithId:) forControlEvents:UIControlEventTouchDown];
@@ -561,17 +565,6 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         
         for (UIView *subview in self.view.subviews)
         {
-            //upload speech bubbles with the photo
-            if([subview isMemberOfClass:[SpeechBubbleView class]])
-            {
-                SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
-                SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
-                new_sbv.userInteractionEnabled = NO;
-                [ppvc.view addSubview:new_sbv];
-                
-                //NSLog(@"speechbubble added for posting.");
-            }
-            
             //upload resources with the photo
             if([subview isMemberOfClass:[ResourceView class]])
             {
@@ -609,6 +602,21 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                 //NSLog(@"resource added for posting.");
             }
         }//end for
+        
+        for (UIView *subview in self.view.subviews)
+        {
+            //upload speech bubbles with the photo
+            if([subview isMemberOfClass:[SpeechBubbleView class]])
+            {
+                SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
+                SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
+                new_sbv.userInteractionEnabled = NO;
+                [ppvc.view addSubview:new_sbv];
+                
+                //NSLog(@"speechbubble added for posting.");
+            }
+        }//end for
+        
     } //end if
     
     if([[segue identifier] isEqualToString:@"panelView"])
@@ -640,7 +648,10 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         [styleButton setImage:image forState:UIControlStateNormal];
         */
         
-        UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
+        
+        
+        //UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
+        UIButton *styleButton = [[UIButton alloc] initWithFrame:CGRectMake((numSpeechBubbles+resourceCounter)*assetScrollXOrigin, assetScrollYOrigin, assetWidth, assetHeight)];
         
         NSFileManager* fileMgr = [NSFileManager defaultManager];
         //NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
@@ -678,13 +689,15 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         }
 
         
-        
+        /*
         CGRect rect1 = styleButton.frame;
         rect1.size.height = assetHeight;
         rect1.size.width = assetWidth;
         //styleButton.frame = rect1;
         styleButton.frame = CGRectMake((numSpeechBubbles+resourceCounter)*assetScrollXOrigin, assetScrollYOrigin, assetWidth, assetHeight);
         //styleButton.tag = resource.resourceId;	// tag our images for later use when we place them in serial fashion
+        */
+        
         styleButton.tag = resourceCounter;	// tag our images for later use when we place them in serial fashion
         
         [styleButton addTarget:self action:@selector(addResourceWithId:) forControlEvents:UIControlEventTouchDown];

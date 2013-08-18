@@ -305,7 +305,7 @@ NSString *pCellID = @"GROUP_CELL";
             
             UIAlertView *alert = [[UIAlertView alloc]
                                   initWithTitle: @"You are offline."
-                                  message:@"Group change only when Internet is available"
+                                  message:@"Group leave only when Internet is available"
                                   delegate: nil
                                   cancelButtonTitle:@"Cancel"
                                   otherButtonTitles:nil];

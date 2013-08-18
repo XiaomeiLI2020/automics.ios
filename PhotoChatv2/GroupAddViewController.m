@@ -110,18 +110,37 @@ BOOL alertShown;
         
         if(!alertShown)
         {
-            alertShown = YES;
-            UIAlertView *alert = [[UIAlertView alloc]
-                                  initWithTitle: @"Group Created"
-                                  message: [NSString stringWithFormat:@"You have created group %@", group.name]
-                                  delegate: self
-                                  cancelButtonTitle:@"OK"
-                                  otherButtonTitles:nil];
-            [alert show];
             
+            if([groupLoader isReachable])
+            {
+                alertShown = YES;
+                UIAlertView *alert = [[UIAlertView alloc]
+                                      initWithTitle: @"Group Created"
+                                      message: [NSString stringWithFormat:@"You have created group %@", group.name]
+                                      delegate: self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:nil];
+                [alert show];
+                
+                
+            }//end if([groupLoader isReachable])
+
+            else if(![groupLoader isReachable])
+            {
+                UIAlertView *alert = [[UIAlertView alloc]
+                                      initWithTitle: @"You are offline."
+                                      message:@"Group created only when Internet is available"
+                                      delegate: nil
+                                      cancelButtonTitle:@"Cancel"
+                                      otherButtonTitles:nil];
+                [alert show];
+                
+            }//end else if(![groupLoader isReachable])
         }
 
+       
         
+           
 
         
         /*

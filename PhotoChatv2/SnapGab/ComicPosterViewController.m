@@ -24,6 +24,7 @@
 @synthesize comicContents;
 @synthesize comicLoader;
 @synthesize comicName;
+BOOL alertShown;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -59,6 +60,7 @@
     comicLoader = [[ComicLoader alloc] init];
     comicLoader.delegate = self;
     
+    alertShown = NO;
     //MKNetworkOperation* operation = [[MKNetworkOperation alloc] init];
     //operation.delegate = self;
 }
@@ -101,13 +103,19 @@
 - (void)startUpload
 {
     if (self.connection) {
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Already Sending"
-                              message: @"Upload one image at a time"
-                              delegate: nil
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-        [alert show];
+        if(!alertShown)
+        {
+            alertShown = YES;
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle: @"Already Sending"
+                                  message: @"Upload one comic at a time"
+                                  delegate: nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
+            [alert show];
+        }//end if(!alertShown)
+        
+
         return;
     }
 
@@ -157,43 +165,51 @@
     
     NSLog(@"ComicPosterView. startOperation. reachable=%d", [comicLoader isReachable]);
     
-    if(![comicLoader isReachable])
+    if(!alertShown)
     {
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Upload Failure"
-                              message: @"Data will be uploaded when network connection is available."
-                              delegate:self
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-        [alert show];
-    }//end if
-    else if([comicLoader isReachable])
-    {
-        /*
-        [operation onUploadProgressChanged:^(double progress) {
+
+        if(![comicLoader isReachable])
+        {
+            alertShown = YES;
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle: @"Upload Failure"
+                                  message: @"Data will be uploaded when network connection is available."
+                                  delegate:self
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
+            [alert show];
+        }//end if(![comicLoader isReachable])
+        else if([comicLoader isReachable])
+        {
+            /*
+             [operation onUploadProgressChanged:^(double progress) {
+             
+             //DLog(@"onUploadProgressChanged=%.2f, progress=%f", progress*100.0, progress);
+             self.progressView.progress = (float)progress;
+             
+             }];
+             */
+            alertShown = YES;
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle: @"Upload Request"
+                                  message: @"Data is being uploaded."
+                                  delegate: self
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
+            [alert show];
             
-            //DLog(@"onUploadProgressChanged=%.2f, progress=%f", progress*100.0, progress);
-            self.progressView.progress = (float)progress;
-            
-        }];
-         */
-        
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Upload Request"
-                              message: @"Data is being uploaded."
-                              delegate: self
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-        [alert show];
-        
-    }//end else
+        }//end else if([comicLoader isReachable])
+
+    }//end if(!alertShown)
+
     
+    /*
     [operation onUploadProgressChanged:^(double progress) {
         
         //DLog(@"onUploadProgressChanged=%.2f", progress*100.0);
         
     }];
-
+*/
     
     //[comicLoader submitRequestPostComic:comic];
     

@@ -658,13 +658,13 @@ int ibackAlertView = 2;
         CGFloat pos = (CGFloat)self.thumbnailScrollView.contentOffset.x / thumbnailWidth;
         int page = round(ceilf(pos));
         //NSLog(@"alignPageInThumbnailScrollView.page=%i", page);
-        
+        /*
         if(lastContentOffsetX == self.thumbnailScrollView.contentOffset.x)
         {
             NSLog(@"ComicEditViewController.panels refreshed");
             //[panelsLoader submitRequestRefreshGetPanelsForGroup];
         }
-        
+        */
         lastContentOffsetX = self.thumbnailScrollView.contentOffset.x;
 
         
@@ -840,7 +840,7 @@ int ibackAlertView = 2;
                         ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:thumbnailPanel];
                         thumbnailPanel.thumbnail=thumbnailView.snapshot;
                         
-                        NSLog(@"displayThumbnails.downloadedPhotos objectAtIndex:index[%i]=%d. Thumbnail generated", index, photoDownloaded);
+                        //NSLog(@"displayThumbnails.downloadedPhotos objectAtIndex:index[%i]=%d. Thumbnail generated", index, photoDownloaded);
                         [imageView setImage:thumbnailPanel.thumbnail];
                         
                         //NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(thumbnailPanel.thumbnail)];
@@ -852,7 +852,7 @@ int ibackAlertView = 2;
                         
                     }
                     else{
-                        NSLog(@"displayThumbnails.downloadedPhotos objectAtIndex:index[%i]=%d. Thumbnail existed.", index, photoDownloaded);
+                        //NSLog(@"displayThumbnails.downloadedPhotos objectAtIndex:index[%i]=%d. Thumbnail existed.", index, photoDownloaded);
                         [imageView setImage:thumbnailPanel.thumbnail];
                         //UIImage* imageDownloaded = [UIImage imageWithContentsOfFile:thumbFile];
                         //[imageView setImage:imageDownloaded];
@@ -899,23 +899,23 @@ int ibackAlertView = 2;
                      */
                     //else
                     {
-                        NSLog(@"displayThumbnails.panel:index[%i] file exists = %d.", index, panelExists);
+                        //NSLog(@"displayThumbnails.panel:index[%i] file exists = %d.", index, panelExists);
                         
                         CGRect thumbFrame= CGRectMake(index*thumbnailWidth, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
                         ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:thumbnailPanel];
                         thumbnailPanel.thumbnail=thumbnailView.snapshot;
-                        NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. Thumbnail generated", index, panelExists);
+                        //NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. Thumbnail generated", index, panelExists);
                         
                         panelExists = [fileMgr fileExistsAtPath:panelFile];
-                        NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. After thumbnail generated", index, panelExists);
+                        //NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. After thumbnail generated", index, panelExists);
                         if(panelExists)
                         {
-                            NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. Thumbnail with resources.", index, panelExists);
+                            //NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. Thumbnail with resources.", index, panelExists);
                             [imageView setImage:thumbnailPanel.thumbnail];
                         }
                         else
                         {
-                            NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. Thumbnail without resources.", index, panelExists);
+                            //NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. Thumbnail without resources.", index, panelExists);
                             [imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:nil];
                         }
                     }
@@ -1348,7 +1348,7 @@ int ibackAlertView = 2;
 
     if([[segue identifier] isEqualToString:@"editPost"])
     {
-        NSLog(@"ComicEditViewController.segue.[comicPanelList count]=%i", [comicPanelList count]);
+        //NSLog(@"ComicEditViewController.segue.[comicPanelList count]=%i", [comicPanelList count]);
         if([comicPanelList count]>0)
         {
             ComicPosterViewController *cpvc = (ComicPosterViewController *)[segue destinationViewController];

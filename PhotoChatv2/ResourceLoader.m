@@ -42,7 +42,7 @@ BOOL resourcesLoaded = NO;
     
     self.currentThemeId = themeId;
     int resourcesDownloaded = [self submitSQLRequestCheckResourcesDownloadedForTheme:themeId];
-    NSLog(@"resourcesDownloaded=%i, self.currentThemeId=%i", resourcesDownloaded, self.currentThemeId);
+    //NSLog(@"ResourceLoader.resourcesDownloaded=%i, self.currentThemeId=%i", resourcesDownloaded, self.currentThemeId);
     if(resourcesDownloaded==0)
     {
         resourceRequestType = kGetThemeResources;

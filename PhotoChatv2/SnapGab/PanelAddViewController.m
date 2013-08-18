@@ -250,16 +250,18 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         NSString* imageString = [NSString stringWithFormat: @"bubble-style%i.png",i];
         UIImage *image = [UIImage imageNamed:imageString];
         
-        UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
+        //UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
+        UIButton *styleButton = [[UIButton alloc] initWithFrame:CGRectMake(i*assetScrollXOrigin, assetScrollYOrigin, assetWidth, assetHeight)];
         [styleButton setBackgroundImage:image forState:UIControlStateNormal];
         [styleButton setImage:image forState:UIControlStateNormal];
         
-        
+        /*
         CGRect rect1 = styleButton.frame;
         rect1.size.height = assetHeight;
         rect1.size.width = assetWidth;
         //styleButton.frame = rect1;
-        styleButton.frame = CGRectMake(i*assetScrollXOrigin, assetScrollYOrigin, assetWidth, assetHeight);
+        */
+        //styleButton.frame = CGRectMake(i*assetScrollXOrigin, assetScrollYOrigin, assetWidth, assetHeight);
         styleButton.tag = i;	// tag our images for later use when we place them in serial fashion
         
         [styleButton addTarget:self action:@selector(addBubbleWithId:) forControlEvents:UIControlEventTouchDown];
@@ -288,7 +290,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     int currentThemeId= [[prefs objectForKey:@"current_theme_id"] integerValue];
-    NSLog(@"current_theme_id=%i", currentThemeId);
+    //NSLog(@"PanelAddViewController. current_theme_id=%i", currentThemeId);
     
     [resourceLoader submitRequestGetResourcesForTheme:currentThemeId];
     
@@ -622,26 +624,18 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         
         for (UIView *subview in self.view.subviews)
         {
-            //upload speech bubbles with the photo
-            if([subview isMemberOfClass:[SpeechBubbleView class]])
-            {
-                SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
-                SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
-                new_sbv.userInteractionEnabled = NO;
-                [ppvc.view addSubview:new_sbv];
-            }//end if
             
             //upload resources with the photo
             if([subview isMemberOfClass:[ResourceView class]])
             {
                 /*
-                ResourceView* sbv =(ResourceView*)subview;
-
-                //ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andURL:sbv.urlImageString andType:sbv.type andId:sbv.resourceId];
-                ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
-                new_sbv.userInteractionEnabled = NO;
-                [ppvc.view addSubview:new_sbv];
-                */
+                 ResourceView* sbv =(ResourceView*)subview;
+                 
+                 //ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andURL:sbv.urlImageString andType:sbv.type andId:sbv.resourceId];
+                 ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
+                 new_sbv.userInteractionEnabled = NO;
+                 [ppvc.view addSubview:new_sbv];
+                 */
                 
                 ResourceView* sbv =(ResourceView*)subview;
                 if(sbv.angle!=0.00)
@@ -666,6 +660,21 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                 [ppvc.view addSubview:new_sbv];
             }//end if
         }//end for
+
+        
+        for (UIView *subview in self.view.subviews)
+        {
+            //upload speech bubbles with the photo
+            if([subview isMemberOfClass:[SpeechBubbleView class]])
+            {
+                SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
+                SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
+                new_sbv.userInteractionEnabled = NO;
+                [ppvc.view addSubview:new_sbv];
+            }//end if
+
+        }//end for
+        
     } //end if
 
 }
@@ -789,7 +798,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         //NSLog(@"addResoruceToscrolView.");
         //int resourceId = resource.resourceId;
         //NSString* thumb_url = resource.thumbURL;
-        UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
+        //UIButton *styleButton = [[UIButton alloc] initWithFrame:thumbFrame];
+        UIButton *styleButton = [[UIButton alloc] initWithFrame:CGRectMake((numSpeechBubbles+resourceCounter)*assetScrollXOrigin, assetScrollYOrigin, assetWidth, assetHeight)];
 
         //UIImage *image = [UIImage imageNamed:resource.thumbURL];
         /*
@@ -840,13 +850,14 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 
         
         
-        
+        /*
         CGRect rect1 = styleButton.frame;
         rect1.size.height = assetHeight;
         rect1.size.width = assetWidth;
         //styleButton.frame = rect1;
         styleButton.frame = CGRectMake((numSpeechBubbles+resourceCounter)*assetScrollXOrigin, assetScrollYOrigin, assetWidth, assetHeight);
         //styleButton.tag = resourceId;	// tag our images for later use when we place them in serial fashion
+        */
         styleButton.tag = resourceCounter;	// tag our images for later use when we place them in serial fashion
         
         [styleButton addTarget:self action:@selector(addResourceWithId:) forControlEvents:UIControlEventTouchDown];
@@ -943,7 +954,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
     if(resources!=nil)
     {
-        NSLog(@"PanelAddViewController.didLoadResources.[resources count]=%i", [resources count]);
+        //NSLog(@"PanelAddViewController.didLoadResources.[resources count]=%i", [resources count]);
         
         if([resources count]>0)
         {
@@ -964,7 +975,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         [thumbnailScrollView layoutAssets];
         //[self loadSpeechBubbles];
         
-         NSLog(@"PanelAddViewController.didLoadResources.[ decorator resources count]=%i", [resources count]);
+        //NSLog(@"PanelAddViewController.didLoadResources.[ decorator resources count]=%i", [resources count]);
         if([resources count]>0)
         {
             for(Resource* resource in resources)
@@ -994,7 +1005,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 #pragma mark PanelPopupWindow functions.
 -(void)didSelectSource:(int)sourceId{
     //NSLog(@"resource failed to load.");
-    NSLog(@"PanelAddViewController.didSelectSource.sourceId=%i", sourceId);
+    //NSLog(@"PanelAddViewController.didSelectSource.sourceId=%i", sourceId);
     if(sourceId==0)
     {
         [self openGallery];

@@ -1446,16 +1446,15 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
         {
             int photoId = photo.photoId;
             
-            //NSLog(@"handlePostPhotoResponse.Photo uploaded.photoId=%i", photoId);
+            NSLog(@"handlePostPhotoResponse.Photo uploaded.photoId=%i, photo.URL=%@", photoId, photo.imageURL);
             //NSLog(@"handlePostPhotoResponse.self.panelAnnotations=%i", [self.panelAnnotations count]);
             //NSLog(@"handlePostPhotoResponse.self.panelPlacementss=%i", [self.panelPlacements count]);
-            if(photoId > 0)
+            if(photo.photoId>0 && photo.imageURL!=nil)
             {
                 Panel *panel = [[Panel alloc] init];
                 panel.photo = photo;
                 panel.photo.photoId = photo.photoId;
                 panel.photo.imageURL = NULL;
-                
                 
                 panel.placements = self.panelPlacements;
                 panel.annotations = self.panelAnnotations;
@@ -1487,11 +1486,12 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
          
     }else{
         
-        NSString* responseString = @"Photo failed to upload.";
-        DLog(@"%@", responseString);
+        //NSString* responseString = @"Photo failed to upload.";
+        //DLog(@"%@", responseString);
+        /*
         if([self.delegate respondsToSelector:@selector(MKNetworkOperation:operationFailed:)])
             [self.delegate MKNetworkOperation:self operationFailed:responseString];
-        
+        */
          //[self reportErrorToDelegate:error];
         /*
         if ([self.delegate respondsToSelector:@selector(MKNetworkOperation:operationFailedWithError:)])
@@ -1523,25 +1523,32 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
      }
 
      */
-    if(paneldict != nil)
+    if(paneldict!= nil)
     {
  
         Panel *panel = [PanelJSONHandler convertPanelJSONDictIntoPanel:paneldict];
-        NSMutableArray* panels = [[NSMutableArray alloc] init];
-        [panels addObject:panel];
+        if(panel!=nil)
+        {
+            if(panel.panelId>0 && panel.photo!=nil)
+            {
+                NSMutableArray* panels = [[NSMutableArray alloc] init];
+                [panels addObject:panel];
+                
+                //Upload panel to the SQlite database
+                PanelLoader *panelLoader = [[PanelLoader alloc] init];
+                //[panelLoader submitSQLRequestSavePanels:panels];
+                
+                NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+                NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+                [panelLoader submitSQLRequestSavePanelsForGroup:panels andGroupHashId:currentGroupHashId];
+                
+                //Post a notification when a panel has been successfully added.
+                UserLoader* userLoader = [[UserLoader alloc] init];
+                [userLoader submitRequestPostNotification:@"New image uploaded."];
+            }//end if(panel.panelId>0 && panel.photo!=nil)
+        }//end if(panel!=nil)
         
-        //Upload panel to the SQlite database
-        PanelLoader *panelLoader = [[PanelLoader alloc] init];
-        //[panelLoader submitSQLRequestSavePanels:panels];
-
-        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
-        [panelLoader submitSQLRequestSavePanelsForGroup:panels andGroupHashId:currentGroupHashId];
-        
-        //Post a notification when a panel has been successfully added.
-        UserLoader* userLoader = [[UserLoader alloc] init];
-        [userLoader submitRequestPostNotification:@"New image uploaded."];
-    
+            
         /*
         //DLog(@"PhotoPosterView.Panel didUploadPanel");
         if ([self.delegate respondsToSelector:@selector(MKNetworkOperation:didUploadPanel:)])
@@ -1551,10 +1558,12 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
     }
     else{
         
-        NSString* responseString = @"Panel failed to upload.";
-        DLog(@"%@", responseString);
+        //NSString* responseString = @"Panel failed to upload.";
+        //DLog(@"%@", responseString);
+        /*
         if([self.delegate respondsToSelector:@selector(MKNetworkOperation:operationFailed:)])
             [self.delegate MKNetworkOperation:self operationFailed:responseString];
+         */
     }
     
 }//end handlePostPanelResponse
@@ -1586,10 +1595,12 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
         
     }else{
         
-        NSString* responseString = @"Comic failed to upload.";
-        DLog(@"%@", responseString);
+        //NSString* responseString = @"Comic failed to upload.";
+        //DLog(@"%@", responseString);
+        /*
         if([self.delegate respondsToSelector:@selector(MKNetworkOperation:operationFailed:)])
             [self.delegate MKNetworkOperation:self operationFailed:responseString];
+         */
     }
         
 }//end handlePostComicResponse

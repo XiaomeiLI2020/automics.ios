@@ -118,7 +118,7 @@ dispatch_queue_t backgroundQueue;
 -(void)submitRequestGetComicWithId:(int)comicId{
     
     int comicExists = [self submitSQLRequestCheckComicExists:comicId];
-    NSLog(@"ComicLoader. comicExists=%i", comicExists);
+    //NSLog(@"ComicLoader. comicExists=%i", comicExists);
     if(comicExists==0 && [self isReachable])
     //if(comicExists==0)
     {

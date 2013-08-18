@@ -310,6 +310,7 @@ int thumbnailsCompleted;
     //NSLog(@"viewWillAppear");
     [super viewWillAppear:YES];
     
+    //Remove any speech bubbles, resources and scrollviews
     for (UIView *subview in self.view.subviews)
     {
         if([subview isMemberOfClass:[SpeechBubbleView class]] || [subview isMemberOfClass:[ResourceView class]]
@@ -988,7 +989,7 @@ int thumbnailsCompleted;
                         ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:thumbnailPanel];
                         thumbnailPanel.thumbnail=thumbnailView.snapshot;
                         
-                        NSLog(@"displayThumbnails.downloadedPhotos objectAtIndex:index[%i]=%d. Thumbnail generated", index, photoDownloaded);
+                        //NSLog(@"displayThumbnails.downloadedPhotos objectAtIndex:index[%i]=%d. Thumbnail generated", index, photoDownloaded);
                         [imageView setImage:thumbnailPanel.thumbnail];
                         
                         //NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(thumbnailPanel.thumbnail)];
@@ -1000,7 +1001,7 @@ int thumbnailsCompleted;
 
                     }
                     else{
-                        NSLog(@"displayThumbnails.downloadedPhotos objectAtIndex:index[%i]=%d. Thumbnail existed.", index, photoDownloaded);
+                        //NSLog(@"displayThumbnails.downloadedPhotos objectAtIndex:index[%i]=%d. Thumbnail existed.", index, photoDownloaded);
                         [imageView setImage:thumbnailPanel.thumbnail];
                         //UIImage* imageDownloaded = [UIImage imageWithContentsOfFile:thumbFile];
                         //[imageView setImage:imageDownloaded];
@@ -1047,23 +1048,23 @@ int thumbnailsCompleted;
                      */
                     //else
                     {
-                        NSLog(@"displayThumbnails.panel:index[%i] file exists = %d.", index, panelExists);
+                        //NSLog(@"displayThumbnails.panel:index[%i] file exists = %d.", index, panelExists);
                         
                         CGRect thumbFrame= CGRectMake(index*thumbnailWidth, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
                         ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:thumbnailPanel];
                         thumbnailPanel.thumbnail=thumbnailView.snapshot;
-                        NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. Thumbnail generated", index, panelExists);
+                        //NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. Thumbnail generated", index, panelExists);
                         
                         panelExists = [fileMgr fileExistsAtPath:panelFile];
-                        NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. After thumbnail generated", index, panelExists);
+                        //NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. After thumbnail generated", index, panelExists);
                         if(panelExists)
                         {
-                            NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. Thumbnail with resources.", index, panelExists);
+                            //NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. Thumbnail with resources.", index, panelExists);
                             [imageView setImage:thumbnailPanel.thumbnail];
                         }
                         else
                         {
-                            NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. Thumbnail without resources.", index, panelExists);
+                            //NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. Thumbnail without resources.", index, panelExists);
                             [imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:nil];
                         }
                     }
@@ -1345,14 +1346,15 @@ int thumbnailsCompleted;
 
 - (void)newPanelNotification:(NSNotification*)note
 {
+    
     NSDictionary *theData = [note userInfo];
     if (theData != nil) {
         NSString* message = [theData objectForKey:@"panelnotification"];
-        NSLog(@"notification: %@", message);
+        NSLog(@"PanelViewController.notification: %@", message);
         //[[NSNotificationCenter defaultCenter] removeObserver:self];
     }
     else{
-        NSLog(@"Nil data. New panel uploaded.");
+        //NSLog(@"PanelViewController.Nil data. New panel uploaded.");
     }
 }
 
@@ -1496,16 +1498,7 @@ int thumbnailsCompleted;
                 
                 for (UIView *subview in self.view.subviews)
                 {
-                    //Add Speech Bubbles
-                    if([subview isMemberOfClass:[SpeechBubbleView class]])
-                    {
-                        //NSLog(@"edited.speechbubble added.");
-                        SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
-                        SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
-                        new_sbv.userInteractionEnabled = YES;
-                        new_sbv.alpha = 0;
-                        [pevc.view addSubview:new_sbv];
-                    }
+
                    
                     //Add Resources
                     if([subview isMemberOfClass:[ResourceView class]])
@@ -1524,8 +1517,23 @@ int thumbnailsCompleted;
                         new_sbv.alpha = 0;
                         [pevc.view addSubview:new_sbv];
                     }
+                    
+                    
                 }//end for
               
+                for (UIView *subview in self.view.subviews)
+                {
+                    //Add Speech Bubbles
+                    if([subview isMemberOfClass:[SpeechBubbleView class]])
+                    {
+                        //NSLog(@"edited.speechbubble added.");
+                        SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
+                        SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
+                        new_sbv.userInteractionEnabled = YES;
+                        new_sbv.alpha = 0;
+                        [pevc.view addSubview:new_sbv];
+                    }
+                }//end for
                 
             }//end if panel!=nil
         }//end if numPanels>0
@@ -1754,7 +1762,7 @@ int thumbnailsCompleted;
 
 }
 
--(void)PanelLoader:(PanelLoader *)loader didLoadRefreshedPanels:(NSArray*)panelsLocal{
+-(void)PanelLoader:(PanelLoader*)loader didLoadRefreshedPanels:(NSArray*)panelsLocal{
     
     /*
     NSMutableArray* arrayCat(NSArray *a, NSArray *b)
@@ -1781,6 +1789,16 @@ int thumbnailsCompleted;
             [subView removeFromSuperview];
         }//end if
     }//end for
+    
+    //Remove the latest existing thumbnail
+    for(UIView* subView in thumbnailScrollView.subviews)
+    {
+        if(subView.tag==(numPanels-1) && [subView isMemberOfClass:[UIImageView class]])
+        //if([subView isMemberOfClass:[UIImageView class]])
+        {
+            [subView removeFromSuperview];
+        }//end if
+    }//end for
 
     initialized = NO;
     NSMutableArray *newPanels = [[NSMutableArray alloc] initWithArray:panels];
@@ -1797,9 +1815,7 @@ int thumbnailsCompleted;
     }
 
     
-    
-    
-    //NSLog(@"PanelViewController.didLoadPanels.initialized=%d", initialized);
+    //NSLog(@"PanelViewController.didLoadRefreshedPanels.initialized=%d", initialized);
     if(!initialized)
     {
         initialized = YES;
@@ -1810,6 +1826,7 @@ int thumbnailsCompleted;
         thumbnailScrollView.numItems = [panels count];
         [thumbnailScrollView layoutItems];
         
+
         //Scroll panelscrollview and thumbnailscrollview to the last item
         currentPage = [panels count]-1;
         

@@ -78,7 +78,7 @@ bool alertShown;
     saveImageLabel.numberOfLines = 0; //will wrap text in new line
     [saveImageLabel sizeToFit];
     [saveImageLabel setFont:[UIFont fontWithName: @"Transit Display" size:28]];
-    saveImageLabel.frame = CGRectMake(120.0, 2.0, 100.0, 34.0);
+    saveImageLabel.frame = CGRectMake(120.0, 2.0, 150.0, 34.0);
     
     // Add panels scrollview
     CGRect panelFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
@@ -133,27 +133,55 @@ bool alertShown;
     panelUploaded = NO;
     
     if (self.connection) {
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Already Sending"
-                              message: @"Upload one image at a time"
-                              delegate: nil
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-        [alert show];
+        if(!alertShown)
+        {
+            alertShown = YES;
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle: @"Already Sending"
+                                  message: @"Upload one image at a time"
+                                  delegate: nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
+            [alert show];
+            
+        }
+
         return;
     }
     
     if (!self.imageView.image) {
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"No Image Available"
-                              message: nil
-                              delegate: nil
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-        [alert show];
+        
+        if(!alertShown)
+        {
+            alertShown = YES;
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle: @"No Image Available"
+                                  message: nil
+                                  delegate: nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
+            [alert show];
+        }
         return;
     }
 
+    if (self.imageView.image==nil)
+    {
+        
+        if(!alertShown)
+        {
+            alertShown = YES;
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle: @"No Image Available"
+                                  message: nil
+                                  delegate: nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
+            [alert show];
+        }
+        return;
+    }
+    
     // add image data
     UIImage* scaledImage;
   
@@ -320,38 +348,44 @@ bool alertShown;
     
     
     NSLog(@"PhotoPosterView. startOperation. reachable=%d", [panelsLoader isReachable]);
-    
-    if(![panelsLoader isReachable])
+    if(!alertShown)
     {
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Upload Failure"
-                              message: @"Data will be uploaded network connection is available."
-                              delegate:self
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-        [alert show];
-    }//end if
-    else if([panelsLoader isReachable])
-    {
-        /*
-        [operation onUploadProgressChanged:^(double progress) {
-            
-            //DLog(@"onUploadProgressChanged=%.2f, progress=%f", progress*100.0, progress);
-            self.progressView.progress = (float)progress;
-            
-        }];
-         */
         
+        if(![panelsLoader isReachable])
+        {
+            alertShown = YES;
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle: @"Upload Failure"
+                                  message: @"Data will be uploaded network connection is available."
+                                  delegate:self
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
+            [alert show];
+            
+        }//end if(![panelsLoader isReachable])
         
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Upload Request"
-                              message: @"Data is being uploaded."
-                              delegate: self
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-        [alert show];
-    }//end else
+        else if([panelsLoader isReachable])
+        {
+            /*
+             [operation onUploadProgressChanged:^(double progress) {
+             
+             //DLog(@"onUploadProgressChanged=%.2f, progress=%f", progress*100.0, progress);
+             self.progressView.progress = (float)progress;
+             
+             }];
+             */
+            
+            alertShown = YES;
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle: @"Upload Request"
+                                  message: @"Data is being uploaded."
+                                  delegate: self
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
+            [alert show];
+        }//end else if([panelsLoader isReachable])
 
+    }//end if(!alertShown)
 
   }//end startOperation
 
@@ -398,27 +432,31 @@ bool alertShown;
     
     NSLog(@"PhotoPosterView.startPanelOperation. reachable=%d", [panelsLoader isReachable]);
     
-    if(![panelsLoader isReachable])
+    if(!alertShown)
     {
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Upload Failure"
-                              message: @"Data will be uploaded when network connection is available."
-                              delegate:self
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-        [alert show];
-    }//end if
-    else if([panelsLoader isReachable]){
-        
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle: @"Upload Request"
-                              message: @"Data is being uploaded."
-                              delegate: self
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-        [alert show];
-        
-        //[operation onUploadProgressChanged:^(double progress) {
+        if(![panelsLoader isReachable])
+        {
+            alertShown = YES;
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle: @"Upload Failure"
+                                  message: @"Data will be uploaded when network connection is available."
+                                  delegate:self
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
+            [alert show];
+        }//end if
+        else if([panelsLoader isReachable])
+        {
+            alertShown = YES;
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle: @"Upload Request"
+                                  message: @"Data is being uploaded."
+                                  delegate: self
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
+            [alert show];
+            
+            //[operation onUploadProgressChanged:^(double progress) {
             
             //NSLog(@"PhotoPosterView. startPanelOperation. reachable=%d", [panelsLoader isReachable]);
             //DLog(@"onUploadProgressChanged=%.2f", progress*100.0);
@@ -435,10 +473,12 @@ bool alertShown;
              [alert show];
              }
              */
-        //}];
-
-    }
+            //}];
+            
+        }
+    }//end if(!alertShown)
     
+     
 
 }//end startOperation
 
@@ -488,7 +528,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
     
     if([title isEqualToString:@"OK"])
     {
-        //alertShown = NO;
+        alertShown = NO;
         //UIViewController *sourceViewController = (UIViewController*)[self ;
         //UIViewController *destinationViewController = (UIViewController*)[self destinationViewController];
         
@@ -566,6 +606,8 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 
 #pragma mark MKNetworkOperation functions.
 -(void)MKNetworkOperation:(MKNetworkOperation *)operation didUploadPhoto:(Photo*)photo{
+    
+    /*
     NSLog(@"PhotoPosterView.MKNetworkOperation.didUploadPhotoPhoto uploaded %@", photo);
     
     if(photo!=nil)
@@ -588,6 +630,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
             //[panelsLoader submitRequestPostPanel:panel];
         }//end if(photoId>0)
     }//end if(photo!=nil)
+     */
 }
 
 -(void)MKNetworkOperation:(MKNetworkOperation *)loader didUploadPanel:(NSString*)response{
@@ -609,7 +652,8 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 }
 
 -(void)MKNetworkOperation:(MKNetworkOperation*)operation operationFailed:(NSString*)responseString{
-    NSLog(@"PhotoPosterView.MKNetworkOperation.PhotoPosterViewController.operationFailedWithError: %@", responseString);
+    //NSLog(@"PhotoPosterView.MKNetworkOperation.PhotoPosterViewController.operationFailedWithError: %@", responseString);
+    /*
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle: @"Upload Failure"
                           message: @"Upload will resume when network connection is available."
@@ -621,6 +665,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
         [alert show];
         //alertShown = YES;
     }
+     */
 }
 
 
