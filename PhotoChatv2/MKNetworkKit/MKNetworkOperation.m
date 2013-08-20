@@ -788,8 +788,10 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
     */
 
       
-    //self.request = [[NSMutableURLRequest alloc] initWithURL:finalURL];
-    self.request = [NSMutableURLRequest requestWithURL:finalURL];
+    //self.request = [NSMutableURLRequest requestWithURL:finalURL];
+    self.request = [NSMutableURLRequest requestWithURL:finalURL
+                                             cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                         timeoutInterval:kMKNetworkKitRequestTimeOutInSeconds];
     [self.request setURL:finalURL];
     [self.request setHTTPMethod:method];
     [self.request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
@@ -1912,9 +1914,11 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 #endif
     
     NSString* responseString = [self.error localizedDescription];
+    DLog(@"error: %@", responseString);
+    /*
     if([self.delegate respondsToSelector:@selector(MKNetworkOperation:operationFailed:)])
         [self.delegate MKNetworkOperation:self operationFailed:responseString];
-  
+  */
 }
 
 @end

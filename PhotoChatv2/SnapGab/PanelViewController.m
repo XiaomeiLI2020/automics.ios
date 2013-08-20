@@ -2113,6 +2113,8 @@ int thumbnailsCompleted;
                 }//end if thumbMode
             }//end else if(panel.placements==0)
         }//end if panel.placements!=nil
+        
+        /*
         else if(panel.placements==nil)
         {
             //NSLog(@"didLoadPanel.panel.placements is nil");
@@ -2136,20 +2138,6 @@ int thumbnailsCompleted;
                 if(thumbnailIndex<[downloadedPanels count])
                     [downloadedPanels replaceObjectAtIndex:thumbnailIndex withObject:yesObj];
                 
-                /*
-                CGRect thumbFrame= CGRectMake(thumbnailIndex*thumbnailWidth, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
-                ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:panelInArray];
-                panelInArray.thumbnail=thumbnailView.snapshot;
-                */
-                 /*
-                if(thumbnailIndex<[downloadedPhotos count])
-                {
-                    //BOOL photoDownloaded = [[downloadedPhotos objectAtIndex:thumbnailIndex] boolValue];
-                    [downloadedPhotos replaceObjectAtIndex:thumbnailIndex withObject:yesObj];
-                    
-                }
-                */
-                
                 
                 if(thumbnailIndex<(thumbPage+3))
                 {
@@ -2162,6 +2150,7 @@ int thumbnailsCompleted;
                 }
             }//end if(thumbMode)
         }//end if(panel.placements==nil)
+         */
     }//end if panel!=nil
  
 }

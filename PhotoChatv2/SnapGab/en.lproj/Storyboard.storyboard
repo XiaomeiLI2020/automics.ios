@@ -1228,14 +1228,14 @@
                                 <rect key="frame" x="0.0" y="40" width="320" height="320"/>
                             </imageView>
                             <progressView opaque="NO" contentMode="scaleToFill" progress="0.5" id="kLa-ex-Sov">
-                                <rect key="frame" x="100" y="429" width="213" height="9"/>
+                                <rect key="frame" x="100" y="442" width="213" height="9"/>
                             </progressView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="HV5-NE-59c">
-                                <rect key="frame" x="7" y="408" width="83" height="44"/>
+                                <rect key="frame" x="9" y="425" width="74" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Close">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <state key="highlighted">
@@ -1265,7 +1265,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0H2-gz-B1m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3957" y="-2000"/>
+            <point key="canvasLocation" x="3818" y="-2612"/>
         </scene>
         <!--ComicPosterViewController-->
         <scene sceneID="0Jt-XC-ADr">
@@ -1285,7 +1285,7 @@
                                 <rect key="frame" x="6" y="425" width="74" height="34"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Cancel">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <state key="highlighted">
@@ -1307,7 +1307,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sSP-bP-GIO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2359" y="-101"/>
+            <point key="canvasLocation" x="3381" y="-2579"/>
         </scene>
         <!--Groups Flow View Controller-->
         <scene sceneID="5lK-Yz-WEi">
@@ -1526,18 +1526,231 @@
         <image name="groups@x2.png" width="260" height="260"/>
         <image name="new@x2.png" width="40" height="40"/>
     </resources>
+    <classes>
+        <class className="ComicAddViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicAddViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="comicsButtonCicked:"/>
+                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="postButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="ComicCollectionViewCell" superclassName="UICollectionViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicCollectionViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="activityView" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="label" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="ComicCollectionViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicCollectionViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="refreshed:"/>
+                <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
+                <relationship kind="outlet" name="comicsLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="menuButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="toolbarImage" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="toolbarView" candidateClass="UIView"/>
+            </relationships>
+        </class>
+        <class className="ComicCollectionViewLayout" superclassName="UICollectionViewFlowLayout">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicCollectionViewLayout.h"/>
+        </class>
+        <class className="ComicDetailsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicDetailsViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="comicsButtonCicked:"/>
+                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="comicNameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="editPressed" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="ComicEditViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicEditViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="backButtonClicked:"/>
+                <relationship kind="action" name="deletePanel:"/>
+                <relationship kind="outlet" name="backButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="comicTextField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="postButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="ComicNameViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicNameViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancelPressed:"/>
+                <relationship kind="action" name="confirmPressed:"/>
+                <relationship kind="outlet" name="cancelButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="comicNameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="comicTextField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="comicsButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="confirmButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="typeNameLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="ComicPosterViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ComicPosterViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancelPressed:"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="progressView" candidateClass="UIProgressView"/>
+            </relationships>
+        </class>
+        <class className="GroupAddViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupAddViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancelPressed:"/>
+                <relationship kind="action" name="selectTheme:"/>
+                <relationship kind="outlet" name="cancelButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="groupNameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="groupTextField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="groupsButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="selectThemeButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="typeGroupLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="GroupCollectionViewCell" superclassName="UICollectionViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupCollectionViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="label" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="GroupJoinViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupJoinViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
+                <relationship kind="outlet" name="groupsButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="selectGroupLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="GroupLeaveViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupLeaveViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
+                <relationship kind="outlet" name="groupsButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="leaveGroupLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="GroupMainViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupMainViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="createButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="currentGroupLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="groupsLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="inviteButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="joinGroup" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="leaveButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="menuButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="GroupsFlowViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupsFlowViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="backButtonClick:"/>
+                <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
+                <relationship kind="outlet" name="groupsButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="inviteLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="LoginViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="loginPressed:"/>
+                <relationship kind="outlet" name="emailLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="emailTextField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="loginButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="passwordLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="passwordTextField" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="PanelAddViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PanelAddViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="postPanel:"/>
+                <relationship kind="action" name="showPhotos:"/>
+                <relationship kind="action" name="takeSnap:"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="imagesButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="postButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="PanelEditViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PanelEditViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="imagesButtonPressed:"/>
+                <relationship kind="outlet" name="imageLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="imagesButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="PanelViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PanelViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="editButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="imagesLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="menuButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="PhotoPosterViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PhotoPosterViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancelPressed:"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="progressView" candidateClass="UIProgressView"/>
+                <relationship kind="outlet" name="saveImageLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="ThemePreviewViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ThemePreviewViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="selectThemePressed:"/>
+                <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
+            </relationships>
+        </class>
+        <class className="ThemeViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ThemeViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="collectionView" candidateClass="UICollectionView"/>
+            </relationships>
+        </class>
+        <class className="UICollectionReusableView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionReusableView.h"/>
+        </class>
+        <class className="UICollectionViewCell" superclassName="UICollectionReusableView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewCell.h"/>
+        </class>
+        <class className="UICollectionViewFlowLayout" superclassName="UICollectionViewLayout">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionViewFlowLayout.h"/>
+        </class>
+        <class className="WelcomeViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WelcomeViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="groupsPressed:"/>
+                <relationship kind="action" name="logoutPressed:"/>
+                <relationship kind="outlet" name="comicCollectionButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="groupButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="imageButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="logoImageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="logoutButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="welcomeLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="snA-Gb-6Qz"/>
         <segue reference="MWk-cz-y72"/>
-        <segue reference="9PL-ZN-yjP"/>
         <segue reference="bAh-In-1Hp"/>
-        <segue reference="jBs-q8-pBL"/>
         <segue reference="Q3d-Fe-clA"/>
-        <segue reference="Wbe-Kn-xnz"/>
+        <segue reference="zmL-BG-VQi"/>
         <segue reference="eqx-Lk-Ciz"/>
+        <segue reference="Wbe-Kn-xnz"/>
     </inferredMetricsTieBreakers>
 </document>
