@@ -21,6 +21,7 @@ int const kGetGroup = 1;
 int const kPostGroup = 2;
 int const kPostThemeForGroup = 3;
 int const kPostMembershipForGroup = 4;
+int const kRefreshGroups = 5;
 
 //BOOL groupsDownloaded = NO;
 
@@ -50,6 +51,33 @@ int const kPostMembershipForGroup = 4;
                 [self.delegate GroupLoader:self didLoadGroups:groups];
         }//end if(groups!=nil && [groups count]>0)
 
+    }//end else
+}
+
+-(void)submitRequestRefreshGroups{
+    
+    /*
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    int userId = [[prefs objectForKey:@"user_id"] integerValue];
+    int groupsDownloaded = [self submitSQLRequestCheckGroupsDownloaded:userId];
+    */
+    
+    if([self isReachable])
+    {
+        groupRequestType = kRefreshGroups;
+        NSURLRequest* urlRequest = [self prepareRequestForGetGroups];
+        [self submitGroupRequest:urlRequest];
+    }
+    else if(![self isReachable])
+    {
+        NSLog(@"Groups refreshed from the database.");
+        NSArray* groups= [self convertGroupsSQLIntoGroups];
+        if(groups!=nil && [groups count]>0)
+        {
+            if ([self.delegate respondsToSelector:@selector(GroupLoader:didLoadGroups:)])
+                [self.delegate GroupLoader:self didLoadGroups:groups];
+        }//end if(groups!=nil && [groups count]>0)
+        
     }//end else
 }
 
@@ -259,6 +287,39 @@ int const kPostMembershipForGroup = 4;
     
 }
 
+-(void)handleGetRefreshedGroupsResponse{
+    NSError* error;
+    
+    //NSDictionary *metaData = [self.downloadedData ];
+    //NSString *lastModifiedString = [metaData objectForKey:@"Last-Modified"];
+    
+    NSArray* groupJSON = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+    
+    if (groupJSON != nil){
+        NSArray* groups = [GroupJSONHandler convertGroupsJSONIntoGroups:groupJSON];
+        if(groups!=nil && [groups count]>0)
+        {
+            NSLog(@"handleGetRefreshedGroupsResponse. [groups count]=%i", [groups count]);
+            [self submitSQLRequestSaveGroups:groups];
+            
+            /*
+            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+            int userId = [[prefs objectForKey:@"user_id"] integerValue];
+            [self submitSQLRequestUpdateGroupsDownloaded:1 andUserId:userId];
+            */
+            
+            if ([self.delegate respondsToSelector:@selector(GroupLoader:didLoadRefreshedGroups:)])
+                [self.delegate GroupLoader:self didLoadRefreshedGroups:groups];
+            if ([self.delegate respondsToSelector:@selector(GroupLoader:didLoadGroups:)])
+                [self.delegate GroupLoader:self didLoadGroups:groups];
+        }
+    }
+    
+}
+
+
+
+
 -(void)handleGetGroupResponse{
     NSError* error;
     NSDictionary* groupJSON = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
@@ -291,18 +352,28 @@ int const kPostMembershipForGroup = 4;
         Group* group = [GroupJSONHandler convertGroupJSONIntoGroup:groupdict];
         if(group!=nil)
         {
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setObject:group.hashId forKey:@"new_group_hash"];
+            [userDefaults synchronize];
+            
+            [self submitRequestPostMembershipForGroup:group];
+            /*
             NSMutableArray* groups= [[NSMutableArray alloc] init];
             [groups addObject:group];
             [self submitSQLRequestSaveGroups:groups];
+            */
             
             //NSLog(@"group.name=%@, hashId=%@, id=%i", group.name, group.hashId, group.groupId);
+            /*
             if ([self.delegate respondsToSelector:@selector(GroupLoader:didSaveGroup:)])
                 [self.delegate GroupLoader:self didSaveGroup:group];
-        }//end if
+             */
+            
+        }//end if(group!=nil)
         
     }else{
         [self reportErrorToDelegate:error];
-    }
+    }//end else
 
     
     /*
@@ -378,6 +449,9 @@ int const kPostMembershipForGroup = 4;
                 break;
             case kPostMembershipForGroup:
                 [self handlePostGroupMembershipResponse];
+                break;
+            case kRefreshGroups:
+                [self handleGetRefreshedGroupsResponse];
                 break;
         }
     }

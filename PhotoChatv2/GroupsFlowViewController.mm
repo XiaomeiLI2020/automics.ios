@@ -88,6 +88,7 @@ NSString *kCellID = @"GROUP_CELL";
     GroupLoader *groupLoader = [[GroupLoader alloc] init];
     groupLoader.delegate = self;
     [groupLoader submitRequestGetGroups];
+    //[groupLoader submitRequestRefreshGroups];
 }
 
 -(void)loadPhotosForGroup:(Group *)group atIndexPath:(NSIndexPath *)indexPath{
@@ -338,7 +339,7 @@ NSString *kCellID = @"GROUP_CELL";
         }//end if(!fileExists)
         else if(fileExists)
         {
-            NSLog(@"GroupFlowViewController. Group photo Loading image from file=%@", imageName);
+            //NSLog(@"GroupFlowViewController. Group photo Loading image from file=%@", imageName);
             //NSError* err;
             //[fileMgr removeItemAtPath:currentFile error:&err];
             //[imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];

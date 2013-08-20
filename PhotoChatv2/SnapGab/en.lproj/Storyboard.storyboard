@@ -129,7 +129,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="j9X-cF-RKP" kind="custom" customClass="CustomSegue" id="jBs-q8-pBL"/>
+                                    <segue destination="j9X-cF-RKP" kind="custom" identifier="comicsSegue" customClass="CustomSegue" id="jBs-q8-pBL"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="TPq-Sj-AuT">
@@ -145,7 +145,7 @@
                                 </state>
                                 <connections>
                                     <action selector="groupsPressed:" destination="Y5y-GU-y3Z" eventType="touchUpInside" id="Y9L-1b-xEt"/>
-                                    <segue destination="W4t-y8-2nd" kind="custom" customClass="CustomSegue" id="bAh-In-1Hp"/>
+                                    <segue destination="W4t-y8-2nd" kind="custom" identifier="groupsSegue" customClass="CustomSegue" id="bAh-In-1Hp"/>
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ctr-yX-u8W">
@@ -1246,7 +1246,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Save an image" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Grt-dd-Hhi">
-                                <rect key="frame" x="114" y="2" width="127" height="34"/>
+                                <rect key="frame" x="114" y="2" width="147" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -1532,12 +1532,12 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="jBs-q8-pBL"/>
         <segue reference="MWk-cz-y72"/>
-        <segue reference="snA-Gb-6Qz"/>
+        <segue reference="9PL-ZN-yjP"/>
+        <segue reference="bAh-In-1Hp"/>
+        <segue reference="jBs-q8-pBL"/>
+        <segue reference="Q3d-Fe-clA"/>
         <segue reference="Wbe-Kn-xnz"/>
         <segue reference="eqx-Lk-Ciz"/>
-        <segue reference="tdK-yH-zWg"/>
-        <segue reference="Q3d-Fe-clA"/>
     </inferredMetricsTieBreakers>
 </document>

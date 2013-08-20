@@ -115,8 +115,8 @@ BOOL alertShown;
             {
                 alertShown = YES;
                 UIAlertView *alert = [[UIAlertView alloc]
-                                      initWithTitle: @"Group Created"
-                                      message: [NSString stringWithFormat:@"You have created group %@", group.name]
+                                      initWithTitle: @"Request Successful"
+                                      message: [NSString stringWithFormat:@"Group %@ will be created soon", group.name]
                                       delegate: self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles:nil];
@@ -128,7 +128,7 @@ BOOL alertShown;
             else if(![groupLoader isReachable])
             {
                 UIAlertView *alert = [[UIAlertView alloc]
-                                      initWithTitle: @"You are offline."
+                                      initWithTitle: @"Request Failed"
                                       message:@"Group created only when Internet is available"
                                       delegate: nil
                                       cancelButtonTitle:@"Cancel"

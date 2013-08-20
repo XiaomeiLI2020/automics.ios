@@ -51,6 +51,7 @@ dispatch_queue_t backgroundQueue;
 
 -(void)submitRequestRefreshComicsForGroup{
     
+    //NSLog(@"submitRequestRefreshComicsForGroup");
     comicRequestType = kGetRefreshedComics;
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -74,18 +75,22 @@ dispatch_queue_t backgroundQueue;
     else if(![self isReachable])
     {
         NSArray* comics = [self convertComicsSQLIntoComics:currentGroupHashId];
-        //NSLog(@"comics downloaded from the database =%i.", [comics count]);
-        if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComics:)])
-            [self.delegate ComicLoader:self didLoadComics:comics];
+        if(comics!=nil)
+        {
+            //NSLog(@"comics downloaded from the database =%i.", [comics count]);
+            if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComics:)])
+                [self.delegate ComicLoader:self didLoadComics:comics];
+        }//end if(comics!=nil)
+
     }
 
 }
 
 -(void)submitRequestGetComicsForGroup{
 
-    [self submitRequestRefreshComicsForGroup];
+    //[self submitRequestRefreshComicsForGroup];
     
-    /*
+
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
     
@@ -93,7 +98,7 @@ dispatch_queue_t backgroundQueue;
     //NSLog(@"groupExists =%i", groupExists);
     //NSLog(@"currentGroupHashId =%@", currentGroupHashId);
     int comicsDownloaded = [self submitSQLRequestCheckComicsDownloadedForGroup:currentGroupHashId];
-    NSLog(@"current_group.comicsDownloaded=%i", comicsDownloaded);
+    NSLog(@"submitRequestGetComicsForGroup.current_group.comicsDownloaded=%i", comicsDownloaded);
     if(comicsDownloaded==0)
     {
         if([self isReachable])
@@ -109,10 +114,14 @@ dispatch_queue_t backgroundQueue;
     {
         NSArray* comics = [self convertComicsSQLIntoComics:currentGroupHashId];
         //NSLog(@"comics downloaded from the database =%i.", [comics count]);
-        if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComics:)])
-            [self.delegate ComicLoader:self didLoadComics:comics];
+        if(comics!=nil)
+        {
+            if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadComics:)])
+                [self.delegate ComicLoader:self didLoadComics:comics];
+        }//end if(comics!=nil)
+
     }
-    */
+    
 }
 
 -(void)submitRequestGetComicWithId:(int)comicId{
@@ -218,11 +227,46 @@ dispatch_queue_t backgroundQueue;
                 [self handlePostComicResponse];
                 break;
             case kGetRefreshedComics:
-                [self handleGetComicsForGroupResponse];
+                [self handleGetRefreshedComicsForGroupResponse];
                 break;
         }
     }
 }
+
+
+-(void)handleGetRefreshedComicsForGroupResponse{
+    NSError* error;
+    NSArray* jsonArray = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
+    if (jsonArray != nil){
+        NSArray* comics = [ComicJSONHandler convertComicsJSONArrayIntoComics:jsonArray];
+        if(comics!=nil)
+        {
+            //[self submitSQLRequestSaveComics:comics];
+            
+            //backgroundQueue = dispatch_queue_create("com.razeware.imagegrabber.bgqueue", NULL);
+            //dispatch_async(backgroundQueue, ^(void) {
+            //    [self submitSQLRequestSaveComics:comics];
+            //});
+            NSLog(@"handleGetRefreshedComicsForGroupResponse.[comics count]=%i", [comics count]);
+            if([comics count]>0)
+            {
+                NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+                NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+                
+                [self submitSQLRequestSaveComicsForGroup:comics andGroupHashId:currentGroupHashId];
+            }//end if([comics count]>0)
+            
+            if([self.delegate respondsToSelector:@selector(ComicLoader:didLoadRefreshedComics:)])
+                [self.delegate ComicLoader:self didLoadRefreshedComics:comics];
+        }//end if(comics!=nil)
+
+        
+    }else{
+        [self reportErrorToDelegate:error];
+    }
+}
+
+
 
 -(void)handleGetComicsForGroupResponse{
     NSError* error;

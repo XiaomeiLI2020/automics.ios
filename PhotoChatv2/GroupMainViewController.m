@@ -39,6 +39,10 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
    
+    //NSLog(@"GroupMainViewController.viewDidLoad");
+    groupLoader = [[GroupLoader alloc] init];
+    groupLoader.delegate = self;
+    [groupLoader submitRequestRefreshGroups];
     
     UIImageView *backgroundImage;
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -127,6 +131,8 @@
 {
     [super viewWillAppear:YES];
     
+
+    
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSString* groupHashId= [prefs objectForKey:@"current_group_hash"];
     NSString* groupName= [prefs objectForKey:@"current_group_name"];
@@ -148,15 +154,23 @@
         [joinGroup setTitle:@"Select Group" forState:UIControlStateNormal];
         
     }
-    else{
+    else if(groupHashId!=nil)
+    {
         
         /*
-        groupLoader = [[GroupLoader alloc] init];
-        groupLoader.delegate = self;
+
         [groupLoader submitRequestGetGroupForHashId:groupHashId];
         */
         
-        self.currentGroupLabel.text= [NSString stringWithFormat: @"Current group: %@", groupName];
+        if(groupName!=nil)
+        {
+            self.currentGroupLabel.text= [NSString stringWithFormat: @"Current group: %@", groupName];
+        }
+        else
+        {
+
+            [groupLoader submitRequestGetGroupForHashId:groupHashId];
+        }
         self.currentGroupLabel.numberOfLines = 0; //will wrap text in new line
         [self.currentGroupLabel sizeToFit];
         [self.currentGroupLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
@@ -186,9 +200,19 @@
     {
         NSLog(@"GroupMainViewController.group.name=%@, group.theme.themeId=%i", group.name, group.theme.themeId);
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        NSString* currentGroupHash = [userDefaults objectForKey:@"current_group_hash"];
-        int userId = [[userDefaults objectForKey:@"user_id"] intValue];
-        [userDefaults setObject:group.name forKey:@"current_group_name"];
+        //NSString* currentGroupHash = [userDefaults objectForKey:@"current_group_hash"];
+        //int userId = [[userDefaults objectForKey:@"user_id"] intValue];
+        
+        if(group.name!=nil)
+        {
+            self.currentGroupLabel.text= [NSString stringWithFormat: @"Current group: %@", group.name];
+            [userDefaults setObject:group.name forKey:@"current_group_name"];
+        }
+
+        
+
+        
+        /*
         //[userDefaults setObject:[NSNumber numberWithInt:group.theme.themeId] forKey:@"current_theme_id"];
         if(group.theme.themeId<1)
             [userDefaults setObject:[NSNumber numberWithInt:1] forKey:@"current_theme_id"];
@@ -200,7 +224,14 @@
         userLoader = [[UserLoader alloc] init];
         userLoader.delegate = self;
         [userLoader submitSQLRequestUpdateCurrentGroup:currentGroupHash andUserId:userId];
+         */
     }
 }
+
+-(void)GroupLoader:(GroupLoader*)groupLoader didLoadRefreshedGroups:(NSArray*)groups
+{
+    NSLog(@"GroupMainViewController. didLoadRefrehedGroups=%i", [groups count]);
+}
+
 
 @end

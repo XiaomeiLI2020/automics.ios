@@ -32,6 +32,7 @@ extern int const kGetComic;
 @optional
 -(void)ComicLoader:(ComicLoader*)loader didFailWithError:(NSError*)error;
 -(void)ComicLoader:(ComicLoader*)loader didLoadComics:(NSArray*)comics;
+-(void)ComicLoader:(ComicLoader*)loader didLoadRefreshedComics:(NSArray*)comics;
 -(void)ComicLoader:(ComicLoader*)loader didLoadComic:(Comic*)comic;
 -(void)ComicLoader:(ComicLoader*)loader didSaveComic:(NSString*)response;
 @end

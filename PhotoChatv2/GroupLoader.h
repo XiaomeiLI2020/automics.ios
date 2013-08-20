@@ -14,6 +14,7 @@
 @interface GroupLoader : DataLoader
 @property (weak) id<GroupLoaderDelegate> delegate;
 -(void)submitRequestGetGroups;
+-(void)submitRequestRefreshGroups;
 -(void)submitRequestGetGroupForHashId:(NSString*)groupHashId;
 -(void)submitRequestPostGroup:(Group*)group;
 -(void)submitRequestPostMembershipForGroup:(Group*)group;
@@ -26,5 +27,6 @@
 -(void)GroupLoader:(GroupLoader*)groupLoader didSaveGroup:(Group*)group;
 -(void)GroupLoader:(GroupLoader*)groupLoader didJoinGroup:(Group*)group;
 -(void)GroupLoader:(GroupLoader*)groupLoader didLoadGroups:(NSArray*)groups;
+-(void)GroupLoader:(GroupLoader*)groupLoader didLoadRefreshedGroups:(NSArray*)groups;
 -(void)GroupLoader:(GroupLoader*)groupLoader didFailWithError:(NSError*)errors;
 @end

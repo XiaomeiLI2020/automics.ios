@@ -98,6 +98,13 @@ NSString *UPDATED_AT = @"updated_at";
             [groupdict setValue:[[NSNumber alloc] initWithInt:themeId] forKey:THEME_ID];
     }
     
+    if(group.organisation!=nil)
+    {
+        int organisationId=group.organisation.organisationId;
+        if(organisationId>0)
+            [groupdict setValue:[[NSNumber alloc] initWithInt:organisationId] forKey:ORGANISATION_ID];
+    }
+    
     
     return groupdict;
 }

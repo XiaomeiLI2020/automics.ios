@@ -30,49 +30,10 @@ int currentNumPanels = 0;
 @synthesize panelRequestType;
 @synthesize obj;
 
-/*
--(void)submitRequestGetPanelsForGroup:(int)groupId{
-    
-    //dispatch_queue_t panelQueue = dispatch_queue_create("automics.database", NULL);
-    //dispatch_async(panelQueue, ^(void) {
 
-    //NSLog(@"[self submitSQLRequestCountPanelsForGroup:groupId]=%i", [self submitSQLRequestCountPanelsForGroup:groupId]);
-    //if([self submitSQLRequestCountPanelsForGroup:groupId]==0)
-    if(!panelsDownloaded)
-    {
-
-        panelRequestType = kGetGroupPanels;
-        panelsDownloaded = YES;
-        NSURLRequest* urlRequest = [self preparePanelRequestForGroup:groupId];
-        [self submitPanelRequest:urlRequest];
-
-    }
-
-    //});
-    else
-    {
-
-        //NSLog(@"[self submitSQLRequestCountPanelsForGroup:groupId]=%i", [self submitSQLRequestCountPanelsForGroup:groupId]);
-        NSArray* panels = [self convertPanelsSQLIntoPanels:groupId];
-        if([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanels:)])
-            [self.delegate PanelLoader:self didLoadPanels:panels];
-
-    }
-}
-*/
 
 -(void)submitRequestRefreshGetPanelsForGroup{
-    //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    //NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
-    
-    //int groupExists = [self submitSQLRequestCheckGroupExists:currentGroupHashId];
-    //NSLog(@"groupExists =%i", groupExists);
-    
-    //NSLog(@"currentGroupHashId =%@", currentGroupHashId);
-    //int panelsDownloaded = [self submitSQLRequestCheckPanelsDownloadedForGroup:currentGroupHashId];
-    //NSLog(@"PanelLoader.submitRequestGetPanelsForGroup.panelsDownloaded=%i", panelsDownloaded);
-    
-    //if(panelsDownloaded==0)
+
     if([self isReachable])
     {
         panelRequestType = kRefreshGetGroupPanels;
@@ -82,30 +43,6 @@ int currentNumPanels = 0;
     }
 
 }
-
-
-/*
--(void)submitRequestRefreshGetPanelsForGroup:(int)oldNmPanels{
-    //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    //NSString* currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
-    
-    //int groupExists = [self submitSQLRequestCheckGroupExists:currentGroupHashId];
-    //NSLog(@"groupExists =%i", groupExists);
-    
-    //NSLog(@"currentGroupHashId =%@", currentGroupHashId);
-    //int panelsDownloaded = [self submitSQLRequestCheckPanelsDownloadedForGroup:currentGroupHashId];
-    //NSLog(@"PanelLoader.submitRequestGetPanelsForGroup.panelsDownloaded=%i", panelsDownloaded);
-    
-    //if(panelsDownloaded==0)
-    {
-        panelRequestType = kRefreshGetGroupPanels;
-        //panelsDownloaded = YES;
-        NSURLRequest* urlRequest = [self preparePanelRequestForGroup];
-        [self submitPanelRequest:urlRequest];
-    }
-    
-}
-*/
 
 
 -(void)submitRequestGetPanelsForGroup{
@@ -140,24 +77,6 @@ int currentNumPanels = 0;
         }//end if(panels!=nil && [panels count>0])
 
     }
-    /*
-    if(!panelsDownloaded)
-    {
-        panelRequestType = kGetGroupPanels;
-        panelsDownloaded = YES;
-        NSURLRequest* urlRequest = [self preparePanelRequestForGroup:groupId];
-        [self submitPanelRequest:urlRequest];
-    }
-    
-    //});
-    else
-    {
-        //NSLog(@"[self submitSQLRequestCountPanelsForGroup:groupId]=%i", [self submitSQLRequestCountPanelsForGroup:groupId]);
-        NSArray* panels = [self convertPanelsSQLIntoPanels:groupId];
-        if([self.delegate respondsToSelector:@selector(PanelLoader:didLoadPanels:)])
-            [self.delegate PanelLoader:self didLoadPanels:panels];
-    }
-     */
 }
 
 -(void)submitRequestGetPanelWithId:(int)panelId{
@@ -336,9 +255,9 @@ int currentNumPanels = 0;
                 }//end for(int i=currentNumPanels; i<[panels count];i++)
                 
                 NSLog(@"PanelLoader.handleRefreshGetPanelsForGroupResponse. [panelsNew count]=%i" ,[panelsNew count]);
-                
-                [self submitSQLRequestSavePanelsForGroup:panelsNew andGroupHashId:currentGroupHashId];
                 currentNumPanels = [panels count];
+                [self submitSQLRequestSavePanelsForGroup:panelsNew andGroupHashId:currentGroupHashId];
+
                 
                 if([self.delegate respondsToSelector:@selector(PanelLoader:didLoadRefreshedPanels:)])
                  [self.delegate PanelLoader:self didLoadRefreshedPanels:panelsNew];

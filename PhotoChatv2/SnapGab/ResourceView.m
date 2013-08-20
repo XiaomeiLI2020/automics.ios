@@ -232,7 +232,7 @@ CGRect originalBounds;
                                         
                                     }
                                     failure:^(NSError *error) {
-                                        NSLog(@"Failed to load resource image.");
+                                        NSLog(@"ResourceView.Failed to load resource image.");
                                     }];
 
             }//end if(!fileExists)
@@ -390,7 +390,7 @@ CGRect originalBounds;
 
 - (void)scalePiece:(UIPinchGestureRecognizer*)gestureRecognizer
 {
-    NSLog(@"scalePiece");
+    //NSLog(@"scalePiece");
     //NSLog(@"Scale: %f", [gestureRecognizer scale]);
     if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
         //_previousScale = _scale;

@@ -99,6 +99,7 @@ NSString *pCellID = @"GROUP_CELL";
     GroupLoader *groupLoader = [[GroupLoader alloc] init];
     groupLoader.delegate = self;
     [groupLoader submitRequestGetGroups];
+    //[groupLoader submitRequestRefreshGroups];
 }
 
 -(void)loadPhotosForGroup:(Group *)group atIndexPath:(NSIndexPath *)indexPath{

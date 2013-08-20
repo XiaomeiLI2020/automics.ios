@@ -2669,7 +2669,13 @@ sqlite3* database;
                                 group.theme.themeId = 1;
                             }
                             
-                            NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO GROUPS (GROUPHASHID, GROUPID, NAME,  THEMEID, PANELSDOWNLOADED, PHOTOSDOWNLOADED, COMICSDOWNLOADED) VALUES (\"%@\",\"%i\",\"%@\",\"%i\", \"%i\", \"%i\", \"%i\")", group.hashId, group.groupId, group.name, group.theme.themeId, 0, 0, 0];
+                            if(group.organisation== nil || group.organisation.organisationId<1)
+                            {
+                                group.organisation = [[Organisation alloc] init];
+                                group.organisation.organisationId = 1;
+                            }
+                            
+                            NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO GROUPS (GROUPHASHID, GROUPID, NAME,  THEMEID, ORGANISATIONID, PANELSDOWNLOADED, PHOTOSDOWNLOADED, COMICSDOWNLOADED) VALUES (\"%@\",\"%i\",\"%@\",\"%i\", \"%i\", \"%i\", \"%i\", \"%i\")", group.hashId, group.groupId, group.name, group.theme.themeId, group.organisation.organisationId, 0, 0, 0];
                             //NSLog(@"submitSQLRequestSaveGroups.insertSQL=%@", insertSQL);
                             const char *insert_stmt = [insertSQL UTF8String];
                             
@@ -3493,7 +3499,7 @@ sqlite3* database;
         //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
         {
             
-            NSString *selectSQL = [NSString stringWithFormat: @"SELECT groupId, name, themeId FROM groups where grouphashId=\"%@\"", groupHashId];
+            NSString *selectSQL = [NSString stringWithFormat: @"SELECT groupId, name, themeId, organisationid FROM groups where grouphashId=\"%@\"", groupHashId];
             const char *sqlStatement = [selectSQL UTF8String];
             //const char* sqlStatement = "SELECT groupid, name, grouphashid, themeid FROM groups where grouphashid=";
             sqlite3_stmt *statement;
@@ -3507,6 +3513,8 @@ sqlite3* database;
                     int groupId= sqlite3_column_int(statement, 0);
                     NSString *name = [[NSString alloc] initWithUTF8String:(const char*) sqlite3_column_text(statement, 1)];
                     int themeId= sqlite3_column_int(statement, 2);
+                    int organisationId = sqlite3_column_int(statement, 3);
+
                     
                     Group* group= [[Group alloc] init];
                     group.groupId = groupId;
@@ -3514,6 +3522,8 @@ sqlite3* database;
                     group.hashId = groupHashId;
                     group.theme = [[Theme alloc] init];
                     group.theme.themeId = themeId;
+                    group.organisation = [[Organisation alloc] init];
+                    group.organisation.organisationId = organisationId;
                     
                     [groups addObject:group];
                 }//end while
@@ -3535,7 +3545,7 @@ sqlite3* database;
         //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
         {
             
-            NSString *selectSQL = [NSString stringWithFormat: @"SELECT groupid, name, themeid FROM groups where grouphashid=\"%@\"", groupHashId];
+            NSString *selectSQL = [NSString stringWithFormat: @"SELECT groupid, name, themeid, organisationid FROM groups where grouphashid=\"%@\"", groupHashId];
             const char *sqlStatement = [selectSQL UTF8String];
             //const char* sqlStatement = "SELECT groupid, name, grouphashid, themeid FROM groups where grouphashid=";
             sqlite3_stmt *statement;
@@ -3549,6 +3559,8 @@ sqlite3* database;
                     int groupId= sqlite3_column_int(statement, 0);
                     NSString *name = [[NSString alloc] initWithUTF8String:(const char*) sqlite3_column_text(statement, 1)];
                     int themeId= sqlite3_column_int(statement, 2);
+                    int organisationId = sqlite3_column_int(statement, 3);
+                    
                     
                     Group* group= [[Group alloc] init];
                     group.groupId = groupId;
@@ -3556,6 +3568,8 @@ sqlite3* database;
                     group.hashId = groupHashId;
                     group.theme = [[Theme alloc] init];
                     group.theme.themeId = themeId;
+                    group.organisation = [[Organisation alloc] init];
+                    group.organisation.organisationId = organisationId;
                     
                     [groups addObject:group];
                 }//end while
@@ -3583,7 +3597,7 @@ sqlite3* database;
         {
             dispatch_sync([self dispatchQueue], ^(void) {
             
-                const char* sqlStatement = "SELECT groupid, name, grouphashid, themeid FROM groups";
+                const char* sqlStatement = "SELECT groupid, name, grouphashid, themeid, ORGANISATIONID FROM groups";
                 sqlite3_stmt *statement;
                 
                 if(sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK )
@@ -3596,6 +3610,7 @@ sqlite3* database;
                         NSString *name = [[NSString alloc] initWithUTF8String:(const char*) sqlite3_column_text(statement, 1)];
                         NSString *hashId = [[NSString alloc] initWithUTF8String:(const char*) sqlite3_column_text(statement, 2)];
                         int themeId= sqlite3_column_int(statement, 3);
+                        int organisationId= sqlite3_column_int(statement, 4);
                         
                         Group* group= [[Group alloc] init];
                         group.groupId = groupId;
@@ -3603,6 +3618,8 @@ sqlite3* database;
                         group.hashId = hashId;
                         group.theme = [[Theme alloc] init];
                         group.theme.themeId = themeId;
+                        group.organisation = [[Organisation alloc] init];
+                        group.organisation.organisationId = organisationId;
                         
                         [groups addObject:group];
                     }//end while
@@ -3619,7 +3636,7 @@ sqlite3* database;
         }
         else{
             
-            const char* sqlStatement = "SELECT groupid, name, grouphashid, themeid FROM groups";
+            const char* sqlStatement = "SELECT groupid, name, grouphashid, themeid, organisationId FROM groups";
             sqlite3_stmt *statement;
             
             if(sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK )
@@ -3632,6 +3649,7 @@ sqlite3* database;
                     NSString *name = [[NSString alloc] initWithUTF8String:(const char*) sqlite3_column_text(statement, 1)];
                     NSString *hashId = [[NSString alloc] initWithUTF8String:(const char*) sqlite3_column_text(statement, 2)];
                     int themeId= sqlite3_column_int(statement, 3);
+                    int organisationId= sqlite3_column_int(statement, 4);
                     
                     Group* group= [[Group alloc] init];
                     group.groupId = groupId;
@@ -3639,6 +3657,8 @@ sqlite3* database;
                     group.hashId = hashId;
                     group.theme = [[Theme alloc] init];
                     group.theme.themeId = themeId;
+                    group.organisation = [[Organisation alloc] init];
+                    group.organisation.organisationId = organisationId;
                     
                     [groups addObject:group];
                 }//end while

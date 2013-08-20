@@ -79,6 +79,8 @@ NSString *kComicCellID = @"COMIC_CELL";
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
 
+    
+    [self refreshComics];
 
     [self setupDataDownloadLists];
     //[self loadComics];

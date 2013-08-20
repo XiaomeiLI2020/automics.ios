@@ -1783,8 +1783,8 @@ int thumbnailsCompleted;
     //Remove the latest existing panel
     for(UIView* subView in panelScrollView.subviews)
     {
-        if(subView.tag==(numPanels-1) && [subView isMemberOfClass:[UIImageView class]])
-        //if([subView isMemberOfClass:[UIImageView class]])
+        //if(subView.tag==(numPanels-1) && [subView isMemberOfClass:[UIImageView class]])
+        if([subView isMemberOfClass:[UIImageView class]])
         {
             [subView removeFromSuperview];
         }//end if
@@ -1793,8 +1793,8 @@ int thumbnailsCompleted;
     //Remove the latest existing thumbnail
     for(UIView* subView in thumbnailScrollView.subviews)
     {
-        if(subView.tag==(numPanels-1) && [subView isMemberOfClass:[UIImageView class]])
-        //if([subView isMemberOfClass:[UIImageView class]])
+        //if(subView.tag==(numPanels-1) && [subView isMemberOfClass:[UIImageView class]])
+        if([subView isMemberOfClass:[UIImageView class]])
         {
             [subView removeFromSuperview];
         }//end if

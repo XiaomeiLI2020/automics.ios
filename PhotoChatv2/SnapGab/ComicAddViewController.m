@@ -1148,12 +1148,12 @@ NSString *documentsDirectory;
             //NSLog(@"generateThumbnails. Panel#%i already downloaded.", thumbnailIndex);
         }
         
-        [self displayThumbails];
+        [self displayThumbnails];
         
     }//end if(thumbnailIndex<[self.panels count])
 }
 
--(void)displayThumbails
+-(void)displayThumbnails
 {
     //NSLog(@"displayThumbails.thumbMode=%d, thumbPage=%i, thumbnailIndex=%i", thumbMode, thumbPage, thumbnailIndex);
     for(int index=thumbPage; index<thumbPage+4; index++)
@@ -1190,7 +1190,25 @@ NSString *documentsDirectory;
             Panel* thumbnailPanel = [self.panels objectAtIndex:index];
             BOOL panelDownloaded = [[downloadedPanels objectAtIndex:index] boolValue];
             //NSLog(@"displayThumbnails. PanelIndex=%i is downloaded=%d has placements=%i", index, panelDownloaded, [thumbnailPanel.placements count]);
-            if(thumbnailPanel!=nil && panelDownloaded)
+            BOOL displayed = NO;
+            
+            if([panelsLoader isReachable])
+            {
+                if(thumbnailPanel!=nil && panelDownloaded)
+                {
+                    displayed = YES;
+                }
+            }
+            else if([panelsLoader isReachable])
+            {
+                if(thumbnailPanel!=nil)
+                {
+                    displayed = YES;
+                }
+            }
+                
+            if(displayed)
+            //if(thumbnailPanel!=nil && panelDownloaded)
             //if(thumbnailPanel!=nil)
             {
                 //NSLog(@"displayThumbnails. PanelIndex=%i is downloaded=%d has placements=%i", index, panelDownloaded, [thumbnailPanel.placements count]);
@@ -2071,7 +2089,7 @@ NSString *documentsDirectory;
                     {
                         thumbMode = NO;
                         //NSLog(@"didLoadResource.displayThumbails called.");
-                        [self displayThumbails];
+                        [self displayThumbnails];
                     }
                 }//end if thumbMode
 
