@@ -41,7 +41,7 @@
 
 @synthesize panels;
 @synthesize sessionToken;
-@synthesize activityIndicator;
+//@synthesize activityIndicator;
 @synthesize editButton;
 @synthesize imagesLabel;
 @synthesize menuButton;
@@ -79,6 +79,8 @@ NSFileManager* fileMgr;
 NSString *documentsDirectory;
 
 int thumbnailsCompleted;
+UILabel* clickLabel;
+UIActivityIndicatorView *activityIndicator;
 
 - (void)updateScrollViews
 {
@@ -320,14 +322,24 @@ int thumbnailsCompleted;
         }
     }
     
-    [self initiateDataSet];
-    [self initiateScrollViews];
+    //[self initiateDataSet];
+    //[self initiateScrollViews];
     
     activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	activityIndicator.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
 	activityIndicator.center = self.view.center;
 	[self.view addSubview: activityIndicator];
     [activityIndicator startAnimating];
+    
+    clickLabel = [ [UILabel alloc ] initWithFrame:CGRectMake(0, 40, 320, 320)];
+    clickLabel.textColor = [UIColor whiteColor];
+    clickLabel.backgroundColor = [UIColor blackColor];
+    //clickLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(36.0)];
+    clickLabel.text = [NSString stringWithFormat: @"No images in the group. Please add."];
+    [clickLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    
+    [self initiateDataSet];
+    [self initiateScrollViews];
     
     [panelsLoader submitRequestGetPanelsForGroup];
 
@@ -1734,9 +1746,15 @@ int thumbnailsCompleted;
     numPanels = [panelsLocal count];
     //NSLog(@"PanelViewController.didLoadPanels.numPanels=%i", numPanels);
     if(numPanels==0)
+    {
         [activityIndicator stopAnimating];
+        [self.view addSubview:clickLabel];
+    }
     
-    //if(numPanels>0)
+    else if(numPanels>0)
+    {
+        [clickLabel removeFromSuperview];
+    }
     //    [activityIndicator startAnimating];
     
     //NSLog(@"PanelViewController.didLoadPanels.numPanels=%i", numPanels);

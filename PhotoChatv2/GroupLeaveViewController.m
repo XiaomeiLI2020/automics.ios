@@ -36,6 +36,8 @@ BOOL alertShown;
 NSString* groupHashId;
 DataLoader* dataLoader;
 NSString *pCellID = @"GROUP_CELL";
+UIActivityIndicatorView* activityIndicator;
+UILabel* clickLabel;
 
 - (void)viewDidLoad
 {
@@ -75,12 +77,32 @@ NSString *pCellID = @"GROUP_CELL";
     groupHashId= [prefs objectForKey:@"current_group_hash"];
     NSLog(@"GroupJoinViewController.groupHashId=%@", groupHashId);
     
-    [self loadGroups];
+    activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	activityIndicator.frame = CGRectMake(0, 0, 320, 480);
+	activityIndicator.center = self.view.center;
+	[self.view addSubview: activityIndicator];
+    //[activityIndicator startAnimating];
+    
+    clickLabel = [ [UILabel alloc ] initWithFrame:CGRectMake(0, 40, 320, 320)];
+    clickLabel.textColor = [UIColor whiteColor];
+    clickLabel.backgroundColor = [UIColor blackColor];
+    //clickLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(36.0)];
+    clickLabel.text = [NSString stringWithFormat: @"No groups exist. Please create a group."];
+    [clickLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    
+    //[self loadGroups];
     self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
     photoLoadersInProgress = [[NSMutableDictionary alloc] init];
     imageDownloadersInProgress = [[NSMutableDictionary alloc] init];
     groupImages = [[NSMutableDictionary alloc] init];
     [self.collectionView setCollectionViewLayout:[[GroupCollectionViewLayout alloc] init]];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    [activityIndicator startAnimating];
+    [self loadGroups];
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
@@ -469,7 +491,20 @@ NSString *pCellID = @"GROUP_CELL";
 -(void)GroupLoader:(GroupLoader *)groupLoader didLoadGroups:(NSArray *)groups{
     //NSLog(@"[groups count]=%i", [groups count]);
     _groups = groups;
-    [self.collectionView reloadData];
+    
+    if([groups count]>0)
+    {
+        [clickLabel removeFromSuperview];
+        [self.collectionView reloadData];
+    }
+    else{
+        
+        [self.view addSubview:clickLabel];
+    }
+    
+
+    //[self.collectionView reloadData];
+    [activityIndicator stopAnimating];
 }
 
 -(void)GroupLoader:(GroupLoader *)groupLoader didFailWithError:(NSError *)errors{

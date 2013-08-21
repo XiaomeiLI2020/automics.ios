@@ -28,7 +28,7 @@
 @property int currentPanelId;
 @property Panel* currentPanel;
 @property int numPanels;
-@property UIActivityIndicatorView *activityIndicator;
+//@property UIActivityIndicatorView *activityIndicator;
 @property int thumbPage;
 
 @end

@@ -136,6 +136,7 @@ NSString *documentsDirectory;
     clickLabel.backgroundColor = [UIColor blackColor];
     //clickLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(36.0)];
     clickLabel.text = [NSString stringWithFormat: @"Click a thumbnail to add to the comic."];
+    [clickLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     [self.view addSubview:clickLabel];
 }
 
@@ -875,6 +876,11 @@ NSString *documentsDirectory;
         {
             NSLog(@"backAlertView.Confirm pressed");
             alertShown = NO;
+            if([comicPanelList count]==0)
+            {
+                //[clickLabel removeFromSuperview];
+            }
+
             [self.navigationController popViewControllerAnimated:YES];
             //[self dismissViewControllerAnimated:YES completion:nil];
             return;

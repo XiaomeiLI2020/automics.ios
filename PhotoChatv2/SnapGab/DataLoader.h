@@ -85,6 +85,7 @@ NSString *databasePathStatic;
 
 //Groups: Retrieve from database
 -(int)submitSQLRequestCheckGroupExists:(NSString*)groupHashId;
+-(int)submitSQLRequestCheckGroupExistsLocal:(NSString*)groupHashId;
 -(NSArray*)convertGroupsSQLIntoGroups;
 -(NSArray*)convertGroupSQLIntoGroup:(NSString*)groupHashId;
 -(void)submitSQLRequestLeaveGroup:(NSString*)groupHashId;

@@ -1913,8 +1913,8 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
     [self showLocalNotification];
 #endif
     
-    NSString* responseString = [self.error localizedDescription];
-    DLog(@"error: %@", responseString);
+    //NSString* responseString = [self.error localizedDescription];
+    //DLog(@"error: %@", responseString);
     /*
     if([self.delegate respondsToSelector:@selector(MKNetworkOperation:operationFailed:)])
         [self.delegate MKNetworkOperation:self operationFailed:responseString];

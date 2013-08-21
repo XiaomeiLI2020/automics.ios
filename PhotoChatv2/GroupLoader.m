@@ -43,7 +43,7 @@ int const kRefreshGroups = 5;
     }
     else
     {
-        NSLog(@"Groups downloaded from the database.");
+        NSLog(@"submitRequestGetGroups. Groups downloaded from the database.");
         NSArray* groups= [self convertGroupsSQLIntoGroups];
         if(groups!=nil && [groups count]>0)
         {
@@ -55,13 +55,7 @@ int const kRefreshGroups = 5;
 }
 
 -(void)submitRequestRefreshGroups{
-    
-    /*
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    int userId = [[prefs objectForKey:@"user_id"] integerValue];
-    int groupsDownloaded = [self submitSQLRequestCheckGroupsDownloaded:userId];
-    */
-    
+
     if([self isReachable])
     {
         groupRequestType = kRefreshGroups;
@@ -70,7 +64,7 @@ int const kRefreshGroups = 5;
     }
     else if(![self isReachable])
     {
-        NSLog(@"Groups refreshed from the database.");
+        NSLog(@"submitRequestRefreshGroups. Groups refreshed from the database.");
         NSArray* groups= [self convertGroupsSQLIntoGroups];
         if(groups!=nil && [groups count]>0)
         {
@@ -101,15 +95,12 @@ int const kRefreshGroups = 5;
 
 -(NSURLRequest*)prepareRequestForPostThemeForGroup:(NSString*)groupHashId andThemeId:(int)themeId{
     Group* group=[[Group alloc] init];
-    //Theme* theme = [[Theme alloc] init];
-    //theme.themeId = themeId;
-    //group.theme = theme;
     group.name=@"new name";
     
     NSString* groupURL = [APIWrapper getURLForGetGroup:groupHashId];
     //NSString* authenticatedGroupURL = [self authenticatedGetURL:groupURL];
     //NSLog(@"authenticatedGroupURL=%@", authenticatedGroupURL);
-    NSLog(@"prepareRequestForPostThemeForGroup.groupHashId=%@, themeId=%i, groupURL=%@", groupHashId, themeId, groupURL);
+    //NSLog(@"prepareRequestForPostThemeForGroup.groupHashId=%@, themeId=%i, groupURL=%@", groupHashId, themeId, groupURL);
     self.httpMethod = @"POST";
     self.request = groupURL;
     self.postRequestType = kPostThemeForGroup;
@@ -126,19 +117,13 @@ int const kRefreshGroups = 5;
     NSArray *keys = [NSArray arrayWithObjects:@"name", nil];
     NSDictionary *questionDict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     NSDictionary *jsonDict = [NSDictionary dictionaryWithObject:questionDict forKey:@"data"];
-    
-    /*
-     NSDictionary* groupdict = [GroupJSONHandler convertGroupIntoGroupJSON:group];
-     //comicdict = [self authenticatedPostData:comicdict];
-     groupdict = [GroupJSONHandler wrapJSONDictWithDataTag:groupdict];
-     self.dict = groupdict;
-     */
+
     self.dict = jsonDict;
     NSError *error;
     NSData* data = [NSJSONSerialization dataWithJSONObject:jsonDict options:NSJSONWritingPrettyPrinted error:&error];
     
     NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"groupPostData: %@", responseString);
+    NSLog(@"prepareRequestForPostThemeForGroup. groupPostData: %@", responseString);
     [urlRequest setHTTPBody:data];
 
     return urlRequest;
@@ -159,7 +144,7 @@ int const kRefreshGroups = 5;
 }
 
 -(void)submitRequestGetGroupForHashId:(NSString*)groupHashId{
-    int groupExists = [self submitSQLRequestCheckGroupExists:groupHashId];
+    int groupExists = [self submitSQLRequestCheckGroupExistsLocal:groupHashId];
     //NSLog(@"Grouploader.submitRequestGetGroupForHashId.groupExists=%i", groupExists);
     if(groupExists==0)
     {
@@ -299,7 +284,7 @@ int const kRefreshGroups = 5;
         NSArray* groups = [GroupJSONHandler convertGroupsJSONIntoGroups:groupJSON];
         if(groups!=nil && [groups count]>0)
         {
-            NSLog(@"handleGetRefreshedGroupsResponse. [groups count]=%i", [groups count]);
+            //NSLog(@"handleGetRefreshedGroupsResponse. [groups count]=%i", [groups count]);
             [self submitSQLRequestSaveGroups:groups];
             
             /*

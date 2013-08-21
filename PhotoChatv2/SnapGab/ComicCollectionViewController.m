@@ -28,6 +28,9 @@
 BOOL segueCalled = NO;
 BOOL comicsStored = NO;
 NSString *kComicCellID = @"COMIC_CELL";
+UIActivityIndicatorView* activityIndicator;
+UILabel* clickLabel;
+
 @synthesize comics;
 @synthesize panelLoadersInProgress;
 @synthesize imageDownloadersInProgress;
@@ -66,49 +69,48 @@ NSString *kComicCellID = @"COMIC_CELL";
     menuButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     //[self.toolbarView sendSubviewToBack:self.toolbarImage];
-    /*
-    UIImageView *toolbarImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"toolbar.png"]];
-    [self.toolbarView addSubview:toolbarImage];
-    [self.toolbarView sendSubviewToBack:toolbarImage];
-    */
 
     self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
     [self.collectionView setCollectionViewLayout:[[ComicCollectionViewLayout alloc] init]];
-    
-    
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-
     
-    [self refreshComics];
-
+    activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	activityIndicator.frame = CGRectMake(0, 0, 320, 480);
+	activityIndicator.center = self.view.center;
+	[self.view addSubview: activityIndicator];
+    [activityIndicator startAnimating];
+    
+    clickLabel = [ [UILabel alloc ] initWithFrame:CGRectMake(0, 40, 320, 320)];
+    clickLabel.textColor = [UIColor whiteColor];
+    clickLabel.backgroundColor = [UIColor blackColor];
+    //clickLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(36.0)];
+    clickLabel.text = [NSString stringWithFormat: @"No comics in the group. Please add."];
+    [clickLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    
     [self setupDataDownloadLists];
+    [self refreshComics];
     //[self loadComics];
+}
 
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    
+    [super viewDidAppear:animated];
+    //NSLog(@"ComicCollectionViewController.viewDidAppear");
+    //clickLabel.text = [NSString stringWithFormat: @"No comics in the group. Please add."];
+    //[self loadComics];
 }
 
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    /*
-    //[self.navigationController setNavigationBarHidden:YES animated:YES];
-    
-    //[self.collectionView removeFromSuperview];
-    
-    self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"groupViewBackground"]];
-    [self.collectionView setCollectionViewLayout:[[ComicCollectionViewLayout alloc] init]];
-    
-    
-    self.collectionView.delegate = self;
-    self.collectionView.dataSource = self;
-    
-    
-    [self setupDataDownloadLists];
-     */
+    //NSLog(@"ComicCollectionViewController.viewWillAppear.");
+    clickLabel.text = [NSString stringWithFormat: @"No comics in the group. Please add."];
     [self loadComics];
-    
+
 }
 
 
@@ -233,11 +235,10 @@ NSString *kComicCellID = @"COMIC_CELL";
 
 
 -(void)refreshComics{
-    //NSLog(@"loadComics");
+    //NSLog(@"refreshComics");
     ComicLoader *comicLoader = [[ComicLoader alloc] init];
     comicLoader.delegate = self;
     [comicLoader submitRequestRefreshComicsForGroup];
-    //[comicLoader submitRequestGetComicsForGroup];
 }
 
 -(void)loadPanelWithId:(int)panelId atIndexPath:(NSIndexPath *)indexPath{
@@ -280,11 +281,18 @@ NSString *kComicCellID = @"COMIC_CELL";
     if([self.comics count]>0)
     {
         dispatch_async(dispatch_get_main_queue(), ^(void) {
+            [clickLabel removeFromSuperview];
             [self.collectionView reloadData];
+            [activityIndicator stopAnimating];
         });
     }//end if([self.comics count]>0)
 
-
+    else{
+        
+        [activityIndicator stopAnimating];
+        [self.view addSubview:clickLabel];
+    }
+    
     //[self.collectionView reloadData];
 
 }

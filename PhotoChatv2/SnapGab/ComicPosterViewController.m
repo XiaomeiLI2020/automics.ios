@@ -262,7 +262,8 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
         //[userLoader submitRequestPostNotification:@"New comic uploaded."];
         
         NSArray* viewControllers = self.navigationController.viewControllers;
-        [self.navigationController popToViewController:[viewControllers objectAtIndex:2] animated:YES];
+        //[self.navigationController popToViewController:[viewControllers objectAtIndex:2] animated:YES];
+        [self.navigationController popToViewController:[viewControllers objectAtIndex:1] animated:YES];
         
         //[self.navigationController popViewControllerAnimated:YES];
         //[self performSegueWithIdentifier:@"postToComic" sender:self];

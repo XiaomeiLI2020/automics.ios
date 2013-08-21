@@ -209,9 +209,6 @@
             [userDefaults setObject:group.name forKey:@"current_group_name"];
         }
 
-        
-
-        
         /*
         //[userDefaults setObject:[NSNumber numberWithInt:group.theme.themeId] forKey:@"current_theme_id"];
         if(group.theme.themeId<1)
