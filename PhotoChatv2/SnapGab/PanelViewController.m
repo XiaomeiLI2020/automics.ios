@@ -291,27 +291,32 @@ UIActivityIndicatorView *activityIndicator;
     editButton.clipsToBounds = YES;
     //editButton.layer.borderColor=[UIColor whiteColor].CGColor;
     //editButton.layer.borderWidth=2.0f;
-    
-    //[self initiateDataSet];
-    //[self initiateScrollViews];
-    
-    /*
+
     activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	activityIndicator.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
 	activityIndicator.center = self.view.center;
 	[self.view addSubview: activityIndicator];
     [activityIndicator startAnimating];
-*/
+    
+    clickLabel = [ [UILabel alloc ] initWithFrame:CGRectMake(0, 40, 320, 320)];
+    clickLabel.textColor = [UIColor whiteColor];
+    clickLabel.backgroundColor = [UIColor blackColor];
+    clickLabel.text = [NSString stringWithFormat: @"No images in the group. Please add."];
+    [clickLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    
+    
+    [self initiateDataSet];
+    [self initiateScrollViews];
+
     //[panelsLoader submitRequestGetPanelsForGroup];
-
-
 }
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
     //NSLog(@"viewWillAppear");
     [super viewWillAppear:YES];
-    
+    /*
     //Remove any speech bubbles, resources and scrollviews
     for (UIView *subview in self.view.subviews)
     {
@@ -322,28 +327,19 @@ UIActivityIndicatorView *activityIndicator;
         }
     }
     
-    //[self initiateDataSet];
-    //[self initiateScrollViews];
-    
-    activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-	activityIndicator.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
-	activityIndicator.center = self.view.center;
-	[self.view addSubview: activityIndicator];
     [activityIndicator startAnimating];
-    
-    clickLabel = [ [UILabel alloc ] initWithFrame:CGRectMake(0, 40, 320, 320)];
-    clickLabel.textColor = [UIColor whiteColor];
-    clickLabel.backgroundColor = [UIColor blackColor];
-    //clickLabel.font = [UIFont fontWithName:@"Arial Rounded MT Bold" size:(36.0)];
-    clickLabel.text = [NSString stringWithFormat: @"No images in the group. Please add."];
-    [clickLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
-    
-    [self initiateDataSet];
+
+    //[self initiateDataSet];
     [self initiateScrollViews];
     
     [panelsLoader submitRequestGetPanelsForGroup];
-
+     */
+    
+    [activityIndicator startAnimating];
+    
+    [panelsLoader submitRequestGetPanelsForGroup];
 }
+
 
 
 - (void)viewDidAppear:(BOOL)animated

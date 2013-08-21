@@ -9,6 +9,7 @@
 #import "GroupLoader.h"
 #import "APIWrapper.h"
 #import "GroupJSONHandler.h"
+#import "UserLoader.h"
 
 @interface GroupLoader ()
 @property int groupRequestType;
@@ -162,9 +163,30 @@ int const kRefreshGroups = 5;
             Group* group = [groups objectAtIndex:0];
             if(group!=nil)
             {
+                NSLog(@"GroupLoader.submitRequestGetGroupForHashId.group.name=%@, group.theme.themeId=%i", group.name, group.theme.themeId);
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                NSString* currentGroupHash = [userDefaults objectForKey:@"current_group_hash"];
+                int userId = [[userDefaults objectForKey:@"user_id"] intValue];
+                
+                [userDefaults setObject:group.name forKey:@"current_group_name"];
+                //[userDefaults setObject:[NSNumber numberWithInt:group.theme.themeId] forKey:@"current_theme_id"];
+                if(group.theme.themeId<1)
+                    [userDefaults setObject:[NSNumber numberWithInt:2] forKey:@"current_theme_id"];
+                else
+                    [userDefaults setObject:[NSNumber numberWithInt:group.theme.themeId] forKey:@"current_theme_id"];
+                
+                [userDefaults synchronize];
+
+                
+                UserLoader* userLoader = [[UserLoader alloc] init];
+                [userLoader submitSQLRequestUpdateCurrentGroup:currentGroupHash andUserId:userId];
+                
+                
                 //NSLog(@"Group %@ downloaded from the database.", group.name);
                 if ([self.delegate respondsToSelector:@selector(GroupLoader:didLoadGroup:)])
                     [self.delegate GroupLoader:self didLoadGroup:group];
+                
+                 
             }//end if(group!=nil)
         }//end if(groups!=nil && [groups count]>0)
     }//end else
@@ -315,6 +337,24 @@ int const kRefreshGroups = 5;
             NSMutableArray* groups = [[NSMutableArray alloc] init];
             [groups addObject:group];
             [self submitSQLRequestSaveGroups:groups];
+            
+            
+            NSLog(@"GroupLoader.submitRequestGetGroupForHashId.group.name=%@, group.theme.themeId=%i", group.name, group.theme.themeId);
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            NSString* currentGroupHash = [userDefaults objectForKey:@"current_group_hash"];
+            int userId = [[userDefaults objectForKey:@"user_id"] intValue];
+            [userDefaults setObject:group.name forKey:@"current_group_name"];
+            //[userDefaults setObject:[NSNumber numberWithInt:group.theme.themeId] forKey:@"current_theme_id"];
+            if(group.theme.themeId<1)
+                [userDefaults setObject:[NSNumber numberWithInt:1] forKey:@"current_theme_id"];
+            else
+                [userDefaults setObject:[NSNumber numberWithInt:group.theme.themeId] forKey:@"current_theme_id"];
+            
+            [userDefaults synchronize];
+            
+            
+            UserLoader* userLoader = [[UserLoader alloc] init];
+            [userLoader submitSQLRequestUpdateCurrentGroup:currentGroupHash andUserId:userId];
             
             if ([self.delegate respondsToSelector:@selector(GroupLoader:didLoadGroup:)])
                 [self.delegate GroupLoader:self didLoadGroup:group];

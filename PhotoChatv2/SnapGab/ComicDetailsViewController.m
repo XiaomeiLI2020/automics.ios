@@ -81,7 +81,7 @@ NSString* urlImageString;
                                                      name:UIApplicationDidBecomeActiveNotification
                                                    object:nil];
         */ 
-        [self initiateDataSet];
+        //[self initiateDataSet];
         
     }
     return self;
@@ -119,6 +119,7 @@ NSString* urlImageString;
     [self.backButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     self.backButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
+    [self initiateDataSet];
     [self initiateScrollViews];
     
     
@@ -131,17 +132,32 @@ NSString* urlImageString;
     if(comicId>0)
     {
         //NSLog(@"ComicDetailViewController.comicId=%i", comicId);
-        self.comicNameLabel.text = @"Comic";
+        //self.comicNameLabel.text = @"Comic";
         [comicLoader submitRequestGetComicWithId:comicId];
-        
     }
-    
-
 }
 
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    //[activityIndicator startAnimating];
+    
+    /*
+    if(comicId>0)
+    {
+        //NSLog(@"ComicDetailViewController.comicId=%i", comicId);
+        //self.comicNameLabel.text = @"Comic";
+        [comicLoader submitRequestGetComicWithId:comicId];
+    }
+    */
+    _bubblesAdded = NO;
+    _resourcesAdded = NO;
+    [self updateScrollViews];
 
+}
 
+/*
 - (void)viewDidAppear:(BOOL)animated
 {
     //NSLog(@"viewDidAppear");
@@ -150,17 +166,10 @@ NSString* urlImageString;
     _bubblesAdded = NO;
     _resourcesAdded = NO;
     
-    /*
-    [panelsLoader submitRequestGetPanelsForGroup:1];
-    
-    if(comicId>0)
-    {
-        [comicLoader submitRequestGetComicWithId:comicId];
-    }
-    */
     [self updateScrollViews];
 }
 
+*/
 
 -(void) initiateDataSet
 {

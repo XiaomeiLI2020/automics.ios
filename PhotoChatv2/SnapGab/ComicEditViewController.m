@@ -302,6 +302,7 @@ int ibackAlertView = 2;
         //_groupName = [prefs objectForKey:@"groupname"];
         //_groupname = @"d1";
         //NSLog(@"groupname is %@", _groupname);
+        /*
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(newImageNotification)
                                                      name:@"newImageNotification"
@@ -310,7 +311,8 @@ int ibackAlertView = 2;
                                                  selector:@selector(newImageNotification)
                                                      name:UIApplicationDidBecomeActiveNotification
                                                    object:nil];
-        [self initiateDataSet];
+        */
+        // [self initiateDataSet];
         
     }
     return self;
@@ -349,6 +351,7 @@ int ibackAlertView = 2;
     [self.backButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     self.backButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
 
+    [self initiateDataSet];
     [self initiateScrollViews];
     
     activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -357,22 +360,39 @@ int ibackAlertView = 2;
 	[self.view addSubview: activityIndicator];
     [activityIndicator startAnimating];
     
-    if(comicId>0)
-    {
-        [comicLoader submitRequestGetComicWithId:comicId];
-    }
+
     if(comicName!=nil)
     {
         self.comicTextField.text = comicName;
     }
+    
+    if(comicId>0)
+    {
+        [comicLoader submitRequestGetComicWithId:comicId];
+    }
 
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    /*
+    [activityIndicator startAnimating];
+    //NSLog(@"viewDidAppear");
+    if(comicId>0)
+    {
+        [comicLoader submitRequestGetComicWithId:comicId];
+    }
+     */
+}
+
+/*
 - (void)viewDidAppear:(BOOL)animated
 {
-    //NSLog(@"viewDidAppear");
+
 
 }
+ */
 
 -(void)initiateScrollViews
 {
@@ -1578,7 +1598,7 @@ int ibackAlertView = 2;
     {
         if([title isEqualToString:@"Confirm"])
         {
-            NSLog(@"backAlertView.Confirm pressed");
+            //NSLog(@"backAlertView.Confirm pressed");
             alertShown = NO;
             [self.navigationController popViewControllerAnimated:YES];
             //[self dismissViewControllerAnimated:YES completion:nil];
@@ -2345,7 +2365,7 @@ int ibackAlertView = 2;
         numComicPanels = [comic.panels count];
         panelScrollView.numItems = numComicPanels;
         
-        NSLog(@"ComicEditViewController.numComicPanels=%i", numComicPanels);
+        NSLog(@"ComicEditViewController.didLoadComic.numComicPanels=%i", numComicPanels);
                 
         if([comic.panels count]>0)
         {

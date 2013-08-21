@@ -342,7 +342,7 @@ UILabel* clickLabel;
         user.email = email;
         user.password = password;
   
-        NSLog(@"sessionToken=%@, newgroupHashId=%@, currentGroupHash=%@, userId=%i", sessionToken, groupHashId, currentGroupHash, userId);
+        //NSLog(@"sessionToken=%@, newgroupHashId=%@, currentGroupHash=%@, userId=%i", sessionToken, groupHashId, currentGroupHash, userId);
         //NSLog(@"email=%@, password=%@", user.email, user.password);
         //[userLoader submitRequestPostGenerateSessionToken:user];
         
@@ -355,6 +355,8 @@ UILabel* clickLabel;
                 [userLoader submitRequestPostChangeGroup:userId andNewGroupHashId:groupHashId];
         }
         
+        //NSArray* viewControllers = self.navigationController.viewControllers;
+        //[self.navigationController popToViewController:[viewControllers objectAtIndex:1] animated:YES];
         return;
     }//end if([title isEqualToString:@"Confirm"])
     if([title isEqualToString:@"Cancel"])
@@ -588,6 +590,7 @@ failure:^(NSError *error) {
     [activityIndicator stopAnimating];
 }
 
+/*
 -(void)GroupLoader:(GroupLoader *)groupLoader didLoadGroup:(Group*)group{
     if(group!=nil)
     {
@@ -607,6 +610,7 @@ failure:^(NSError *error) {
         [self.userLoader submitSQLRequestUpdateCurrentGroup:currentGroupHash andUserId:userId];
     }
 }
+*/
 
 -(void)GroupLoader:(GroupLoader *)groupLoader didFailWithError:(NSError *)errors{
     NSLog(@"GroupJoinViewController. Group failed to load.");

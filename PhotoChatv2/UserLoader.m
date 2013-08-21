@@ -10,7 +10,7 @@
 #import "APIWrapper.h"
 #import "SessionJSONHandler.h"
 #import "UserJSONHandler.h"
-
+#import "GroupLoader.h"
 
 @interface UserLoader()
  @property int userRequestType;
@@ -475,14 +475,39 @@ NSString* leaveGroupHashId;
     {
         NSDictionary* userdict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
         NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
-        NSLog(@"handlePostForChangeGroupResponse.changeGroupData=%@", responseString);
+        NSLog(@"UserLoader.handlePostForChangeGroupResponse.changeGroupData=%@", responseString);
         if (userdict != nil)
         {
             User *user = [UserJSONHandler getUserFromUserJSON:userdict];
             
+            
+            
+            if(user!=nil)
+            {
+                //NSLog(@"GroupJoinViewController.didChangeGroup.currentUser.userId=%i", currentUser.userId);
+                if(user.currentGroup!=nil)
+                {
+                    NSLog(@"UserLoader.didChangeGroup.currentUser.currentGroup.hashId=%@", user.currentGroup.hashId);
+                    if(user.currentGroup.hashId!=nil)
+                    {
+                        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                        [userDefaults setObject:user.currentGroup.hashId forKey:@"current_group_hash"];
+                        [userDefaults synchronize];
+                        
+                        
+                        GroupLoader* groupLoader = [[GroupLoader alloc] init];
+                        [groupLoader submitRequestGetGroupForHashId:user.currentGroup.hashId];
+                        
+                        // [self.userLoader submitSQLRequestUpdateCurrentGroup:currentUser.currentGroup.hashId andUserId:currentUser.userId];
+                        
+                    }
+                }
+            }
+            
+            /*
             if ([self.delegate respondsToSelector:@selector(UserLoader:didChangeGroup:)])
                 [self.delegate UserLoader:self didChangeGroup:user];
-            
+            */
         }
         else{
             [self reportErrorToDelegate:error];

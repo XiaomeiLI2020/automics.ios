@@ -132,7 +132,6 @@
     [super viewWillAppear:YES];
     
 
-    
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSString* groupHashId= [prefs objectForKey:@"current_group_hash"];
     NSString* groupName= [prefs objectForKey:@"current_group_name"];
@@ -156,11 +155,7 @@
     }
     else if(groupHashId!=nil)
     {
-        
-        /*
 
-        [groupLoader submitRequestGetGroupForHashId:groupHashId];
-        */
         
         if(groupName!=nil)
         {
@@ -185,6 +180,12 @@
         
 
     }
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning
