@@ -233,7 +233,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource andScale:1.0 andAngle:0.0];
 
             //rv.center = self.view.center;
-            rv.center = self.imageView.center;
+            //rv.center = self.imageView.center;
 
             [self.view addSubview:rv];
         }//end if resource!=nil

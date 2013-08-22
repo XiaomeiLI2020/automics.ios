@@ -108,7 +108,7 @@ CGRect originalBounds;
         // Initialization code
         
         MAX_SIZE = 320.0;
-        MIN_SIZE = 80.0;
+        MIN_SIZE = 60.0;
         
         if(resourceSent!=nil)
         {
@@ -174,13 +174,19 @@ CGRect originalBounds;
                                         //NSLog(@"self_.originalBounds=%@", NSStringFromCGRect(self_.bounds));
                                         //NSLog(@"self_.frame=%@", NSStringFromCGRect(self_.frame));
                                         
-                                        if(originalHeight<=originalWidth)
+                                        if(originalHeight==originalWidth)
                                         {
                                             self_.MAX_SCALE = self_.MAX_SIZE/originalHeight;
                                             self_.MIN_SCALE = self_.MIN_SIZE/originalHeight;
                                         }
-                                        else{
+                                        else if(originalHeight<originalWidth)
+                                        {
                                             self_.MAX_SCALE = self_.MAX_SIZE/originalWidth;
+                                            self_.MIN_SCALE = self_.MIN_SIZE/originalHeight;
+                                        }
+                                        else if(originalHeight>originalWidth)
+                                        {
+                                            self_.MAX_SCALE = self_.MAX_SIZE/originalHeight;
                                             self_.MIN_SCALE = self_.MIN_SIZE/originalWidth;
                                         }
                                         
@@ -258,6 +264,7 @@ CGRect originalBounds;
                 //NSLog(@"self_.originalBounds=%@", NSStringFromCGRect(self_.bounds));
                 //NSLog(@"self_.frame=%@", NSStringFromCGRect(self_.frame));
                 
+                /*
                 if(originalHeight<=originalWidth)
                 {
                     self_.MAX_SCALE = self_.MAX_SIZE/originalHeight;
@@ -265,6 +272,23 @@ CGRect originalBounds;
                 }
                 else{
                     self_.MAX_SCALE = self_.MAX_SIZE/originalWidth;
+                    self_.MIN_SCALE = self_.MIN_SIZE/originalWidth;
+                }
+                */
+                
+                if(originalHeight==originalWidth)
+                {
+                    self_.MAX_SCALE = self_.MAX_SIZE/originalHeight;
+                    self_.MIN_SCALE = self_.MIN_SIZE/originalHeight;
+                }
+                else if(originalHeight<originalWidth)
+                {
+                    self_.MAX_SCALE = self_.MAX_SIZE/originalWidth;
+                    self_.MIN_SCALE = self_.MIN_SIZE/originalHeight;
+                }
+                else if(originalHeight>originalWidth)
+                {
+                    self_.MAX_SCALE = self_.MAX_SIZE/originalHeight;
                     self_.MIN_SCALE = self_.MIN_SIZE/originalWidth;
                 }
                 
@@ -408,6 +432,7 @@ CGRect originalBounds;
         //NSLog(@"MAX_SCALE=%f, MIN_SCALE=%f, _previousScale=%f, currentScale=%g, scaleStep=%f", MAX_SCALE, MIN_SCALE, _previousScale, currentScale, scaleStep);
         
         self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width*scaleStep, self.bounds.size.height*scaleStep);
+        //self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width*scaleStep, self.bounds.size.height*scaleStep);
         _imageView.frame = CGRectMake(0.0, 0.0, self.bounds.size.width, self.bounds.size.height);
         
         
@@ -440,7 +465,7 @@ CGRect originalBounds;
         //self.scale = _imageView.bounds.size.width/originalWidth;
         self.scale = newDiagonal/originalDiagonal;
         
-        //NSLog(@"MAX_SCALE=%f, MIN_SCALE=%f, _previousScale=%f, currentScale=%g, scaleStep=%f, self.scale=%f", MAX_SCALE, MIN_SCALE, _previousScale, currentScale, scaleStep, self.scale);
+        NSLog(@"MAX_SCALE=%f, MIN_SCALE=%f, _previousScale=%f, currentScale=%g, scaleStep=%f, self.scale=%f", MAX_SCALE, MIN_SCALE, _previousScale, currentScale, scaleStep, self.scale);
 
     }
     
@@ -660,6 +685,14 @@ CGRect originalBounds;
         //NSLog(@"self.frame.origin=(%f,%f)", self.frame.origin.x, self.frame.origin.y);
         //NSLog(@"[mainView center]=(%f,%f)", [mainView center].x, [mainView center].y);
         //if(self.frame.origin.y+translation.y>=panelScrollYOrigin) //&& self.frame.origin.x+translation.x>=panelScrollXOrigin)
+        //NSLog(@"self.frame.origin.y=%f, translation.y=%f", self.frame.origin.y, translation.y);
+        /*
+        if((self.frame.origin.y+translation.y>=panelScrollYOrigin)
+           && (self.frame.origin.y+self.frame.size.height+ translation.y<=(panelScrollYOrigin+panelHeight))
+           && self.frame.origin.x+translation.x>=panelScrollXOrigin
+           && (self.frame.origin.x+self.frame.size.width+ translation.x<=(panelScrollXOrigin+panelWidth))
+           )
+        */ 
         {
             [mainView setCenter:CGPointMake([mainView center].x + translation.x, [mainView center].y + translation.y)];
             //NSLog(@"self.frame.origin changed=(%f,%f)", self.frame.origin.x, self.frame.origin.y);

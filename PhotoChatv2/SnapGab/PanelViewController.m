@@ -261,8 +261,6 @@ UIActivityIndicatorView *activityIndicator;
 	// Do any additional setup after loading the view.
     //NSLog(@"PanelViewController.viewDidLoad");
     
-
-    
     UIImageView *backgroundImage;
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     if (screenBounds.size.height == 568) {
@@ -305,8 +303,8 @@ UIActivityIndicatorView *activityIndicator;
     [clickLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     
     
-    [self initiateDataSet];
-    [self initiateScrollViews];
+    //[self initiateDataSet];
+    //[self initiateScrollViews];
 
     //[panelsLoader submitRequestGetPanelsForGroup];
 }
@@ -314,9 +312,9 @@ UIActivityIndicatorView *activityIndicator;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    //NSLog(@"viewWillAppear");
+    //NSLog(@"PanelViewController.viewWillAppear");
     [super viewWillAppear:YES];
-    /*
+
     //Remove any speech bubbles, resources and scrollviews
     for (UIView *subview in self.view.subviews)
     {
@@ -329,14 +327,11 @@ UIActivityIndicatorView *activityIndicator;
     
     [activityIndicator startAnimating];
 
-    //[self initiateDataSet];
+    [self initiateDataSet];
     [self initiateScrollViews];
     
-    [panelsLoader submitRequestGetPanelsForGroup];
-     */
     
     [activityIndicator startAnimating];
-    
     [panelsLoader submitRequestGetPanelsForGroup];
 }
 
@@ -364,6 +359,7 @@ UIActivityIndicatorView *activityIndicator;
     
     [panelsLoader submitRequestGetPanelsForGroup];
     */
+    //[panelsLoader submitRequestGetPanelsForGroup];
 }
 
 
@@ -648,15 +644,17 @@ UIActivityIndicatorView *activityIndicator;
                 
                 
                 //NSLog(@"alignPageInPhotoTableView. downloadedPanels objectAtIndex:currentPage.currentPage=%i, [self.panels count]=%i", currentPage, [self.panels count]);
+                
                 //Check if the panel alongwith placements and annotations have already been downloaded
-                BOOL panelDownloaded = [[downloadedPanels objectAtIndex:currentPage] boolValue];
+                //BOOL panelDownloaded = [[downloadedPanels objectAtIndex:currentPage] boolValue];
                 //NSLog(@"alignPageInPanelScrollView.thumbMode=%d. Panel#%i downloaded=%d.", thumbMode, currentPage, panelDownloaded);
-                if(!panelDownloaded)
+                //if(!panelDownloaded)
                 {
                     //NSLog(@"alignPageInPanelScrollView. Panel#%i download called. thumbMode=%d", currentPage, thumbMode);
                     //Download annotations and placements of the panel
                     [panelsLoader submitRequestGetPanelWithId:currentPanel.panelId];
                 }
+                /*
                 else
                 {
                     //NSLog(@"placements already downloaded.");
@@ -669,7 +667,7 @@ UIActivityIndicatorView *activityIndicator;
                     //if([self.panels count]<=4)
                     //    [self alignPageInThumbnailScrollView];
                 }//end else
-                
+                */
  
                 if(currentPage==[self.panels count]-1)
                 {
@@ -1701,6 +1699,7 @@ UIActivityIndicatorView *activityIndicator;
                         ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource andScale:defaultScale andAngle:defaultAngle];
                         rv.userInteractionEnabled = NO;
                         [self.view addSubview:rv];
+                        NSLog(@"loadPlacements.currentPage=%i, resource[%i].resourceId=%i added", currentPage, placementCounter, resource.resourceId);
                         
                     }//end if resource!=nil
 
@@ -1778,15 +1777,6 @@ UIActivityIndicatorView *activityIndicator;
 
 -(void)PanelLoader:(PanelLoader*)loader didLoadRefreshedPanels:(NSArray*)panelsLocal{
     
-    /*
-    NSMutableArray* arrayCat(NSArray *a, NSArray *b)
-    {
-        NSMutableArray *ret = [NSMutableArray arrayWithCapacity:[a count] + [b count]];
-        [ret addObjectsFromArray:a];
-        [ret addObjectsFromArray:b];
-        return ret;
-    }
-     */
 
     //NSLog(@"PanelViewController.didLoadRefreshedPanels. currentPanels=%i, [panelsLocal count]=%i", [panels count], [panelsLocal count]);
     //NSMutableArray *newPanels = [NSMutableArray arrayWithCapacity:[panels count] + [panelsLocal count]];
@@ -1794,7 +1784,14 @@ UIActivityIndicatorView *activityIndicator;
     [self removeAllResources];
     
   
-    //Remove the latest existing panel
+    for (int i=0; i<[panelsLocal count];i++)
+    {
+        NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
+        [downloadedPanels addObject:panelDownloaded];
+        [downloadedPhotos addObject:panelDownloaded];
+    }
+    
+    //Remove all the existing panel
     for(UIView* subView in panelScrollView.subviews)
     {
         //if(subView.tag==(numPanels-1) && [subView isMemberOfClass:[UIImageView class]])
@@ -1804,7 +1801,7 @@ UIActivityIndicatorView *activityIndicator;
         }//end if
     }//end for
     
-    //Remove the latest existing thumbnail
+    //Remove all the existing thumbnails
     for(UIView* subView in thumbnailScrollView.subviews)
     {
         //if(subView.tag==(numPanels-1) && [subView isMemberOfClass:[UIImageView class]])
@@ -1821,12 +1818,7 @@ UIActivityIndicatorView *activityIndicator;
     panels = newPanels;
     numPanels = [newPanels count];
     
-    for (int i=0; i<[panelsLocal count];i++)
-    {
-        NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
-        [downloadedPanels addObject:panelDownloaded];
-        [downloadedPhotos addObject:panelDownloaded];
-    }
+
 
     
     //NSLog(@"PanelViewController.didLoadRefreshedPanels.initialized=%d", initialized);
@@ -2172,12 +2164,12 @@ UIActivityIndicatorView *activityIndicator;
 
 #pragma mark ResourceLoader functions.
 -(void)ResourceLoader:(ResourceLoader*)loader didFailWithError:(NSError*)error{
-    NSLog(@"resource failed to load.");
+    NSLog(@"PanelViewController.Resource failed to load.");
     
 }
 
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResources:(NSArray*)resources{
-    //NSLog(@"resources loaded.");
+    NSLog(@"PanelViewController.Resources loaded.");
 }
 
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResource:(Resource*)resource
@@ -2240,7 +2232,7 @@ UIActivityIndicatorView *activityIndicator;
                 ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource andScale:defaultScale andAngle:defaultAngle];
                 rv.userInteractionEnabled = NO;
                 [self.view addSubview:rv];
-                //NSLog(@"resource.resourceId=%i added", resource.resourceId);
+                //NSLog(@"currentPage=%i, resource.resourceId=%i added", currentPage, resource.resourceId);
             }//end if(!thumbMode)
             
             

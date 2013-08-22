@@ -284,7 +284,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             //ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andURL:resource.imageURL andType:type andId:resource.resourceId andScale:1.0];
             ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource andScale:1.0 andAngle:0.0];
             
-            rv.center = self.imageView.center;
+            //rv.center = self.imageView.center;
             [self.view addSubview:rv];
         }//end if resource!=nil
     }//end if
