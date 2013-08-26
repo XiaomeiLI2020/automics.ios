@@ -1672,6 +1672,8 @@ sqlite3* database;
                     
                     int panelExists = [self submitSQLRequestCheckPanelExistsLocal:panel.panelId];
                     int assestsExist =  [self submitSQLRequestGetAssetsForPanelLocal:panel.panelId];
+                    if(panelExists==1 && assestsExist==1)
+                        return;
                     
                     if(panelExists==0)
                     {

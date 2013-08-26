@@ -537,6 +537,16 @@ UILabel* clickLabel;
         {
             [groupImages setObject:photo.imageURL forKey:indexPath];
             
+            [imageView setImageWithURL:[NSURL URLWithString:[photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                       placeholderImage:nil
+                              completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+             {
+                 //NSLog(@"alignPageinPanelScrollView.saving image=%@", imageName);
+                 NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                 [data1 writeToFile:currentFile atomically:YES];
+             }];
+            
+            /*
             [imageView setImageWithURL:[NSURL URLWithString:photo.imageURL]
                       placeholderImage:nil
                                success:^(UIImage *imageDownloaded) {
@@ -550,6 +560,7 @@ UILabel* clickLabel;
                                failure:^(NSError *error) {
                                    NSLog(@"ComicCollectionViewController.Failed to load image");
                                }];
+             */
         }//end if(!fileExists)
         else if(fileExists)
         {

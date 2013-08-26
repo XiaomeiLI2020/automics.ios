@@ -171,7 +171,7 @@ int const kRefreshGroups = 5;
                 [userDefaults setObject:group.name forKey:@"current_group_name"];
                 //[userDefaults setObject:[NSNumber numberWithInt:group.theme.themeId] forKey:@"current_theme_id"];
                 if(group.theme.themeId<1)
-                    [userDefaults setObject:[NSNumber numberWithInt:2] forKey:@"current_theme_id"];
+                    [userDefaults setObject:[NSNumber numberWithInt:1] forKey:@"current_theme_id"];
                 else
                     [userDefaults setObject:[NSNumber numberWithInt:group.theme.themeId] forKey:@"current_theme_id"];
                 

@@ -318,6 +318,17 @@ ResourceLoader* resourceLoader;
     if(!fileExists)
     {
         
+        
+        [cell.imageView setImageWithURL:[NSURL URLWithString:[resource.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                   placeholderImage:nil
+                          completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+         {
+             //NSLog(@"alignPageinPanelScrollView.saving image=%@", imageName);
+             NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+             [data1 writeToFile:currentFile atomically:YES];
+         }];
+        
+        /*
         [cell.imageView setImageWithURL:[NSURL URLWithString:resource.imageURL]
                   placeholderImage:nil
                            success:^(UIImage *imageDownloaded) {
@@ -331,6 +342,8 @@ ResourceLoader* resourceLoader;
                            failure:^(NSError *error) {
                                NSLog(@"ComicCollectionViewController.Failed to load image");
                            }];
+         */
+        
     }//end if(!fileExists)
     else if(fileExists)
     {

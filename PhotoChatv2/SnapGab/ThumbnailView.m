@@ -41,13 +41,13 @@ int placementCounter;
         if(panel!=nil)
         {
 
-                UIImageView *imageView = [[UIImageView alloc] init];
-                /*
+            UIImageView *imageView = [[UIImageView alloc] init];
+            /*
                 //[imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"thumb.png"]];
                 [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]];
                 imageView.frame = CGRectMake(0.0, 0.0, thumbnailWidth, thumbnailHeight);
                 [self addSubview:imageView];
-*/
+             */
                 
             __weak UIImageView* _imageView = imageView;
            
@@ -80,6 +80,22 @@ int placementCounter;
                 */
                 
                 [_imageView setImageWithURL:[NSURL URLWithString:[panel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                           placeholderImage:nil
+                                  completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+                 {
+                     image = imageDownloaded;
+                     _imageView.frame = CGRectMake(0.0, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
+                     [self addSubview:_imageView];
+                     
+                     
+                     NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                     [data1 writeToFile:currentFile atomically:YES];
+                     //NSLog(@"ThumbnailView. File saved [%@]", imageName);
+                     
+                 }];
+                
+                /*
+                [_imageView setImageWithURL:[NSURL URLWithString:[panel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
                           placeholderImage:nil
                                    success:^(UIImage *imageDownloaded) {
 
@@ -95,7 +111,7 @@ int placementCounter;
                                    failure:^(NSError *error) {
                                        NSLog(@"ThumbnailView.Failed to load image");
                                    }];
-                
+                */
                 [self loadPlacements:panel];
                 [self loadAnnotations:panel];
                 snapshot = [self imageWithView:self];
@@ -319,7 +335,7 @@ int placementCounter;
                         //    rv.transform = CGAffineTransformScale(rv.transform, 0.5, 0.5);
                         [self addSubview:rv];
                         
-                        //NSLog(@"Thumbnailview. panelId=%i, resource added =%@", panel.panelId, resource.imageURL);
+                        //NSLog(@"Thumbnailview. panelId=%i, resource#%i added =%@", panel.panelId, resource.resourceId, resource.imageURL);
                         //NSLog(@"resource added.%i", placementCounter);
                     }//end if resource!=nil
                     

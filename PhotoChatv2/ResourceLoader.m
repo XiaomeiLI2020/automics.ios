@@ -113,7 +113,7 @@ BOOL resourcesLoaded = NO;
     //If the resource is downloadeded
     else if(resourceExists>0)
     {
-        //NSLog(@"ResourceLoader.submitRequestGetResourceWithResourceId.Resource downloaded from the database.");
+        NSLog(@"ResourceLoader.submitRequestGetResourceWithResourceId#%i.Resource downloaded from the database.", resourceId);
         NSArray* resources = [self convertResourceSQLIntoResource:resourceId];
         //NSLog(@"[resources count]=%i", [resources count]);
         if(resources!=nil && [resources count]>0)

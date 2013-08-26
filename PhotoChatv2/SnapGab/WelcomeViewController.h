@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "GroupLoader.h"
 #import "OrganisationLoader.h"
-
+#import "ResourceLoader.h"
 
 BOOL initialized = false;
 
 @interface WelcomeViewController:UIViewController
-<GroupLoaderDelegate, UIAlertViewDelegate, OrganisationLoaderDelegate>
+<GroupLoaderDelegate, UIAlertViewDelegate, OrganisationLoaderDelegate, ResourceLoaderDelegate>
 
 
 @property (weak, nonatomic) IBOutlet UIButton *groupButton;

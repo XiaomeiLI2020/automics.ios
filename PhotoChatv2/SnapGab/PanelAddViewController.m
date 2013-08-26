@@ -76,13 +76,79 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     return self;
 }
 
+- (void)viewDidLoad
+{
+    //NSLog(@"viewDidLoad.");
+    [super viewDidLoad];
+    
+    resourceCounter = 0;
+    resourceList = [[NSMutableArray alloc] init];
+    resourceLoader = [[ResourceLoader alloc] init];
+    resourceLoader.delegate = self;
+    
+    //Initiate thumbnail scrollview
+    [self initiateScrollViews];
+    
+    //Add speechbubbles to thumbnail scrollview
+    [self loadSpeechBubbles];
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    int currentThemeId= [[prefs objectForKey:@"current_theme_id"] integerValue];
+    //NSLog(@"PanelAddViewController. current_theme_id=%i", currentThemeId);
+    
+    [resourceLoader submitRequestGetResourcesForTheme:currentThemeId];
+    
+    [self registerForKeyboardNotifications];
+    
+    keyboardIsShown = NO;
+    
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureCaptured:)];
+    singleTap.cancelsTouchesInView = NO;
+    [self.view addGestureRecognizer:singleTap];
+    
+    if(!self.initialized)
+    {
+        panelPopupWindow= [PanelPopupWindow showWindow];
+        panelPopupWindow.delegate = self;
+        self.initialized = YES;
+    }
+    
+    
+    
+    UIImageView *backgroundImage;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    if (screenBounds.size.height == 568) {
+        //NSLog(@"This is iPhone 5");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background@x5.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 568)];
+    }
+    else
+    {
+        //NSLog(@"This is iPhone 4");
+        backgroundImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+        [backgroundImage setFrame:CGRectMake(0, 0, 320, 480)];
+    }
+    [self.view addSubview:backgroundImage];
+    [self.view sendSubviewToBack:backgroundImage];
+    
+    [imagesButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    imagesButton.layer.borderWidth=4.0f;
+    imagesButton.clipsToBounds = YES;
+    imagesButton.layer.cornerRadius = 10;//half of the width
+    [imagesButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
+    imagesButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
+    [self.view bringSubviewToFront:imagesButton];
+    
+    //imageSize = CGSizeMake(320, 320);
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"PanelAddViewControlelr.viewWillAppear.");
+    //NSLog(@"PanelAddViewControlelr.viewWillAppear.");
     [super viewWillAppear:animated];
-    
-    //[MTPopupWindow showWindowWithHTMLFile:@"info.html"];
-    
+ 
+    /*
+ 
     if(!self.initialized)
     {
         panelPopupWindow= [PanelPopupWindow showWindow];
@@ -114,6 +180,9 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     imagesButton.layer.cornerRadius = 10;//half of the width
     [imagesButton.titleLabel setFont:[UIFont fontWithName: @"Transit Display" size:20]];
     imagesButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
+    [self.view bringSubviewToFront:imagesButton];
+     
+    */ 
     
     if(self.imageView.image)
     {
@@ -131,38 +200,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     }
 //        NSLog(@"No image selected.");
 
-    /*
-    [self.imageView setImageWithURL:self.url
-                   placeholderImage:[UIImage imageNamed:@"placeholder-542x542.png"]
-                            success:^(UIImage *image) {
-                                
-                                for (UIView *subview in self.view.subviews)
-                                {
-                                    if([subview isMemberOfClass:[SpeechBubbleView class]])
-                                    {
-                                        SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
-                                        sbv.alpha = 1;
-                                    }
-                                    
-                                    if([subview isMemberOfClass:[ResourceView class]])
-                                    {
-                                        ResourceView* sbv =(ResourceView*)subview;
-                                        sbv.alpha = 1;
-                                    }
-                                }
-                            }
-                            failure:^(NSError *error) {
-                                UIAlertView *alert = [[UIAlertView alloc]
-                                                      initWithTitle: @"Load failed"
-                                                      message: @"Failed to load image"
-                                                      delegate: nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-                                [alert show];
-                            }];
-*/
 
-    [thumbnailScrollView layoutAssets];
+    //[thumbnailScrollView layoutAssets];
 
 }
 
@@ -171,24 +210,15 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     //NSLog(@"viewDidAppear.");
     [super viewDidAppear:animated];
+    /*
     //if(self.startWithCamera) [self useCameraPressed];
     if(self.startWithCamera) [self takeSnap:0];
     self.startWithCamera = NO;
-    
+    */
     //NSLog(@"thumbnail.numItems=%i", [thumbnailScrollView numItems]);
     [thumbnailScrollView layoutAssets];
 }
 
-/*
-- (void)loadImage:(UIImage*) image
-{
-    NSLog(@"LoadImage.");
-    self.imageView.image = image;
-    
-    self.imageView.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelWidth, panelHeight);
-    //self.imageView.image = [self squareImageWithImage:image scaledToSize:imageSize];
-}
- */
 
 - (void)addBubbleWithId:(id)sender
 {
@@ -272,38 +302,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
 }
 
-- (void)viewDidLoad
-{
-    //NSLog(@"viewDidLoad.");
-    [super viewDidLoad];
-    
-    resourceCounter = 0;
-    resourceList = [[NSMutableArray alloc] init];
-    resourceLoader = [[ResourceLoader alloc] init];
-    resourceLoader.delegate = self;
-    
-    //Initiate thumbnail scrollview
-    [self initiateScrollViews];
-    
-    //Add speechbubbles to thumbnail scrollview
-    [self loadSpeechBubbles];
-    
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    int currentThemeId= [[prefs objectForKey:@"current_theme_id"] integerValue];
-    //NSLog(@"PanelAddViewController. current_theme_id=%i", currentThemeId);
-    
-    [resourceLoader submitRequestGetResourcesForTheme:currentThemeId];
-    
-    [self registerForKeyboardNotifications];
-    
-    keyboardIsShown = NO;
-    
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureCaptured:)];
-    singleTap.cancelsTouchesInView = NO;
-    [self.view addGestureRecognizer:singleTap];
-    
-    //imageSize = CGSizeMake(320, 320);
-}
+
 
 - (void)viewDidUnload
 {
@@ -826,6 +825,18 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             UIImageView *resourceImageView = [[UIImageView alloc] init];
             //[resourceImageView setImageWithURL:[NSURL URLWithString:resource.imageURL] placeholderImage:nil];
 
+            [resourceImageView setImageWithURL:[NSURL URLWithString:[resource.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                       placeholderImage:nil
+                              completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+             {
+                 [styleButton setImage:imageDownloaded forState:UIControlStateNormal];
+                 
+                 NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                 [data1 writeToFile:currentFile atomically:YES];
+                 
+             }];
+            
+            /*
             [resourceImageView setImageWithURL:[NSURL URLWithString:[resource.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:nil
                                 success:^(UIImage *imageDownloaded) {
                                     //NSLog(@"image successfully downloaded.%@",resource.imageURL);
@@ -837,9 +848,9 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                                     
                                 }
                                 failure:^(NSError *error) {
-                                    NSLog(@"Failed to load resource image.");
+                                    NSLog(@"PanelAddViewController.Failed to load resource image.");
                                 }];
-            
+            */
         }//end if(!fileExists)
         
         else if(fileExists)

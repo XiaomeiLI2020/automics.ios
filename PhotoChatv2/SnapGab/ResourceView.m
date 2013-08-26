@@ -9,6 +9,7 @@
 #import "ResourceView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "GUIConstant.h"
+//#import "UIImageView+WebCache.h"
 #import "UIImageView+WebCache.h"
 
 
@@ -142,7 +143,7 @@ CGRect originalBounds;
             NSString* imageName = [NSString stringWithFormat:@"resourcePhoto%i.png", resource.resourceId];
             NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
             BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
-            //NSLog(@"ResourceView. File %@ exists=%d", currentFile, fileExists);
+            //NSLog(@"ResourceView. File %@ exists=%d", imageName, fileExists);
             //NSLog(@"resource.imageURL=%@", resource.imageURL);
         
             
@@ -150,10 +151,100 @@ CGRect originalBounds;
             {
                 
                 [_imageView setImageWithURL:[NSURL URLWithString:[resource.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                               placeholderImage:nil
+                                      completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+                 {
+                     
+                     NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                     [data1 writeToFile:currentFile atomically:YES];
+                     
+                     imageView_.userInteractionEnabled = NO;
+                     //NSLog(@"original _imageView.image.size=%@", NSStringFromCGSize(imageDownloaded.size));
+                     //originalImageSize = imageDownloaded.size;
+                     //originalBounds = CGRectMake(0.0, 0.0,imageDownloaded.size.width,imageDownloaded.size.height);
+                     originalBounds = CGRectMake(0.0, 0.0,imageDownloaded.size.width/2.0,imageDownloaded.size.height/2.0);
+                     originalWidth = CGRectGetWidth(originalBounds);
+                     originalHeight = CGRectGetHeight(originalBounds);
+                     originalDiagonal = sqrtf(CGRectGetHeight(originalBounds)*CGRectGetHeight(originalBounds) +
+                                              CGRectGetWidth(originalBounds)*CGRectGetWidth(originalBounds) );
+                     
+                     //NSLog(@"imageView_.originalBounds=%@", NSStringFromCGRect(originalBounds));
+                     //NSLog(@"imageView_.frame=%@", NSStringFromCGRect(imageView_.frame));
+                     //NSLog(@"originalHeight=%f, originalWidth=%f", originalHeight, originalWidth);
+                     //NSLog(@"self_.originalBounds=%@", NSStringFromCGRect(self_.bounds));
+                     //NSLog(@"self_.frame=%@", NSStringFromCGRect(self_.frame));
+                     
+                     if(originalHeight==originalWidth)
+                     {
+                         self_.MAX_SCALE = self_.MAX_SIZE/originalHeight;
+                         self_.MIN_SCALE = self_.MIN_SIZE/originalHeight;
+                     }
+                     else if(originalHeight<originalWidth)
+                     {
+                         self_.MAX_SCALE = self_.MAX_SIZE/originalWidth;
+                         self_.MIN_SCALE = self_.MIN_SIZE/originalHeight;
+                     }
+                     else if(originalHeight>originalWidth)
+                     {
+                         self_.MAX_SCALE = self_.MAX_SIZE/originalHeight;
+                         self_.MIN_SCALE = self_.MIN_SIZE/originalWidth;
+                     }
+                     
+                     
+                     //[imageView_ setFrame:CGRectMake(0.0,0.0,imageDownloaded.size.width*self_.scale, imageDownloaded.size.height*self_.scale)];
+                     [imageView_ setFrame:CGRectMake(0.0,0.0,originalWidth*self_.scale, originalHeight*self_.scale)];
+                     [self_ addSubview:imageView_];
+                     
+                     
+                     
+                     if([self_.resource.type isEqual:@"d"])
+                     {
+                         
+                         CGRect selfFrame = self_.frame;
+                         selfFrame.size = imageView_.frame.size;
+                         self_.frame = selfFrame;
+                         
+                         //NSLog(@"before rotation,imageView_.imageView_.Bounds=%@", NSStringFromCGRect(imageView_.bounds));
+                         //NSLog(@"before rotation,imageView_.frame=%@", NSStringFromCGRect(imageView_.frame));
+                         //NSLog(@"before rotation,self_.originalBounds=%@", NSStringFromCGRect(self_.bounds));
+                         //NSLog(@"before rotation,self_.frame=%@", NSStringFromCGRect(self_.frame));
+                         
+                         self_.transform = CGAffineTransformMakeRotation(self_.angle);
+                         
+                         //NSLog(@"after rotation,imageView_.bounds=%@", NSStringFromCGRect(imageView_.bounds));
+                         //NSLog(@"after rotation,imageView_.frame=%@", NSStringFromCGRect(imageView_.frame));
+                         //NSLog(@"after rotation,self_.originalBounds=%@", NSStringFromCGRect(self_.bounds));
+                         //NSLog(@"after rotation,self_.frame=%@", NSStringFromCGRect(self_.frame));
+                         
+                     }
+                     
+                     else if([self_.type isEqual:@"f"])
+                     {
+                         
+                         [imageView_ setFrame:CGRectMake(0.0,0.0,self_.frame.size.width, self_.frame.size.height)];
+                         //_imageView.frame = self.frame;
+                     }
+                     
+                     
+                     self_.alertShown = NO;
+                     self_.longPressed = NO;
+                     self_.actionPerformed = NO;
+                     
+                     
+                     resourceTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self_ action:@selector(handleTapGesture:)];
+                     //Default value for cancelsTouchesInView is YES, which will prevent buttons to be clicked
+                     resourceTapRecognizer.cancelsTouchesInView = NO;
+                     [self_ addGestureRecognizer:resourceTapRecognizer];
+                 
+                 }
+                 ];
+                
+                /*
+                [_imageView setImageWithURL:[NSURL URLWithString:[resource.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
                            placeholderImage:nil
-                                    success:^(UIImage *imageDownloaded) {
-                                        //NSLog(@"%@ successfully downloaded.", imageName);
-                                        
+                                    success:^(UIImage *imageDownloaded)
+                {
+                                        //NSLog(@"ResourceView. %@ image successfully downloaded.", imageName);
 
                                         NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
                                         [data1 writeToFile:currentFile atomically:YES];
@@ -240,7 +331,8 @@ CGRect originalBounds;
                                     failure:^(NSError *error) {
                                         NSLog(@"ResourceView.Failed to load resource image.");
                                     }];
-
+                 */
+                 
             }//end if(!fileExists)
 
             else if(fileExists)
@@ -428,14 +520,22 @@ CGRect originalBounds;
     
     if ([gestureRecognizer state] == UIGestureRecognizerStateChanged)
     {
-        
+        //CGRect rec = gestureRecognizer.view.frame;
+      
         //NSLog(@"MAX_SCALE=%f, MIN_SCALE=%f, _previousScale=%f, currentScale=%g, scaleStep=%f", MAX_SCALE, MIN_SCALE, _previousScale, currentScale, scaleStep);
-        
+
+        //NSLog(@"tailored scaleStep=%f", scaleStep);
         self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width*scaleStep, self.bounds.size.height*scaleStep);
-        //self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width*scaleStep, self.bounds.size.height*scaleStep);
+        //self.bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, self.frame.size.width, self.frame.size.height);
         _imageView.frame = CGRectMake(0.0, 0.0, self.bounds.size.width, self.bounds.size.height);
+        //_imageView.frame = CGRectMake(0.0, 0.0, self.frame.size.width, self.frame.size.height);
         
-        
+        /*
+        NSLog(@"new self.bounds%@", NSStringFromCGRect(self.bounds));
+        NSLog(@"new self.frame%@", NSStringFromCGRect(self.frame));
+        NSLog(@"new self.imageview.frame=%@", NSStringFromCGRect(_imageView.frame));
+        NSLog(@"new self.imageview.bounds%@", NSStringFromCGRect(_imageView.bounds));
+        */
         //self.imageView.frame = [self calculateImageViewFrame];
         self.deleteView.frame = [self calculateDeleteViewFrame];
         //self.scaleView.frame = [self calculateScaleViewFrame];
@@ -451,12 +551,14 @@ CGRect originalBounds;
         [gestureRecognizer state] == UIGestureRecognizerStateFailed) {
         // Gesture can fail (or cancelled?) when the notification and the object is dragged simultaneously
         //_scale = currentScale;
+        
         /*
          NSLog(@"new self.frame=%@", NSStringFromCGRect(self.frame));
          NSLog(@"new self.bounds%@", NSStringFromCGRect(self.bounds));
          NSLog(@"new self.imageview.frame=%@", NSStringFromCGRect(self.imageView.frame));
          NSLog(@"new self.imageview.bounds%@", NSStringFromCGRect(self.imageView.bounds));
-         */
+        */
+         
         self.scale = _imageView.bounds.size.width/originalWidth;
         //CGFloat currentScale = [[[gestureRecognizer view].layer valueForKeyPath:@"transform.scale"] floatValue];
         CGFloat newDiagonal = sqrtf(CGRectGetHeight(_imageView.bounds)*CGRectGetHeight(_imageView.bounds) +
@@ -465,7 +567,7 @@ CGRect originalBounds;
         //self.scale = _imageView.bounds.size.width/originalWidth;
         self.scale = newDiagonal/originalDiagonal;
         
-        NSLog(@"MAX_SCALE=%f, MIN_SCALE=%f, _previousScale=%f, currentScale=%g, scaleStep=%f, self.scale=%f", MAX_SCALE, MIN_SCALE, _previousScale, currentScale, scaleStep, self.scale);
+        //NSLog(@"MAX_SCALE=%f, MIN_SCALE=%f, _previousScale=%f, currentScale=%g, scaleStep=%f, self.scale=%f", MAX_SCALE, MIN_SCALE, _previousScale, currentScale, scaleStep, self.scale);
 
     }
     
@@ -684,21 +786,12 @@ CGRect originalBounds;
         CGPoint translation = [gestureRecognizer translationInView:self.superview];
         //NSLog(@"self.frame.origin=(%f,%f)", self.frame.origin.x, self.frame.origin.y);
         //NSLog(@"[mainView center]=(%f,%f)", [mainView center].x, [mainView center].y);
-        //if(self.frame.origin.y+translation.y>=panelScrollYOrigin) //&& self.frame.origin.x+translation.x>=panelScrollXOrigin)
-        //NSLog(@"self.frame.origin.y=%f, translation.y=%f", self.frame.origin.y, translation.y);
-        /*
-        if((self.frame.origin.y+translation.y>=panelScrollYOrigin)
-           && (self.frame.origin.y+self.frame.size.height+ translation.y<=(panelScrollYOrigin+panelHeight))
-           && self.frame.origin.x+translation.x>=panelScrollXOrigin
-           && (self.frame.origin.x+self.frame.size.width+ translation.x<=(panelScrollXOrigin+panelWidth))
-           )
-        */ 
-        {
-            [mainView setCenter:CGPointMake([mainView center].x + translation.x, [mainView center].y + translation.y)];
-            //NSLog(@"self.frame.origin changed=(%f,%f)", self.frame.origin.x, self.frame.origin.y);
-            //NSLog(@"[mainView center] changed=(%f,%f)", [mainView center].x, [mainView center].y);
-            [gestureRecognizer setTranslation:CGPointZero inView:[mainView superview]];
-        }
+
+        
+        [mainView setCenter:CGPointMake([mainView center].x + translation.x, [mainView center].y + translation.y)];
+        //NSLog(@"self.frame.origin changed=(%f,%f)", self.frame.origin.x, self.frame.origin.y);
+        //NSLog(@"[mainView center] changed=(%f,%f)", [mainView center].x, [mainView center].y);
+        [gestureRecognizer setTranslation:CGPointZero inView:[mainView superview]];
     }//end if([gestureRecognizer state] == UIGestureRecognizerStateBegan || [gestureRecognizer state] == UIGestureRecognizerStateChanged)
     
 }

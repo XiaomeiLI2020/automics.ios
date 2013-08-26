@@ -270,7 +270,7 @@ NSString* leaveGroupHashId;
         NSString *userURL = [APIWrapper getURLForPostUserWithId:userId];
         //NSLog(@"submitRequestPostSetCurrentGroup.userURL=%@", userURL);
         NSString* authenticatedUserURL = [self authenticatedGetURL:userURL];
-        NSLog(@"submitRequestPostSetCurrentGroup.authenticatedUserURL=%@", authenticatedUserURL);
+        NSLog(@"userLoader.submitRequestPostSetCurrentGroup.authenticatedUserURL=%@", authenticatedUserURL);
         NSURL* url = [NSURL URLWithString:authenticatedUserURL];
         
         NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -295,7 +295,7 @@ NSString* leaveGroupHashId;
         NSString *userURL = [APIWrapper getURLForPostUserWithId:userId];
         //NSLog(@"submitRequestPostChangeGroup.userURL=%@", userURL);
         NSString* authenticatedUserURL = [self authenticatedGetURL:userURL];
-        NSLog(@"submitRequestPostChangeGroup.authenticatedUserURL=%@", authenticatedUserURL);
+        NSLog(@"UserLoader.submitRequestPostChangeGroup.authenticatedUserURL=%@", authenticatedUserURL);
         NSURL* url = [NSURL URLWithString:authenticatedUserURL];
         
         NSMutableURLRequest* urlRequest = [[NSMutableURLRequest alloc] initWithURL:url];

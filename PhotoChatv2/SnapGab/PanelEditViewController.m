@@ -126,10 +126,33 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth);
     
+    
+    [self.imageView setImageWithURL:self.url
+               placeholderImage:nil
+                      completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+     {
+         for (UIView *subview in self.view.subviews)
+         {
+             if([subview isMemberOfClass:[SpeechBubbleView class]])
+             {
+                 
+                 SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
+                 sbv.alpha = 1;
+             }
+             
+             if([subview isMemberOfClass:[ResourceView class]])
+             {
+                 ResourceView* sbv =(ResourceView*)subview;
+                 sbv.alpha = 1;
+             }
+         }//end for
+    
+     }];
+    /*
     [self.imageView setImageWithURL:self.url
                    placeholderImage:nil
                             success:^(UIImage *image) {
-                                
+     
                                 for (UIView *subview in self.view.subviews)
                                 {
                                     if([subview isMemberOfClass:[SpeechBubbleView class]])
@@ -158,7 +181,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                                 [alert show];
                             }];
     
-
+     */
     
     [thumbnailScrollView layoutAssets];
 
@@ -666,6 +689,18 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
             UIImageView *resourceImageView = [[UIImageView alloc] init];
             //[imageView setImageWithURL:[NSURL URLWithString:resource.thumbURL] placeholderImage:nil];
             
+            [resourceImageView setImageWithURL:[NSURL URLWithString:[resource.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                       placeholderImage:nil
+                              completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+             {
+                 
+                 [styleButton setImage:imageDownloaded forState:UIControlStateNormal];
+                 
+                 NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                 [data1 writeToFile:currentFile atomically:YES];
+             }];
+            
+            /*
             [resourceImageView setImageWithURL:[NSURL URLWithString:[resource.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:nil
                                        success:^(UIImage *imageDownloaded) {
                                            //NSLog(@"image successfully downloaded.");
@@ -679,6 +714,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                                        failure:^(NSError *error) {
                                            NSLog(@"Failed to load resource image.");
                                        }];
+             */
             
         }//end if(!fileExists)
         

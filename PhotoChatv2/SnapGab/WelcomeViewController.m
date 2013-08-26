@@ -11,7 +11,10 @@
 #import "DataLoader.h"
 #import "User.h"
 #import <QuartzCore/QuartzCore.h>
-
+#import "SDWebImageManager.h"
+#import "SDImageCache.h"
+#import "UIImageView+WebCache.h"
+#import "SDWebImageDownloader.h"
 
 @interface WelcomeViewController ()
 @end
@@ -30,6 +33,7 @@ GroupLoader* groupLoader;
 @synthesize organisationCounter;
 
 BOOL alertShown;
+ResourceLoader* resourceLoader;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,11 +51,12 @@ BOOL alertShown;
 	// Do any additional setup after loading the view.
     
     //NSLog(@"WelcomeViewController.viewDidLoad");
+    organisationCounter = 0;
+    organisations = [[NSArray alloc] init];
     organisationLoader = [[OrganisationLoader alloc] init];
     organisationLoader.delegate = self;
     [organisationLoader submitRequestGetOrganisations];
-    organisationCounter = 0;
-    organisations = [[NSArray alloc] init];
+
 
     UIImageView *backgroundImage;
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -160,7 +165,7 @@ BOOL alertShown;
     [super viewDidAppear:animated];
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSString* groupHashId= [prefs objectForKey:@"current_group_hash"];
-    //int currentThemeId= [[prefs objectForKey:@"current_theme_id"] integerValue];
+    int currentThemeId= [[prefs objectForKey:@"current_theme_id"] integerValue];
     //NSLog(@"WelcomeViewController.viewDidAppear.groupHashId=%@", groupHashId);
     
     //welcomeLabel
@@ -175,7 +180,8 @@ BOOL alertShown;
         comicCollectionButton.enabled = NO;
         comicCollectionButton.alpha = 0.4;
     }
-    else{
+    else if(groupHashId!=nil)
+    {
         imageButton.enabled = YES;
         imageButton.alpha = 1;
         
@@ -184,10 +190,13 @@ BOOL alertShown;
         
         //groupLoader = [[GroupLoader alloc] init];
         //[groupLoader submitRequestGetGroupForHashId:groupHashId];
+        
+        //NSLog(@"PanelAddViewController. current_theme_id=%i", currentThemeId);
+        resourceLoader = [[ResourceLoader alloc] init];
+        resourceLoader.delegate =self;
+        [resourceLoader submitRequestGetResourcesForTheme:currentThemeId];
     }
 
-
-    
 }
 
 
@@ -284,8 +293,10 @@ BOOL alertShown;
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:nil forKey:@"session"];
         [userDefaults setObject:nil forKey:@"current_group_hash"];
+        [userDefaults setObject:nil forKey:@"current_group_name"];
         [userDefaults setObject:nil forKey:@"user_id"];
-        [userDefaults setObject:nil forKey:@"current_theme_id"];  
+        [userDefaults setObject:nil forKey:@"current_theme_id"];
+        [userDefaults setObject:nil forKey:@"current_organisation_id"];  
         [userDefaults synchronize];
         
         NSError *err;
@@ -397,6 +408,34 @@ BOOL alertShown;
 }
 
 
+-(void)ResourceLoader:(ResourceLoader *)loader didLoadResources:(NSArray*)resources{
+    //NSLog(@"resources loaded.");
+    
+    if(resources!=nil)
+    {
+        //NSLog(@"PanelAddViewController.didLoadResources.[resources count]=%i", [resources count]);
+        
 
+        //NSLog(@"PanelAddViewController.didLoadResources.[ decorator resources count]=%i", [resources count]);
+        if([resources count]>0)
+        {
+            for(Resource* resource in resources)
+            {
+                if(resource!=nil)
+                {
+                    if (resource.resourceId>0 && resource.imageURL!=nil)
+                    {
+
+                        
+                        
+                    }//end if
+                }//end if resource!=nil
+                
+            }//end for
+            
+        }//end if
+    }//end if resources!=nil
+    
+}
 
 @end
