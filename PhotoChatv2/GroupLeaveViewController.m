@@ -78,7 +78,7 @@ UILabel* clickLabel;
     NSLog(@"GroupJoinViewController.groupHashId=%@", groupHashId);
     
     activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-	activityIndicator.frame = CGRectMake(0, 0, 320, 480);
+	activityIndicator.frame = CGRectMake(0, 40, 320, 320);
 	activityIndicator.center = self.view.center;
 	[self.view addSubview: activityIndicator];
     //[activityIndicator startAnimating];
@@ -545,28 +545,11 @@ UILabel* clickLabel;
                  NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
                  [data1 writeToFile:currentFile atomically:YES];
              }];
-            
-            /*
-            [imageView setImageWithURL:[NSURL URLWithString:photo.imageURL]
-                      placeholderImage:nil
-                               success:^(UIImage *imageDownloaded) {
-                                   //UIImageWriteToSavedPhotosAlbum(imageDownloaded, nil, nil, nil);
-                                   
-                                   //NSLog(@"alignPageinPanelScrollView.saving image=%@", imageName);
-                                   NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
-                                   [data1 writeToFile:currentFile atomically:YES];
-                                   
-                               }
-                               failure:^(NSError *error) {
-                                   NSLog(@"ComicCollectionViewController.Failed to load image");
-                               }];
-             */
+
         }//end if(!fileExists)
         else if(fileExists)
         {
             //NSLog(@"GroupJoinViewController. Group photo Loading image from file=%@", imageName);
-            //NSError* err;
-            //[fileMgr removeItemAtPath:currentFile error:&err];
             //[imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
             [groupImages setObject:currentFile forKey:indexPath];
         }//end if(fileExists)

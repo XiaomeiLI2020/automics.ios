@@ -412,7 +412,6 @@ bool alertShown;
     
     
     //Start an activity indicator here
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         //Call your function or whatever work that needs to be done

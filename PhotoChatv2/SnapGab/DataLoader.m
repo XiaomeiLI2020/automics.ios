@@ -775,6 +775,122 @@ sqlite3* database;
     return rowCount;
 }
 
+
+-(int)submitSQLRequestCheckPhotoExistsLocal:(int)photoId
+{
+    __block int rowCount=0;
+    
+    //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
+    {
+        //NSString *querySQL = [NSString stringWithFormat: @"SELECT address, phone FROM contacts WHERE name=\"%@\"", name.text];
+        NSString *retrieveSQL = [NSString stringWithFormat: @"select COUNT(*) from photos where photoId=%i", photoId];
+        //NSLog(@"retrieveSQL=%@", retrieveSQL);
+        const char* sqlStatement = [retrieveSQL UTF8String];
+        sqlite3_stmt *statement;
+        
+        if( sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK )
+        {
+            //Loop through all the returned rows (should be just one)
+            //if(sqlite3_step(statement)!=SQLITE_ROW)
+            //    NSLog(@"Rowcount is %d",rowCount);
+            
+            while(sqlite3_step(statement) == SQLITE_ROW )
+            {
+                rowCount = sqlite3_column_int(statement, 0);
+                //NSLog(@"Rowcount is %d",rowCount);
+            }
+        }
+        else
+        {
+            NSLog( @"submitSQLRequestCheckResourceExistsLocal.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
+        }
+        
+        // Finalize and close database.
+        sqlite3_finalize(statement);
+        //sqlite3_close(database);
+    }//end if(sqlite3_open([databasePath UTF8String], &database) == SQLITE_OK)
+    
+    return rowCount;
+}
+
+
+-(int)submitSQLRequestCheckPhotoExists:(int)photoId
+{
+    __block int rowCount=0;
+    //NSLog(@"submitSQLRequestCheckResourceExists. resourceId=%i, databaseUpdating=%d", resourceId, databaseUpdating);
+    if(databaseUpdating)
+    {
+        dispatch_async([self dispatchQueue], ^(void) {
+            
+            //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
+            {
+                //NSString *querySQL = [NSString stringWithFormat: @"SELECT address, phone FROM contacts WHERE name=\"%@\"", name.text];
+                NSString *retrieveSQL = [NSString stringWithFormat: @"select COUNT(*) from photos where photoId=%i", photoId];
+                //NSLog(@"retrieveSQL=%@", retrieveSQL);
+                const char* sqlStatement = [retrieveSQL UTF8String];
+                sqlite3_stmt *statement;
+                
+                if( sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK )
+                {
+                    //Loop through all the returned rows (should be just one)
+                    //if(sqlite3_step(statement)!=SQLITE_ROW)
+                    //    NSLog(@"Rowcount is %d",rowCount);
+                    
+                    while(sqlite3_step(statement) == SQLITE_ROW )
+                    {
+                        rowCount = sqlite3_column_int(statement, 0);
+                        //NSLog(@"Rowcount is %d",rowCount);
+                    }
+                }
+                else
+                {
+                    NSLog( @"submitSQLRequestCheckPhotoExists.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
+                }
+                
+                // Finalize and close database.
+                sqlite3_finalize(statement);
+                //sqlite3_close(database);
+            }//end if(sqlite3_open([databasePath UTF8String], &database) == SQLITE_OK)
+            
+        });
+        
+    }
+    else{
+        //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
+        {
+            //NSString *querySQL = [NSString stringWithFormat: @"SELECT address, phone FROM contacts WHERE name=\"%@\"", name.text];
+            NSString *retrieveSQL = [NSString stringWithFormat: @"select COUNT(*) from photos where photoId=%i", photoId];
+            //NSLog(@"retrieveSQL=%@", retrieveSQL);
+            const char* sqlStatement = [retrieveSQL UTF8String];
+            sqlite3_stmt *statement;
+            
+            if( sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK )
+            {
+                //Loop through all the returned rows (should be just one)
+                //if(sqlite3_step(statement)!=SQLITE_ROW)
+                //    NSLog(@"Rowcount is %d",rowCount);
+                
+                while(sqlite3_step(statement) == SQLITE_ROW )
+                {
+                    rowCount = sqlite3_column_int(statement, 0);
+                    //NSLog(@"Rowcount is %d",rowCount);
+                }
+            }
+            else
+            {
+                NSLog( @"submitSQLRequestCheckPhotoExists.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
+            }
+            
+            // Finalize and close database.
+            sqlite3_finalize(statement);
+            //sqlite3_close(database);
+        }//end if(sqlite3_open([databasePath UTF8String], &database) == SQLITE_OK)
+    }
+    
+    return rowCount;
+}
+
+
 -(NSArray*)convertUsersSQLIntoUsers:(int)userId{
     
     
@@ -1009,6 +1125,93 @@ sqlite3* database;
     return comics;
     
 }
+
+-(NSArray*)convertPhotoSQLIntoPhoto:(int)photoId{
+    
+    NSMutableArray* photos = [[NSMutableArray alloc] init];
+    //NSLog(@"DataLoader.convertPhotosSQLIntoPhotos. databaseUpdating=%d", databaseUpdating);
+    if(databaseUpdating){
+        dispatch_sync([self dispatchQueue], ^(void) {
+            //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
+            {
+                
+                NSString *selectSQL = [NSString stringWithFormat: @"SELECT Photourl, Thumburl FROM photos where photoId=%i", photoId];
+                const char *sqlStatement = [selectSQL UTF8String];
+                sqlite3_stmt *statement;
+                
+                if(sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK )
+                {
+                    //Loop through all the returned rows (should be just one)
+                    while( sqlite3_step(statement) == SQLITE_ROW )
+                    {
+                        
+                        //int photoId= sqlite3_column_int(statement, 0);
+                        NSString *imageURL = [[NSString alloc] initWithUTF8String:(const char*) sqlite3_column_text(statement, 0)];
+                        NSString *thumbURL = [[NSString alloc] initWithUTF8String:(const char*) sqlite3_column_text(statement, 1)];
+                        
+                        Photo* photo = [[Photo alloc] init];
+                        photo.photoId = photoId;
+                        photo.imageURL = imageURL;
+                        photo.thumbURL = thumbURL;
+                        
+                        [photos addObject:photo];
+                    }//end while
+                }//end if
+                else
+                {
+                    NSLog( @"convertPhotoSQLIntoPhoto.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
+                }
+                
+                // Finalize and close database.
+                sqlite3_finalize(statement);
+                //sqlite3_close(database);
+            }//end if(sqlite3_open([databasePath UTF8String], &database) == SQLITE_OK)
+            
+        });
+        
+    }//end if
+    else{
+        //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
+        {
+            
+            NSString *selectSQL = [NSString stringWithFormat: @"SELECT photourl, thumburl FROM photos where photoid=%i", photoId];
+            const char *sqlStatement = [selectSQL UTF8String];
+            sqlite3_stmt *statement;
+            
+            if(sqlite3_prepare_v2(database, sqlStatement, -1, &statement, NULL) == SQLITE_OK )
+            {
+                //Loop through all the returned rows (should be just one)
+                while( sqlite3_step(statement) == SQLITE_ROW )
+                {
+                    
+                    //int photoId= sqlite3_column_int(statement, 0);
+                    NSString *imageURL = [[NSString alloc] initWithUTF8String:(const char*) sqlite3_column_text(statement, 0)];
+                    NSString *thumbURL = [[NSString alloc] initWithUTF8String:(const char*) sqlite3_column_text(statement, 1)];
+                    
+                    Photo* photo = [[Photo alloc] init];
+                    photo.photoId = photoId;
+                    photo.imageURL = imageURL;
+                    photo.thumbURL = thumbURL;
+                    
+                    [photos addObject:photo];
+                }//end while
+            }//end if
+            else
+            {
+                NSLog( @"convertPhotoSQLIntoPhotos.Failed from sqlite3_prepare_v2. Error is:  %s", sqlite3_errmsg(database) );
+            }
+            
+            // Finalize and close database.
+            sqlite3_finalize(statement);
+            //sqlite3_close(database);
+        }//end if(sqlite3_open([databasePath UTF8String], &database) == SQLITE_OK)
+        
+    }//end else
+
+    return photos;
+    
+}
+
 
 -(int)submitSQLRequestCheckComicExists:(int)comicId
 {
@@ -2559,6 +2762,98 @@ sqlite3* database;
     });
 }
 
+
+-(void)submitSQLRequestSaveAllPhotos:(NSArray*)photos andGroupHashId:(NSString*)groupHashId{
+    if([photos count]>0)
+    {
+        dispatch_async([self dispatchQueue], ^(void) {
+            databaseUpdating = YES;
+            sqlite3_stmt    *statement;
+            //const char *dbpath = [databasePathStatic UTF8String];
+            //NSLog(@"DataLoader.submitSQLRequestSavePhotos.groupHashId=%@", groupHashId);
+            for(int i=0; i<[photos count]; i++)
+            {
+                Photo* photo = [photos objectAtIndex:i];
+                if(photo!=nil)
+                {
+                    
+                    int photoExists = [self submitSQLRequestCheckPhotoExistsLocal:photo.photoId];
+                    if(photoExists==0)
+                    {
+                        
+                        //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
+                        {
+                            
+                            NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO PHOTOS (photoId, GROUPHASHID, PHOTOURL, THUMBURL, DESCRIPTION, WIDTH, HEIGHT) VALUES (\"%i\",\"%@\",\"%@\",\"%@\",\"%@\", \"%f\", \"%f\")", photo.photoId, groupHashId, photo.imageURL, photo.thumbURL, @"description", 320.0, 320.0];
+                            //NSLog(@"submitSQLRequestSavePhotos.INSERTsql=%@", insertSQL);
+                            const char *insert_stmt = [insertSQL UTF8String];
+                            
+                            /*
+                             sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
+                             if (sqlite3_step(statement) == SQLITE_DONE)
+                             {
+                             //NSLog(@"Photo added");
+                             
+                             }
+                             */
+                            
+                            if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
+                            {
+                                while (sqlite3_step(statement) == SQLITE_DONE)
+                                {
+                                    sqlite3_column_text(statement, 0);
+                                    
+                                } //else
+                            }
+                            
+                            else {
+                                NSLog(@"submitSQLRequestSaveAllPhotos. Failed to add photo.Error is:  %s", sqlite3_errmsg(database));
+                            }
+                            sqlite3_finalize(statement);
+                            //sqlite3_close(database);
+                        }
+                        
+                    }//end if(photoExists==0)
+                    
+                }//end if(photo!=nil)
+            }//end for
+            
+            //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
+            {
+                NSString *insertSQL = [NSString stringWithFormat: @"update GROUPS set photosdownLoaded=%i where grouphashId=\"%@\"", 1, groupHashId];
+                //NSLog(@"insertSQL=%@", insertSQL);
+                const char *insert_stmt = [insertSQL UTF8String];
+                /*
+                 sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
+                 if (sqlite3_step(statement) == SQLITE_DONE)
+                 {
+                 //NSLog(@"Panel updated");
+                 
+                 }
+                 */
+                if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
+                {
+                    while (sqlite3_step(statement) == SQLITE_DONE)
+                    {
+                        sqlite3_column_text(statement, 0);
+                        
+                    } //else
+                }
+                
+                else {
+                    NSLog(@"submitSQLRequestSaveAllPhotos. Failed to update group.photosdownLoaded. Error is:  %s", sqlite3_errmsg(database));
+                }
+                sqlite3_finalize(statement);
+                //sqlite3_close(database);
+            }
+            
+            databaseUpdating = NO;
+        });
+        
+    }
+    
+}
+
 -(void)submitSQLRequestSavePhotos:(NSArray*)photos andGroupHashId:(NSString*)groupHashId{
     if([photos count]>0)
     {
@@ -2573,69 +2868,48 @@ sqlite3* database;
             if(photo!=nil)
             {
 
-                //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
+                int photoExists = [self submitSQLRequestCheckPhotoExistsLocal:photo.photoId];
+                if(photoExists==0)
                 {
                     
-                    NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO PHOTOS (photoId, GROUPHASHID, PHOTOURL, THUMBURL, DESCRIPTION, WIDTH, HEIGHT) VALUES (\"%i\",\"%@\",\"%@\",\"%@\",\"%@\", \"%f\", \"%f\")", photo.photoId, groupHashId, photo.imageURL, photo.thumbURL, @"description", 320.0, 320.0];
-                    //NSLog(@"submitSQLRequestSavePhotos.INSERTsql=%@", insertSQL);
-                    const char *insert_stmt = [insertSQL UTF8String];
-                    
-                    /*
-                    sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
-                    if (sqlite3_step(statement) == SQLITE_DONE)
+                    //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
                     {
-                        //NSLog(@"Photo added");
                         
-                    }
-                    */
-                    
-                    if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
-                    {
-                        while (sqlite3_step(statement) == SQLITE_DONE)
+                        NSString *insertSQL = [NSString stringWithFormat: @"INSERT INTO PHOTOS (photoId, GROUPHASHID, PHOTOURL, THUMBURL, DESCRIPTION, WIDTH, HEIGHT) VALUES (\"%i\",\"%@\",\"%@\",\"%@\",\"%@\", \"%f\", \"%f\")", photo.photoId, groupHashId, photo.imageURL, photo.thumbURL, @"description", 320.0, 320.0];
+                        //NSLog(@"submitSQLRequestSavePhotos.INSERTsql=%@", insertSQL);
+                        const char *insert_stmt = [insertSQL UTF8String];
+                        
+                        /*
+                         sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
+                         if (sqlite3_step(statement) == SQLITE_DONE)
+                         {
+                         //NSLog(@"Photo added");
+                         
+                         }
+                         */
+                        
+                        if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
                         {
-                            sqlite3_column_text(statement, 0);
-                            
-                        } //else
+                            while (sqlite3_step(statement) == SQLITE_DONE)
+                            {
+                                sqlite3_column_text(statement, 0);
+                                
+                            } //else
+                        }
+                        
+                        else {
+                            NSLog(@"submitSQLRequestSavePhotos. Failed to add photo.Error is:  %s", sqlite3_errmsg(database));
+                        }
+                        sqlite3_finalize(statement);
+                        //sqlite3_close(database);
                     }
                     
-                    else {
-                        NSLog(@"submitSQLRequestSavePhotos. Failed to add photo.Error is:  %s", sqlite3_errmsg(database));
-                    }
-                    sqlite3_finalize(statement);
-                    //sqlite3_close(database);
-                }
+                }//end if(photoExists==0)
+
             }//end if(photo!=nil)
         }//end for
             
-            //if(sqlite3_open(dbpath, &database) == SQLITE_OK)
-            {
-                NSString *insertSQL = [NSString stringWithFormat: @"update GROUPS set photosdownLoaded=%i where grouphashId=\"%@\"", 1, groupHashId];
-                //NSLog(@"insertSQL=%@", insertSQL);
-                const char *insert_stmt = [insertSQL UTF8String];
-                /*
-                sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL);
-                if (sqlite3_step(statement) == SQLITE_DONE)
-                {
-                    //NSLog(@"Panel updated");
-                    
-                }
-                 */
-                if(sqlite3_prepare_v2(database, insert_stmt, -1, &statement, NULL)==SQLITE_OK)
-                {
-                    while (sqlite3_step(statement) == SQLITE_DONE)
-                    {
-                        sqlite3_column_text(statement, 0);
                         
-                    } //else
-                }
-                
-                else {
-                    NSLog(@"submitSQLRequestSavePanelsForGroup. Failed to update group.photosdownLoaded. Error is:  %s", sqlite3_errmsg(database));
-                }
-                sqlite3_finalize(statement);
-                //sqlite3_close(database);
-            }
-            
             databaseUpdating = NO;
         });
 
@@ -3591,6 +3865,8 @@ sqlite3* database;
  
     return groups;
 }
+
+
 
 -(NSArray*)convertGroupsSQLIntoGroups{
     NSMutableArray* groups = [[NSMutableArray alloc] init];

@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *imageLabel;
 - (IBAction)imagesButtonPressed:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *postPanelButton;
 
 @property int currentPage;
 @property int subviewId;

@@ -41,14 +41,35 @@ bool photosDownloaded = NO;
 }
 
 -(void)submitRequestGetPhotoWithId:(int)photoId{
-    /*
-     panelRequestType = kGetPanel;
-     NSURLRequest* urlRequest = [self preparePanelRequestForGetPanelWithId:panelId];
-     [self submitPanelRequest:urlRequest];
-     */
     photoRequestType = kGetPhoto;
-    NSURLRequest* urlRequest = [self preparePhotoRequestForGetPhotoWithId:photoId];
-    [self submitPhotoRequest:urlRequest];
+    
+    int photoExists = [self submitSQLRequestCheckPhotoExists:photoId];
+    if(photoExists==0)
+    {
+        if([self isReachable])
+        {
+            NSURLRequest* urlRequest = [self preparePhotoRequestForGetPhotoWithId:photoId];
+            [self submitPhotoRequest:urlRequest];
+        }//end if([self isReachable])
+        
+    }//end if(photoExists==0)
+    else if(photoExists>0)
+    {
+        NSLog(@"PhotoLoader. submitRequestGetPhotoWithId.photoId#%i downloaded from database.", photoId);
+        NSArray* photosLocal = [self convertPhotoSQLIntoPhoto:photoId];
+        if(photosLocal!=nil && [photosLocal count]>0)
+        {
+            Photo* photo = [photosLocal objectAtIndex:0];
+            if(photo!=nil)
+            {
+                if ([self.delegate respondsToSelector:@selector(PhotoLoader:didLoadPhoto:)])
+                    [self.delegate PhotoLoader:self didLoadPhoto:photo];
+            }//end if(photo!=nil)
+        }//end if(photosLocal!=nil)
+        
+        
+    }////end if(photoExists>0)
+
 }
 
 -(void)submitRequestGetPhotosForGroup:(NSString*)groupHashId{
@@ -148,8 +169,21 @@ bool photosDownloaded = NO;
     NSDictionary* photodict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (photodict != nil){
         Photo *photo = [PhotoJSONHandler convertPhotoJSONIntoPhoto:photodict];
-        if ([self.delegate respondsToSelector:@selector(PhotoLoader:didLoadPhoto:)])
-            [self.delegate PhotoLoader:self didLoadPhoto:photo];
+        if(photo!=nil)
+        {
+            //NSLog(@"PhotoLoader.handleGetPhotoWithId. photoId=%i", photo.photoId);
+            
+            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+            currentGroupHashId = [prefs objectForKey:@"current_group_hash"];
+            
+            NSMutableArray* photos = [[NSMutableArray alloc] init];
+            [photos addObject:photo];
+            [self submitSQLRequestSavePhotos:photos andGroupHashId:currentGroupHashId];
+            
+            if ([self.delegate respondsToSelector:@selector(PhotoLoader:didLoadPhoto:)])
+                [self.delegate PhotoLoader:self didLoadPhoto:photo];
+        }
+
     }else{
         [self reportErrorToDelegate:error];
     }
@@ -162,7 +196,7 @@ bool photosDownloaded = NO;
     if (photosJSON != nil){
         NSArray *photos = [PhotoJSONHandler convertPhotosJSONArrayIntoPhotos:photosJSON];
         //NSLog(@"handleGetPhotosForGroup.currentGroupHashId=%@", currentGroupHashId);
-        [self submitSQLRequestSavePhotos:photos andGroupHashId:currentGroupHashId];
+        [self submitSQLRequestSaveAllPhotos:photos andGroupHashId:currentGroupHashId];
         if ([self.delegate respondsToSelector:@selector(PhotoLoader:didLoadPhotos:forObject:)])
                 [self.delegate PhotoLoader:self didLoadPhotos:photos forObject:obj];
         else{

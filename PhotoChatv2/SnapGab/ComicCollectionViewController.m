@@ -76,7 +76,7 @@ UILabel* clickLabel;
     self.collectionView.dataSource = self;
     
     activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-	activityIndicator.frame = CGRectMake(0, 0, 320, 480);
+	activityIndicator.frame = CGRectMake(0, 40, 320, 320);
 	activityIndicator.center = self.view.center;
 	[self.view addSubview: activityIndicator];
     [activityIndicator startAnimating];

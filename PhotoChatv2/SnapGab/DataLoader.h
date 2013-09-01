@@ -75,10 +75,14 @@ NSString *databasePathStatic;
 
 //Photos: Insert into database
 -(void)submitSQLRequestSavePhotos:(NSArray*)photos andGroupHashId:(NSString*)groupHashId;
+-(void)submitSQLRequestSaveAllPhotos:(NSArray*)photos andGroupHashId:(NSString*)groupHashId;
 
 //Photos: Retrieve from database
 -(int)submitSQLRequestCheckPhotosDownloadedForGroup:(NSString*)groupHashId;
 -(NSArray*)convertPhotosSQLIntoPhotos:(NSString*)groupHashId;
+-(NSArray*)convertPhotoSQLIntoPhoto:(int)photoId;
+-(int)submitSQLRequestCheckPhotoExists:(int)photoId;
+-(int)submitSQLRequestCheckPhotoExistsLocal:(int)photoId;
 
 //Groups: Insert into database
 -(void)submitSQLRequestSaveGroups:(NSArray*)groups;
@@ -100,6 +104,7 @@ NSString *databasePathStatic;
 -(int)submitSQLRequestCheckThemeExists:(int)themeId;
 -(int)submitSQLRequestCheckResourcesDownloadedForTheme:(int)themeId;
 -(int)submitSQLRequestCheckResourceExists:(int)resourceId;
+-(int)submitSQLRequestCheckResourceExistsLocal:(int)resourceId;
 -(NSArray*)convertResourcesSQLIntoResources:(int)themeId;
 -(NSArray*)convertResourceSQLIntoResource:(int)resourceId;
 

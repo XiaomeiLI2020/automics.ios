@@ -129,6 +129,7 @@ int peripheralPage;
     activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	activityIndicator.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
 	activityIndicator.center = self.view.center;
+    activityIndicator.hidesWhenStopped = YES;
 	[self.view addSubview: activityIndicator];
     //[activityIndicator startAnimating];
 

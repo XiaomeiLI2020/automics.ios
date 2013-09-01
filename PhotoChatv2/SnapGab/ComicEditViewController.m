@@ -399,6 +399,7 @@ int peripheralPage;
     activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	activityIndicator.frame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
 	activityIndicator.center = self.view.center;
+    activityIndicator.hidesWhenStopped = YES;
 	[self.view addSubview: activityIndicator];
     [activityIndicator startAnimating];
     
@@ -720,7 +721,8 @@ int peripheralPage;
             {
                 if([subView isMemberOfClass:[UIActivityIndicatorView class]] && subView.tag==index)
                 {
-                    indicatorExists = YES;
+                    //indicatorExists = YES;
+                    [subView removeFromSuperview];
                     break;
                 }
             }
@@ -737,10 +739,9 @@ int peripheralPage;
                 [aIndicator startAnimating];
                 //[self.view addSubview:aIndicator];
                 [thumbnailScrollView addSubview:aIndicator];
+                //NSLog(@"displayThumbnails.indicator#%i added.", index);
             }
-            else{
-                //[aIndicator stopAnimating];
-            }
+
             
             //NSLog(@"displayThumbails. self.panels objectAtIndex:currentPage.currentPage=%i, index=%i, [self.panels count]=%i", currentPage, index, [self.panelList count]);
             Panel* thumbnailPanel = [self.panelList objectAtIndex:index];
@@ -756,83 +757,172 @@ int peripheralPage;
                 UIImageView *imageView = [[UIImageView alloc] init];
                 imageView.frame = CGRectMake(index*thumbnailWidth, 0, thumbnailWidth, thumbnailHeight);
                 
-                //NSFileManager* fileMgr = [NSFileManager defaultManager];
-                //NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-                
-                //NSString* thumbName = [NSString stringWithFormat:@"thumbPhoto%i.png", thumbnailPanel.panelId];
-                //NSString* thumbFile = [documentsDirectory stringByAppendingPathComponent:thumbName];
-                NSString* panelName = [NSString stringWithFormat:@"panelPhoto%i.png", thumbnailPanel.photo.photoId];
-                NSString* panelFile = [documentsDirectory stringByAppendingPathComponent:panelName];
-                BOOL panelExists = [fileMgr fileExistsAtPath:panelFile];
-                //NSLog(@"PanelViewController.displayThumbnails. %@ exists=%d", panelFile, panelExists);
-                //BOOL thumbnailExists = [fileMgr fileExistsAtPath:thumbFile];
-                //NSLog(@"%@ exists=%d", thumbName, thumbnailExists);
-                
-                if(panelExists)
+                CGRect thumbFrame= CGRectMake(index*thumbnailWidth, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
+                ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:thumbnailPanel];
+                if(thumbnailView.snapshot==nil)
                 {
                     
-                    //BOOL photoDownloaded = [[downloadedPhotos objectAtIndex:index] boolValue];
-                    //BOOL photoDownloaded = [fileMgr fileExistsAtPath:thumbFile];
-                    //NSLog(@"displayThumbnails.downloadedPhotos objectAtIndex:index[%i]=%d", index, photoDownloaded);
-                    //if(!photoDownloaded)
+                    if(thumbnailView.image==nil)
                     {
-                        CGRect thumbFrame= CGRectMake(index*thumbnailWidth, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
-                        ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:thumbnailPanel];
-                        thumbnailPanel.thumbnail=thumbnailView.snapshot;
+                        //NSLog(@"PanelViewController. panel#%i panelPhoto%i both snapshot and image Nil.",index, thumbnailPanel.photo.photoId);
                         
-                        //NSLog(@"displayThumbnails.downloadedPhotos objectAtIndex:index[%i]=%d. Thumbnail generated", index, photoDownloaded);
-                        [imageView setImage:thumbnailPanel.thumbnail];
-                        
-                        /*
-                        NSNumber* yesObj = [NSNumber numberWithBool:YES];
-                        if(index<[downloadedPhotos count])
+                        //If thumbnail photo has been downloaded, display it in thumbnail scrollview, otherwise display panel photo
+                        if(thumbnailView.thumbnailPhoto!=nil)
                         {
-                            BOOL photoDownloaded = [[downloadedPhotos objectAtIndex:index] boolValue];
-                            if(!photoDownloaded)
-                                [downloadedPhotos replaceObjectAtIndex:index withObject:yesObj];
-                        }
-                         */
+                            [imageView setImageWithURL:[NSURL URLWithString:[thumbnailView.thumbnailPhoto.thumbURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:nil];
+                        }//end if(thumbnailView.thumbnailPhoto!=nil)
+                        else if(thumbnailView.thumbnailPhoto==nil)
+                        {
+                            //[imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:nil];
+                            
+                            NSString* imageName = [NSString stringWithFormat:@"panelPhoto%i.png", thumbnailPanel.photo.photoId];
+                            NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+                            BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
+                            
+                            //NSLog(@"displayPageinPanelScrollView. Panel[%i].[%@] File exists=%d", panel.panelId, imageName, fileExists);
+                            if(!fileExists)
+                            {
+                                
+                                [imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                                          placeholderImage:nil
+                                                 completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+                                 {
+                                     NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                     [data1 writeToFile:currentFile atomically:YES];
+                                     
+                                 }];
+                                
+                                
+                            }//end if(!fileExists)
+                            else if(fileExists)
+                            {
+                                UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
+                                NSData *imgData = UIImagePNGRepresentation(image);
+                                //NSLog(@"displayPageinPanelScrollView. Size of Image%i (bytes):%d",page, [imgData length]);
+                                
+                                //Check if corrupt image is not downloaded. E.g size less than 640x640 (=409600) bytes
+                                if([imgData length]>=409600)
+                                {
+                                    //NSLog(@"displayPageinPanelScrollView. Loading image from file=%@", imageName);
+                                    [imageView setImage:image];
+                                }//end if([imgData length]>409600)
+                                else if([imgData length]<409600)
+                                {
+                                    //If corrupt image downloaded earlier, download full image from the server and save it locally
+                                    [imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                                              placeholderImage:nil
+                                                     completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+                                     {
+                                         NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                         [data1 writeToFile:currentFile atomically:YES];
+                                         
+                                     }];
+                                    
+                                }//end else if([imgData length]<409600)
+                                
+                                //[imageView setImage:[UIImage imageNamed:currentFile]];
+                                //[imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+                            }//end if(fileExists)
+                        }//end if(thumbnailView.thumbnailPhoto==nil)
+                        
+                        
+                    }//end if(thumbnailView.image==nil)
+                    else if(thumbnailView.image!=nil)
+                    {
+                        //NSLog(@"PanelViewController. panel#%i panelPhoto%i snapshot nil, image not nil.",index, thumbnailPanel.photo.photoId);
+                        [imageView setImage:thumbnailView.image];
+                    }
+                    
+                }//end if(thumbnailView.snapshot==nil)
+                else if(thumbnailView.snapshot!=nil)
+                {
+                    if(thumbnailView.image==nil)
+                    {
+                        //NSLog(@"PanelViewController. panel#%i panelPhoto%i snapshot not nil, image nil.",index, thumbnailPanel.photo.photoId);
+                        //[imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:nil];
+                        
+                        NSString* imageName = [NSString stringWithFormat:@"panelPhoto%i.png", thumbnailPanel.photo.photoId];
+                        NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+                        BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
+                        
+                        //NSLog(@"displayPageinPanelScrollView. Panel[%i].[%@] File exists=%d", panel.panelId, imageName, fileExists);
+                        if(!fileExists)
+                        {
+                            
+                            [imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                                      placeholderImage:nil
+                                             completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+                             {
+                                 NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                 [data1 writeToFile:currentFile atomically:YES];
+                                 
+                             }];
+                            
+                            
+                        }//end if(!fileExists)
+                        else if(fileExists)
+                        {
+                            UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
+                            NSData *imgData = UIImagePNGRepresentation(image);
+                            //NSLog(@"displayPageinPanelScrollView. Size of Image%i (bytes):%d",page, [imgData length]);
+                            
+                            //Check if corrupt image is not downloaded. E.g size less than 640x640 (=409600) bytes
+                            if([imgData length]>=409600)
+                            {
+                                //NSLog(@"displayPageinPanelScrollView. Loading image from file=%@", imageName);
+                                [imageView setImage:image];
+                            }//end if([imgData length]>409600)
+                            else if([imgData length]<409600)
+                            {
+                                //If corrupt image downloaded earlier, download full image from the server and save it locally
+                                [imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                                          placeholderImage:nil
+                                                 completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+                                 {
+                                     NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                     [data1 writeToFile:currentFile atomically:YES];
+                                     
+                                 }];
+                                
+                            }//end else if([imgData length]<409600)
+                            
+                            //[imageView setImage:[UIImage imageNamed:currentFile]];
+                            //[imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+                        }//end if(fileExists)
                         
                     }
                     
-                }//end if(panelExists)
-                else if(!panelExists)
-                {
-                    CGRect thumbFrame= CGRectMake(index*thumbnailWidth, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
-                    ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:thumbnailPanel];
-                    thumbnailPanel.thumbnail=thumbnailView.snapshot;
-                    //NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. Thumbnail generated", index, panelExists);
-                    
-                    panelExists = [fileMgr fileExistsAtPath:panelFile];
-                    //NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. After thumbnail generated", index, panelExists);
-                    if(panelExists)
+                    if(thumbnailView.image!=nil)
                     {
-                        //NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. Thumbnail with resources.", index, panelExists);
+                        //NSLog(@"PanelViewController. panel#%i panelPhoto%i snapshot and image not nil.",index, thumbnailPanel.photo.photoId);
+                        //CGRect thumbFrame= CGRectMake(index*thumbnailWidth, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
+                        //ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:thumbnailPanel];
+                        thumbnailPanel.thumbnail=thumbnailView.snapshot;
                         [imageView setImage:thumbnailPanel.thumbnail];
-                    }//end if(panelExists)
-                    else if(!panelExists)
-                    {
-                        //NSLog(@"displayThumbnails.panel:index[%i] file exists = %d. Thumbnail without resources.", index, panelExists);
-                        [imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:nil];
-                    }//end else if(!panelExists)
-                }//end if(panelExists)
+                    }
+                }//end else if(thumbnailView.snapshot!=nil)
+                
+
                 
 
                 imageView.tag = index;
                 [thumbnailScrollView addSubview:imageView];
-
-                
+  
                 for(UIView* subView in thumbnailScrollView.subviews)
                 {
                     if([subView isMemberOfClass:[UIActivityIndicatorView class]] && subView.tag==index)
+                    //if([subView isMemberOfClass:[UIActivityIndicatorView class]])
                     {
+                        //NSLog(@"displayThumbnails.indicator#%i exists.", index);
+                        //NSLog(@"displayThumbnails.thread: %@", [NSThread currentThread]);
                         UIActivityIndicatorView* aIndicator = (UIActivityIndicatorView*) subView;
                         [aIndicator stopAnimating];
-                        //[aIndicator removeFromSuperview];
+                        [aIndicator removeFromSuperview];
                         //NSLog(@"displayThumbnails.indicator#%i stopped", index);
                         break;
                     }//end if
                 }//end for
+                
                 
             }//end if(thumbnailPanel!=nil && panelDownloaded)
             
@@ -967,58 +1057,161 @@ int peripheralPage;
         if(!displayed)
         {
             //NSLog(@"displayPageInThumbnailScrollView.objectAtIndex:page");
-            Panel* panel = [self.panelList objectAtIndex:page];
+            Panel* thumbnailPanel = [self.panelList objectAtIndex:page];
             //BOOL photoDownloaded = [[downloadedPhotos objectAtIndex:page] boolValue];
             //NSLog(@"displayPageInPanelScrollView.page=%i,currentPage=%i, panelId=%i, photoDownloaded=%d", page, currentPage, panel.panelId, photoDownloaded);
-            if(panel!=nil)
+            if(thumbnailPanel!=nil)
             {
                 UIImageView *imageView = [[UIImageView alloc] init];
-                //if(!photoDownloaded)
-                /*
-                if(panel.placements==nil && panel.annotations==nil)
-                    [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:nil];
-                else
-                    [imageView setImage:panel.thumbnail];
-                */
-                
-                //NSFileManager* fileMgr = [NSFileManager defaultManager];
-                //NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-                NSString* panelFileName = [NSString stringWithFormat:@"panelPhoto%i.png", panel.photo.photoId];
-                NSString* panelFile = [documentsDirectory stringByAppendingPathComponent:panelFileName];
-                BOOL panelFileExists = [fileMgr fileExistsAtPath:panelFile];
-                if(panelFileExists)
+  
+                CGRect thumbFrame= CGRectMake(page*thumbnailWidth, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
+                ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:thumbnailPanel];
+                if(thumbnailView.snapshot==nil)
                 {
-                    /*
-                     CGRect thumbFrame= CGRectMake(page*thumbnailWidth, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
-                     ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:panel];
-                     panel.thumbnail=thumbnailView.snapshot;
-                     
-                     [imageView setImage:panel.thumbnail];
-                     */
                     
-                    UIImage* imageDownloaded = [UIImage imageWithContentsOfFile:panelFile];
-                    [imageView setImage:imageDownloaded];
-                }
-                else if(!panelFileExists)
+                    if(thumbnailView.image==nil)
+                    {
+                        //NSLog(@"PanelViewController. panel#%i panelPhoto%i both snapshot and image Nil.",index, thumbnailPanel.photo.photoId);
+                        
+                        //If thumbnail photo has been downloaded, display it in thumbnail scrollview, otherwise display panel photo
+                        if(thumbnailView.thumbnailPhoto!=nil)
+                        {
+                            [imageView setImageWithURL:[NSURL URLWithString:[thumbnailView.thumbnailPhoto.thumbURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:nil];
+                        }//end if(thumbnailView.thumbnailPhoto!=nil)
+                        else if(thumbnailView.thumbnailPhoto==nil)
+                        {
+                            //[imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:nil];
+                            
+                            NSString* imageName = [NSString stringWithFormat:@"panelPhoto%i.png", thumbnailPanel.photo.photoId];
+                            NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+                            BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
+                            
+                            //NSLog(@"displayPageinPanelScrollView. Panel[%i].[%@] File exists=%d", panel.panelId, imageName, fileExists);
+                            if(!fileExists)
+                            {
+                                
+                                [imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                                          placeholderImage:nil
+                                                 completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+                                 {
+                                     NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                     [data1 writeToFile:currentFile atomically:YES];
+                                     
+                                 }];
+                                
+                                
+                            }//end if(!fileExists)
+                            else if(fileExists)
+                            {
+                                UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
+                                NSData *imgData = UIImagePNGRepresentation(image);
+                                //NSLog(@"displayPageinPanelScrollView. Size of Image%i (bytes):%d",page, [imgData length]);
+                                
+                                //Check if corrupt image is not downloaded. E.g size less than 640x640 (=409600) bytes
+                                if([imgData length]>=409600)
+                                {
+                                    //NSLog(@"displayPageinPanelScrollView. Loading image from file=%@", imageName);
+                                    [imageView setImage:image];
+                                }//end if([imgData length]>409600)
+                                else if([imgData length]<409600)
+                                {
+                                    //If corrupt image downloaded earlier, download full image from the server and save it locally
+                                    [imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                                              placeholderImage:nil
+                                                     completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+                                     {
+                                         NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                         [data1 writeToFile:currentFile atomically:YES];
+                                         
+                                     }];
+                                    
+                                }//end else if([imgData length]<409600)
+                                
+                                //[imageView setImage:[UIImage imageNamed:currentFile]];
+                                //[imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+                            }//end if(fileExists)
+                            
+                            
+                        }//end else if(thumbnailView.thumbnailPhoto==nil)
+                        
+                        
+                    }//end if(thumbnailView.image==nil)
+                    else if(thumbnailView.image!=nil)
+                    {
+                        //NSLog(@"PanelViewController. panel#%i panelPhoto%i snapshot nil, image not nil.",index, thumbnailPanel.photo.photoId);
+                        [imageView setImage:thumbnailView.image];
+                    }//end else if(thumbnailView.image!=nil)
+                    
+                }//end if(thumbnailView.snapshot==nil)
+                else if(thumbnailView.snapshot!=nil)
                 {
-                    [imageView setImageWithURL:[NSURL URLWithString:[panel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:nil];
-                    /*
-                     [imageView setImageWithURL:[NSURL URLWithString:[panel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
-                     placeholderImage:nil
-                     success:^(UIImage *imageDownloaded) {
-                     
-                     NSLog(@"displayPageinThumbnailScrollView.saving image=%@", panelFileName);
-                     NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
-                     [data1 writeToFile:panelFile atomically:YES];
-                     
-                     }
-                     failure:^(NSError *error) {
-                     NSLog(@"displayPageinThumbnailScrollView.Failed to load image");
-                     }];
-                     
-                     */
-                }//end else
-
+                    if(thumbnailView.image==nil)
+                    {
+                        //NSLog(@"PanelViewController. panel#%i panelPhoto%i snapshot not nil, image nil.",index, thumbnailPanel.photo.photoId);
+                        //[imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:nil];
+                        
+                        NSString* imageName = [NSString stringWithFormat:@"panelPhoto%i.png", thumbnailPanel.photo.photoId];
+                        NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+                        BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
+                        
+                        //NSLog(@"displayPageinPanelScrollView. Panel[%i].[%@] File exists=%d", panel.panelId, imageName, fileExists);
+                        if(!fileExists)
+                        {
+                            
+                            [imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                                      placeholderImage:nil
+                                             completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+                             {
+                                 NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                 [data1 writeToFile:currentFile atomically:YES];
+                                 
+                             }];
+                            
+                            
+                        }//end if(!fileExists)
+                        else if(fileExists)
+                        {
+                            UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
+                            NSData *imgData = UIImagePNGRepresentation(image);
+                            //NSLog(@"displayPageinPanelScrollView. Size of Image%i (bytes):%d",page, [imgData length]);
+                            
+                            //Check if corrupt image is not downloaded. E.g size less than 640x640 (=409600) bytes
+                            if([imgData length]>=409600)
+                            {
+                                //NSLog(@"displayPageinPanelScrollView. Loading image from file=%@", imageName);
+                                [imageView setImage:image];
+                            }//end if([imgData length]>409600)
+                            else if([imgData length]<409600)
+                            {
+                                //If corrupt image downloaded earlier, download full image from the server and save it locally
+                                [imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                                          placeholderImage:nil
+                                                 completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+                                 {
+                                     NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                     [data1 writeToFile:currentFile atomically:YES];
+                                     
+                                 }];
+                                
+                            }//end else if([imgData length]<409600)
+                            
+                            //[imageView setImage:[UIImage imageNamed:currentFile]];
+                            //[imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+                        }//end if(fileExists)
+                        
+                    }
+                    
+                    if(thumbnailView.image!=nil)
+                    {
+                        //NSLog(@"PanelViewController. panel#%i panelPhoto%i snapshot and image not nil.",index, thumbnailPanel.photo.photoId);
+                        //CGRect thumbFrame= CGRectMake(index*thumbnailWidth, 0.0, thumbnailWidth, thumbnailScrollObjHeight);
+                        //ThumbnailView* thumbnailView = [[ThumbnailView alloc] initWithFrame:thumbFrame andPanel:thumbnailPanel];
+                        thumbnailPanel.thumbnail=thumbnailView.snapshot;
+                        [imageView setImage:thumbnailPanel.thumbnail];
+                    }
+                }//end else if(thumbnailView.snapshot!=nil)
+                
+                
                 
                 
                 imageView.frame = CGRectMake(page*thumbnailWidth, 0, thumbnailWidth, thumbnailHeight);

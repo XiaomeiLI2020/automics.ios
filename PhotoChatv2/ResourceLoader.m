@@ -100,7 +100,8 @@ BOOL resourcesLoaded = NO;
 -(void)submitRequestGetResourceWithResourceId:(int)resourceId{
     //NSLog(@"submitRequestGetResourceWithId");
     //If the resource is not in SQLite database, download it
-    int resourceExists = [self submitSQLRequestCheckResourceExists:resourceId];
+    //int resourceExists = [self submitSQLRequestCheckResourceExists:resourceId];
+    int resourceExists = [self submitSQLRequestCheckResourceExistsLocal:resourceId];
     //NSLog(@"ResourceLoader.submitRequestGetResourceWithResourceId. Resource#%i resourceExists=%i", resourceId, resourceExists);
     if(resourceExists==0)
     {
@@ -113,7 +114,7 @@ BOOL resourcesLoaded = NO;
     //If the resource is downloadeded
     else if(resourceExists>0)
     {
-        NSLog(@"ResourceLoader.submitRequestGetResourceWithResourceId#%i.Resource downloaded from the database.", resourceId);
+        //NSLog(@"ResourceLoader.submitRequestGetResourceWithResourceId#%i.Resource downloaded from the database.", resourceId);
         NSArray* resources = [self convertResourceSQLIntoResource:resourceId];
         //NSLog(@"[resources count]=%i", [resources count]);
         if(resources!=nil && [resources count]>0)

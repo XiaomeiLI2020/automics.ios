@@ -981,11 +981,12 @@
                         <outlet property="imageLabel" destination="Fu0-Ds-UbM" id="R5e-8R-nTy"/>
                         <outlet property="imageView" destination="Sxs-cu-8kg" id="1lZ-Qd-fNz"/>
                         <outlet property="imagesButton" destination="y0m-Qg-VAI" id="coj-kB-AOi"/>
+                        <outlet property="postPanelButton" destination="whh-GX-ZLe" id="PfM-IB-ZaQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="USc-bo-4yf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3352" y="-1816"/>
+            <point key="canvasLocation" x="3494" y="-1802"/>
         </scene>
         <!--ThemeViewController-->
         <scene sceneID="pLZ-pQ-83B">

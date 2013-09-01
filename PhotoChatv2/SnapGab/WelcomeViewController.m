@@ -179,7 +179,8 @@ ResourceLoader* resourceLoader;
         
         comicCollectionButton.enabled = NO;
         comicCollectionButton.alpha = 0.4;
-    }
+        
+    }//end if(groupHashId==nil)
     else if(groupHashId!=nil)
     {
         imageButton.enabled = YES;
@@ -192,10 +193,15 @@ ResourceLoader* resourceLoader;
         //[groupLoader submitRequestGetGroupForHashId:groupHashId];
         
         //NSLog(@"PanelAddViewController. current_theme_id=%i", currentThemeId);
-        resourceLoader = [[ResourceLoader alloc] init];
-        resourceLoader.delegate =self;
-        [resourceLoader submitRequestGetResourcesForTheme:currentThemeId];
-    }
+        //Download resources of the current theme
+        if(currentThemeId>0)
+        {
+            resourceLoader = [[ResourceLoader alloc] init];
+            resourceLoader.delegate =self;
+            [resourceLoader submitRequestGetResourcesForTheme:currentThemeId];
+        }//end if(currentThemeId>0)
+
+    }//end else if(groupHashId!=nil)
 
 }
 
@@ -413,22 +419,59 @@ ResourceLoader* resourceLoader;
     
     if(resources!=nil)
     {
-        //NSLog(@"PanelAddViewController.didLoadResources.[resources count]=%i", [resources count]);
-        
-
-        //NSLog(@"PanelAddViewController.didLoadResources.[ decorator resources count]=%i", [resources count]);
+        //NSLog(@"WelcomeViewController.didLoadResources.[resources count]=%i", [resources count]);
         if([resources count]>0)
         {
             for(Resource* resource in resources)
             {
                 if(resource!=nil)
                 {
-                    if (resource.resourceId>0 && resource.imageURL!=nil)
+                    if(resource.resourceId>0 && resource.imageURL!=nil)
                     {
-
-                        
-                        
-                    }//end if
+                        NSFileManager* fileMgr = [NSFileManager defaultManager];
+                        //NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+                        NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                        //NSString* imageName = [NSString stringWithFormat:@"%i.png", page];
+                        NSString* imageName = [NSString stringWithFormat:@"resourcePhoto%i.png", resource.resourceId];
+                        NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+                        BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
+                        //NSLog(@"WelcomeViewController. File %@ exists=%d", imageName, fileExists);
+                        //NSLog(@"resource.imageURL=%@", resource.imageURL);
+                        if(!fileExists)
+                        {
+                           
+ 
+                            //SDWebImageManager *manager = [SDWebImageManager sharedManager];
+                            [SDWebImageDownloader.sharedDownloader downloadImageWithURL:[NSURL URLWithString:[resource.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                                                                                options:0
+                                progress:^(NSUInteger receivedSize, long long expectedSize)
+                             {
+                                 // progression tracking code
+                             }
+                                completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished)
+                             {
+                                 if (image && finished)
+                                 {
+                                     // do something with image
+                                     
+                                     NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(image)];
+                                     [data1 writeToFile:currentFile atomically:YES];
+                                     //NSLog(@"WelcomeViewController.%@ file saved.", imageName);
+                                 }
+                             }];
+                            
+                            /*
+                            [_imageView setImageWithURL:[NSURL URLWithString:[resource.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                                       placeholderImage:nil
+                                              completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+                             {
+                                 
+                                 NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                 [data1 writeToFile:currentFile atomically:YES];
+                             }];
+                             */
+                        }
+                    }//end if(resource.resourceId>0 && resource.imageURL!=nil)
                 }//end if resource!=nil
                 
             }//end for

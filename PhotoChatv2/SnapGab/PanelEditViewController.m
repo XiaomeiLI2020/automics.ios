@@ -43,6 +43,7 @@
 @synthesize originalFrame;
 @synthesize imageLabel;
 @synthesize imagesButton;
+@synthesize postPanelButton;
 
 
 BOOL alertShown;
@@ -182,6 +183,17 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                             }];
     
      */
+    
+    if(self.imageView.image!=nil)
+    {
+        postPanelButton.enabled = YES;
+        postPanelButton.alpha = 1.0;
+    }
+    else{
+        
+        postPanelButton.enabled = NO;
+        postPanelButton.alpha = 0.4;
+    }
     
     [thumbnailScrollView layoutAssets];
 
