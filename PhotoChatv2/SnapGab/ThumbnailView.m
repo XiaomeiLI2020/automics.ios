@@ -71,44 +71,7 @@ int placementCounter;
     
             }//end else if(fileExists)
     
-            
-            /*
-            UIImageView *imageView = [[UIImageView alloc] init];
-            //[imageView setImageWithURL:[NSURL URLWithString:[panel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:nil];
-            
-            
-            [imageView setImageWithURL:[NSURL URLWithString:[panel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
-                       placeholderImage:nil
-                              completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
-             {
-                 image = imageDownloaded;
-                 NSLog(@"ThumbnailView. panelPhoto%i downloaded.", panel.photo.photoId);
 
-                 
-             }];
-            
-            
-            [self loadPlacements:panel];
-            [self loadAnnotations:panel];
-            if(self.image!=nil)
-            {
-                snapshot = [self imageWithView:self];
-                NSLog(@"ThumbnailView. panelPhoto%i generated.", panel.photo.photoId);
-            }
-            else{
-                NSLog(@"ThumbnailView. panelPhoto%i  image is nil.", panel.photo.photoId);
-                snapshot = nil;
-            }
-            */ 
-
-          
-            
-            /*
-                //[imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL] placeholderImage:[UIImage imageNamed:@"thumb.png"]];
-                [imageView setImageWithURL:[NSURL URLWithString:panel.photo.imageURL]];
-                imageView.frame = CGRectMake(0.0, 0.0, thumbnailWidth, thumbnailHeight);
-                [self addSubview:imageView];
-             */
            /*
             __weak UIImageView* _imageView = imageView;
 
@@ -184,13 +147,6 @@ int placementCounter;
             }//end if(fileExists)
               */
  
-            /*
-            [self loadPlacements:panel];
-            [self loadAnnotations:panel];
-            snapshot = [self imageWithView:self];
-             
-             */
-            //NSLog(@"ThumbnailView.thumbnail#%i generated",panel.panelId);
            
         }//end if panel!=nil
 

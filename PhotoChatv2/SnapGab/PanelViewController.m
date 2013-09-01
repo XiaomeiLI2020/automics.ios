@@ -2013,7 +2013,7 @@ UIActivityIndicatorView *activityIndicator;
                                 sbv.userInteractionEnabled = NO;
                                 sbv.alpha = 0.0f;
                                 [self.view addSubview:sbv];
-                                NSLog(@"PanelViewController. didloadPanel. currentPage=%i, annotation added.", currentPage);
+                                //NSLog(@"PanelViewController. didloadPanel. currentPage=%i, annotation added.", currentPage);
                                 [UIView transitionWithView:self.view
                                                   duration:0.25
                                                    options:UIViewAnimationOptionLayoutSubviews

@@ -55,7 +55,7 @@ bool photosDownloaded = NO;
     }//end if(photoExists==0)
     else if(photoExists>0)
     {
-        NSLog(@"PhotoLoader. submitRequestGetPhotoWithId.photoId#%i downloaded from database.", photoId);
+        //NSLog(@"PhotoLoader. submitRequestGetPhotoWithId.photoId#%i downloaded from database.", photoId);
         NSArray* photosLocal = [self convertPhotoSQLIntoPhoto:photoId];
         if(photosLocal!=nil && [photosLocal count]>0)
         {

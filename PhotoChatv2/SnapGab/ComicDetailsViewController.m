@@ -516,9 +516,34 @@ int peripheralPage;
                     }//end if(!fileExists)
                     else if(fileExists)
                     {
+                        UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
+                        NSData *imgData = UIImagePNGRepresentation(image);
+                        //NSLog(@"addComicPanelToComicScrollView.Size of Image%i (bytes):%d",currentPage, [imgData length]);
+                        
+                        //Check if corrupt image is not downloaded. E.g size less than 640x640 (=409600) bytes
+                        if([imgData length]>=409600)
+                        {
+                            //NSLog(@"addComicPanelToComicScrollView.Loading image from corrupted file=%@", imageName);
+                            [imageView setImage:image];
+                        }//end if([imgData length]>409600)
+                        else if([imgData length]<409600)
+                        {
+                            //If corrupt image downloaded earlier, download full image from the server and save it locally
+                            [imageView setImageWithURL:[NSURL URLWithString:[panel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                                      placeholderImage:nil
+                                             completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+                             {
+                                 //NSLog(@"addComicPanelToComicScrollView.saving image=%@ for panel[%i], currentPage=%i", imageName, currentPanel.panelId, currentPage);
+                                 NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                 [data1 writeToFile:currentFile atomically:YES];
+                                 
+                             }];
+                            
+                        }//end else if([imgData length]<409600)
+                        
                         
                         //NSLog(@"displayPageinPanelScrollView. Loading image from file=%@", imageName);
-                        [imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+                        //[imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
                         //[imageView setImage:[UIImage imageNamed:currentFile]];
                     }//end if(fileExists)
 
@@ -528,7 +553,7 @@ int peripheralPage;
                     [imageView setContentMode:UIViewContentModeScaleAspectFill];
                     // add images to the panel scrollview
                     
-                    NSLog(@"displayPageinPanelScrollView. PanelScrollView addSubview. Panel#%i", page);
+                    //NSLog(@"displayPageinPanelScrollView. PanelScrollView addSubview. Panel#%i", page);
                     [panelScrollView addSubview:imageView];
                 }//end if panel!=nil
                 
@@ -627,8 +652,34 @@ int peripheralPage;
             else if(fileExists)
             {
                 
+                UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
+                NSData *imgData = UIImagePNGRepresentation(image);
+                //NSLog(@"addComicPanelToComicScrollView.Size of Image%i (bytes):%d",currentPage, [imgData length]);
+                
+                //Check if corrupt image is not downloaded. E.g size less than 640x640 (=409600) bytes
+                if([imgData length]>=409600)
+                {
+                    //NSLog(@"addComicPanelToComicScrollView.Loading image from corrupted file=%@", imageName);
+                    [imageView setImage:image];
+                }//end if([imgData length]>409600)
+                else if([imgData length]<409600)
+                {
+                    //If corrupt image downloaded earlier, download full image from the server and save it locally
+                    [imageView setImageWithURL:[NSURL URLWithString:[panel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                              placeholderImage:nil
+                                     completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+                     {
+                         //NSLog(@"addComicPanelToComicScrollView.saving image=%@ for panel[%i], currentPage=%i", imageName, currentPanel.panelId, currentPage);
+                         NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                         [data1 writeToFile:currentFile atomically:YES];
+                         
+                     }];
+                    
+                }//end else if([imgData length]<409600)
+
+                
                 //NSLog(@"addComicPanelToComicScrollView. Loading image from file=%@", imageName);
-                [imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+                //[imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
                 //[imageView setImage:[UIImage imageNamed:currentFile]];
             }//end if(fileExists)
 
@@ -862,9 +913,33 @@ int peripheralPage;
                     }//end if(!fileExists)
                     else if(fileExists)
                     {
+                        UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
+                        NSData *imgData = UIImagePNGRepresentation(image);
+                        //NSLog(@"didloadPanel.Size of Image%i (bytes):%d",currentPage, [imgData length]);
+                        
+                        //Check if corrupt image is not downloaded. E.g size less than 640x640 (=409600) bytes
+                        if([imgData length]>=409600)
+                        {
+                            //NSLog(@"ComicDetailsViewController. didloadPanel.Loading image from corrupted file=%@", imageName);
+                            [imageView setImage:image];
+                        }//end if([imgData length]>409600)
+                        else if([imgData length]<409600)
+                        {
+                            //If corrupt image downloaded earlier, download full image from the server and save it locally
+                            [imageView setImageWithURL:[NSURL URLWithString:[panel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                                      placeholderImage:nil
+                                             completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+                             {
+                                 //NSLog(@"ComicDetailsViewController. didloadPanel.saving image=%@ for panel[%i], currentPage=%i", imageName, currentPanel.panelId, currentPage);
+                                 NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                 [data1 writeToFile:currentFile atomically:YES];
+                                 
+                             }];
+                            
+                        }//end else if([imgData length]<409600)
                         
                         //NSLog(@"didLoadPanel. Loading image from file=%@", imageName);
-                        [imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
+                        //[imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
                         //[imageView setImage:[UIImage imageNamed:currentFile]];
                     }//end if(fileExists)
                     
