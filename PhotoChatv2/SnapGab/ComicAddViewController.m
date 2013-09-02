@@ -281,17 +281,19 @@ NSString *documentsDirectory;
             else if(fileExists)
             {
                 
-                UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
-                NSData *imgData = UIImagePNGRepresentation(image);
+                
+                //NSData *imgData = UIImagePNGRepresentation(image);
                 //NSLog(@"addComicPanelToComicScrollView.Size of Image%i (bytes):%d",currentPage, [imgData length]);
                 
+                unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:currentFile error:nil] fileSize];
                 //Check if corrupt image is not downloaded. E.g size less than 640x640 (=409600) bytes
-                if([imgData length]>=409600)
+                if(fileSize>=409600)
                 {
                     //NSLog(@"addComicPanelToComicScrollView.Loading image from corrupted file=%@", imageName);
+                    UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
                     [imageView setImage:image];
                 }//end if([imgData length]>409600)
-                else if([imgData length]<409600)
+                else if(fileSize<409600)
                 {
                     //If corrupt image downloaded earlier, download full image from the server and save it locally
                     [imageView setImageWithURL:[NSURL URLWithString:[panel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
@@ -553,17 +555,20 @@ NSString *documentsDirectory;
                     else if(fileExists)
                     {
                         
-                        UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
-                        NSData *imgData = UIImagePNGRepresentation(image);
+                        
+                        //NSData *imgData = UIImagePNGRepresentation(image);
                         //NSLog(@"addComicPanelToComicScrollView.Size of Image%i (bytes):%d",currentPage, [imgData length]);
                         
+                        unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:currentFile error:nil] fileSize];
+                        
                         //Check if corrupt image is not downloaded. E.g size less than 640x640 (=409600) bytes
-                        if([imgData length]>=409600)
+                        if(fileSize>=409600)
                         {
                             //NSLog(@"addComicPanelToComicScrollView.Loading image from corrupted file=%@", imageName);
+                            UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
                             [imageView setImage:image];
                         }//end if([imgData length]>409600)
-                        else if([imgData length]<409600)
+                        else if(fileSize<409600)
                         {
                             //If corrupt image downloaded earlier, download full image from the server and save it locally
                             [imageView setImageWithURL:[NSURL URLWithString:[currentPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
@@ -1214,17 +1219,20 @@ NSString *documentsDirectory;
         }//end if(!fileExists)
         else if(fileExists)
         {
-            UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
-            NSData *imgData = UIImagePNGRepresentation(image);
+            
+            //NSData *imgData = UIImagePNGRepresentation(image);
             //NSLog(@"alignPageinPanelScrollView.Size of Image%i (bytes):%d",currentPage, [imgData length]);
             
+            unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:currentFile error:nil] fileSize];
+            
             //Check if corrupt image is not downloaded. E.g size less than 640x640 (=409600) bytes
-            if([imgData length]>=409600)
+            if(fileSize>=409600)
             {
                 //NSLog(@"alignPageinPanelScrollView.Loading image from file=%@", imageName);
+                UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
                 [thumbnailView setImage:image];
             }//end if([imgData length]>409600)
-            else if([imgData length]<409600)
+            else if(fileSize<409600)
             {
                 //If corrupt image downloaded earlier, download full image from the server and save it locally
                 [thumbnailView setImageWithURL:[NSURL URLWithString:[panel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
@@ -1469,17 +1477,21 @@ NSString *documentsDirectory;
                             }//end if(!fileExists)
                             else if(fileExists)
                             {
-                                UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
-                                NSData *imgData = UIImagePNGRepresentation(image);
+                               
+                                //NSData *imgData = UIImagePNGRepresentation(image);
                                 //NSLog(@"displayPageinPanelScrollView. Size of Image%i (bytes):%d",page, [imgData length]);
                                 
+                                unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:currentFile error:nil] fileSize];
+                                
+                                
                                 //Check if corrupt image is not downloaded. E.g size less than 640x640 (=409600) bytes
-                                if([imgData length]>=409600)
+                                if(fileSize>=409600)
                                 {
                                     //NSLog(@"displayPageinPanelScrollView. Loading image from file=%@", imageName);
+                                     UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
                                     [imageView setImage:image];
                                 }//end if([imgData length]>409600)
-                                else if([imgData length]<409600)
+                                else if(fileSize<409600)
                                 {
                                     //If corrupt image downloaded earlier, download full image from the server and save it locally
                                     [imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
@@ -1535,17 +1547,20 @@ NSString *documentsDirectory;
                         }//end if(!fileExists)
                         else if(fileExists)
                         {
-                            UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
-                            NSData *imgData = UIImagePNGRepresentation(image);
+                            
+                            //NSData *imgData = UIImagePNGRepresentation(image);
                             //NSLog(@"displayPageinPanelScrollView. Size of Image%i (bytes):%d",page, [imgData length]);
                             
+                            unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:currentFile error:nil] fileSize];
+                            
                             //Check if corrupt image is not downloaded. E.g size less than 640x640 (=409600) bytes
-                            if([imgData length]>=409600)
+                            if(fileSize>=409600)
                             {
                                 //NSLog(@"displayPageinPanelScrollView. Loading image from file=%@", imageName);
+                                UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
                                 [imageView setImage:image];
                             }//end if([imgData length]>409600)
-                            else if([imgData length]<409600)
+                            else if(fileSize<409600)
                             {
                                 //If corrupt image downloaded earlier, download full image from the server and save it locally
                                 [imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
@@ -1753,10 +1768,27 @@ NSString *documentsDirectory;
                 }//end if(!fileExists)
                 else if(fileExists)
                 {
+                    unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:currentFile error:nil] fileSize];
                     
-                    //NSLog(@"displayPageInPanelScrollView. Loading image from file=%@", imageName);
-                    [imageView setImage:[UIImage imageWithContentsOfFile:currentFile]];
-                    //[imageView setImage:[UIImage imageNamed:currentFile]];
+                    if(fileSize>=409600)
+                    {
+                        //NSLog(@"displayPageinPanelScrollView. Loading image from file=%@", imageName);
+                        UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
+                        [imageView setImage:image];
+                    }//end if([imgData length]>409600)
+                    else if(fileSize<409600)
+                    {
+                        //If corrupt image downloaded earlier, download full image from the server and save it locally
+                        [imageView setImageWithURL:[NSURL URLWithString:[panel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                                  placeholderImage:nil
+                                         completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+                         {
+                             NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                             [data1 writeToFile:currentFile atomically:YES];
+                             
+                         }];
+                        
+                    }//end else if([imgData length]<409600)
                 }//end if(fileExists)
                 
                 
@@ -1862,17 +1894,20 @@ NSString *documentsDirectory;
                             }//end if(!fileExists)
                             else if(fileExists)
                             {
-                                UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
-                                NSData *imgData = UIImagePNGRepresentation(image);
+                                
+                                //NSData *imgData = UIImagePNGRepresentation(image);
                                 //NSLog(@"displayPageinPanelScrollView. Size of Image%i (bytes):%d",page, [imgData length]);
                                 
+                                unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:currentFile error:nil] fileSize];
+                                
                                 //Check if corrupt image is not downloaded. E.g size less than 640x640 (=409600) bytes
-                                if([imgData length]>=409600)
+                                if(fileSize>=409600)
                                 {
                                     //NSLog(@"displayPageinPanelScrollView. Loading image from file=%@", imageName);
+                                    UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
                                     [imageView setImage:image];
                                 }//end if([imgData length]>409600)
-                                else if([imgData length]<409600)
+                                else if(fileSize<409600)
                                 {
                                     //If corrupt image downloaded earlier, download full image from the server and save it locally
                                     [imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
@@ -1930,17 +1965,20 @@ NSString *documentsDirectory;
                         }//end if(!fileExists)
                         else if(fileExists)
                         {
-                            UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
-                            NSData *imgData = UIImagePNGRepresentation(image);
+                            
+                            //NSData *imgData = UIImagePNGRepresentation(image);
                             //NSLog(@"displayPageinPanelScrollView. Size of Image%i (bytes):%d",page, [imgData length]);
                             
+                            unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:currentFile error:nil] fileSize];
+                            
                             //Check if corrupt image is not downloaded. E.g size less than 640x640 (=409600) bytes
-                            if([imgData length]>=409600)
+                            if(fileSize>=409600)
                             {
                                 //NSLog(@"displayPageinPanelScrollView. Loading image from file=%@", imageName);
+                                UIImage* image = [UIImage imageWithContentsOfFile:currentFile];
                                 [imageView setImage:image];
                             }//end if([imgData length]>409600)
-                            else if([imgData length]<409600)
+                            else if(fileSize<409600)
                             {
                                 //If corrupt image downloaded earlier, download full image from the server and save it locally
                                 [imageView setImageWithURL:[NSURL URLWithString:[thumbnailPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
