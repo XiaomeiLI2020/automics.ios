@@ -228,7 +228,7 @@ int peripheralPage;
                     //NSLog(@"panelScrollView added.");
                     [clickLabel removeFromSuperview];
                     //[self.view addSubview:panelScrollView];
-                    if([comicPanelList count]>1)
+                    if([comicPanelList count]>0) //DUNCAN WTF why was this 1?
                     {
                         postButton.enabled = YES;
                     }

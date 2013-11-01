@@ -253,5 +253,9 @@ BOOL resourcesLoaded = NO;
     [self cancelRequest];
 }
 
++(float)adjustmentForResourceFrame{
+    return 0.0;
+}
+
 
 @end

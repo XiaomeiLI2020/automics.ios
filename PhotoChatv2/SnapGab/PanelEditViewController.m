@@ -19,6 +19,7 @@
 #import "Resource.h"
 #import "Annotation.h"
 #import <QuartzCore/QuartzCore.h>
+#import "OfflineSupport.h"
 
 @interface PanelEditViewController ()
 
@@ -114,8 +115,9 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     imagesButton.contentEdgeInsets = UIEdgeInsetsMake(6.0, 0.0, 0.0, 0.0);
     
     alertShown = NO;
-
+    
     if(self.imageView.image) return; //If image already loaded - do not reload it (since load moved from viewDidLoad)
+    
     
     self.imageLabel.text= [NSString stringWithFormat: @"Image %i", currentPage+1];
     self.imageLabel.numberOfLines = 0; //will wrap text in new line
@@ -127,9 +129,11 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.autoresizingMask = (UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth);
     
+    NSLog(@"ak: image to load, %i:  %@ ", currentPanel.panelId, [[OfflineSupport retrivePathToFile:currentPanel.panelId ofTypePanel:YES] description]);
     
     [self.imageView setImageWithURL:self.url
-               placeholderImage:nil
+               placeholderImage:[[UIImage alloc] initWithContentsOfFile:[OfflineSupport retrivePathToFile:currentPanel.panelId
+                                                                                              ofTypePanel:YES]] //ak:
                       completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
      {
          for (UIView *subview in self.view.subviews)
@@ -146,6 +150,23 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
                  ResourceView* sbv =(ResourceView*)subview;
                  sbv.alpha = 1;
              }
+             
+             //ak: add
+             for (UIView *subsub in subview.subviews) {
+                 if([subview isMemberOfClass:[SpeechBubbleView class]])
+                 {
+                     
+                     SpeechBubbleView* sbv =(SpeechBubbleView*)subview;
+                     sbv.alpha = 1;
+                 }
+                 
+                 if([subview isMemberOfClass:[ResourceView class]])
+                 {
+                     ResourceView* sbv =(ResourceView*)subview;
+                     sbv.alpha = 1;
+                 }
+             }//ak: end add
+             
          }//end for
     
      }];
@@ -184,6 +205,10 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
     
      */
     
+    //Duncan
+    postPanelButton.enabled = YES;
+    postPanelButton.alpha = 1.0;
+    /*
     if(self.imageView.image!=nil)
     {
         postPanelButton.enabled = YES;
@@ -194,6 +219,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         postPanelButton.enabled = NO;
         postPanelButton.alpha = 0.4;
     }
+    */
     
     [thumbnailScrollView layoutAssets];
 

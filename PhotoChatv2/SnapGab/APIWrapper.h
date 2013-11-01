@@ -39,4 +39,8 @@
 +(NSString*)getURLForPostUserWithId:(int)userId;
 +(NSString*)getURLForPostNotification;
 
+//ak
++(int)genRandomID;
+//an end
+
 @end

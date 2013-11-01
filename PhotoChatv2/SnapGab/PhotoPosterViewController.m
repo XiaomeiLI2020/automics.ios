@@ -19,6 +19,7 @@
 #import "GUIConstant.h"
 #import "AppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
+#import "OfflineSupport.h"
 
 @interface PhotoPosterViewController ()
 
@@ -105,6 +106,7 @@ bool alertShown;
     
     annotationsArray = [[NSMutableArray alloc] init];
     placementsArray = [[NSMutableArray alloc] init];
+    NSLog(@"viewDidApear"); //ak: view did appear
     
     alertShown= false;
 
@@ -124,12 +126,15 @@ bool alertShown;
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    NSLog(@"ak: PhotoPosterViewController->viewDidAppear");
+
     [self startUpload];
 }
 
 
 - (void)startUpload
 {
+    NSLog(@"ak: PhotoPosterViewController->startUpload");
     panelUploaded = NO;
     
     if (self.connection) {
@@ -292,7 +297,9 @@ bool alertShown;
     {
         //Upload a new photo if a new panel is being added
         NSURLRequest* urlRequest = [photoLoader preparePhotoRequestForPostPhoto:photo];
+        
         //[self startOperation:urlRequest postDataRequestType:0];
+        [self createOfflineModeforPhoto:photo]; //ak
         [self startPanelOperation:urlRequest panelPlacements:placementsArray panelAnnotations:annotationsArray postDataRequestType:0];
         
         /*
@@ -306,7 +313,7 @@ bool alertShown;
         
         //[photoLoader submitRequestPostPhoto:photo];
     }//end else if(!editMode)
-     
+
     self.progressView.progress = 0.0f;
     self.progressView.alpha = 1.0f;
 }//end startUpload
@@ -320,14 +327,17 @@ bool alertShown;
     MKNetworkOperation *operation = [appDelegate.automicsEngine postData:urlRequest
                                                        completionHandler:^(id twitPicURL) {
                                                            DLog(@"complete.");
+                                                           NSLog(@"ak: upload completed: twitPicURL: %@", twitPicURL); //ak
+                                                           
                                                        }
                                                             errorHandler:^(NSError* error)
                                                         {
                                          DLog(@"error.");
+                                                            NSLog(@"Duncan\n%@",[error localizedDescription]);
                                          
                                                         }
                                      ];
-    
+
     operation.postDataRequestType = postDataRequestType;
     //operation.delegate = self;
     //[appDelegate.automicsEngine enqueueOperation:operation];
@@ -399,23 +409,31 @@ bool alertShown;
                                                        panelPlacements:placements panelAnnotations:annotations
                                                        completionHandler:^(id twitPicURL) {
                                                            //DLog(@"complete.");
+                                                           NSLog(@"ak: completion handler for mknetwork operation in startPanelOperation");
                                                        }
                                                             errorHandler:^(NSError* error)
                                      {
                                          //DLog(@"error.");
+                                         NSLog(@"ak: error handler for mknetwork operation in startPanelOperation");
+                                         NSLog(@"Duncan\n%@",[error localizedDescription]);
                                          
                                      }
                                      ];
+    NSLog(@"ak: PhotoPosterViewController->startPanelOperation~>operation: %@", [operation uniqueIdentifier]);
     
     operation.postDataRequestType = postDataRequestType;
     operation.delegate = self;
     
+    //ak start
+    [OfflineSupport matchNetworkOperationIDToTempID:operation.uniqueIdentifier];
+    //ak end
     
     //Start an activity indicator here
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         //Call your function or whatever work that needs to be done
         //Code in this part is run on a background thread
+        NSLog(@"ak: queue mknetwork operation object");
         [appDelegate.automicsEngine enqueueOperation:operation];
         
         dispatch_async(dispatch_get_main_queue(), ^(void) {
@@ -544,7 +562,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 #pragma mark PanelLoader functions.
 -(void)PanelLoader:(PanelLoader *)loader didSavePanel:(NSString*)response{
     //NSLog(@"Panel saved: %@", response);
-    
+    NSLog(@"PanelLoader->didSavePanel: panel saved: response: %@", response);
     UserLoader* userLoader = [[UserLoader alloc] init];
     [userLoader submitRequestPostNotification:@"New Image Uploaded."];
     
@@ -571,7 +589,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 #pragma mark PhotoLoader functions.
 -(void)PhotoLoader:(PhotoLoader *)photoLoader didUploadPhoto:(Photo*)photo{
     //NSLog(@"Photo uploaded %@", photo);
-    
+    NSLog(@"PhotoLoader->didUploadPhoto, photoID: %i, photoURL: %@", photo.photoId, photo.imageURL);
     if(photo!=nil)
     {
         int photoId = photo.photoId;
@@ -586,7 +604,6 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
             
             panel.placements = [[NSArray alloc] initWithArray:placementsArray];
             panel.annotations = [[NSArray alloc] initWithArray:annotationsArray];
-            
             [panelsLoader submitRequestPostPanel:panel];
         }//end if
     }//end if
@@ -665,6 +682,21 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
         //alertShown = YES;
     }
      */
+}
+
+
+-(void) createOfflineModeforPhoto: (Photo*)photo {
+    //ak handle offline
+    Panel *panelOfflineVer;
+    panelOfflineVer = [[Panel alloc] init];
+    panelOfflineVer.photo = photo;
+    panelOfflineVer.placements = [[NSArray alloc] initWithArray:placementsArray];
+    panelOfflineVer.annotations = [[NSArray alloc] initWithArray:annotationsArray];
+    
+    NSLog(@"ak: making available for offline: PanelAddViewController->imagePickerController");//ak
+    NSLog(@"OfflineSupport below:");
+    [OfflineSupport createPanelOfflineVersion:panelOfflineVer];
+    //ak end handle offline
 }
 
 

@@ -31,6 +31,8 @@
 #import "ComicJSONHandler.h"
 #import "ComicLoader.h"
 #import "UserLoader.h"
+#import "OfflineSupport.h"
+#import "UIImageView+WebCache.h"
 
 #ifdef __OBJC_GC__
 #error MKNetworkKit does not support Objective-C Garbage Collection
@@ -1435,7 +1437,8 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
 
 
 -(void)handlePostPhotoResponse{
-    DLog(@"");
+    NSLog(@"MKNetworkOperation->handlePostPhotoResponse");
+    
     NSError* error;
     NSDictionary* photodict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (photodict != nil){
@@ -1447,6 +1450,28 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
         if(photo!=nil)
         {
             int photoId = photo.photoId;
+            
+            //ak upload was successful, photo ID has been obtained.
+            NSString *newId = [NSString stringWithFormat:@"%i", photoId];
+            [OfflineSupport updateTempIDsToNewIDs:[self uniqueIdentifier] retrivedPanelId:newId];
+            
+            /*
+            
+             [imageView setImageWithURL:[NSURL URLWithString:[currentPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] // ak: using regaular network to download image and cache it
+             placeholderImage:nil
+             completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
+             
+            */
+            
+            //ak
+            UIImageView *dummyImageViewForCache = [[UIImageView alloc] init];
+            [dummyImageViewForCache setImageWithURL:[NSURL URLWithString:[photo.imageURL
+                               stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                                          completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                NSLog(@"loading image for cache");
+            }];
+
+            //ak
             
             NSLog(@"handlePostPhotoResponse.Photo uploaded.photoId=%i, photo.URL=%@", photoId, photo.imageURL);
             //NSLog(@"handlePostPhotoResponse.self.panelAnnotations=%i", [self.panelAnnotations count]);
@@ -1509,7 +1534,6 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
     NSError* error;
     NSDictionary* paneldict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     NSString *responseString = [[NSString alloc] initWithData:self.downloadedData encoding:NSUTF8StringEncoding];
-    DLog(@"panelData: %@", responseString);
     NSLog(@"panelData: %@", responseString);
     /*
      if(paneldict != nil)

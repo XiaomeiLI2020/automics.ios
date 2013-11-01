@@ -69,6 +69,7 @@
 		48F6278316D6442A0034A5A7 /* close_gold.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F6278016D6442A0034A5A7 /* close_gold.png */; };
 		48F6278416D6442A0034A5A7 /* rotate.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F6278116D6442A0034A5A7 /* rotate.png */; };
 		48F6278516D6442A0034A5A7 /* scale.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F6278216D6442A0034A5A7 /* scale.png */; };
+		5AE913991806DDD700DF8821 /* OfflineSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AE913981806DDD700DF8821 /* OfflineSupport.m */; };
 		D804611816E1247400F80CAB /* Resource.m in Sources */ = {isa = PBXBuildFile; fileRef = D804611716E1247400F80CAB /* Resource.m */; };
 		D804611B16E124A300F80CAB /* ResourceJSONHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D804611A16E124A200F80CAB /* ResourceJSONHandler.m */; };
 		D804611E16E124BE00F80CAB /* ResourceLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D804611D16E124BE00F80CAB /* ResourceLoader.m */; };
@@ -320,6 +321,8 @@
 		48F6278016D6442A0034A5A7 /* close_gold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = close_gold.png; path = SnapGab/close_gold.png; sourceTree = "<group>"; };
 		48F6278116D6442A0034A5A7 /* rotate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rotate.png; path = SnapGab/rotate.png; sourceTree = "<group>"; };
 		48F6278216D6442A0034A5A7 /* scale.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = scale.png; path = SnapGab/scale.png; sourceTree = "<group>"; };
+		5AE913971806DDD700DF8821 /* OfflineSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineSupport.h; sourceTree = SOURCE_ROOT; };
+		5AE913981806DDD700DF8821 /* OfflineSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineSupport.m; sourceTree = SOURCE_ROOT; };
 		D804611616E1247400F80CAB /* Resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resource.h; sourceTree = "<group>"; };
 		D804611716E1247400F80CAB /* Resource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Resource.m; sourceTree = "<group>"; };
 		D804611916E124A200F80CAB /* ResourceJSONHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceJSONHandler.h; sourceTree = "<group>"; };
@@ -624,6 +627,8 @@
 				1D8D50A9165FAE9700C9817C /* WelcomeViewController.m */,
 				D8BED99017A2CC3200000F1D /* TransitDisplayDEMO-KCFonts.ttf */,
 				1D8D508D165FADC700C9817C /* Supporting Files */,
+				5AE913971806DDD700DF8821 /* OfflineSupport.h */,
+				5AE913981806DDD700DF8821 /* OfflineSupport.m */,
 			);
 			name = PhotoChat;
 			path = SnapGab;
@@ -1067,6 +1072,11 @@
 			attributes = {
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Umar Rashid";
+				TargetAttributes = {
+					1D8D5081165FADC700C9817C = {
+						DevelopmentTeam = 66KNL6347K;
+					};
+				};
 			};
 			buildConfigurationList = 1D8D507C165FADC600C9817C /* Build configuration list for PBXProject "PhotoChat" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1262,6 +1272,7 @@
 				D8B4A3801709C3F5002E6D75 /* UIAlertView+MKNetworkKitAdditions.m in Sources */,
 				D8B4A3811709C3F5002E6D75 /* UIImageView+MKNetworkKitAdditions.m in Sources */,
 				D8B4A3921709C5DB002E6D75 /* MKNetworkEngine.m in Sources */,
+				5AE913991806DDD700DF8821 /* OfflineSupport.m in Sources */,
 				D8B4A3931709C5DB002E6D75 /* MKNetworkOperation.m in Sources */,
 				D8B4A39C1709C985002E6D75 /* Reachability.m in Sources */,
 				D8C64132170D7BE90008074E /* AutomicsEngine.m in Sources */,
@@ -1387,15 +1398,18 @@
 		1D8D50A1165FADC700C9817C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Umar Rashid (32C9N6T7CG)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SnapGab/PhotoChat-Prefix.pch";
 				GENERATE_PROFILING_CODE = YES;
 				HEADER_SEARCH_PATHS = QRCodeEncoderObjectiveCAtGithub;
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = PhotoChat;
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos6.1;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1404,15 +1418,18 @@
 		1D8D50A2165FADC700C9817C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Umar Rashid";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Umar Rashid";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SnapGab/PhotoChat-Prefix.pch";
 				GENERATE_PROFILING_CODE = YES;
 				HEADER_SEARCH_PATHS = QRCodeEncoderObjectiveCAtGithub;
 				INFOPLIST_FILE = "SnapGab/PhotoChat-Info.plist";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = PhotoChat;
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos6.1;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};

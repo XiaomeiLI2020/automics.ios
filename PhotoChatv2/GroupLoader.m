@@ -457,6 +457,7 @@ int const kRefreshGroups = 5;
 
 #pragma mark NSURLConnectionDataDelegate methods
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
+    NSLog(@"GroupLoader->connectionDidFinishLoading, groupRequestType %i", groupRequestType);
     [super connectionDidFinishLoading:connection];
     if (self.downloadedData.length > 0){
         switch (groupRequestType){

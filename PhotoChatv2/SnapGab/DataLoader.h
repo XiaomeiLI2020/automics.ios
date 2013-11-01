@@ -131,4 +131,7 @@ NSString *databasePathStatic;
 -(NSArray*)convertUsersSQLIntoUsers:(int)userId;
 
 
+//ak: Delete temp rows for panels and photos:
+-(void)removeTempPanelsAndPhoto:(int)tempID;
+
 @end

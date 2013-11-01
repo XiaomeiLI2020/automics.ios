@@ -493,7 +493,8 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 // Responding to after the user accepts a newly-captured picture
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    //NSLog(@"didFinishPickingMediaWithInfo");
+    NSLog(@"ak: PanelAddViewController->imagePickerController:picker:info");
+    
     NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
 
     
@@ -532,7 +533,7 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         image = imageEdited;
         imageView.image = image;
         [imageView setBackgroundColor:[UIColor grayColor]];
-        
+        NSLog(@"ak: image description in imagePickerController: %@", [image description]);
         //If newMedia, then save the new image to camera roll
         if (newMedia)
             UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:finishedSavingWithError:contextInfo:), nil);
@@ -938,7 +939,6 @@ finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
         imagePicker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeImage, nil];
         imagePicker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
         //imagePicker.toolbarHidden = YES;
-        
         
         //Assign delegate object to ImagePickerController's delegate property
         imagePicker.delegate = self;

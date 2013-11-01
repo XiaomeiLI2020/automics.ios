@@ -28,7 +28,7 @@ extern int numResources;
 -(void)submitRequestGetResourceWithId:(int)resourceId;
 -(void)submitRequestGetResourceWithResourceId:(int)resourceId;
 +(void)setResourcesDownloaded:(BOOL)resourcesDownloaded;
-
++(float)adjustmentForResourceFrame;
 @end
 
 //@protocol ResourceLoaderDelegate<NSURLConnectionDataDelegate>

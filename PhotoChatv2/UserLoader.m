@@ -678,6 +678,7 @@ NSString* leaveGroupHashId;
 #pragma mark NSURLConnectionDataDelegate methods
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
+    NSLog(@"UserLoader->connectionDidFinishLoading, userRequestType: %i", userRequestType);
     [super connectionDidFinishLoading:connection];
     if (self.downloadedData.length > 0){
         switch (userRequestType){

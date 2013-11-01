@@ -36,6 +36,7 @@ bool photosDownloaded = NO;
 
 -(void)submitRequestPostPhoto:(Photo*)photo{
     photoRequestType = kPostPhoto;
+    NSLog(@"ak: PhotoLoader->submitRequestPostPhoto: %@", photo.name); //ak
     NSURLRequest* urlRequest = [self preparePhotoRequestForPostPhoto:photo];
     [self submitPhotoRequest:urlRequest];
 }
@@ -153,6 +154,7 @@ bool photosDownloaded = NO;
 }
 
 -(void)handlePostPhoto{
+    NSLog(@"PhotoLoader->handlePostPhoto: [self.delegate PhotoLoader:self didUploadPhoto:photo]");
     NSError* error;
     NSDictionary* photodict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (photodict != nil){
@@ -165,6 +167,7 @@ bool photosDownloaded = NO;
 }
 
 -(void)handleGetPhotoWithId{
+    NSLog(@"PhotoLoader->handleGetPhotoWithId");
     NSError* error;
     NSDictionary* photodict = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (photodict != nil){
@@ -191,6 +194,7 @@ bool photosDownloaded = NO;
 
 
 -(void)handleGetPhotosForGroup{
+    NSLog(@"PhotoLoader->handleGetPhotosForGroup");
     NSError* error;
     NSArray* photosJSON = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     if (photosJSON != nil){
@@ -214,6 +218,7 @@ bool photosDownloaded = NO;
 #pragma mark NSURLConnectionDataDelegate methods
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
+    NSLog(@"PhotoLoader->connectionDidFinishLoading, photoRequestType: %i", photoRequestType);
     [super connectionDidFinishLoading:connection];
     //DLog(@"self.downloadedData.length=%i", self.downloadedData.length);
     if (self.downloadedData.length > 0){

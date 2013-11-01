@@ -17,7 +17,7 @@
 #import "Group.h"
 #import "User.h"
 
-
+    
 
 @implementation DataLoader
 @synthesize postRequestType;
@@ -430,16 +430,16 @@ sqlite3* database;
 -(int)submitSQLRequestCheckPanelsDownloadedForGroup:(NSString*)groupHashId{
     
     __block int rowCount=0;
-    //NSLog(@"DataLoader. submitSQLRequestCheckPanelsDownloadedForGroup. databaseUpdating=%d, groupHashId=%@", databaseUpdating, groupHashId);
+
     if(databaseUpdating)
     {
         dispatch_async([self dispatchQueue], ^(void) {
         
-        //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
+
         {
-            //NSString *querySQL = [NSString stringWithFormat: @"SELECT address, phone FROM contacts WHERE name=\"%@\"", name.text];
+
             NSString *retrieveSQL = [NSString stringWithFormat: @"select panelsdownloaded from groups where grouphashid=\"%@\"", groupHashId];
-            //NSLog(@"submitSQLRequestCheckPanelsDownloadedForGroup.retrieveSQL=%@", retrieveSQL);
+
             const char* sqlStatement = [retrieveSQL UTF8String];
             sqlite3_stmt *statement;
             
@@ -588,7 +588,7 @@ sqlite3* database;
 }
 
 -(int)submitSQLRequestCheckPhotosDownloadedForGroup:(NSString*)groupHashId{
-    
+    NSLog(@"ak:DataLoader->submitSQLRequestCheckPhotoDownloadedForGroup:grouoHashId");//ak
     __block int rowCount=0;
     //NSLog(@"DataLoader. submitSQLRequestCheckPhotosDownloadedForGroup. databaseUpdating=%d, groupHashId=%@", databaseUpdating, groupHashId);
     if(databaseUpdating){
@@ -777,7 +777,7 @@ sqlite3* database;
 
 
 -(int)submitSQLRequestCheckPhotoExistsLocal:(int)photoId
-{
+{NSLog(@"ak: DataLoader->submitSQLRequestCheckPhotoExistsLocal"); //ak
     __block int rowCount=0;
     
     //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
@@ -815,7 +815,7 @@ sqlite3* database;
 
 
 -(int)submitSQLRequestCheckPhotoExists:(int)photoId
-{
+{NSLog(@"ak: DataLoader->submitSQLRequestCheckPhotoExists:photoId"); //ak
     __block int rowCount=0;
     //NSLog(@"submitSQLRequestCheckResourceExists. resourceId=%i, databaseUpdating=%d", resourceId, databaseUpdating);
     if(databaseUpdating)
@@ -1127,7 +1127,7 @@ sqlite3* database;
 }
 
 -(NSArray*)convertPhotoSQLIntoPhoto:(int)photoId{
-    
+    NSLog(@"ak: DataLoader->convertPhotoSQLIntoPhoto:photoID"); //ak
     NSMutableArray* photos = [[NSMutableArray alloc] init];
     //NSLog(@"DataLoader.convertPhotosSQLIntoPhotos. databaseUpdating=%d", databaseUpdating);
     if(databaseUpdating){
@@ -1419,7 +1419,7 @@ sqlite3* database;
 
 -(int)submitSQLRequestCheckPanelExistsSync:(int)panelId{
     
-
+    NSLog(@"ak: DataLoader->submitSQLRequestCheckPanelExistsSync:panelId");//ak
     __block int rowCount=0;
     
     //dispatch_async([self dispatchQueue], ^(void) {
@@ -1456,12 +1456,13 @@ sqlite3* database;
         }//end if(sqlite3_open([databasePath UTF8String], &database) == SQLITE_OK)
         
     //});
+    NSLog(@"panelExists: %i, panelID: %i", rowCount, panelId);
     return rowCount;
 }
 
 
 -(int)submitSQLRequestCheckPanelExists:(int)panelId{
-
+    NSLog(@"ak: DataLoader->submitSQLRequestCheckPanelExists:panelId");//ak
     //NSLog(@"DataLoader.submitSQLRequestCheckPanelExists.databaseUpdating=%d, panelId=%i", databaseUpdating, panelId);
     __block int rowCount=0;
     //__block int placementCount=0;
@@ -1556,12 +1557,13 @@ sqlite3* database;
     }//end else
     
     //return panelDownloaded;
+    NSLog(@"panelExists: %i, panelID: %i", rowCount, panelId);
     return rowCount;
 }
 
 
 -(int)submitSQLRequestCheckPanelExistsLocal:(int)panelId{
-    
+    NSLog(@"ak: DataLoader->submitSQLRequestCheckPanelExistsLocal:panelId");
     //NSLog(@"DataLoader.submitSQLRequestCheckPanelExists.databaseUpdating=%d, panelId=%i", databaseUpdating, panelId);
     __block int rowCount=0;
    //if(sqlite3_open([databasePathStatic UTF8String], &database) == SQLITE_OK)
@@ -1600,7 +1602,7 @@ sqlite3* database;
 
 
 -(int)submitSQLRequestGetAssetsForPanel:(int)panelId{
-    
+    NSLog(@"ak: DataLoader->submitSQLRequestGetAssetsForPanel:panelId");//ak
 
     __block int rowCount=0;
     __block float numPlacements=-1;
@@ -1691,7 +1693,7 @@ sqlite3* database;
 
 
 -(int)submitSQLRequestGetAssetsForPanelLocal:(int)panelId{
-    
+    NSLog(@"ak: DataLoader->submitSQLRequestGetAssetsForPanelLocal:panelId"); //ak
     
     __block int rowCount=0;
     __block float numPlacements=-1;
@@ -1799,6 +1801,7 @@ sqlite3* database;
 
 
 -(int)submitSQLRequestCountPanelsForGroup:(NSString*)groupHashId{
+    NSLog(@"ak: DataLoader->submitSQLRequestCountPanelsorGroup");//ak
     __block int rowCount=0;
     if(databaseUpdating){
         dispatch_async([self dispatchQueue], ^(void) {
@@ -1859,7 +1862,7 @@ sqlite3* database;
 }
 
 -(void)submitSQLRequestSavePanelsWithAssetsForGroup:(NSArray*)panels andGroupHashId:(NSString*)groupHashId{
-    
+    NSLog(@"ak: DataLoader->submitSQLReuestSavePanelsWithAssetsForGroup"); //ak
     dispatch_async([self dispatchQueue], ^(void) {
         sqlite3_stmt    *statement;
         //const char *dbpath = [databasePathStatic UTF8String];
@@ -2047,7 +2050,7 @@ sqlite3* database;
 }
 
 -(void)submitSQLRequestSaveAssetsForPanel:(int)panelId andGroupHashId:(NSString*)groupHashId andPlacements:(NSArray*)placements andAnnotations:(NSArray*)annotations
-{
+{NSLog(@"DataLoader->submitSQLRequestSaveAssetsForPanel:panelId:groupHashId:placements:annotations");//ak
     //NSLog(@"submitSQLRequestSaveAssetsForPanel. panelId=%i", panelId);
     //NSLog(@"DataLoader.submitSQLRequestSaveAssetsForPanel. panelId=%i, databaseUpdating=%d, placements=%i, annotations=%i", panelId, databaseUpdating, [placements count], [annotations count]);
     if(panelId>0 && placements!=nil && annotations!=nil)
@@ -2248,7 +2251,7 @@ sqlite3* database;
 
 
 -(void)submitSQLRequestSaveResources:(NSArray*)resources andThemeId:(int)themeId
-{
+{NSLog(@"DataLoader->submitSQLRequestSaveResources:resources:themeId");//ak
     if(resources!=nil){
         if([resources count]>0){
             dispatch_async([self dispatchQueue], ^(void) {
@@ -2552,7 +2555,7 @@ sqlite3* database;
 
 -(void)submitSQLRequestSavePanelsForGroup:(NSArray*)panels andGroupHashId:(NSString*)groupHashId{
     //NSLog(@"submitSQLRequestSavePanelsForGroup.");
-
+    NSLog(@"ak: DataLoader->submitSQLRequestSavePanelsForGroup");//ak
     dispatch_async([self dispatchQueue], ^(void) {
     sqlite3_stmt    *statement;
     //const char *dbpath = [databasePathStatic UTF8String];
@@ -2764,6 +2767,7 @@ sqlite3* database;
 
 
 -(void)submitSQLRequestSaveAllPhotos:(NSArray*)photos andGroupHashId:(NSString*)groupHashId{
+    NSLog(@"DataLoader->submitSQLRequestSaveAllPhotos");
     if([photos count]>0)
     {
         dispatch_async([self dispatchQueue], ^(void) {
@@ -2855,6 +2859,7 @@ sqlite3* database;
 }
 
 -(void)submitSQLRequestSavePhotos:(NSArray*)photos andGroupHashId:(NSString*)groupHashId{
+    NSLog(@"ak: DataLoader->submitSQLRequestSavePhotos:photos:groupHashId"); //ak
     if([photos count]>0)
     {
         dispatch_async([self dispatchQueue], ^(void) {
@@ -3681,6 +3686,7 @@ sqlite3* database;
 
 
 -(NSArray*)convertPhotosSQLIntoPhotos:(NSString*)groupHashId{
+    NSLog(@"ak: DataLoader->convertPhotosSQLIntoPhoto:groupId");//ak
     NSMutableArray* photos = [[NSMutableArray alloc] init];
     //NSLog(@"DataLoader.convertPhotosSQLIntoPhotos. databaseUpdating=%d", databaseUpdating);
     if(databaseUpdating){
@@ -4092,7 +4098,7 @@ sqlite3* database;
 
 
 -(void)submitSQLRequestUpdateCurrentGroup:(NSString*)groupHashId andUserId:(int)userId
-{
+{NSLog(@"DataLoader->submitSQLRequestUpdateCurrentGroup:groupId:userId");//ak
     dispatch_async([self dispatchQueue], ^(void) {
         
         sqlite3_stmt    *statement;
@@ -4687,6 +4693,34 @@ sqlite3* database;
 }
 */
 
+
+
+//ak start
+
+-(void)removeTempPanelsAndPhoto:(int)tempID
+{
+    NSString *deletePanelStatementNS = [NSString stringWithFormat: @"DELETE FROM PANELS WHERE panelId = %i", tempID];
+    [self removeFromDB:deletePanelStatementNS];
+    
+    NSString *deletePhotoStatementNS = [NSString stringWithFormat: @"DELETE FROM PHOTOS WHERE photoId = %i", tempID];
+    [self removeFromDB:deletePhotoStatementNS];
+}
+
+-(void) removeFromDB: (NSString *)deleteStatementNS{
+    const char *deleteStatement = [deleteStatementNS UTF8String];
+    sqlite3_stmt *statement;
+    
+    if( sqlite3_prepare_v2(database, deleteStatement, -1, &statement, NULL) == SQLITE_OK ){
+        sqlite3_step(statement);
+        NSLog(@"ak: Delete successfully executed: %@", deleteStatementNS);
+    }
+    
+    sqlite3_finalize(statement);
+    statement = NULL;
+}
+
+//ak end
+
 #pragma mark NSURLConnection functions.
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
        self.downloadedData = [NSMutableData data];
@@ -4703,5 +4737,6 @@ sqlite3* database;
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{
     self.dataFeedConnection = nil;
 }
+
 
 @end

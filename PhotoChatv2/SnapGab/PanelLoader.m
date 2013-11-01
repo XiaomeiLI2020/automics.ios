@@ -55,13 +55,14 @@ int currentNumPanels = 0;
     
     //NSLog(@"currentGroupHashId =%@", currentGroupHashId);
     int panelsDownloaded = [self submitSQLRequestCheckPanelsDownloadedForGroup:currentGroupHashId];
-    //NSLog(@"PanelLoader.submitRequestGetPanelsForGroup.panelsDownloaded=%i", panelsDownloaded);
+    NSLog(@"PanelLoader.submitRequestGetPanelsForGroup.panelsDownloaded=%i", panelsDownloaded);
     
     if(panelsDownloaded==0 && [self isReachable])
     {
         panelRequestType = kGetGroupPanels;
         //panelsDownloaded = YES;
         NSURLRequest* urlRequest = [self preparePanelRequestForGroup];
+        NSLog(@"ak: PanelLoader->submitGetPanelsForGroup: URL: %@", [urlRequest description]);
         [self submitPanelRequest:urlRequest];
     }
     else if(panelsDownloaded==1)
@@ -69,6 +70,7 @@ int currentNumPanels = 0;
         //NSLog(@"PanelLoader. Panels downloaded from the database.");
         //NSLog(@"[self submitSQLRequestCountPanelsForGroup:groupId]=%i", [self submitSQLRequestCountPanelsForGroup:groupId]);
         NSArray* panels = [self convertPanelsSQLIntoPanels:currentGroupHashId];
+        
         if(panels!=nil && [panels count]>0)
         {
             currentNumPanels = [panels count];
@@ -91,6 +93,7 @@ int currentNumPanels = 0;
         //NSLog(@"Panel#%i downloading from the server", panelId);
         panelRequestType = kGetPanel;
         NSURLRequest* urlRequest = [self preparePanelRequestForGetPanelWithId:panelId];
+        NSLog(@"ak: PanelLoader->submitGetPanelsForGroup: URL: %@", [urlRequest description]);
         [self submitPanelRequest:urlRequest];
     }
     //If panels and assets are already downloadeded, or if the internet is not accessible but the panel without assets has been downloaded earlier
@@ -174,6 +177,7 @@ int currentNumPanels = 0;
 
 
 -(void)handleGetPanelsForGroupResponse{
+    NSLog(@"ak: PanelLoader->handleGetPanelsForGroupResponse");
     NSError* error;
     NSArray* jsonArray = [NSJSONSerialization JSONObjectWithData:self.downloadedData options:NSJSONReadingMutableContainers error:&error];
     //NSLog(@"handleGetPanelsForGroupResponse. [jsonArray count]=%i", [jsonArray count]);
@@ -352,7 +356,7 @@ int currentNumPanels = 0;
 #pragma mark NSURLConnectionDataDelegate methods
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
-
+    NSLog(@"PanelLoader->connectionDidFinishLoading, panelRequestType: %i", panelRequestType);
     [super connectionDidFinishLoading:connection];
     //NSLog(@"self.downloadedData.length=%i", self.downloadedData.length);
     if (self.downloadedData.length > 0){

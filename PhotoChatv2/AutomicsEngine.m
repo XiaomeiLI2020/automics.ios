@@ -7,6 +7,7 @@
 //
 
 #import "AutomicsEngine.h"
+#import "OfflineSupport.h"
 
 @implementation AutomicsEngine
 
@@ -35,7 +36,7 @@
                 }];
     
     //[self enqueueOperation:op];
-    
+ 
     return op;
 }
 

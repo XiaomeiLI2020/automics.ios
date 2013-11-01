@@ -19,7 +19,8 @@
 #import "ImageDownloader.h"
 #import "GUIConstant.h"
 #import "Annotation.h"
-
+#import "MainScrollSelector.h"
+#import "AppDelegate.h"
 
 #import <QuartzCore/QuartzCore.h>
 #import "ThumbnailView.h"
@@ -156,8 +157,8 @@ UIActivityIndicatorView *activityIndicator;
             //NSLog(@"singleTap. page= %i and currentPage=%i", page, currentPage);
 
             //Remove bubbles and resources from the current view
-            [self removeAllBubbles];
-            [self removeAllResources];
+            [self removeAllBubbles]; //ak uncommented
+            [self removeAllResources]; //ak uncommented
             
             // Scroll to the most rcently added panel in panel scrollview
             [panelScrollView scrollItemToVisible:(currentPage)];
@@ -251,6 +252,7 @@ UIActivityIndicatorView *activityIndicator;
     fileMgr = [NSFileManager defaultManager];
     ///Library/Caches
     documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+
     //documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches"];
 }
 
@@ -308,6 +310,7 @@ UIActivityIndicatorView *activityIndicator;
     //[self initiateScrollViews];
 
     //[panelsLoader submitRequestGetPanelsForGroup];
+    NSLog(@"ak: PanelViewController->viewDidLoad"); //ak
 }
 
 
@@ -315,7 +318,7 @@ UIActivityIndicatorView *activityIndicator;
 {
     //NSLog(@"PanelViewController.viewWillAppear");
     [super viewWillAppear:YES];
-
+    NSLog(@"ak: PanelViewController->viewWillAppear");
     //Remove any speech bubbles, resources and scrollviews
     for (UIView *subview in self.view.subviews)
     {
@@ -366,22 +369,20 @@ UIActivityIndicatorView *activityIndicator;
 
 -(void)initiateScrollViews
 {
-    //NSLog(@"initiateScrollView.numPanels=%i", numPanels);
+    NSLog(@"ak: PanelViewController->initiateScrollViews"); //ak
+
     // Add panels scrollview
     CGRect panelFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, panelScrollObjWidth, panelScrollObjHeight);
     CGSize panelSize = CGSizeMake(panelWidth, panelHeight);
-    //panelScrollView = [[MainScrollSelector alloc] initWithFrame:panelFrame andItemSize:panelSize andNumItems:numPanels];
     panelScrollView = [[MainScrollSelector alloc] initWithFrame:panelFrame andItemSize:panelSize];
     panelScrollView.tag=0;
     panelScrollView.delegate=self;
     [self.view addSubview:panelScrollView];
     
-    //NSLog(@"initiateScrollView.panelScrollView.subviews.count=%i", [[panelScrollView subviews] count]);
-    
     // Add thumbnails scrollview
     CGRect thumbFrame = CGRectMake(thumbnailScrollXOrigin, thumbnailScrollYOrigin, thumbnailScrollObjWidth, thumbnailScrollObjHeight);
     CGSize thumbnailSize = CGSizeMake(thumbnailWidth, thumbnailHeight);
-    //thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize andNumItems:numPanels];
+
     thumbnailScrollView = [[MainScrollSelector alloc] initWithFrame:thumbFrame andItemSize:thumbnailSize];
     thumbnailScrollView.tag=1;
     thumbnailScrollView.delegate=self;
@@ -389,7 +390,7 @@ UIActivityIndicatorView *activityIndicator;
 }
 
 -(void)cleanupData{
-    //NSLog(@"cleanUpData");
+    NSLog(@"ak: cleanUpData does nothing");
   
 }
 
@@ -425,8 +426,8 @@ UIActivityIndicatorView *activityIndicator;
     //Remove bubbles and resources from the panel when the scrolling starts
     if(scrollView.tag==0)
     {
-        [self removeAllBubbles];
-        [self removeAllResources];
+        [self removeAllBubbles]; //ak, uncommented
+        [self removeAllResources]; //ak, uncommented
     }//end if
 
 }
@@ -434,6 +435,7 @@ UIActivityIndicatorView *activityIndicator;
 
 -(void)alignPageInPanelScrollView
 {
+    NSLog(@"ak: PanelViewController->alignPageInPanelScrollView");
     thumbMode = NO;
     //NSLog(@"PanelViewController.alignPageInPanelScrollView.numPanels=%i", numPanels);
     if([self.panels count]>0)
@@ -462,8 +464,8 @@ UIActivityIndicatorView *activityIndicator;
         if(page!=currentPage)
         {
             //NSLog(@"alignPageInPanelScrollView. page=%i, currentPage=%i. annotations & placements removed.", page, currentPage);
-            [self removeAllBubbles];
-            [self removeAllResources];
+            [self removeAllBubbles]; //ak, uncommented
+            [self removeAllResources]; //ak, uncommented
         }
         
         //NSLog(@"alignPageInPhotoTableView.page=%i, and currentPage=%i", page, currentPage);
@@ -505,7 +507,7 @@ UIActivityIndicatorView *activityIndicator;
                     NSString* imageName = [NSString stringWithFormat:@"panelPhoto%i.png", currentPanel.photo.photoId];
                     NSString* currentFile = [documentsDirectory stringByAppendingPathComponent:imageName];
                     BOOL fileExists = [fileMgr fileExistsAtPath:currentFile];
-                    
+                    NSLog(@"ak: currentFile: %@", currentFile);
 
                     //NSLog(@"alignPageinPanelScrollView. Panel[%i].[%@] File exists=%d, currentPanel.photo.imageURL=%@", currentPanel.panelId, imageName, fileExists, currentPanel.photo.imageURL);
                     //NSLog(@"alignPageinPanelScrollView. Panel[%i].[%@] File exists=%d, currentPanel.photo.photoId=%i, currentPage=%i", currentPanel.panelId, imageName, fileExists, currentPanel.photo.photoId, currentPage);
@@ -514,11 +516,13 @@ UIActivityIndicatorView *activityIndicator;
                     if(!fileExists)
                     {
                         //[imageView setImageWithURL:[NSURL URLWithString:currentPanel.photo.imageURL] placeholderImage:nil];
-                        
-                        [imageView setImageWithURL:[NSURL URLWithString:[currentPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+                        NSLog(@"ak: file not exisit, must load from here: %@",currentPanel.photo.imageURL);
+                        [imageView setImageWithURL:[NSURL URLWithString:[currentPanel.photo.imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] // ak: using regaular network to download image and cache it
                                    placeholderImage:nil
                                           completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
                          {
+                             NSLog(@"ak: file downloaded and set and will be stored to file");
+NSLog(@"%@",error);//Duncan
                              //NSLog(@"alignPageinPanelScrollView.saving image=%@ for panel[%i], currentPage=%i", imageName, currentPanel.panelId, currentPage);
                              NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
                              [data1 writeToFile:currentFile atomically:YES];
@@ -551,7 +555,7 @@ UIActivityIndicatorView *activityIndicator;
                                              completed:^(UIImage *imageDownloaded, NSError *error, SDImageCacheType cacheType)
                              {
                                  //NSLog(@"alignPageinPanelScrollView.saving image=%@ for panel[%i], currentPage=%i", imageName, currentPanel.panelId, currentPage);
-                                 NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)];
+                                 NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(imageDownloaded)]; //ak
                                  [data1 writeToFile:currentFile atomically:YES];
                                  
                              }];
@@ -566,12 +570,11 @@ UIActivityIndicatorView *activityIndicator;
                     
                     imageView.frame = CGRectMake(currentPage*panelScrollObjWidth, 0, panelScrollObjWidth, panelScrollObjHeight);
                     imageView.tag = currentPage;	// tag our images for later use when we place them in serial fashion
-                    
                     [imageView setContentMode:UIViewContentModeScaleAspectFill];
                     imageView.clipsToBounds= YES;
                     //[activityIndicator stopAnimating];
                     // add images to the panel scrollview
-                    [panelScrollView addSubview:imageView];
+                    [panelScrollView addSubview:imageView]; //ak
                     //NSLog(@"alignPageinPanelScrollView. Panel#%i added", currentPage);
                     
                 }//end if(!displayed)
@@ -652,6 +655,7 @@ UIActivityIndicatorView *activityIndicator;
 
 -(void)displayPageInPanelScrollView:(int)page
 {
+    NSLog(@"ak: PanelViewController->displaypageInPanelScrollView");
     //NSLog(@"displayPageInPanelScrollView.page=%i, [panelScrollView.subviews count]=%i", page, [panelScrollView.subviews count]);
     if(page>=0 && page<[self.panels count])
     {
@@ -1344,6 +1348,7 @@ UIActivityIndicatorView *activityIndicator;
 
 -(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
+    NSLog(@"ak: PanelViewController->scrollViewDidEndScrollingAnimation");
     //NSLog(@"scrollViewDidEndScrollingAnimation.scrollView.tag=%i", scrollView.tag);
     if(scrollView.tag==0)
         [self alignPageInPanelScrollView];
@@ -1376,7 +1381,7 @@ UIActivityIndicatorView *activityIndicator;
 
 -(void)newImageNotification
 {
-    NSLog(@"New image uploaded.");
+    NSLog(@"ak: PanelViewController->newImageNotification");
     //[self removeAllBubbles];
     //[self removeAllResources];
     /*
@@ -1397,7 +1402,7 @@ UIActivityIndicatorView *activityIndicator;
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-   
+    NSLog(@"PanelViewController->prepareForSegue");
     if([[segue identifier] isEqualToString:@"addPanelView"])
     {
         PanelAddViewController *pavc = (PanelAddViewController *)[segue destinationViewController];
@@ -1498,6 +1503,7 @@ UIActivityIndicatorView *activityIndicator;
     
     if([[segue identifier] isEqualToString:@"editPanel"])
     {
+        NSLog(@"PanelViewController->prepareforSegue:isEqualToString:editPanel");
         if([self.panels count]>0 && [self.panels count]>currentPage)
         {
             //NSLog(@"editPanel.currentPage=%i", currentPage);
@@ -1514,7 +1520,7 @@ UIActivityIndicatorView *activityIndicator;
                 
                 for (UIView *subview in self.view.subviews)
                 {
-
+                    NSLog(@"ak: %@", [subview description]);//ak
                    
                     //Add Resources
                     if([subview isMemberOfClass:[ResourceView class]])
@@ -1523,8 +1529,14 @@ UIActivityIndicatorView *activityIndicator;
                         
                         if(sbv.angle!=0.00)
                             sbv.transform = CGAffineTransformMakeRotation(0.0);
+                        //ak
+                        CGRect adjustedFrame = CGRectMake(sbv.frame.origin.x, sbv.frame.origin.y+[ResourceLoader adjustmentForResourceFrame],
+                                                          sbv.frame.size.width, sbv.frame.size.height);
                         
-                        ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:sbv.frame andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
+                        //ak end
+                        
+                        ResourceView *new_sbv = [[ResourceView alloc] initWithFrame: adjustedFrame //ak: sbv.frame
+                                                                        andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
                         
                         if(sbv.angle!=0.00)
                             sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
@@ -1534,6 +1546,63 @@ UIActivityIndicatorView *activityIndicator;
                         [pevc.view addSubview:new_sbv];
                     }
                     
+                    //ak: add for edit mode
+                    if([subview isMemberOfClass:[MainScrollSelector class]]){
+                    for (UIView *subsub in subview.subviews) {
+                        //Add Resources
+                        if([subsub isMemberOfClass:[ResourceView class]])
+                        {
+                            ResourceView* sbv =(ResourceView*)subsub;
+                            
+                            if(sbv.angle!=0.00)
+                                sbv.transform = CGAffineTransformMakeRotation(0.0);
+                            
+                            //ak
+                            CGRect adjustedFrame = CGRectMake(sbv.frame.origin.x, sbv.frame.origin.y+[ResourceLoader adjustmentForResourceFrame],
+                                                              sbv.frame.size.width, sbv.frame.size.height);
+                            
+                            //ak end
+                            
+                            ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:adjustedFrame //ak: sbv.frame
+                                                                            andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
+                            
+                            if(sbv.angle!=0.00)
+                                sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
+                            
+                            new_sbv.userInteractionEnabled = YES;
+                            new_sbv.alpha = 0;
+                            [pevc.view addSubview:new_sbv];
+                        }
+                        
+                        if (subsub.tag == currentPage) {
+                            for (UIView *subsubsub in subsub.subviews) {
+                                //Add Resources
+                                if([subsubsub isMemberOfClass:[ResourceView class]])
+                                {
+                                    ResourceView* sbv =(ResourceView*)subsubsub;
+                                    
+                                    if(sbv.angle!=0.00)
+                                        sbv.transform = CGAffineTransformMakeRotation(0.0);
+                                    //a
+                                    CGRect adjustedFrame = CGRectMake(sbv.frame.origin.x, sbv.frame.origin.y+[ResourceLoader adjustmentForResourceFrame],
+                                                                      sbv.frame.size.width, sbv.frame.size.height);
+                                    
+                                    //ak end
+                                    ResourceView *new_sbv = [[ResourceView alloc] initWithFrame:adjustedFrame //ak: sbv.frame
+                                                                                    andResource:sbv.resource andScale:sbv.scale andAngle:sbv.angle];
+                                    
+                                    if(sbv.angle!=0.00)
+                                        sbv.transform = CGAffineTransformMakeRotation(sbv.angle);
+                                    
+                                    new_sbv.userInteractionEnabled = YES;
+                                    new_sbv.alpha = 0;
+                                    [pevc.view addSubview:new_sbv];
+                                }
+                            }
+                        }
+                        
+                    }
+                    }//ak: end
                     
                 }//end for
               
@@ -1549,6 +1618,37 @@ UIActivityIndicatorView *activityIndicator;
                         new_sbv.alpha = 0;
                         [pevc.view addSubview:new_sbv];
                     }
+                    
+                    //ak: addedd for editing mode
+                    if([subview isMemberOfClass:[MainScrollSelector class]]){
+                    for (UIView *subsub in subview.subviews) {
+                        //Add Speech Bubbles
+                        if([subsub isMemberOfClass:[SpeechBubbleView class]])
+                        {
+                            //NSLog(@"edited.speechbubble added.");
+                            SpeechBubbleView* sbv =(SpeechBubbleView*)subsub;
+                            SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
+                            new_sbv.userInteractionEnabled = YES;
+                            new_sbv.alpha = 0;
+                            [pevc.view addSubview:new_sbv];
+                        }
+                        if(subsub.tag == currentPage){
+                            for (UIView *subsubsub in subsub.subviews) {
+                                //Add Speech Bubbles
+                                if([subsubsub isMemberOfClass:[SpeechBubbleView class]])
+                                {
+                                    //NSLog(@"edited.speechbubble added.");
+                                    SpeechBubbleView* sbv =(SpeechBubbleView*)subsubsub;
+                                    SpeechBubbleView *new_sbv = [[SpeechBubbleView alloc] initWithFrame:sbv.frame andText:sbv.textView.text andStyle:sbv.styleId];
+                                    new_sbv.userInteractionEnabled = YES;
+                                    new_sbv.alpha = 0;
+                                    [pevc.view addSubview:new_sbv];
+                                }
+                                
+                            }
+                        }
+                    }
+                    }//ak: end
                 }//end for
                 
             }//end if panel!=nil
@@ -1559,10 +1659,12 @@ UIActivityIndicatorView *activityIndicator;
 
 -(void)loadPanelsToScrollViews
 {
+    NSLog(@"ak: PanelViewController->loadPanelsToScrollView");
     //NSLog(@"PanelViewController.loadPanelsToScrollViews. self.panels.count=%i", [self.panels count]);
     if([self.panels count]>0)
     {
 
+        
         
         panelScrollView.numItems = [panels count];
         [panelScrollView layoutItems];
@@ -1738,15 +1840,16 @@ UIActivityIndicatorView *activityIndicator;
 #pragma mark PanelLoader functions.
 -(void)PanelLoader:(PanelLoader*)loader didFailWithError:(NSError*)error{
     NSLog(@"PanelViewController.Panel failed to load.");
-    //[self performSegueWithIdentifier:@"panelsToMenu" sender:self];
+    //[self performSegueWithIdentifier:@"panelsToMenu" sender:self];s=
+    [self alignPageInPanelScrollView]; //ak
     [activityIndicator stopAnimating];
     
 }
 
 
--(void)PanelLoader:(PanelLoader*)loader didLoadPanels:(NSArray*)panelsLocal{
+-(void)PanelLoader:(PanelLoader*)loader didLoadPanels:(NSArray*)panelsLocal{ //ak: watch here for downloaded content
 
-    
+    NSLog(@"ak: PanelViewController->PanelLoader: didLoadPanels: panelsLocal");
     panels= panelsLocal;
     numPanels = [panelsLocal count];
     //NSLog(@"PanelViewController.didLoadPanels.numPanels=%i", numPanels);
@@ -1773,12 +1876,12 @@ UIActivityIndicatorView *activityIndicator;
     //[photoLoader submitRequestGetPhotosForGroup:@"8fc8a0ed74ea82888c7a37b0f62a105b83d07a12"];
     //NSLog(@"didLoadPanels.numPanels=%i", numPanels);
     //initialzed array to boolean NO. No panel downloaded yet.
-
+    //ak: replace the for loop below with [NSMuttableArray alloc] initWithCapacity:numPanels]
     for (int i=0; i<numPanels;i++)
     {
         NSNumber* panelDownloaded = [NSNumber numberWithBool:NO];
         [downloadedPanels addObject:panelDownloaded];
-        [downloadedPhotos addObject:panelDownloaded];
+        [downloadedPhotos addObject:panelDownloaded]; 
     }
     
     //NSLog(@"PanelViewController.didLoadPanels.initialized=%d", initialized);
@@ -1794,8 +1897,8 @@ UIActivityIndicatorView *activityIndicator;
 
 -(void)PanelLoader:(PanelLoader*)loader didLoadRefreshedPanels:(NSArray*)panelsLocal{
     
-
-    NSLog(@"PanelViewController.didLoadRefreshedPanels. currentPanels=%i, [panelsLocal count]=%i", [panels count], [panelsLocal count]);
+    NSLog(@"ak: PanelViewController->PanelLoader: didLoadRefreshedPanels: panelsLocal");
+    //NSLog(@"PanelViewController.didLoadRefreshedPanels. currentPanels=%i, [panelsLocal count]=%i", [panels count], [panelsLocal count]);
     //NSMutableArray *newPanels = [NSMutableArray arrayWithCapacity:[panels count] + [panelsLocal count]];
     [self removeAllBubbles];
     [self removeAllResources];
@@ -1876,6 +1979,7 @@ UIActivityIndicatorView *activityIndicator;
 //-(void)PanelLoader:(PanelLoader *)loader didLoadPanel:(Panel *)panel forObject:(id)obj
 -(void)PanelLoader:(PanelLoader*)loader didLoadPanel:(Panel*)panel
 {
+    NSLog(@"PanelViewController->PanelLoader: didLoadPanel: panel");
     //NSLog(@"didLoadPanel. thumbmode=%d", thumbMode);
     //NSLog(@"PanelViewController. didLoadPanel. currentPage=%i, thumbnailIndex=%i, thumbmode=%d", currentPage, thumbnailIndex, thumbMode);
     if (panel!= nil)
@@ -2029,7 +2133,19 @@ UIActivityIndicatorView *activityIndicator;
                                 SpeechBubbleView* sbv = [[SpeechBubbleView alloc] initWithFrame:xywh andText:text andStyle:styleId];
                                 sbv.userInteractionEnabled = NO;
                                 sbv.alpha = 0.0f;
-                                [self.view addSubview:sbv];
+                                //ak: speech bubble is going to be added to the view
+                                /*for (UIView *uiv in self.view.subviews) {
+                                    if (uiv.tag == 0 && [uiv isKindOfClass:[MainScrollSelector class]]) {
+                                        for (UIView *ui in uiv.subviews) {
+                                            if (ui.tag == currentPage) {
+                                                [ui addSubview:sbv];
+                                            }
+                                        }
+                                    }
+                                }*/
+                                //end added by //ak
+                                
+                                [self.view addSubview:sbv]; //ak: uncommented
                                 //NSLog(@"PanelViewController. didloadPanel. currentPage=%i, annotation added.", currentPage);
                                 [UIView transitionWithView:self.view
                                                   duration:0.25
@@ -2212,6 +2328,7 @@ UIActivityIndicatorView *activityIndicator;
 
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResource:(Resource*)resource
 {
+    NSLog(@"ak: PanelViewController->ResourceLoader: didLoadResource: resource");
     //NSLog(@"Resource downloaded.thumbMode=%d, resourceId=%i", thumbMode, resource.resourceId);
     if (resource != nil)
     {
@@ -2253,8 +2370,12 @@ UIActivityIndicatorView *activityIndicator;
                         Placement* placement = [resourcePanel.placements objectAtIndex:placementCounter];
                         if(placement!=nil)
                         {
+                            float adjustment = 0.0;
+                            if([self isKindOfClass:[PanelViewController class]]){
+                                adjustment = [ResourceLoader adjustmentForResourceFrame];
+                            }
                             resourceFrame = CGRectMake(placement.xOffset,
-                                                       placement.yOffset,
+                                                       placement.yOffset-adjustment, //ak
                                                        decoratorWidth, decoratorHeight);
                             defaultScale = placement.scale;
                             defaultAngle = placement.angle;
@@ -2269,7 +2390,22 @@ UIActivityIndicatorView *activityIndicator;
                 //NSLog(@"resourceview added. currentPage=%i", currentPage);
                 ResourceView *rv = [[ResourceView alloc] initWithFrame:resourceFrame andResource:resource andScale:defaultScale andAngle:defaultAngle];
                 rv.userInteractionEnabled = NO;
-                [self.view addSubview:rv];
+                
+                //ak block to add resource
+                /*for (UIView *uiv in self.view.subviews) {
+                    if (uiv.tag == 0 && [uiv isKindOfClass:[MainScrollSelector class]]) {
+                        for (UIView *ui in uiv.subviews) {
+                            if (ui.tag == currentPage) {
+                                
+                                [ui addSubview:rv];
+                            }
+                        }
+                    }
+                }*/
+                //ak end block
+                
+                
+                [self.view addSubview:rv]; //ak removed by Kwamena. add add bubbles and resources to the UIImageView not the scroll view
                 //NSLog(@"PanelViewController.didloadResource.currentPage=%i, resource.resourceId=%i added", currentPage, resource.resourceId);
             }//end if(!thumbMode)
             
@@ -2561,6 +2697,7 @@ UIActivityIndicatorView *activityIndicator;
 
 #pragma mark ImageLoader functions.
 -(void)imageDownloader:(ImageDownloader*)imageDownloader didLoadImage:(UIImage*)image{
+    NSLog(@"ak: PanelViewController->imageDownloader");
     if (image){
 
         // ResourceImageView* resourceImage = [[ResourceImageView alloc] initWithFrame:CGRectMake(0.0,40,320,320) image:image];

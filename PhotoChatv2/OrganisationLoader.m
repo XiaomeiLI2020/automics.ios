@@ -137,6 +137,7 @@ int const kGetThemesForOrganisation = 2;
 
 #pragma mark NSURLConnectionDataDelegate methods
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection{
+    NSLog(@"Organization->connectionDidFinishLoading organizationRequestType: %i",organisationRequestType);
     [super connectionDidFinishLoading:connection];
     if (self.downloadedData.length > 0){
         switch (organisationRequestType){

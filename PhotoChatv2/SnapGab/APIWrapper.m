@@ -13,12 +13,12 @@
 
 
 +(NSString*)getURLForGetPanels{
-    return [NSString stringWithFormat:@"%@/%@/%@", kBaseURL,kAPIURL,kPanelURL];
+    return [NSString stringWithFormat:@"%@/%@/%@?sid=%i", kBaseURL,kAPIURL,kPanelURL, [APIWrapper genRandomID]];
 }
 
 +(NSString*)getURLForGetPanelWithId:(int)panelId{
     NSString* inputId = [NSString stringWithFormat:@"%d", panelId];
-    return [NSString stringWithFormat:@"%@/%@/%@/%@", kBaseURL,kAPIURL,kPanelURL,inputId];
+    return [NSString stringWithFormat:@"%@/%@/%@/%@?sid=%i", kBaseURL,kAPIURL,kPanelURL,inputId, [APIWrapper genRandomID]];
 }
 
 +(NSString*)getURLForPostNotification{
@@ -35,7 +35,7 @@
 
 +(NSString*)getURLForGetPhotoWithId:(int)photoId{
     NSString* inputId = [NSString stringWithFormat:@"%d", photoId];
-    return [NSString stringWithFormat:@"%@/%@/%@/%@", kBaseURL,kAPIURL,kPhotoURL,inputId];
+    return [NSString stringWithFormat:@"%@/%@/%@/%@?sid=%i", kBaseURL,kAPIURL,kPhotoURL,inputId, [APIWrapper genRandomID]];
 }
 
 +(NSString*)getAbsoluteURLUsingImageRelativePath:(NSString*)imageURL{
@@ -44,7 +44,7 @@
 
 +(NSString*)getURLForGetResourcesWithTheme:(int)themeId{
     NSString* inputId = [NSString stringWithFormat:@"%d", themeId];
-    return [NSString stringWithFormat:@"%@/%@/%@/%@/%@", kBaseURL,kAPIURL,kThemeURL,inputId, kResourceURL];
+    return [NSString stringWithFormat:@"%@/%@/%@/%@/%@?sid=%i", kBaseURL,kAPIURL,kThemeURL,inputId, kResourceURL, [APIWrapper genRandomID]];
 }
 
 +(NSString*)getURLForGetResourceWithResourceId:(int)resourceId{
@@ -73,7 +73,7 @@
 
 +(NSString*)getURLForGetComicWithId:(int)comicId{
     NSString* inputId = [NSString stringWithFormat:@"%d", comicId];
-    return [NSString stringWithFormat:@"%@/%@/%@/%@", kBaseURL,kAPIURL,kComicURL,inputId];
+    return [NSString stringWithFormat:@"%@/%@/%@/%@?sid=%i", kBaseURL,kAPIURL,kComicURL,inputId, [APIWrapper genRandomID]];
 }
 
 +(NSString*)getURLForPostLogin{
@@ -132,6 +132,12 @@
 
 +(NSString*)getURLForPostUserWithId:(int)userId{
         return [NSString stringWithFormat:@"%@/%@/%@/%i", kBaseURL, kAPIURL, kUserURL, userId];
+}
+
+
++(int) genRandomID{
+    NSTimeInterval timeStamp = [[NSDate date] timeIntervalSince1970];
+    return [[NSString stringWithFormat:@"%0.0f", timeStamp] intValue];
 }
 
 
