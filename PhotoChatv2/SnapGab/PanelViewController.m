@@ -2329,6 +2329,11 @@ NSLog(@"%@",error);//Duncan
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResource:(Resource*)resource
 {
     NSLog(@"ak: PanelViewController->ResourceLoader: didLoadResource: resource");
+    if (thumbMode) {
+        NSLog(@"ak: thumbMode: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~> %i ", thumbMode);
+        NSLog(@"ak: thumbMode: ~~~~~~~~~~~~~~> %@ ", [resource thumbURL]);
+    }
+    
     //NSLog(@"Resource downloaded.thumbMode=%d, resourceId=%i", thumbMode, resource.resourceId);
     if (resource != nil)
     {
@@ -2371,12 +2376,13 @@ NSLog(@"%@",error);//Duncan
                         if(placement!=nil)
                         {
                             float adjustment = 0.0;
-                            if([self isKindOfClass:[PanelViewController class]]){
-                                adjustment = [ResourceLoader adjustmentForResourceFrame];
+                            if([self isKindOfClass:[PanelViewController class]] && thumbMode){
+                                adjustment = 25.0;//[ResourceLoader adjustmentForResourceFrame];
                             }
                             resourceFrame = CGRectMake(placement.xOffset,
                                                        placement.yOffset-adjustment, //ak
                                                        decoratorWidth, decoratorHeight);
+                            
                             defaultScale = placement.scale;
                             defaultAngle = placement.angle;
                         }//end if(placement!=nil)

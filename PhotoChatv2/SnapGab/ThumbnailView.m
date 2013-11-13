@@ -322,7 +322,7 @@ int placementCounter;
                                 if(placement!=nil)
                                 {
                                     resourceFrame = CGRectMake(placement.xOffset/4.0,
-                                                               placement.yOffset/4.0,
+                                                               (placement.yOffset/4.0) - 10.0,
                                                                decoratorWidth, decoratorHeight);
                                     defaultScale = placement.scale/4.0;
                                     defaultAngle = placement.angle;
