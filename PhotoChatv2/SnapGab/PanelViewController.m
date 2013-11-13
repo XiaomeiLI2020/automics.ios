@@ -741,7 +741,6 @@ NSLog(@"%@",error);//Duncan
                 imageView.tag = page;	// tag our images for later use when we place them in serial fashion
                 imageView.clipsToBounds= YES;
                 // add images to the panel scrollview
-                
                 [panelScrollView addSubview:imageView];
             }//end if panel!=nil
         }//end if(!displayed)
@@ -2329,10 +2328,6 @@ NSLog(@"%@",error);//Duncan
 -(void)ResourceLoader:(ResourceLoader *)loader didLoadResource:(Resource*)resource
 {
     NSLog(@"ak: PanelViewController->ResourceLoader: didLoadResource: resource");
-    if (thumbMode) {
-        NSLog(@"ak: thumbMode: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~> %i ", thumbMode);
-        NSLog(@"ak: thumbMode: ~~~~~~~~~~~~~~> %@ ", [resource thumbURL]);
-    }
     
     //NSLog(@"Resource downloaded.thumbMode=%d, resourceId=%i", thumbMode, resource.resourceId);
     if (resource != nil)
@@ -2377,12 +2372,12 @@ NSLog(@"%@",error);//Duncan
                         {
                             float adjustment = 0.0;
                             if([self isKindOfClass:[PanelViewController class]] && thumbMode){
-                                adjustment = 25.0;//[ResourceLoader adjustmentForResourceFrame];
+                                adjustment = 0.0;//[ResourceLoader adjustmentForResourceFrame];
                             }
                             resourceFrame = CGRectMake(placement.xOffset,
                                                        placement.yOffset-adjustment, //ak
                                                        decoratorWidth, decoratorHeight);
-                            
+                            NSLog(@"ak: adjustmemt ~~~~~~~~~~~~~~~~~~> %f ", resourceFrame.origin.y - self.view.frame.origin.y);
                             defaultScale = placement.scale;
                             defaultAngle = placement.angle;
                         }//end if(placement!=nil)

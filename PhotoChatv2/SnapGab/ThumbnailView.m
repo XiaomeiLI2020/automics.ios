@@ -247,6 +247,7 @@ int placementCounter;
 
 -(void)loadAnnotations:(Panel*)thumbnailPanel
 {
+    NSLog(@"ak: thumbNailPanelID ~~~~~~~~~~~~~> %i", thumbnailPanel.panelId);
     if (panel != nil)
     {
         if(panel.annotations!=nil)
@@ -254,8 +255,38 @@ int placementCounter;
             for(Annotation* annotation in panel.annotations)
             {
                 //NSLog(@"annotation=%@", annotation.text);
-                CGRect xywh = CGRectMake(annotation.xOffset/5.0,
-                                         annotation.yOffset/5.0,0,0);
+
+                NSLog(@"ak: %i~~~~~~~~~~~~~~~~~~~> %@, %i", thumbnailPanel.panelId, annotation.text, annotation.bubbleStyle );
+                float adjustX = 10.0;
+                float adjustY = -5;//-5.0;
+                
+                if (annotation.bubbleStyle == 4) { // 8 == round bubble with tip bottom left
+                    adjustX = 10;
+                    adjustY = -5;
+                }
+                
+                if (annotation.bubbleStyle == 8) { // 8 == rounded square without tip
+                    adjustX = 10;
+                    adjustY = 2;
+                    
+                }
+                
+                if (annotation.bubbleStyle == 5) { // 5 == round bubble with tip bottom right
+                    adjustX = 5;
+                }
+                
+                if (annotation.bubbleStyle == 2) { // 2 == cloud bubble with tip up left
+                    adjustX = 6;
+                    adjustY = -2;
+                }
+                
+                if (annotation.bubbleStyle == 1) { // 1 == cloud bubble with tip up left
+                    adjustX = 13;
+                    adjustY = -1;
+                }
+                
+                CGRect xywh = CGRectMake((annotation.xOffset/5.0) + adjustX,
+                                         (annotation.yOffset/5.0) + adjustY,0,0); //ak: adjusting x & y for thumbnail
                 
                 NSString* text = annotation.text;
                 int styleId = annotation.bubbleStyle;
@@ -307,12 +338,13 @@ int placementCounter;
                 for(placementCounter=0; placementCounter<numPlacements; placementCounter++)
                 {
                     Resource* resource = [panel.resources objectAtIndex:placementCounter];
+
                     if(resource!=nil)
                     {
                         NSString* type = resource.type;
                         float defaultScale = 1.0;
                         float defaultAngle = 0.0;
-                        
+                        NSLog(@"ak: resource: %@: %@", type, resource.imageURL);
                         CGRect resourceFrame = CGRectMake(panelScrollXOrigin, panelScrollYOrigin, frameWidth, frameHeight);
                         if([type isEqual:@"d"])
                         {
@@ -322,7 +354,7 @@ int placementCounter;
                                 if(placement!=nil)
                                 {
                                     resourceFrame = CGRectMake(placement.xOffset/4.0,
-                                                               (placement.yOffset/4.0) - 10.0,
+                                                               (placement.yOffset/4.0) - 10,
                                                                decoratorWidth, decoratorHeight);
                                     defaultScale = placement.scale/4.0;
                                     defaultAngle = placement.angle;
@@ -331,6 +363,7 @@ int placementCounter;
                         }
                         if([type isEqual:@"f"])
                         {
+
                             resourceFrame = CGRectMake(0, 0, thumbnailWidth, thumbnailScrollObjHeight);
                         }
                         

@@ -744,6 +744,24 @@ int peripheralPage;
         else
         {
             //NSLog(@"generateThumbnails. Panel#%i already downloaded.", thumbnailIndex);
+            
+            //ak: start
+            if(thumbnailIndex<[panelList count])
+            {
+                thumbnailIndex++;
+                NSLog(@"ak: fix: thumbnailIndex: ~~~~> %i", thumbnailIndex);
+                //NSLog(@"didLoadPanel.generateThumbails called.");
+                [self generateThumbails];
+            }
+            else if(thumbnailIndex==[panelList count])
+            {
+                thumbMode = NO;
+                NSLog(@"ak: fix: thumbnailIndex: ~~~~> %i", thumbnailIndex);
+                //NSLog(@"didLoadResource.displayThumbails called.");
+                [self displayThumbnails];
+            }
+            
+            //ak: end
         }
         
         [self displayThumbnails];
